@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- SqlSession setup for MyBatis Database Layer Spring과 Mybatis 연동 설정 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sql-map-config-spring.xml" />
+		<property name="mapperLocations" value="classpath*:/com/onetouch/web/**/dao/*.xml" />
+	</bean>
+	
+	<!-- SqlSessionTemplate -->
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSession"></constructor-arg>
+	</bean>
+	
+	<!-- MapperConfigurer setup for MyBatis Database Layer
+	with @MapperScan("boardMapper") in BoardMapper Interface -->
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> <!-- 인터페이스를 바로 연결시켜주는 부분 이걸 쓸려면 인터페이스와 매퍼를 연결해주는 고리가 없어서 *-mapper의 namespace 부분에 구체적인 경로를 적어줌 -->
+		<property name="basePackage" value="com.onetouch.web.**.dao" /> <!-- 여기 설정한 곳에 mapper 넣어야 함 -->
+	</bean>
+
+</beans>
