@@ -22,7 +22,7 @@
 		<property name="url" value="${url}"></property>
 		<property name="username" value="${user}"></property>
 		<property name="password" value="${password}"></property>
-		<property name="maxWait" value="1000"></property> <!-- 커넥션 대기 시간 -1이면 무한대 p.187 참고 -->
+		<property name="initialSize" value="10"></property>  <!-- 커넥션 대기 시간 -1이면 무한대 p.187 참고 -->
 	</bean>
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
