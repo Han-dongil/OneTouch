@@ -8,5 +8,12 @@
 <select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
 	select * from pdt_ord_sht where to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
 </select>
-
+<delete id="delete">
+	delete 
+	from pdt_ord_sht 
+	where ord_sht_no in
+	<foreach collection="list" item="vo" open="(" close=")" separator=",">
+		#{vo.ordShtNo}
+	</foreach>
+</delete>
 </mapper>

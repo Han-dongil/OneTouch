@@ -19,8 +19,13 @@ public class OrdServiceImpl implements OrdService {
 	}
 	@Override
 	public List<OrdVO> select(OrdVO vo) {
-		System.out.println(vo.getOrdDate());
 		return mapper.select(vo);
+	}
+	
+	@Override
+	public void delete(List<OrdVO> list) {
+		mapper.delete(list);
+		
 	}
 
 }
