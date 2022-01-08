@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.pdt.plan.dao.plan-mapper">
-<select id="list">
-
+<mapper namespace="com.onetouch.web.pdt.plan.dao.PlanMapper">
+<select id="list" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE from pdt_plan
+	
 </select>
 
 </mapper>
