@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <div class="theme-setting-wrapper">
   <div id="settings-trigger"><i class="ti-settings"></i></div>
   <div id="theme-settings" class="settings-panel">

@@ -14,26 +14,30 @@
 </head>
 <body>
 	<form>
-		<input type='date' class='btn'>
-		<button>조회</button>
+		<input type='date' id='inputDate'>
+		<button action='' id='selBtn' name='selBtn' onClick="abcFnc()">조회</button>
 	</form>
 	<div id="grid"></div>
 	<script>
-/* let dataSource;
+	
+
+	
+    let dataSource;
 	$.ajax({
 	  url:"./pdtOrdlist",
 	  dataType:'json',
+	  async:false,
 	  success:function(result){
-	  console.log("sssss")
-	  console.log(result)
-	  dataSource=result;
-	  console.log(result[0]);
+		  console.log("sssss")
+		  console.log(result)
+		  dataSource=result;
+		  console.log(result);
 	  },
 	  error:function(reject){
 		  console.log("aaaaaa")
 		  console.log(reject)
 	  }
-  })   */
+  })
   	let Grid = tui.Grid;
 	Grid.applyTheme('striped',{
 		cell:{
@@ -45,32 +49,64 @@
 			}
 		}
 	})
-
-   	const dataSource={
+/* 	 const dataSource={
 			api:{
-				readData:{url:'./pdtOrdlist',method:'GET',
-				//	initParams:{param:'param'}
-	}
-	//modifyData:{url:'./pdtOrdlist',method:'PUT'},
+				readData:{url:'./pdtOrdlist',
+					method:'GET',
+					initParams:{param:'param'}},
+			 	modifyData:{url:'./pdtOrdlist',method:'PUT'}, 
 			},
 			contentType:'application/json'
-		}	  
-	console.log(dataSource)
-	const columns = [ {
+		}*/ 
+	const columns = [{
 		header : '주문번호',
 		name : 'ordShtNo'
+	},{
+		header : '납기일자',
+		name : 'dueDate'		
+	},{
+		header : '주문날짜',
+		name : 'ordDate'
+	},{
+		header : '업체번호',
+		name : 'compCd'
+	},{
+		header : '현재상태',
+		name : 'nowPhs'
+	},{
+		header : '비고',
+		name : 'cmt'
 	}];
+	grid = new Grid({
+		  el: document.getElementById('grid'),
+		  data:dataSource,
+		  rowHeaders:['checkbox'],
+		  columns,
+		  columnOptions: {
+			  frozenCount :2,
+			  frozenBorderWidth:2
+		  }
+		});
+	grid.on('successResponse',function(ev){
+		console.log("성공")
+	})
+	grid.on('failResponse',function(ev){
+		console.log("실패")
+	})
 	
-	const grid = new Grid({
-	  el: document.getElementById('grid'),
-	  data: dataSource ,
-	  rowHeaders:['checkbox'] ,
-	  columns,
-	  columnOptions: {
-		  frozenCount :2,
-		  frozenBorderWidth:2 
-	  }
-	});
+	function abcFnc(){
+		let inputDate=document.getElementById('inputDate').value;
+		event.preventDefault();
+		$.ajax({
+			url:'./ord',
+			method:'POST',
+			data:'ordDate='+inputDate,
+			success:function(result){
+				console.log(result)
+				grid.resetData(result);
+			}
+		})
+	}
 	/*
 	grid.on('click',(ev)=>{
 		
