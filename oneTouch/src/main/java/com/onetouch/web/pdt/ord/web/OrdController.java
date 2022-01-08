@@ -20,7 +20,6 @@ public class OrdController {
 	@RequestMapping("ordList")
 	public String ordList() {
 		System.out.println("aaaaaa");
-		
 		return "tiles/pdt/pdtOrdList";
 	}
 	

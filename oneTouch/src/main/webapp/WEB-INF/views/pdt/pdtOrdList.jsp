@@ -51,7 +51,7 @@
 				readData:{url:'./pdtOrdlist',method:'GET',
 				//	initParams:{param:'param'}
 	}
-	//,				modifyData:{url:'./pdtOrdlist',method:'PUT'},
+	//modifyData:{url:'./pdtOrdlist',method:'PUT'},
 			},
 			contentType:'application/json'
 		}	  
