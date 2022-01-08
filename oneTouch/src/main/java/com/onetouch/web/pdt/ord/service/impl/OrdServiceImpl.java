@@ -17,5 +17,10 @@ public class OrdServiceImpl implements OrdService {
 	public List<OrdVO> list() {
 		return mapper.list();
 	}
+	@Override
+	public List<OrdVO> select(OrdVO vo) {
+		System.out.println(vo.getOrdDate());
+		return mapper.select(vo);
+	}
 
 }

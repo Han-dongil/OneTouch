@@ -5,6 +5,8 @@
 <select id="list" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
 	select * from pdt_ord_sht
 </select>
-
+<select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
+	select * from pdt_ord_sht where to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
+</select>
 
 </mapper>
