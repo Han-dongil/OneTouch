@@ -20,6 +20,7 @@ public class OrdController {
 	
 	@RequestMapping("ordList")
 	public String ordList() {
+
 		return "tiles/pdt/pdtOrdList";
 	}
 	
