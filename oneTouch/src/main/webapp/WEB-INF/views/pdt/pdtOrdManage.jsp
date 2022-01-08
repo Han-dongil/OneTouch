@@ -49,6 +49,7 @@
 				  frozenCount :2,
 				  frozenBorderWidth:2
 			  }
+
 			});
 		grid.on('successResponse',function(ev){
 			console.log("성공")

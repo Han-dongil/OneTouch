@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,19 +28,24 @@ public class OrdController {
 	@ResponseBody
 	@GetMapping("pdtOrdlist")
 	public List<OrdVO> list(){
-		System.out.println("dddddd");
 		List<OrdVO> list= new ArrayList<>();
 		list =service.list();
-		System.out.println(list);
 		return list;
 	}
 	@ResponseBody
 	@PostMapping("ord")
 	public List<OrdVO> select(OrdVO vo){
-		System.out.println(vo);
 		List<OrdVO> list= new ArrayList<>();
 		list =service.select(vo);
-		System.out.println(list);
 		return list;
+	}
+	@ResponseBody
+	@PostMapping("ordDel")
+	public List<OrdVO> delete(@RequestBody List<OrdVO> list) {
+		System.out.println(list);
+		service.delete(list);
+		
+		return service.list();
+		
 	}
 }

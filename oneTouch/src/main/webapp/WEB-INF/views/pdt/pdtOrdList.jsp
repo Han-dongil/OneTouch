@@ -11,34 +11,38 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
+
 </head>
 <body>
 	<form>
 		<input type='date' id='inputDate'>
-		<button action='' id='selBtn' name='selBtn' onClick="abcFnc()">조회</button>
+		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
+		
+		<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 	</form>
 	<div id="grid"></div>
 	<script>
-	
-
-	
-    let dataSource;
-	$.ajax({
-	  url:"./pdtOrdlist",
-	  dataType:'json',
-	  async:false,
-	  success:function(result){
-		  console.log("sssss")
-		  console.log(result)
-		  dataSource=result;
-		  console.log(result);
-	  },
-	  error:function(reject){
-		  console.log("aaaaaa")
-		  console.log(reject)
-	  }
-  })
+	let OrdVO={};
+	let checked=[];
+    let dataSource; //그리드에 들어갈 데이터변수
+    //전체리스트 ajax
+    listAll();
+    function listAll(){
+		$.ajax({
+		  url:"./pdtOrdlist",
+		  dataType:'json',
+		  async:false,
+		  success:function(result){
+			  dataSource=result;
+		  },
+		  error:function(reject){
+			  console.log(reject)
+		  }
+	  	})
+    }
   	let Grid = tui.Grid;
+	//그리드 테마적용
 	Grid.applyTheme('striped',{
 		cell:{
 			header:{
@@ -58,6 +62,7 @@
 			},
 			contentType:'application/json'
 		}*/ 
+	//그리드 컬럼 설정	
 	const columns = [{
 		header : '주문번호',
 		name : 'ordShtNo'
@@ -77,6 +82,7 @@
 		header : '비고',
 		name : 'cmt'
 	}];
+	//그리드 생성
 	grid = new Grid({
 		  el: document.getElementById('grid'),
 		  data:dataSource,
@@ -85,6 +91,10 @@
 		  columnOptions: {
 			  frozenCount :2,
 			  frozenBorderWidth:2
+		  },
+		  pageOptions: {
+		    useClient: true,
+		    perPage: 10
 		  }
 		});
 	grid.on('successResponse',function(ev){
@@ -93,8 +103,8 @@
 	grid.on('failResponse',function(ev){
 		console.log("실패")
 	})
-	
-	function abcFnc(){
+	//날짜별 조회 ajax
+	function dateSelectFnc(){
 		let inputDate=document.getElementById('inputDate').value;
 		event.preventDefault();
 		$.ajax({
@@ -107,17 +117,43 @@
 			}
 		})
 	}
+	//체크박스 선택
+	grid.on('check',(e)=>{
+		checked.push(dataSource[e.rowKey]);
+		console.log(checked);
+		
+	})
+	 //체크박스 삭제 ajax
+ 	function checkDelFnc(){
+		$.ajax({
+			url:'./ordDel',
+			method:'POST',
+			contentType : "application/json",
+			data: JSON.stringify(checked),
+			success:function(result){
+				console.log(result);
+				dataSource=result;
+				grid.resetData(dataSource);
+				checked.length=0;
+			}
+		})
+	}
+/* 	const dataSource={
+		api:{
+			readData:{url:'./pdtOrdlist',
+				method:'GET',
+				initParams:{param:'param'}},
+		},
+		contentType:'application/json'
+	}	 */
 	/*
 	grid.on('click',(ev)=>{
-		
 		console.log(ev)
 		console.log("클릭됨 ㅎ ")
 	})
 	grid.on('response',function(ev){
 		console.log(ev);
 	}) */
-
-  
   </script>
 </body>
 </html>
