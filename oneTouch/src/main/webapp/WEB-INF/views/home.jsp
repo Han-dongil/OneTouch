@@ -11,12 +11,6 @@
 
 	<P>The time on the server is ${serverTime}.</P>
 	<script>
-	   fetch("./pdtOrdlist")
-	  .then(response=>response.json()) 
-	   .then(result=>{
-		  console.log("ssssssssssssss")
-		  console.log(result)
-	  }) 
 	</script>
 </body>
 </html>

@@ -17,5 +17,15 @@ public class OrdServiceImpl implements OrdService {
 	public List<OrdVO> list() {
 		return mapper.list();
 	}
+	@Override
+	public List<OrdVO> select(OrdVO vo) {
+		return mapper.select(vo);
+	}
+	
+	@Override
+	public void delete(List<OrdVO> list) {
+		mapper.delete(list);
+		
+	}
 
 }

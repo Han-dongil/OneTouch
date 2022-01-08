@@ -8,4 +8,7 @@ import com.onetouch.web.pdt.ord.dao.OrdVO;
 
 public interface OrdService {
 	List<OrdVO> list();
+	List<OrdVO> select(OrdVO vo);
+	void delete(List<OrdVO> list);
+	
 }
