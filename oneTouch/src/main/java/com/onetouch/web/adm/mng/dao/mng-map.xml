@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.adm.mng.dao.MngMapper">
+	<select id="selectAll" resultType="com.onetouch.web.adm.mng.dao.MngVO">
+		SELECT  prc_cd as prcCd, 
+		        prc_nm as prcNm, 
+		        mng_unit as mngUnit, 
+		        pdt_day as pdtDay,
+		        FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtmNm, 
+		        cmt as cmt,
+		        seq as seq,
+		        use_yn as useYn
+		FROM	adm_prc_mng
+	</select>
+	
+</mapper>
