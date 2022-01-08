@@ -12,7 +12,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 </head>
 <body>
-	<h3>토스트 그리드</h3>
+	<h3>토스트 그리드d</h3>
 <div>
    <button type="button" id="btnFind">조회</button>
    <button type="button" id="btnAdd">추가</button>
