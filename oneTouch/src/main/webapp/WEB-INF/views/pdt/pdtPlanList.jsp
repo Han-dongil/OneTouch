@@ -173,6 +173,9 @@
 		grid.appendRow({})
 		grid.resetOriginData();
 	})
+	saveBtn.addEventListener("click",function(){
+		
+	})
 
 	</script>
 </body>
