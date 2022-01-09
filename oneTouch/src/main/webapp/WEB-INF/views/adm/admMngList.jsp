@@ -15,6 +15,7 @@
 <body>
 	<button type="button" id="btnAdd">추가</button>
 	<button type="button" id="btnDel">삭제</button>
+	<button type="button" id="btnSave">저장</button>
 	<div id="grid"></div>
 	<script type="text/javascript">
 		let Grid = tui.Grid;
@@ -39,11 +40,13 @@
 			},
 			{
 				header : '단위',
-				name : 'mngUnit'
+				name : 'mngUnit',
+				editor: 'text'
 			},
 			{
 				header : '생산일수',
-				name : 'pdtDay'
+				name : 'pdtDay',
+				editor: 'text'
 			},
 			{
 				header : '공정구분',
@@ -51,11 +54,13 @@
 			},
 			{
 				header : '비고',
-				name : 'cmt'
+				name : 'cmt',
+				editor: 'text'
 			},
 			{
 				header : '표시순서',
-				name : 'seq'
+				name : 'seq',
+				editor: 'text'
 			},
 			{
 				header : '사용여부',
@@ -87,6 +92,10 @@
 		  rowHeaders : [ 'checkbox' ],
 		  columns
 		});
+		
+		btnSave.addEventListener("click", function() {
+			
+		})
 		
 	</script>
 </body>
