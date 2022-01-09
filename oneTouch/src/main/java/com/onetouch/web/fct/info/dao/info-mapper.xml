@@ -13,7 +13,11 @@
 <!-- 등록 -->
 <insert id="insertFctInfo"></insert>
 <!-- 수정 -->
-<update id="updateFctInfo"></update>
+<update id="updateFctInfo">
+	
+</update>
 <!-- 삭제 -->
-<delete id="deleteFctInfo"></delete>
+<delete id="deleteFctInfo">
+	delete fct_info where fct_cd in <foreach collection="list" item="lists" open="(" close=")" separator=",">#{lists.fctCd}</foreach> 
+</delete>
 </mapper>

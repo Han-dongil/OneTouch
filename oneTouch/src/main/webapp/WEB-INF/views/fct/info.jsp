@@ -25,6 +25,8 @@
 <div id="grid" style="padding-right"></div>
 
 <script type="text/javascript">
+	const targetId = [];
+	
    var Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
    Grid.applyTheme('striped', {
@@ -79,9 +81,9 @@
 	    name: 'usePurp'
   },  
   {     //날짜(데이터피커) cdn 받아서 넣었다
-     headet: '입고일',
-     name: 'inDate',
-     editor: 'datePicker'
+	     headet: '입고일',
+	     name: 'inDate',
+	     editor: 'datePicker'
   },
   {
 	    header: '구매금액',
@@ -117,7 +119,7 @@ let data;
   $.ajax({
 	  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
 	  dataType:'json',
-	  async : false
+	  async : false					//동기 = 절차적 
   }).done(function(datas){
 	  data = datas;
   }) 
@@ -146,10 +148,17 @@ let data;
     
     
     //클릭 이벤트 그리드
-    grid.on('click', (ev) => {
-       console.log(ev)
-         console.log('clicked!!');
-       });
+    grid.on('check', (ev) => {
+    	let vo = {fctCd:""};
+       vo.fctCd = data[ev.rowKey].fctCd;
+      console.log(vo)
+      targetId.push(vo);
+      console.log(targetId)
+    	  
+    })
+      
+         
+       
     grid.on('response', function(ev) {
     	   console.log(ev);
     	   grid.resetOriginData()	//현재 데이터를 변경된 데이터로 확장한다. 
@@ -159,15 +168,29 @@ let data;
     	   grid.appendRow({})
        })
        btnDel.addEventListener("click", function(){
-    	   grid.removeCheckedRows(true); //삭제하는 방식 체크박스를 이용해서 삭제 
+    	   //삭제 아작스 처리
+    	      	
+    	   		
+    	      $.ajax({
+    	    	  
+    	    	  url: "deleteInfo",
+    	    	  method: "POST",
+    	    	  contentType:"application/json",
+    	    	  data: JSON.stringify(targetId),
+    	    	  success:function(result){
+    	    		  console.log('성공')
+    	    		  grid.resetData(result)
+    	    	  }
+    	   
+       		})
        })
-       btnSave.addEventListener("click", function(){
+       /* btnSave.addEventListener("click", function(){
     	   console.log('!!!!!!!!!!!!')
     	   grid.request('modifyData');
        })
        btnFind.addEventListener("click", function(){
     	   //grid.;
-       })
+       }) */
 
 </script>
 
