@@ -2,6 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.mtr.in.dao.InMapper">
 	<select id="list" resultType="com.onetouch.web.mtr.in.dao.InVO">
-		select * from mtr_in
+		SELECT * FROM MTR_IN
 	</select>
+	<select id="select" resultType="com.onetouch.web.mtr.in.dao.InVO">
+		SELECT A.IN_NO, A.IN_DATE, A.MTR_CD, B.MTR_NM, B.UNIT, A.ORD_NO, 
+		A.FLT_AMT, A.IN_AMT, A.UNIT_COST, A.TOT_COST
+		FROM MTR_IN A, ADM_MTR B 
+		WHERE A.MTR_CD = B.MTR_CD
+		<if test="from != null and from != ''"> 
+			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{from}]]>
+		</if>
+		<if test="to != null and to != ''"> 
+			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{to}]]>
+		</if>
+		<if test="inComCd != null and inComCd != ''">
+			AND B.COMP_CD = #{inComCd}
+		</if>
+		<if test="orderBy == 'dDate'">
+			ORDER BY A.IN_DATE
+		</if>
+		<if test="orderBy == 'dCompanyNm'">
+			ORDER BY B.COMP_CD
+		</if>
+		<if test="orderBy == 'dItemcode'">
+			ORDER BY B.MTR_CD
+		</if>
+		<!-- SELECT * 
+		FROM MTR_IN A LEFT JOIN ADM_MTR B 
+		ON A.MTR_CD = B.MTR_CD -->
+	</select>
+	<delete id="delete">
+		delete 
+		from mtr_in
+		where in_no in
+		<foreach collection="list" item="vo" open="(" close=")" separator=",">
+		#{vo.inNo}
+	</foreach>
+	</delete>
 </mapper>
