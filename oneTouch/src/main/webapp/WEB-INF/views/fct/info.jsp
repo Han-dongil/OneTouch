@@ -22,6 +22,45 @@
 	<button	type="button" id='btnDel'>삭제</button>
 	<button type="button" id='btnSave'>저장</button>
 </div>
+
+<form name="infoFrm" action="">
+	<table>
+		<tr>
+			<td>설비코드</td>
+			<td><input type="text" id="fctCd" name = "fctCd" value= "" /></td>
+			<td>사용여부</td>
+			<td><input type="checkbox" id="useYn" name = "useYn" checked=""/></td>
+			<td>공정</td>
+			<td><input type="text" id="prcCd" name = "prcCd" value=""/></td>
+		</tr>
+		<tr>
+			<td>설비규격</td>
+			<td><input type="text" id="fctStd" name = "fctStd" value=""/></td>
+			<td>모델명</td>
+			<td><input type="text" id="fctModel" name = "fctModel" value=""/></td>
+			<td>회사코드</td>
+			<td><input type="text" id="compCd" name = "compCd" value=""/></td>
+		</tr>
+		<tr>
+			<td>입고일</td>
+			<td><input type="date" id="inDate" name = "inDate" value=""/></td>
+			<td>구매금액</td>
+			<td><input type="text" id="purchCost" name = "purchCost" value=""/></td>
+			<td>점검주기</td>
+			<td><input type="text" id="chkProd" name = "chkProd" value=""/></td>
+		</tr>
+		<tr>
+			<td>이미지</td>
+			<td><input type="text" id="FctImg" name = "FctImg" value=""/></td>
+			<td>시간당 생산량</td>
+			<td><input type="text" id="uphPdtAmt" name = "uphPdtAmt" value=""/></td>
+			<td>담당자</td>
+			<td><input type="text" id="empNo" name = "empNo" value=""/></td>
+		</tr>
+		
+	</table>
+</form>
+
 <div id="grid" style="padding-right"></div>
 
 <script type="text/javascript">
@@ -113,7 +152,8 @@
     ]
    
 
-let data;
+	let data;
+    let dataVO;
   
    //ajax 요청
   $.ajax({
@@ -121,6 +161,7 @@ let data;
 	  dataType:'json',
 	  async : false					//동기 = 절차적 
   }).done(function(datas){
+	  console.log(datas)
 	  data = datas;
   }) 
   
@@ -146,13 +187,33 @@ let data;
             }
          });
     
+	grid.on('click',(ev) =>{
+		
+		dataVO = data[ev.rowKey];
+		console.log(dataVO.useYn)
+		
+		document.getElementById('fctCd').value = dataVO.fctCd;
+		document.getElementById('useYn').value = (dataVO.useYn=='Y')?'true':'false';
+		document.getElementById('prcCd').value = dataVO.prcCd;
+		document.getElementById('fctStd').value = dataVO.fctStd;
+		document.getElementById('fctModel').value = dataVO.fctModel;
+		document.getElementById('compCd').value = dataVO.compCd;
+		document.getElementById('inDate').value = dataVO.inDate;
+		document.getElementById('purchCost').value = dataVO.purchCost;
+		document.getElementById('chkProd').value = dataVO.chkProd;
+		document.getElementById('FctImg').value = dataVO.FctImg;
+		document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
+		document.getElementById('empNo').value = dataVO.empNo;
+	})
     
     //클릭 이벤트 그리드
     grid.on('check', (ev) => {
+    	
     	let vo = {fctCd:""};
        vo.fctCd = data[ev.rowKey].fctCd;
       console.log(vo)
       targetId.push(vo);
+      
       console.log(targetId)
     	  
     })
@@ -175,8 +236,8 @@ let data;
     	    	  
     	    	  url: "deleteInfo",
     	    	  method: "POST",
-    	    	  contentType:"application/json",
-    	    	  data: JSON.stringify(targetId),
+    	    	  data: JSON.stringify(targetId),			//json을 string으로 바꿔줘야함 
+    	    	  contentType:"application/json",			//넘겨주는 데이터가 json이라는 걸 알려주는 것 
     	    	  success:function(result){
     	    		  console.log('성공')
     	    		  grid.resetData(result)

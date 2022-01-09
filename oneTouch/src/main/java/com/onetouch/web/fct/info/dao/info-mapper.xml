@@ -9,7 +9,9 @@
 	select * from fct_info
 </select>
 <!-- 단건조회 -->
-<select id="selectFctInfo"></select>
+<select id="selectFctInfo" resultType="com.onetouch.web.fct.info.dao.InfoVO">
+	select * from fct_Info where fct_cd = #{fct_cd}
+</select>
 <!-- 등록 -->
 <insert id="insertFctInfo"></insert>
 <!-- 수정 -->
@@ -19,5 +21,6 @@
 <!-- 삭제 -->
 <delete id="deleteFctInfo">
 	delete fct_info where fct_cd in <foreach collection="list" item="lists" open="(" close=")" separator=",">#{lists.fctCd}</foreach> 
-</delete>
+</delete>												
 </mapper>
+
