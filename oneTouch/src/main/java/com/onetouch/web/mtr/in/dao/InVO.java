@@ -7,6 +7,7 @@ public class InVO {
 	private String inNo;
 	private String inDate;
 	private String mtrCd;
+	private String mtrNm;
 	private String ordNo;
 	private String unit;
 	private String inAmt;

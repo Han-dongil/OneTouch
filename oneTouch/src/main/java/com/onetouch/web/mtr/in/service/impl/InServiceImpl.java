@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.onetouch.web.mtr.in.dao.InMapper;
+import com.onetouch.web.mtr.in.dao.InSearchVO;
 import com.onetouch.web.mtr.in.dao.InVO;
 import com.onetouch.web.mtr.in.service.InService;
 
@@ -16,5 +17,15 @@ public class InServiceImpl implements InService {
 	public List<InVO> list() {
 		return mapper.list();
 	}
+	@Override
+	public List<InSearchVO> select(InSearchVO inSearchVO) {
+		return mapper.select(inSearchVO);
+	}
+	@Override
+	public void delete(List<InVO> list) {
+		mapper.delete(list);
+	}
+	
+	
 
 }
