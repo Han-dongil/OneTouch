@@ -1,4 +1,4 @@
-package com.onetouch.web.fct.info.serviceimpl;
+package com.onetouch.web.fct.info.service.impl;
 
 import java.util.List;
 
@@ -16,6 +16,15 @@ public class InfoServiceImpl implements InfoService {
 	public List<InfoVO> selectFctInfoAll() {
 		return mapper.selectFctInfoAll();
 	}
+
+
+	@Override
+	public void deleteFctInfo(List<InfoVO> list) {
+		
+		mapper.deleteFctInfo(list);
+	}
+
+
 
 	
 }

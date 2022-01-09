@@ -6,5 +6,6 @@ import com.onetouch.web.fct.info.dao.InfoVO;
 
 public interface InfoService {
 	List<InfoVO> selectFctInfoAll();
+	void deleteFctInfo(List<InfoVO> list);
 	
 }
