@@ -1,5 +1,44 @@
 package com.onetouch.web.zzz.web;
 
-public class EtcController {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.onetouch.web.zzz.dao.MsgAltVO;
+import com.onetouch.web.zzz.service.MsgAltService;
+
+@Controller
+public class EtcController {
+	
+	@Autowired MsgAltService service;
+	
+	@RequestMapping("msgAlt")
+	public String msgAltList() {
+		
+		return "tiles/zzz/msgAlt";
+	}
+	
+	@ResponseBody
+	@GetMapping("msgAltList")
+	public List<MsgAltVO> selectAll(){
+		List<MsgAltVO> list = new ArrayList<MsgAltVO>();
+		list = service.selectAll();
+		
+		return list;
+	}
+	
+	@ResponseBody
+	@PostMapping("msgAltDateList")
+	public List<MsgAltVO> selectDate(MsgAltVO vo){
+		List<MsgAltVO> list = new ArrayList<MsgAltVO>();
+		list = service.selectDate(vo);
+		
+		return list;
+	}
 }
