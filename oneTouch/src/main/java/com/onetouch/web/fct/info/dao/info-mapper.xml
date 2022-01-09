@@ -13,7 +13,28 @@
 	select * from fct_Info where fct_cd = #{fct_cd}
 </select>
 <!-- 등록 -->
-<insert id="insertFctInfo"></insert>
+<insert id="insertFctInfo">
+	Insert into FCT_INFO (    FCT_CD
+							 ,PRC_CD
+							 ,FCT_STD
+							 ,FCT_MODEL
+							 ,COMP_CD
+							 ,IN_DATE
+							 ,PURCH_COST
+							 ,CHK_PROD
+							 ,FCT_IMG
+							 ,UPH_PDT_AMT
+							 ,USE_YN
+							 ,EMP_NO) 
+	values (#{fctCd},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{FctImg},#{uphPdtAmt},
+	<if test = "useYn ==null">
+		'N'
+	</if>
+	<if test = "useYn =='on'">
+		'Y'
+	</if>
+	,#{empNo})
+</insert>
 <!-- 수정 -->
 <update id="updateFctInfo">
 	

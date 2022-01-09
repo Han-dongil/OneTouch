@@ -17,7 +17,7 @@ public class InfoVO {
 	String fctStd;		//설비규격?
 	String fctModel;	//모델명
 	String compCd;		//회사코드
-	String usePurp;		//사용목적 
+	String usePurp;		//공정분류 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	Date inDate;		//입고일	

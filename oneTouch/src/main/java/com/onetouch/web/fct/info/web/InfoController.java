@@ -47,4 +47,14 @@ public class InfoController {
 		  service.deleteFctInfo(del);
 		  return service.selectFctInfoAll();
 	  }
+	  
+	  @ResponseBody
+	  @PostMapping("infoInsert")
+	  public List<InfoVO> InfoInsert(InfoVO infoVO) {
+		  System.out.println("1111111111111111111");
+		  System.out.println(infoVO.getFctCd());
+		  System.out.println(infoVO.getUseYn());
+		  service.insertFctInfo(infoVO);
+		  return service.selectFctInfoAll();
+	  }
 }
