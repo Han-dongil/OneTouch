@@ -8,5 +8,6 @@ public interface InfoService {
 	List<InfoVO> selectFctInfoAll();
 	void deleteFctInfo(List<InfoVO> list);
 	InfoVO selectFctInfo(InfoVO infoVO);
+	void insertFctInfo(InfoVO infoVO);
 	
 }

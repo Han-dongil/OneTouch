@@ -33,6 +33,13 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 
+	@Override
+	public void insertFctInfo(InfoVO infoVO) {
+		mapper.insertFctInfo(infoVO);
+		
+	}
+
+
 
 	
 }

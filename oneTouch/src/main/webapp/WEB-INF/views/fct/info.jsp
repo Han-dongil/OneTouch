@@ -23,7 +23,7 @@
 	<button type="button" id='btnSave'>저장</button>
 </div>
 
-<form name="infoFrm" action="">
+<form id="infoFrm"  method="post">
 	<table>
 		<tr>
 			<td>설비코드</td>
@@ -64,7 +64,7 @@
 <div id="grid" style="padding-right"></div>
 
 <script type="text/javascript">
-	const targetId = [];
+	let targetId = [];
 	
    var Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
@@ -241,17 +241,36 @@
     	    	  success:function(result){
     	    		  console.log('성공')
     	    		  grid.resetData(result)
+    	    		  targetId.length = 0;
     	    	  }
     	   
        		})
        })
-       /* btnSave.addEventListener("click", function(){
-    	   console.log('!!!!!!!!!!!!')
-    	   grid.request('modifyData');
+        btnSave.addEventListener("click", function(){
+        	console.log('11111111111111')
+        	console.log($('#infoFrm').serialize())
+    	   
+    	   
+    	   
+    	   //등록아작스 
+    	    $.ajax({
+    	    	  
+    	    	  url: "infoInsert",
+    	    	  method: "POST",
+    	    	  data:$('#infoFrm').serialize(),
+    	    	  dataType:'Json',
+    	    	  			
+    	    	  success:function(result){
+    	    		  console.log('성공')
+    	    		  grid.resetData(result)
+    	    	  }
+    	   
+       		})
+    	   //grid.request('modifyData');
        })
        btnFind.addEventListener("click", function(){
     	   //grid.;
-       }) */
+       }) 
 
 </script>
 
