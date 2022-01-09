@@ -11,7 +11,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
 
 </head>
 <body>
@@ -89,12 +88,8 @@
 		  rowHeaders:['checkbox'],
 		  columns,
 		  columnOptions: {
-			  frozenCount :2,
+			  frozenCount :6,
 			  frozenBorderWidth:2
-		  },
-		  pageOptions: {
-		    useClient: true,
-		    perPage: 10
 		  }
 		});
 	grid.on('successResponse',function(ev){

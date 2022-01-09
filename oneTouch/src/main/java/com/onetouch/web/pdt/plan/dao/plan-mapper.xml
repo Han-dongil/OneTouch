@@ -5,5 +5,7 @@
 	select PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE from pdt_plan
 	
 </select>
-
+<select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
+</select>
 </mapper>
