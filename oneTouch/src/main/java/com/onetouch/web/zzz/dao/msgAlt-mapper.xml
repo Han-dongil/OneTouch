@@ -3,22 +3,30 @@
 <mapper namespace="com.onetouch.web.zzz.dao.MsgAltMapper">
 
 	<select id="selectAll" resultType="com.onetouch.web.zzz.dao.MsgAltVO">
-		SELECT msg_no as msgNo, alt_send_dt as altSendDt, alt_send_dept
-		as altSendDept, alt_send_dept as altSendDept,
-		FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
-		alt_recp_dept as altRecpDept,
-		FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, alt_cmt
-		as altCmt, alt_chk as altChk, alt_chk_dt as altChkDt 
+		SELECT msg_no as msgNo, 
+			   alt_send_dt as altSendDt, 
+			   alt_send_dept as altSendDept, 
+			   alt_send_dept as altSendDept,
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
+		       alt_recp_dept as altRecpDept,
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, 
+		       alt_cmt as altCmt, 
+		       alt_chk as altChk, 
+		       alt_chk_dt as altChkDt 
 		FROM msg_alt
 	</select>
 
 	<select id="selectDate" resultType="com.onetouch.web.zzz.dao.MsgAltVO">
-		SELECT msg_no as msgNo, alt_send_dt as altSendDt, alt_send_dept
-		as altSendDept, alt_send_dept as altSendDept,
-		FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
-		alt_recp_dept as altRecpDept,
-		FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, alt_cmt
-		as altCmt, alt_chk as altChk, alt_chk_dt as altChkDt 
+		SELECT msg_no as msgNo, 
+		       alt_send_dt as altSendDt, 
+		       alt_send_dept as altSendDept, 
+		       alt_send_dept as altSendDept,
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
+		       alt_recp_dept as altRecpDept,
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, 
+		       alt_cmt as altCmt, 
+		       alt_chk as altChk, 
+		       alt_chk_dt as altChkDt 
 		FROM msg_alt 
 		WHERE to_char(alt_send_dt, 'yyyy-MM-dd') = #{altSendDt}
 	</select>
@@ -32,8 +40,8 @@
 	</update>
 	
 	<delete id="delete">
-		<!-- DELETE FROM msg_alt
-		WHERE msg_no in () -->
+		DELETE FROM msg_alt
+		WHERE msg_no in <foreach collection="list" item="vo" open="(" close=")" separator=",">#{vo.msgNo}</foreach>
 	</delete>
 
 </mapper>
