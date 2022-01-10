@@ -4,10 +4,16 @@
 <!-- 작성자 : 박종현 -->
 
 
-<!-- 목록조회 -->
+<!-- 등록 목록조회 -->
 <select id="selectFctInfoAll" resultType="com.onetouch.web.fct.info.dao.InfoVO">
 	select * from fct_info
 </select>
+<!-- 공정코드 조회  -->
+<select id="selectPrcCd" resultType="AdmBasDtlCdVO">
+	select * from adm_bas_dtl_cd where bas_cd = 'fct_div'
+</select>
+
+
 <!-- 단건조회 -->
 <select id="selectFctInfo" resultType="com.onetouch.web.fct.info.dao.InfoVO">
 	select * from fct_Info where fct_cd = #{fct_cd}
