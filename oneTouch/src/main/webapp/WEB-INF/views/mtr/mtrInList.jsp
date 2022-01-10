@@ -68,16 +68,15 @@
 			</div>
 		</form>
 		<div>
-			<button type="button" id="btnFind" onclick="search()">조회</button>
+			<button type="button" id="btnFind">조회</button>
 			<button type="button" id="btnAdd">추가</button>
-			<button type="button" id="btnDel" onclick="delRow()">삭제</button>
+			<button type="button" id="btnDel">삭제</button>
 			<button type="button" id="btnSave">저장</button>
 		</div>
 	</div>
 <div id="grid"></div>
-<script type="text/javascript">
-let checked = [];
 
+<script type="text/javascript">
 var Grid = tui.Grid;
 Grid.applyTheme('striped', { //cell style
      cell: {
@@ -89,8 +88,8 @@ Grid.applyTheme('striped', { //cell style
        }
      },
    });
+   
 const columns = [
-		
         {
           header: '입고번호',
           name: 'inNo',
@@ -139,26 +138,17 @@ const columns = [
           name: 'totCost'
         }
       ]
-/* const dataSource = {
+const dataSource = {
 		  api: {
 		    readData: { url: './mtrInList', 
 				    	method: 'GET', 
-				    	initParams: { param: 'param' } },
-	    	modifyData: { url: './mtr', 
+				    	/* initParams: { param: 'param' } */ },
+	    	modifyData: { url: './mtrModify', 
 	    				method: 'POST' }
 		  },
 		  contentType: 'application/json',
-		}; */
-let dataSource;
-      
-const grid = new Grid({
-     el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
-     rowHeaders : [ 'checkbox'],  //check박스 추가
-     columns
-   });
-   
-   
+		};
+
       
 //조건조회 ajax
 function search(){
@@ -169,57 +159,17 @@ function search(){
    dataType:'json',
    async : false
 }).done(function(datas){
-	console.log(datas)
-   dataSource = datas;
-   grid.resetData(dataSource);
+   grid.resetData(datas);
    //grid.resetOriginData();
 });
 }
 
-//체크박스 선택
- grid.on('check', (ev) => {
-	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
-      /* checked.push(dataSource[ev.rowKey]) */
-      checked.push(grid.getValue(ev.rowKey,'inNo'));
-      console.log(grid.getValue(ev.rowKey,'_checked'));
-      
-      console.log("checked"+checked)
+const grid = new Grid({
+     el : document.getElementById('grid'),
+     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     rowHeaders : [ 'checkbox'],  //check박스 추가
+     columns
    });
-   
-//체크박스 해제하는 펑션도 추가해주기
- grid.on('check', (ev) => {
-	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
-      /* checked.push(dataSource[ev.rowKey]) */
-      checked.push(grid.getValue(ev.rowKey,'inNo'));
-      console.log("checked"+checked)
-   });
-   
-//체크row 삭제 ajax
-function delRow(){
-	$.ajax({
-		url:'./mtrDelRow',
-		method: 'POST',
-		contentType: "application/json",
-		data: JSON.stringify(checked),
-		success: function(datas){
-			//grid.resetOriginData();
-			/* grid.resetData(datas);
-			//readData
-			checked.length=0; */
-			search();
-		}
-	})
-};
-
-/*const dataSource = {
-        api: {
-          readData: { url: './mtrInList', 
-                   method: 'GET',
-                   initParams: { param: 'param' } }
-        },
-        contentType: 'application/json'
-      }; */
-
    
 /*  
 grid.on('response', function(ev) {
@@ -228,7 +178,22 @@ grid.on('response', function(ev) {
       console.log(ev);
       grid.resetOriginData();
    });
-
+*/
+$.fn.serializeObject = function() {
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name]) {
+			if (!o[this.name].push) {
+				o[this.name] = [ o[this.name] ];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		} 
+	});
+	return o;
+};
 btnAdd.addEventListener("click", function(){
    grid.appendRow({});
 })
@@ -240,7 +205,12 @@ btnSave.addEventListener("click", function(){
 })
 btnFind.addEventListener("click", function(){
    //grid.request('modifyData');
-}) */
+   /* let a= $("#frm").serialize();
+   let a= $("#frm").serializeArray(); */
+   let a= $("#frm").serializeObject();
+   console.log(a);
+   grid.readData(1,a,true);
+})
 </script>
 </body>
 </html>

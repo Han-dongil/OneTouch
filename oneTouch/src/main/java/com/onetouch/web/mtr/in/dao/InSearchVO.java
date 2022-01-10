@@ -13,6 +13,7 @@ public class InSearchVO extends InVO{
 	String to;
 	String inComCd;
 	String InComName;
+	String dItemcode;
 	String mtrCd;
 	String gubun;
 	String orderBy;

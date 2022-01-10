@@ -21,6 +21,9 @@
 		<if test="inComCd != null and inComCd != ''">
 			AND B.COMP_CD = #{inComCd}
 		</if>
+		<if test="dItemcode != null and dItemcode != ''">
+			AND B.MTR_CD = #{dItemcode}
+		</if>
 		<if test="orderBy == 'dDate'">
 			ORDER BY A.IN_DATE
 		</if>
