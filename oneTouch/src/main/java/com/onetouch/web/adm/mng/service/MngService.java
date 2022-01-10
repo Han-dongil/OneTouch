@@ -6,4 +6,6 @@ import com.onetouch.web.adm.mng.dao.MngVO;
 
 public interface MngService {
 	List<MngVO> selectAll();
+	List<MngVO> selectPrc();
+	void delete(List<MngVO> list);
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +19,10 @@
 	<button type="button" id="btnSave">저장</button>
 	<div id="grid"></div>
 	<script type="text/javascript">
+		let checked=[];
+		let prcLists=[];
+		let dataSource;
+		
 		let Grid = tui.Grid;
 		Grid.applyTheme('striped',{
 			cell:{
@@ -29,6 +34,17 @@
 				}
 			}
 		})
+		
+		$.ajax({
+			url: './prcList',
+			dataType:'json',
+			async : false
+		}).done(function(datas){
+			console.log(datas);
+			prcLists = datas;
+		});
+		
+
 		
 		const columns = [{
 				header : '공정코드',
@@ -50,7 +66,15 @@
 			},
 			{
 				header : '공정구분',
-				name : 'dtmNm'
+				name : 'dtmNm',
+  				editor: {
+					type: 'radio',
+					options: {
+						listItems: [
+							{}
+						]
+					}
+				} 
 			},
 			{
 				header : '비고',
@@ -64,38 +88,98 @@
 			},
 			{
 				header : '사용여부',
-				name : 'useYn'
+				name : 'useYn',
+				editor: {
+					type: 'radio',
+					options: {
+				        listItems: [
+				          { text: 'Y', value: 'Y' },
+				          { text: 'N', value: 'N' }
+				        ]
+				     }
+				}
 			}];
 		
-		let data;
+		console.log(columns[4].editor.options.listItems);
+		for(i=0; i<prcLists.length; i++) {
+			let a = {}
+			a.text = prcLists[i].dtlNm;
+			a.value = i;
+			
+			columns[4].editor.options.listItems.push(a);
+		}
 		
-		$.ajax({
-			url:'./admMngList',
-			dataType:'json',
-			async:false
-		}).done(function(datas) {
-			console.log(datas);
-			data = datas;
-		})
 		
-	/* 	const dataSource = {
-				api:{
-					readData: {url:'./admMngList', method:'GET'}
+		
+
+		//전체조회
+		let selectAllData = {
+				api: {
+					readData: {
+						url:'./admMngList',
+						method: 'GET'}
 				},
-				contentType:'application/json'
-			};
-		console.log(dataSource+"mng") */
+				contentType: 'application/json'
+		 }
+		
+		//삭제,수정,등록
+/*  		let dataAll = {
+				api: {
+					modifyData: {
+						url: ,
+						method: 'POST'
+					}
+				},
+				contentType: 'application/json'
+		}	 */	
+		  
+		
+		//전체조회
+/* 		function selectAll() {
+			$.ajax({
+				url:'./admMngList',
+				dataType:'json',
+				async:false
+			}).done(function(datas) {
+				console.log(datas);
+				data = datas;
+			})
+		}
+		
+		selectAll(); */
+		
+		//수정
+		/* function update() {
+			$.ajax({
+				url:''
+				dataType:'json'
+				
+			})
+		} */
+		
 			
 		const grid = new Grid({
 		  el: document.getElementById('grid'),
-		  data, //변수명과 필드명이 같으면 생략가능 원래: data : data,
+		  data: selectAllData, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 		  rowHeaders : [ 'checkbox' ],
 		  columns
 		});
-		
-		btnSave.addEventListener("click", function() {
 			
+		//삭제버튼
+		btnDel.addEventListener("click", function() {
+			grid.removeCheckedRows(true);
 		})
+		
+		//저장버튼
+		btnSave.addEventListener("click", function() {
+			grid.request('modifyData');
+		})
+		
+		//등록버튼
+		btnAdd.addEventListener("click", function() {
+			grid.appendRow({})
+		})	
+		
 		
 	</script>
 </body>

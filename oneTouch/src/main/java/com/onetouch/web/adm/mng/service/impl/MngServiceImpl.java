@@ -17,4 +17,17 @@ public class MngServiceImpl implements MngService{
 	public List<MngVO> selectAll() {
 		return mapper.selectAll();
 	}
+
+	@Override
+	public List<MngVO> selectPrc() {
+		return mapper.selectPrc();
+	}
+
+	@Override
+	public void delete(List<MngVO> list) {
+		mapper.delete(list);
+	}
+
+
+
 }
