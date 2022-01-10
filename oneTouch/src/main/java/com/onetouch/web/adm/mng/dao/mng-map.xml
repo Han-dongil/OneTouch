@@ -6,11 +6,26 @@
 		        prc_nm as prcNm, 
 		        mng_unit as mngUnit, 
 		        pdt_day as pdtDay,
-		        FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtmNm, 
+		        FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtlNm, 
 		        cmt as cmt,
 		        seq as seq,
 		        use_yn as useYn
 		FROM	adm_prc_mng
 	</select>
 	
+	<select id="selectPrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
+		select dtl_nm from adm_bas_dtl_cd where bas_cd = 'pdt_prc'
+	</select>
+	
+	<delete id="delete">
+		DELETE	
+		FROM	adm_prc_mng
+		WHERE	prc_cd in
+		<foreach collection="list" item="vo" open="(" close=")" separator=",">
+		#{vo.prcCd}
+		</foreach>
+	</delete>
+	
+	<update id="update">
+	</update>
 </mapper>
