@@ -6,15 +6,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
 </head>
 <body>
+	<input id='rtnVal'><button type='button' id='btnMtrComp'>자재업체</button>
+	
+	<div id="dialog-form" title="모달테스트">
+	 	testform
+	</div>
 	
 	<form>
 		<input type='date' id='altSendDt'>
@@ -25,6 +32,35 @@
 	<div id='grid'></div>
 	
 	<script>
+		function selectedModal(param){
+			//$("#txtCo").val(param);
+			console.log(param);
+			dialog.dialog("close");
+		}
+		
+		let dialog = $( "#dialog-form" ).dialog({
+			autoOpen : false,
+			modal : true,
+			/* buttons : {
+				"save" : function(){
+					alert("save");
+				},
+				"update" : function(){
+					
+				}
+			} */
+		});
+		
+		$("#btnMtrComp").on("click", function(){
+			dialog.dialog("open");
+			
+			$("#dialog-form").attr('title', '자재업체');
+			
+			$("#dialog-form").load("./mtrComp.jsp", function(){
+				console.log("로드됨");
+			});
+		})
+	
 		let MsgAltVO={};
 		let checked=[];
 		let dataSource;
@@ -127,12 +163,26 @@
 			console.log(checked);
 		})
 		
-		/* //체크한 데이터 삭제
+		//체크한 데이터 삭제
 		function DeleteChecked(){
 			$.ajax({
-				url:'./'
+				url : './msgAltDelete',
+				method : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(checked),
+				success : function(result){
+					console.log(result);
+					grid.resetData(result);
+					checked.length=0;
+				}
 			})
-		} */
+		} 
+		
+		$("#btnShowModal").on("click", function(){
+			dialog.dialog("open");
+			
+			
+		})
 		
 		
 	</script>

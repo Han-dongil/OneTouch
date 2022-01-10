@@ -25,5 +25,11 @@ public class MsgAltServiceImpl implements MsgAltService {
 		
 		return mapper.selectDate(vo);
 	}
+
+	@Override
+	public void delete(List<MsgAltVO> list) {
+		
+		mapper.delete(list);
+	}
 	
 }
