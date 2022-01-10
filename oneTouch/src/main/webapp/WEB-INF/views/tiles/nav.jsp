@@ -54,7 +54,8 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="ftcIhfoList">설비등록</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcIhfoIns">설비등록</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcIhfoSel">설비조회</a></li>
               </ul>
             </div>
           </li>

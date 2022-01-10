@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.fct.info.dao.AdmBasDtlCdVO;
 import com.onetouch.web.fct.info.dao.InfoMapper;
 import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.fct.info.service.InfoService;
@@ -20,21 +21,43 @@ public class InfoController {
 	@Autowired InfoService service;
 	@Autowired InfoMapper mapper;
 	
+	//공정코드 조회 
+	@ResponseBody
+	@GetMapping("selectPrc")
+	public List<AdmBasDtlCdVO> showPrc() {
+		System.out.println("2");
+		System.out.println("11");
+		List<AdmBasDtlCdVO> list = new ArrayList<>();
+		list = service.selectPrcCd();
+		System.out.println("!!!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@#################");
+		System.out.println(list);
+		return list;
+	}
+	
 	//목록조회 페이지이동
-	@RequestMapping("ftcIhfoList")
+	@RequestMapping("ftcIhfoIns")
 	public String moveList( ) {
 		
-		return "tiles/fct/info";
+		
+		
+		return "tiles/fct/infoIns";
+	}
+	
+	//목록조회 페이지이동
+	@RequestMapping("ftcIhfoSel")
+	public String showList( ) {
+		
+		
+		
+		return "tiles/fct/infoSel";
 	}
 	
 	  //목록조회 처리
 	  @ResponseBody
 	  @GetMapping("list1") 
-	  public List<InfoVO> list( ) {
+	  public List<InfoVO> list() {
 		  List<InfoVO> list = new ArrayList<>();
 		  list = service.selectFctInfoAll();
-		 
-		  System.out.println(list);
 	  return list; 
 	  }
 	  
@@ -42,8 +65,7 @@ public class InfoController {
 	  @ResponseBody      
 	  @PostMapping("deleteInfo")
 	  public List<InfoVO> delete(@RequestBody List<InfoVO> del) {
-		  System.out.println("!!!!!!!!!!");
-		  System.out.println(del);
+		 
 		  service.deleteFctInfo(del);
 		  return service.selectFctInfoAll();
 	  }
@@ -51,9 +73,7 @@ public class InfoController {
 	  @ResponseBody
 	  @PostMapping("infoInsert")
 	  public List<InfoVO> InfoInsert(InfoVO infoVO) {
-		  System.out.println("1111111111111111111");
-		  System.out.println(infoVO.getFctCd());
-		  System.out.println(infoVO.getUseYn());
+		 
 		  service.insertFctInfo(infoVO);
 		  return service.selectFctInfoAll();
 	  }
