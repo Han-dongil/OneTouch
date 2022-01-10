@@ -47,36 +47,32 @@
 			<button onclick="xFnc(event)">X</button>
 			<form action="">
 				<input id="na" name="na">
-
 			</form>
 			<div id="inGrid"></div>
-
 		</div>
 	</div>
 	<script>
-	let inGrid;
 	let inGridData;
+	let inGrid;
     function xFnc(e) {
     	e.preventDefault();
-    	console.log(e.target)
-    	e.target.parentNode.parentNode.style="display:none"
+    	console.log(e.target);
+    	e.target.parentNode.parentNode.style="display:none";
     }
-    let dataSource; //그리드에 들어갈 데이터변수
-    
-    function listAll(){
-		$.ajax({
-		  url:"./pdtPlanlist",
-		  dataType:'json',
-		  async:false,
-		  success:function(result){
-			  dataSource=result;
-		  },
-		  error:function(reject){
-			  console.log(reject)
-		  }
-	  	})
-    }
-    listAll();    
+//    let dataSource; //그리드에 들어갈 데이터변수
+    var dataSource = {
+    		  withCredentials: false,  
+    		  initialRequest: true,
+    		  api: {
+    		        readData: { url: './pdtPlanlist',method: 'GET'},
+    		      //createData: { url: '/api/create', method: 'POST' },
+    		      //updateData: { url: '/modifyData', method: 'POST' },
+    		      //deleteData: { url: '/api/delete', method: 'DELETE' },
+    		      modifyData: { url: './modifyData', method: 'POST' }  
+    		  },
+    		  contentType: 'application/json'
+    		}
+    	console.log(dataSource);
 	//그리드 컬럼 설정	
 	const columns = [{
 		header : '계획번호',
@@ -98,9 +94,7 @@
 		header : '계획일짜',
 		name : 'planDate'
 	}];
-	
   	let Grid = tui.Grid;
-  	
 	//그리드 테마적용
 	Grid.applyTheme('striped',{
 		cell:{
@@ -112,7 +106,6 @@
 			}
 		}
 	})
-
 	//그리드 생성
 	grid = new Grid({
 		  el: document.getElementById('grid'),
@@ -121,62 +114,76 @@
 		  columns,
 		  columnOptions: {
 			  frozenCount :6,
-			  frozenBorderWidth:2
-		  }
-		});
+			  frozenBorderWidth:3
+		 	}
+		 });
+	
+ 	inGridData={
+  		  withCredentials: false,  
+  		  initialRequest: true,
+  		  api: {
+  		        readData: { url: './pdtPlanDtllist/',method: 'POST'}
+					},
+		  contentType: 'application/json',
+		  serializer(params) {
+			    return JSON.stringify(params);
+			  }   
+  		  } 
+  		     
+  		
+	//}
 	//모달그리드 생성
-    
-
-    grid.on('click', ev => {
-    	
-    	if(ev.columnName=='planDate'){
-			$("#inGrid").empty();
-			document.getElementById("abc").style = 'display:block';
-			document.getElementById("na").value = dataSource[ev.rowKey].ordShtNo;
-			$.ajax({
-				url:"./pdtPlanDtllist/"+dataSource[ev.rowKey].ordShtNo,
-				async:false,
-				success:function(result){
-					console.log(result);
-					inGridData=result;
-				}
-			})
-			//모달그리드 생성
-			inGrid = new tui.Grid({
-				el: document.getElementById('inGrid'),
-				data:inGridData,
-				rowHeaders:['checkbox'],
-				columns:[{
-			          header: '제품코드',
-			          name: 'prdCd',
-			  		  editor : 'text'
-			        },
-			        {
-			          header: "필요수량",
-			          name: "needCnt",
-			          editor : 'text'
-			        }
-			      ],
-				columnOptions: {
-					frozenCount :6,
-					frozenBorderWidth:2
-				}
-			
-			});
-			//inGrid 클릭이벤트 // 제품코드 클릭
-			inGrid.on("click",function(ev){
-				console.log(inGridData[ev.rowKey]);
-			})
-    	}
+	inGrid = new tui.Grid({
+		el: document.getElementById('inGrid'),
+		data:inGridData,
+		rowHeaders:['checkbox'],
+		columns:[{
+	          header: '제품코드',
+	          name: 'prdCd',
+	  		  editor : 'text'
+	        },
+	        {
+	          header: "필요수량",
+	          name: "needCnt",
+	          editor : 'text'
+	        }
+	      ],
+		columnOptions: {
+			frozenCount :2,
+			frozenBorderWidth:5
+		}
 	})
+	 
+	
+	
+	
+	
+	//로우 클릭 이벤트
+     grid.on('click', ev => {
+    	//if(ev.columnName=='planDate'){
+			//$("#inGrid").empty();
+			document.getElementById("abc").style = 'display:block';
+			console.log(grid.getValue(ev.rowKey,'ordShtNo'))
+			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
+			inGrid.readData(1,a,true);
+			/* console.log(ev.columnName)
+			console.log(grid.getValue(ev.rowKey,'ordShtNo')) */
+			
+			 
+/* 			//inGrid 클릭이벤트 // 제품코드 클릭
+			inGrid.on("click",function(ev){
+			//	console.log(inGridData[ev.rowKey]);
+			}) */
+    	
+	}) 
 	addBtn.addEventListener("click",function(){
 		grid.appendRow({})
 		grid.resetOriginData();
 	})
 	saveBtn.addEventListener("click",function(){
-		
+		console.log(dataSource);
+		grid.request('modifyData'); //변경or추가된 데이터만 보냄
 	})
-
 	</script>
 </body>
 </html>
