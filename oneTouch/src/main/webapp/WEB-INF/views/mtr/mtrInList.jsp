@@ -5,16 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<script
-	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div class="container">
@@ -78,8 +76,7 @@
 	</div>
 <div id="grid"></div>
 <script type="text/javascript">
-const checked = [];
-let dataSource;
+let checked = [];
 
 var Grid = tui.Grid;
 Grid.applyTheme('striped', { //cell style
@@ -96,8 +93,13 @@ const columns = [
 		
         {
           header: '입고번호',
-          name: 'inNo'
+          name: 'inNo',
+          hidden: true
         },
+        {
+        header: '업체',
+        name: 'comNm'
+	    },
         {
           header: '입고일자',
           name: 'inDate'
@@ -137,6 +139,17 @@ const columns = [
           name: 'totCost'
         }
       ]
+/* const dataSource = {
+		  api: {
+		    readData: { url: './mtrInList', 
+				    	method: 'GET', 
+				    	initParams: { param: 'param' } },
+	    	modifyData: { url: './mtr', 
+	    				method: 'POST' }
+		  },
+		  contentType: 'application/json',
+		}; */
+let dataSource;
       
 const grid = new Grid({
      el : document.getElementById('grid'),
@@ -144,16 +157,9 @@ const grid = new Grid({
      rowHeaders : [ 'checkbox'],  //check박스 추가
      columns
    });
+   
+   
       
-//전체list ajax
-$.ajax({
-   url:'./mtrInList',
-   dataType:'json',
-   async : false
-}).done(function(datas){
-   dataSource = datas; 
-});
-
 //조건조회 ajax
 function search(){
  $.ajax({
@@ -163,24 +169,31 @@ function search(){
    dataType:'json',
    async : false
 }).done(function(datas){
-   /* dataSource = datas;  */
-   grid.resetData(datas);
+	console.log(datas)
+   dataSource = datas;
+   grid.resetData(dataSource);
+   //grid.resetOriginData();
 });
 }
 
 //체크박스 선택
  grid.on('check', (ev) => {
-	 let vo = {inNo:""};
-	 vo.inNo = dataSource[ev.rowKey].inNo;
+	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
       /* checked.push(dataSource[ev.rowKey]) */
-      console.log(vo)
-      checked.push(vo);
+      checked.push(grid.getValue(ev.rowKey,'inNo'));
+      console.log(grid.getValue(ev.rowKey,'_checked'));
       
-      console.log(checked)
-       
+      console.log("checked"+checked)
    });
    
-   //체크박스 해제하는 펑션도 추가해주기]
+//체크박스 해제하는 펑션도 추가해주기
+ grid.on('check', (ev) => {
+	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
+      /* checked.push(dataSource[ev.rowKey]) */
+      checked.push(grid.getValue(ev.rowKey,'inNo'));
+      console.log("checked"+checked)
+   });
+   
 //체크row 삭제 ajax
 function delRow(){
 	$.ajax({
@@ -189,13 +202,16 @@ function delRow(){
 		contentType: "application/json",
 		data: JSON.stringify(checked),
 		success: function(datas){
-			grid.resetData(datas);
-			checked.length=0;
+			//grid.resetOriginData();
+			/* grid.resetData(datas);
+			//readData
+			checked.length=0; */
+			search();
 		}
 	})
 };
 
-/* const dataSource = {
+/*const dataSource = {
         api: {
           readData: { url: './mtrInList', 
                    method: 'GET',

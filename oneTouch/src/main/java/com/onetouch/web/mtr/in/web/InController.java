@@ -39,15 +39,14 @@ public class InController {
 		/* System.out.println("in: "+in); */
 		List<InSearchVO> list= new ArrayList<>();
 		list =service.select(in);
-		
 		/* System.out.println("list : " + list); */
 		return list;
 	}
 	@ResponseBody
 	@PostMapping("/mtrDelRow")
-	public List<InVO> delete(@RequestBody List<InVO> list){
+	public List<InVO> delete(List<InVO> list){
 		service.delete(list);
 		System.out.println("list : " + list);
-		return service.list();
+		return list;
 	}
 }
