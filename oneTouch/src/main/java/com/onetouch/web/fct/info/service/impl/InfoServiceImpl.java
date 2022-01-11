@@ -16,8 +16,8 @@ public class InfoServiceImpl implements InfoService {
 	@Autowired PlanMapper pmapper;
 	
 	@Override
-	public List<InfoVO> selectFctInfoAll() {
-		return mapper.selectFctInfoAll();
+	public List<InfoVO> selectFctInfoAll(InfoVO infoVO) {
+		return mapper.selectFctInfoAll(infoVO);
 	}
 
 
@@ -45,6 +45,13 @@ public class InfoServiceImpl implements InfoService {
 	public List<AdmBasDtlCdVO> selectPrcCd() {
 		
 		return mapper.selectPrcCd();
+	}
+
+
+	@Override
+	public int InfoUpdate(InfoVO infoVO) {
+		
+		return mapper.InfoUpdate(infoVO);
 	}
 
 

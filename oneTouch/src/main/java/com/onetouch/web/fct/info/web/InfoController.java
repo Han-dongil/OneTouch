@@ -21,16 +21,23 @@ public class InfoController {
 	@Autowired InfoService service;
 	@Autowired InfoMapper mapper;
 	
+	
+	//수정
+	  @ResponseBody
+	  @PostMapping("Updateinfo")
+	  public List<InfoVO> InfoUpdate(InfoVO infoVO) {
+		  service.InfoUpdate(infoVO);
+		  System.out.println("확인하기 업데이트 문제에서 조회 조건");
+		  System.out.println(infoVO.getCheckPrcCd());
+		  return service.selectFctInfoAll(infoVO);
+	  }
+	
 	//공정코드 조회 
 	@ResponseBody
 	@GetMapping("selectPrc")
 	public List<AdmBasDtlCdVO> showPrc() {
-		System.out.println("2");
-		System.out.println("11");
 		List<AdmBasDtlCdVO> list = new ArrayList<>();
 		list = service.selectPrcCd();
-		System.out.println("!!!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@#################");
-		System.out.println(list);
 		return list;
 	}
 	
@@ -54,20 +61,22 @@ public class InfoController {
 	
 	  //목록조회 처리
 	  @ResponseBody
-	  @GetMapping("list1") 
-	  public List<InfoVO> list() {
+	  @PostMapping("list1") //s는 공정코드 키 값으로 들어감 
+	  public List<InfoVO> list(@RequestBody InfoVO infoVO) {
+		  System.out.println("검색조건 넘어온지 확인하기 ");
+		  System.out.println(infoVO.getCheckPrcCd());
 		  List<InfoVO> list = new ArrayList<>();
-		  list = service.selectFctInfoAll();
+		  list = service.selectFctInfoAll(infoVO);
 	  return list; 
 	  }
 	  
-	  //스플릿 사용해서 배열에다가 넣기 스트링 밷열로 만들어지면 향상된 포문으로 서비스 돌리기 
+	
 	  @ResponseBody      
 	  @PostMapping("deleteInfo")
-	  public List<InfoVO> delete(@RequestBody List<InfoVO> del) {
+	  public List<InfoVO> delete(@RequestBody List<InfoVO> del,InfoVO infoVO) {
 		 
 		  service.deleteFctInfo(del);
-		  return service.selectFctInfoAll();
+		  return service.selectFctInfoAll(infoVO);
 	  }
 	  
 	  @ResponseBody
@@ -75,6 +84,6 @@ public class InfoController {
 	  public List<InfoVO> InfoInsert(InfoVO infoVO) {
 		 
 		  service.insertFctInfo(infoVO);
-		  return service.selectFctInfoAll();
+		  return service.selectFctInfoAll(infoVO);
 	  }
 }

@@ -6,7 +6,14 @@
 
 <!-- 등록 목록조회 -->
 <select id="selectFctInfoAll" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	select * from fct_info
+	select * from fct_info 
+	where 1=1
+		<if test='checkPrcCd != "d" and checkPrcCd != null'>
+			and prc_cd = #{checkPrcCd}
+		</if>
+		
+	
+
 </select>
 <!-- 공정코드 조회  -->
 <select id="selectPrcCd" resultType="AdmBasDtlCdVO">
@@ -42,8 +49,19 @@
 	,#{empNo})
 </insert>
 <!-- 수정 -->
-<update id="updateFctInfo">
-	
+<update id="InfoUpdate">
+	update fct_info set 
+					 FCT_NM= #{fctNm}
+					,PRC_CD= #{prcCd}
+					,FCT_STD= #{fctStd}
+					,FCT_MODEL= #{fctModel}
+					,COMP_CD= #{compCd}
+					,IN_DATE= #{inDate}
+					,PURCH_COST= #{purchCost}
+					,CHK_PROD= #{chkProd}
+					,FCT_IMG= #{FctImg}
+					,UPH_PDT_AMT= #{uphPdtAmt}
+	where fct_cd= #{fctCd}
 </update>
 <!-- 삭제 -->
 <delete id="deleteFctInfo">
