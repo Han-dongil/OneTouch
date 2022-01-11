@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.adm.bas.dao.BasMapper">
+
+	<!-- 기초코드 조회 -->
+	<select id="selectBasAll" resultType="com.onetouch.web.adm.bas.dao.BasVO">
+		select  bas_cd,
+		        bas_nm,
+		        bas_cmt
+		from    adm_bas_cd
+	</select>
+	
+	<!-- 제품명으로 검색 -->
+	<select id="selectBasSrc" resultType="com.onetouch.web.adm.bas.dao.BasVO">
+		select  bas_nm 
+		from	adm_bas_cd 
+		where 	bas_nm like '%' || #{basNm} || '%'
+	</select>
+	
+	<!-- 기초코드 선택하면 상세코드 종류 보여주기 -->
+	<select id="selectBasDtl" resultType="com.onetouch.web.adm.bas.dao.BasDtlVO">
+		select  dtl_cd,
+		        dtl_nm,
+		        dtl_cmt,
+		        seq,
+		        use_yn
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = #{basCd}
+	</select>
+</mapper>
