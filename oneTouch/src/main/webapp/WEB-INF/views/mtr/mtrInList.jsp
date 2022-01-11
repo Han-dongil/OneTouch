@@ -11,7 +11,7 @@
 
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -68,16 +68,15 @@
 			</div>
 		</form>
 		<div>
-			<button type="button" id="btnFind" onclick="search()">조회</button>
+			<button type="button" id="btnFind">조회</button>
 			<button type="button" id="btnAdd">추가</button>
-			<button type="button" id="btnDel" onclick="delRow()">삭제</button>
+			<button type="button" id="btnDel">삭제</button>
 			<button type="button" id="btnSave">저장</button>
 		</div>
 	</div>
 <div id="grid"></div>
-<script type="text/javascript">
-let checked = [];
 
+<script type="text/javascript">
 var Grid = tui.Grid;
 Grid.applyTheme('striped', { //cell style
      cell: {
@@ -89,22 +88,18 @@ Grid.applyTheme('striped', { //cell style
        }
      },
    });
+   
 const columns = [
-		
         {
           header: '입고번호',
           name: 'inNo',
           hidden: true
         },
         {
-        header: '업체',
-        name: 'comNm'
-	    },
-        {
           header: '입고일자',
           name: 'inDate'
         },
-       	{//column name들
+       	{
           header: '자재코드',
           name: 'mtrCd'
         },
@@ -116,6 +111,10 @@ const columns = [
           header: '단위',
           name: 'unit',
         },
+        {
+        header: '업체',
+        name: 'comNm'
+	    },
         {
           header: '발주번호',
           name: 'ordNo',
@@ -132,25 +131,25 @@ const columns = [
         },
         {
           header: '단가',
-          name: 'unitCost'
+          name: 'unitCost',
+          editor: 'text'
         },
         {
           header: '총금액',
           name: 'totCost'
         }
       ]
-/* const dataSource = {
+const dataSource = {
 		  api: {
 		    readData: { url: './mtrInList', 
 				    	method: 'GET', 
-				    	initParams: { param: 'param' } },
-	    	modifyData: { url: './mtr', 
+				    	/* initParams: { param: 'param' } */ },
+	    	modifyData: { url: './mtrModify', 
 	    				method: 'POST' }
 		  },
 		  contentType: 'application/json',
-		}; */
-let dataSource;
-      
+		};
+
 const grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
@@ -158,76 +157,13 @@ const grid = new Grid({
      columns
    });
    
-   
-      
-//조건조회 ajax
-function search(){
- $.ajax({
-   url:'./mtrInList',
-   method: 'POST',
-   data:$("#frm").serialize(),
-   dataType:'json',
-   async : false
-}).done(function(datas){
-	console.log(datas)
-   dataSource = datas;
-   grid.resetData(dataSource);
-   //grid.resetOriginData();
-});
-}
-
-//체크박스 선택
- grid.on('check', (ev) => {
-	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
-      /* checked.push(dataSource[ev.rowKey]) */
-      checked.push(grid.getValue(ev.rowKey,'inNo'));
-      console.log(grid.getValue(ev.rowKey,'_checked'));
-      
-      console.log("checked"+checked)
-   });
-   
-//체크박스 해제하는 펑션도 추가해주기
- grid.on('check', (ev) => {
-	/*  vo.inNo = dataSource[ev.rowKey].inNo */;
-      /* checked.push(dataSource[ev.rowKey]) */
-      checked.push(grid.getValue(ev.rowKey,'inNo'));
-      console.log("checked"+checked)
-   });
-   
-//체크row 삭제 ajax
-function delRow(){
-	$.ajax({
-		url:'./mtrDelRow',
-		method: 'POST',
-		contentType: "application/json",
-		data: JSON.stringify(checked),
-		success: function(datas){
-			//grid.resetOriginData();
-			/* grid.resetData(datas);
-			//readData
-			checked.length=0; */
-			search();
-		}
-	})
-};
-
-/*const dataSource = {
-        api: {
-          readData: { url: './mtrInList', 
-                   method: 'GET',
-                   initParams: { param: 'param' } }
-        },
-        contentType: 'application/json'
-      }; */
-
-   
-/*  
+  
 grid.on('response', function(ev) {
       // 성공/실패와 관계 없이 응답을 받았을 경우
-      
-      console.log(ev);
+      console.log(ev.xhr.response);
       grid.resetOriginData();
    });
+
 
 btnAdd.addEventListener("click", function(){
    grid.appendRow({});
@@ -240,7 +176,13 @@ btnSave.addEventListener("click", function(){
 })
 btnFind.addEventListener("click", function(){
    //grid.request('modifyData');
-}) */
+   /*let a= $("#frm").serialize();/*
+   let a= $("#frm").serializeArray(); */
+   let a= $("#frm").serializeObject();
+   
+   console.log(a);
+   grid.readData(1,a,true);
+})
 </script>
 </body>
 </html>
