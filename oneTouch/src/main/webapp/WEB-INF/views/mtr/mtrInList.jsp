@@ -16,20 +16,24 @@
 </head>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>자재입고 관리</h3>
+		<div align="right">
+			<button type="button" id="btnRead">조회</button>
+			<button type="button" id="btnSave">저장</button>
+		</div>
 		<form id="frm" method="post">
 			<div>
 				<div>
 					<label>해당일자</label>
-					<input type="Date" id="from" name="from"> 
+					<input type="Date" id="startDate" name="startDate"> 
 					<label> ~ </label> 
-					<input type="Date" id="to" name="to">
+					<input type="Date" id="endDate" name="endDate">
 				</div>
 				<div>
 					<label>입고업체</label>
 					<input type="text" id="inComCd" name="inComCd">
-					<button type="button" id="btnInCom">검색</button>
-					<input type="text" id="InComName" name="InComName" readonly="true">
+					<button type="button" id="btnInCom">ㅇ</button>
+					<input type="text" id="inComName" name="inComName" readonly="true">
 					<!-- <span>~</span>
 					<input type="text" id="searchKeywordTo" name="searchKeywordTo">
 					<button type="button" id="entrpsPopBtn1">검색</button>
@@ -37,10 +41,10 @@
 				</div>
 				<div>
 					<label>자재코드</label>
-					<input type="text" id="dItemcode" name="dItemcode">
-					<button type="button" id="matrPopBtn">검색</button>
+					<input type="text" id="ditemCode" name="ditemCode">
+					<button type="button" id="matrPopBtn">ㅇ</button>
 					<label>자재명</label>
-					<input type="text" id="dItemcodeNm" name="dItemcodeNm" readonly="readonly">
+					<input type="text" id="dItemCodeNm" name="dItemCodeNm" readonly="readonly">
 				</div>
 				<div>
 					<label>정렬구분</label>
@@ -56,7 +60,7 @@
 							<label>
 								<span>자재</span>
 							</label>
-						<input type="radio" name="orderBy" value="dItemcode" id="radio-3">
+						<input type="radio" name="orderBy" value="dItemCode" id="radio-3">
 					</div>
 				</div>
 				<div>
@@ -71,7 +75,6 @@
 			<button type="button" id="btnFind">조회</button>
 			<button type="button" id="btnAdd">추가</button>
 			<button type="button" id="btnDel">삭제</button>
-			<button type="button" id="btnSave">저장</button>
 		</div>
 	</div>
 <div id="grid"></div>
@@ -88,99 +91,90 @@ Grid.applyTheme('striped', { //cell style
        }
      },
    });
-   
-const columns = [
-        {
-          header: '입고번호',
-          name: 'inNo',
-          hidden: true
-        },
-        {
-          header: '입고일자',
-          name: 'inDate'
-        },
-       	{
-          header: '자재코드',
-          name: 'mtrCd'
-        },
-        {
-          header: '자재명',
-          name: 'mtrNm',
-        },
-        {
-          header: '단위',
-          name: 'unit',
-        },
-        {
-        header: '업체',
-        name: 'comNm'
-	    },
-        {
-          header: '발주번호',
-          name: 'ordNo',
-        },
-        {
-          header: '불량량',
-          name: 'fltAmt',
-		  editor: 'text'
-        },
-        {
-          header: '입고량',
-          name: 'inAmt',
-          editor: 'text'
-        },
-        {
-          header: '단가',
-          name: 'unitCost',
-          editor: 'text'
-        },
-        {
-          header: '총금액',
-          name: 'totCost'
-        }
-      ]
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrInList', 
-				    	method: 'GET', 
-				    	/* initParams: { param: 'param' } */ },
-	    	modifyData: { url: './mtrModify', 
-	    				method: 'POST' }
+		    readData: { url: './mtrInList', method: 'POST' },
+	    	modifyData: { url: './mtrModify', method: 'POST' }
 		  },
 		  contentType: 'application/json',
+		  initialRequest: false  
 		};
 
-const grid = new Grid({
+var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
-     rowHeaders : [ 'checkbox'],  //check박스 추가
-     columns
+     rowHeaders : [ 'checkbox'],
+     columns : [
+				{
+				   header: '입고번호',
+				   name: 'inNo',
+				   hidden: true
+				 },
+				 {
+				   header: '입고일자',
+				   name: 'inDate'
+				 },
+					{
+				   header: '자재코드',
+				   name: 'mtrCd'
+				 },
+				 {
+				   header: '자재명',
+				   name: 'mtrNm',
+				 },
+				 {
+				   header: '단위',
+				   name: 'unit',
+				 },
+				 {
+				   header: '업체',
+				   name: 'comNm'
+				 },
+				 {
+				   header: '발주번호',
+				   name: 'ordNo',
+				 },
+				 {
+				   header: '불량량',
+				   name: 'fltAmt',
+				   editor: 'text'
+				 },
+				 {
+				   header: '입고량',
+				   name: 'inAmt',
+				   editor: 'text'
+				 },
+				 {
+				   header: '단가',
+				   name: 'unitCost',
+				   editor: 'text'
+				 },
+				 {
+				   header: '총금액',
+				   name: 'totCost'
+				 }
+				]
+     
    });
    
   
 grid.on('response', function(ev) {
-      // 성공/실패와 관계 없이 응답을 받았을 경우
       console.log(ev.xhr.response);
       grid.resetOriginData();
    });
-
+ 
 
 btnAdd.addEventListener("click", function(){
-   grid.appendRow({});
+	grid.appendRow({});
 })
 btnDel.addEventListener("click", function(){
-   grid.removeCheckedRows(true);
+	grid.removeCheckedRows(true);
 })
 btnSave.addEventListener("click", function(){
-   grid.request('modifyData');
+	grid.request('modifyData');
 })
 btnFind.addEventListener("click", function(){
-   //grid.request('modifyData');
-   /*let a= $("#frm").serialize();/*
-   let a= $("#frm").serializeArray(); */
    let a= $("#frm").serializeObject();
-   
-   console.log(a);
    grid.readData(1,a,true);
 })
 </script>

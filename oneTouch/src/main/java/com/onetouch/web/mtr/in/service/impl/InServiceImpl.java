@@ -19,7 +19,7 @@ public class InServiceImpl implements InService {
 		return mapper.list();
 	}
 	@Override
-	public List<InSearchVO> select(InSearchVO inSearchVO) {
+	public List<InVO> select(InSearchVO inSearchVO) {
 		return mapper.select(inSearchVO);
 	}
 	

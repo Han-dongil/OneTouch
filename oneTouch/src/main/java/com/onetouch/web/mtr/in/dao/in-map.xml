@@ -12,17 +12,17 @@
 		FROM MTR_IN A, ADM_MTR B
 		WHERE A.MTR_CD = B.MTR_CD
 		
-		<if test="from != null and from != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{from}]]>
+		<if test="startDate != null and startDate != ''"> 
+			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
-		<if test="to != null and to != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{to}]]>
+		<if test="endDate != null and endDate != ''"> 
+			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
 		</if>
 		<if test="inComCd != null and inComCd != ''">
 			AND B.COMP_CD = #{inComCd}
 		</if>
-		<if test="dItemcode != null and dItemcode != ''">
-			AND B.MTR_CD = #{dItemcode}
+		<if test="ditemCode != null and ditemCode != ''">
+			AND B.MTR_CD = #{ditemCode}
 		</if>
 		<if test="orderBy == 'dDate'">
 			ORDER BY A.IN_DATE
@@ -30,7 +30,7 @@
 		<if test="orderBy == 'dCompanyNm'">
 			ORDER BY COM_NM
 		</if>
-		<if test="orderBy == 'dItemcode'">
+		<if test="orderBy == 'ditemcode'">
 			ORDER BY B.MTR_CD
 		</if>
 	</select>

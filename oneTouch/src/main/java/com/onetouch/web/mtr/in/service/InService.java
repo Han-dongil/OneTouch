@@ -8,7 +8,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface InService {
 	List<InVO> list();
-	List<InSearchVO> select(InSearchVO inSearchVO);
+	List<InVO> select(InSearchVO inSearchVO);
 
 	/* void modify(ModifyVO mvo); */
 	/*
