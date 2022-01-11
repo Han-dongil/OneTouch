@@ -51,4 +51,15 @@ public class EtcController {
 		
 		return service.selectAll();
 	}
+	
+	//modal호출
+	@RequestMapping("mtrComp")
+	public String mtrComp() {
+		return "zzz/mtrComp";
+	}
+	
+	@RequestMapping("mtr")
+	public String mtr() {
+		return "zzz/mtr";
+	}
 }

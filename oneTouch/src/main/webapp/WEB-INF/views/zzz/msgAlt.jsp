@@ -17,11 +17,12 @@
 
 </head>
 <body>
-	<input id='rtnVal'><button type='button' id='btnMtrComp'>자재업체</button>
+	<input id='rtnMtrComp'><button type='button' id='btnMtrComp'>자재업체</button>
+	<input id='rtnMtr'><button type='button' id='btnMtr'>자재</button>
 	
-	<div id="dialog-form" title="모달테스트">
-	 	testform
-	</div>
+	<div id="dialog-form" title="title"></div>
+	<div id="dialog-form1" title="title"></div>
+	
 	
 	<form>
 		<input type='date' id='altSendDt'>
@@ -31,9 +32,9 @@
 	</form>
 	<div id='grid'></div>
 	
-	<script>
+	<script type="text/javascript">
 		function selectedModal(param){
-			//$("#txtCo").val(param);
+			$("#rtnMtrComp").val(param);
 			console.log(param);
 			dialog.dialog("close");
 		}
@@ -56,10 +57,34 @@
 			
 			$("#dialog-form").attr('title', '자재업체');
 			
-			$("#dialog-form").load("./mtrComp.jsp", function(){
+			$("#dialog-form").load("mtrComp", function(){
 				console.log("로드됨");
 			});
 		})
+		
+		//--
+		function selectedModal2(param){
+			$("#rtnMtr").val(param);
+			console.log(param);
+			dialog2.dialog("close");
+		}
+		
+		let dialog2 = $( "#dialog-form1" ).dialog({
+			autoOpen : false,
+			modal : true,
+		});
+		
+		$("#btnMtr").on("click", function(){
+			dialog2.dialog("open");
+			
+			$("#dialog-form1").attr('title', '자재');
+			
+			$("#dialog-form1").load("mtr", function(){
+				console.log("로드됨");
+			});
+		})
+		
+		//------------------------
 	
 		let MsgAltVO={};
 		let checked=[];
