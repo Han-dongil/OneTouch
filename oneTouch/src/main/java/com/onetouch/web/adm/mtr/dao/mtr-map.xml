@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.adm.mtr.dao.MtrMapper">
+
+	<!-- 자재리스트 조회 -->
+	<select id="selectAdmMtrAll" resultType="com.onetouch.web.adm.mtr.dao.MtrVO">
+		select mtr_cd, mtr_nm, std 
+		from adm_mtr
+	</select>
+	
+	<!-- 클릭한 자재 정보 조회 -->
+	<select id="selectAdmMtrDtl" resultType="com.onetouch.web.adm.mtr.dao.MtrVO">
+		select  mtr_cd, 
+		        mtr_nm, 
+		        std, 
+		        unit,
+		        FN_GET_BAS_DTL_CD_TO_NM(comp_cd) as compNm, 
+		        safe_stck,
+		        mtr_sect,
+		        use_yn,
+		        mng_amt
+		from    adm_mtr
+		where 	mtr_cd = #{mtrCd}
+	</select>
+</mapper>

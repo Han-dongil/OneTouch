@@ -5,13 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공정관리</title>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+
 </head>
 <body>
 	<button type="button" id="btnAdd">추가</button>
@@ -21,7 +19,6 @@
 	<script type="text/javascript">
 		let checked=[];
 		let prcLists=[];
-		let dataSource;
 		
 		let Grid = tui.Grid;
 		Grid.applyTheme('striped',{
@@ -66,12 +63,12 @@
 			},
 			{
 				header : '공정구분',
-				name : 'dtmNm',
+				name : 'dtlNm',
   				editor: {
 					type: 'radio',
 					options: {
 						listItems: [
-							{}
+							
 						]
 					}
 				} 
@@ -100,11 +97,11 @@
 				}
 			}];
 		
-		console.log(columns[4].editor.options.listItems);
+/* 		console.log(columns[4].editor.options.listItems); */
 		for(i=0; i<prcLists.length; i++) {
 			let a = {}
 			a.text = prcLists[i].dtlNm;
-			a.value = i;
+			a.value = prcLists[i].dtlNm;
 			
 			columns[4].editor.options.listItems.push(a);
 		}
@@ -113,11 +110,14 @@
 		
 
 		//전체조회
-		let selectAllData = {
+		var dataSource = {
 				api: {
 					readData: {
 						url:'./admMngList',
-						method: 'GET'}
+						method: 'GET'},
+					modifyData: { 
+						url: './modifyData', 
+						method: 'POST'}  
 				},
 				contentType: 'application/json'
 		 }
@@ -160,7 +160,7 @@
 			
 		const grid = new Grid({
 		  el: document.getElementById('grid'),
-		  data: selectAllData, //변수명과 필드명이 같으면 생략가능 원래: data : data,
+		  data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 		  rowHeaders : [ 'checkbox' ],
 		  columns
 		});

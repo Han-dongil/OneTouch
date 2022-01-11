@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.adm.bom.dao.BomMapper">
+	
+	<!-- 제품코드 선택하면 제품 정보가 뜬다-->
+	<select id="selectBomPrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select  prd_cd,
+		        prd_nm,
+		        prd_std,
+		        mng_unit,
+		        use_yn,
+		        prd_sect,
+		        stock
+		from    adm_prd
+		where   prd_cd=#{prdCd}
+	</select>
+	
+	<!-- 제품 선택했을때 bom조회 -->
+	<select id="selectBomDtl" resultType="com.onetouch.web.adm.bom.dao.BomVO">
+		select  mtr_cd, 
+		        FN_GET_BAS_DTL_CD_TO_NM(mtr_cd) as mtrNm,
+		        use_amt,
+		        ord_chk,
+		        pdt_chk,
+		        FN_GET_BAS_DTL_CD_TO_NM(prc_cd) as prcNm,
+		        cmt
+		from 	adm_bom
+		where 	prd_cd = #{prdCd}
+	</select>
+	
+</mapper>
