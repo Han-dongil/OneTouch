@@ -8,4 +8,6 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 public interface PlanService {
 	List<PlanVO> list();
 	List<PlanVO> selectDtl(String no);
+	List<PlanVO> findPrcCd(String no);
+	void insertPlan(List<PlanVO> list);
 }

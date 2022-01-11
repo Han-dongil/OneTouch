@@ -8,4 +8,6 @@ public interface PlanMapper {
 	
 	List<PlanVO> list();
 	List<PlanVO> selectDtl(String no);
+	List<PlanVO> findPrcCd(String no);
+	void insertPlan(List<PlanVO> list);
 }

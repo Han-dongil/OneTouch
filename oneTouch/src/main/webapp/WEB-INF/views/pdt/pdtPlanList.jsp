@@ -8,11 +8,13 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+	<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 </head>
 <style>
 	#abc {
@@ -41,24 +43,70 @@
 <body>
 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
+<!-- 	<input id="txtCo"> -->
+	<button id="btnFindCo">주문서조회</button>
+	<div id="dialog-form" title="주문서조회">미확인 주문서 목록</div>
 	<div id="grid"></div>
 	<div id="abc">
 		<div id="inAbc">
 			<button onclick="xFnc(event)">X</button>
 			<form action="">
-				<input id="na" name="na">
 			</form>
 			<div id="inGrid"></div>
 		</div>
 	</div>
 	<script>
+	let selectTag;
 	let inGridData;
 	let inGrid;
+	let porObj;
     function xFnc(e) {
     	e.preventDefault();
     	console.log(e.target);
     	e.target.parentNode.parentNode.style="display:none";
     }
+    
+	//주문서 불러와서 모달에 띄워주기
+	fetch('pdtOrdlist')
+	.then(response=>response.json())
+	.then(result=>{
+		porObj=result;
+		console.log(result)
+		let tableTag=document.createElement('table');
+		for(let obj of result){
+			let i=0;
+			let trTag=document.createElement("tr");
+			let tdTag=document.createElement("td");
+			tdTag.innerHTML=obj.ordShtNo;
+			tdTag.setAttribute("data-ord-id",i);
+			tdTag.setAttribute("onClick","ordFnc(event)");
+			trTag.appendChild(tdTag);
+			let tdTag1=document.createElement("td");
+			tdTag1.innerHTML=obj.compCd;					
+			trTag.appendChild(tdTag1);
+			tableTag.appendChild(trTag)			
+			i++;
+		}
+		document.getElementById('dialog-form').appendChild(tableTag);
+	})
+    //주문서검색 모달창
+/* 	function selectCo(co){
+		$("#txtCo").val(co);
+		dialog.dialog("close");
+	} */
+	dialog = $( "#dialog-form" ).dialog({
+		autoOpen: false,
+		modal:true,
+		buttons:{"save":function(){alert("save")}}
+	});
+	$("#btnFindCo").on("click",function(){
+		dialog.dialog( "open" );
+		/* $("#dialog-form").load("searchCo.jsp",function(){
+			console.log("로드됨");
+		}) */
+
+	})
+    
 //    let dataSource; //그리드에 들어갈 데이터변수
     var dataSource = {
     		  withCredentials: false,  
@@ -112,13 +160,14 @@
 		  data:dataSource,
 		  rowHeaders:['checkbox'],
 		  columns,
-		  columnOptions: {
+		  /* columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:3
-		 	}
+		 	} */ 
 		 });
 	
- 	inGridData={
+	//모달 그리드 주문서->제품코드//필요수량 (readData)
+/*  	inGridData={
   		  withCredentials: false,  
   		  initialRequest: true,
   		  api: {
@@ -150,9 +199,9 @@
 	      ],
 		columnOptions: {
 			frozenCount :2,
-			frozenBorderWidth:5
+			frozenBorderWidth:2
 		}
-	})
+	}) */
 	 
 	
 	
@@ -160,22 +209,69 @@
 	
 	//로우 클릭 이벤트
      grid.on('click', ev => {
-    	//if(ev.columnName=='planDate'){
-			//$("#inGrid").empty();
+    	 if(ev.columnName=='planDate'){
 			document.getElementById("abc").style = 'display:block';
-			console.log(grid.getValue(ev.rowKey,'ordShtNo'))
+			$("#inGrid").empty();
 			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
-			inGrid.readData(1,a,true);
-			/* console.log(ev.columnName)
-			console.log(grid.getValue(ev.rowKey,'ordShtNo')) */
+			/*inGridData.api.readData= { url: './pdtPlanDtllist/',method: 'POST'}
+			inGrid.readData(1,a,true);//모달창 그리드 데이터 갱신 */
+			//주문번호로 주문한제품 불러오기
+			$.ajax({
+				url:'./pdtPlanDtllist/',
+				method:'POST',
+				data:a,
+				success:function(result){
+					console.log(result)
+					selectTag=document.createElement('select');
+					for(let obj of result){
+						let optionTag=document.createElement('option');
+						optionTag.value=obj.prdCd;
+						optionTag.innerHTML=obj.prdCd;
+						selectTag.appendChild(optionTag);
+					}
+					let inGridTag=document.getElementById('inGrid');
+					inGridTag.appendChild(selectTag)
+					
+					console.log(selectTag);
+					selectTag.addEventListener("change",function(event){
+						console.log(event.target.value);
+						//제품코드로 공정불러오기
+						$.ajax({
+							url:'prdNameList/'+event.target.value,
+							success:function(result){
+								console.log(result);
+								for(let obj of result){
+									let ulTag=document.createElement('ul');
+									ulTag.innerHTML="&nbsp;&nbsp;"+obj.prcCd
+									let liTag=document.createElement('li');
+									liTag.innerHTML="&nbsp;&nbsp;"+obj.fctNm
+									ulTag.appendChild(liTag);
+									inGridTag.appendChild(ulTag);
+								}
+							}
+						})
+					})
+					
+				}
+			})
+    		 
+    	 }
 			
 			 
-/* 			//inGrid 클릭이벤트 // 제품코드 클릭
-			inGrid.on("click",function(ev){
-			//	console.log(inGridData[ev.rowKey]);
-			}) */
-    	
 	}) 
+/*  			//inGrid 클릭이벤트 // 제품코드 클릭
+			inGrid.on("click",function(ev){
+				grid.getValue(ev.rowKey,'prdCd');
+			})  */
+    	
+	grid.on('click',function(ev){
+	})			
+	function ordFnc(ev){
+		grid.appendRow(porObj[ev.target.getAttribute("data-ord-id")]);
+		dialog.dialog('close');
+	}
+
+	
 	addBtn.addEventListener("click",function(){
 		grid.appendRow({})
 		grid.resetOriginData();
