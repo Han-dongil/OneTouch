@@ -48,16 +48,14 @@
 				</div>
 			</div>
 		</form>
-	<div id="grid" style="padding-right"></div>
+	<div id="grid"></div>
 	
 	<script type="text/javascript">
 	let targetId = [];
 	//공정코드 저장할 map 변수 
-	let mapPrc = new Map();
-	let keyObj={};
-	let keyFunc = function() {}
+	let grid;
 	
-   var Grid = tui.Grid;
+   let Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
    Grid.applyTheme('striped', {
       cell: {
@@ -145,45 +143,63 @@
     let dataVO;
     
     //구분 정해서 조회ajax
-  	$.ajax({
+  	/* $.ajax({
   		url:'selectCheck',
   		dataType:'json',
   		async : false
   	}).done(function(datas){
   		console.log(datas)
-  	})
+  	}) */
     
     //공정 코드 조회 ajax 요청
     
-    $.ajax({
+     $.ajax({
     	url:'selectPrc',
     	dataType: 'json',
     	async : false
     }).done(function(datas){
-    	for(data of datas){
+    	$('#fctCd').append("<option value='d'>전체</option>")
+    	for(let data of datas){
     		$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
-    		
     	}
-    })
+    }) 
     
     
-    //조건 조회 ajax 요청 
-    function checkSeach(event){
-    	var target = document.getElementById('fctCd')
-	 	s = target.options[target.selectedIndex].value
-    }
-	   //설비 목록 조회 ajax 요청
-	  $.ajax({
+     //공정코드 조건조회 ajax 
+     function checkSeach(event){
+    	let target = document.getElementById('fctCd')
+	 	let checkPrcCd = target.options[target.selectedIndex].value
+	 	 let vo={};
+	 	 vo.checkPrcCd=checkPrcCd;
+    	console.log('맵확인하기!!!!!!!!!')
+    	console.log(vo)
+    	
+	 	 $.ajax({
+	 		url:'list1',
+	 		method: "POST",
+	 		data: JSON.stringify(vo),
+	 		contentType:"application/json",
+	 		async: false,
+	 		success:function(result){
+	 			grid.resetData(result);
+	 			
+	 		}
+	 		
+	 	}) 
+	 	
+    }  
+	/*     //설비 목록 조회 ajax 요청
+	   $.ajax({
 		  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
 		  dataType:'json',
 		  async : false					//동기 = 절차적 
 	  }).done(function(datas){
 		  data = datas;
-	  })
-   
+	  })  */
+    
   
   //그리드를 id 값안에다가 붙여넣어준다.
-  const grid = new Grid({
+   grid = new Grid({
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          rowHeaders : [ 'checkbox' ],
@@ -197,7 +213,7 @@
     
    //check조건 함수 
    function checkClick(c){
-	   var cv = c.target.checked
+	   let cv = c.target.checked
 	   console.log(cv)
 	    if(cv != true){
 		   document.getElementById('checkDiv').style.display = "none";
@@ -230,10 +246,10 @@
       
          
        
-    grid.on('response', function(ev) {
+    /* grid.on('response', function(ev) {
     	   console.log(ev);
     	   grid.resetOriginData()	//현재 데이터를 변경된 데이터로 확장한다. 
-       })
+       }) */
        
       /*  btnAdd.addEventListener("click", function(){
     	   grid.appendRow({})

@@ -29,6 +29,8 @@ public class InfoVO {
 	String fctPhs;		//설비상태
 	String useYn;		//사용여부
 	String empNo;		//사번
+	String checkPrcCd; //설비 조회 페이지에서 검색 조건으로 선택하는 공정코드를 담는 변수 
+	
 	
 	
 

@@ -21,6 +21,7 @@
 	<button type="button" id='btnAdd'>추가</button>
 	<button	type="button" id='btnDel'>삭제</button>
 	<button type="button" id='btnSave'>저장</button>
+	<button type="button" id='btnEdit'>수정</button>
 </div>
 
 <form id="infoFrm"  method="post">
@@ -32,6 +33,8 @@
 			<td><input type="checkbox" id="useYn" name = "useYn" checked=""/></td>
 			<td>공정</td>
 			<td><input type="text" id="prcCd" name = "prcCd" value=""/></td>
+			<td>설비명</td>
+			<td><input type="hidden" id="fctNm" name = "fctNm" value=""/></td>
 		</tr>
 		<tr>
 			<td>설비규격</td>
@@ -65,7 +68,7 @@
 
 <script type="text/javascript">
 	let targetId = [];
-	
+	let s = 'd';
    var Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
    Grid.applyTheme('striped', {
@@ -127,43 +130,50 @@
   {
 	    header: '구매금액',
 	    name: 'purchCost',
-	    editor: 'datePicker'
+	    editor: 'text'
   },
   {
 	    header: '점검주기',
 	    name: 'chkProd',
-	    editor: 'datePicker'
+	    editor: 'text'
   },
   {
 	    header: '총생산량',
 	    name: 'totPdtAmt',
-	    editor: 'datePicker'
+	    editor: 'text'
   },
   {
 	    header: 'uph생산량',
 	    name: 'uphPdtAmt',
-	    editor: 'datePicker'
+	    editor: 'text'
   },
   {
 	    header: '사번',
 	    name: 'empNo',
-	    editor: 'datePicker'
+	    editor: 'text'
   }
     ]
    
 
 	let data;
     let dataVO;
-  
+    let checkPrcCd = 'd';    	//검색 조건을 사용하지 않지만 검색 메소드 매개변수에 vo가 있기 때문에 쓰레기 값을 넣어준다. 
+    let vo={};					//map형식으로 보내주기 위해서 초기화 
+    vo.checkPrcCd=checkPrcCd;   //vo에 키 값을 정해서 밸류 값을 넣어주는 초기화 
+    
    //ajax 요청
-  $.ajax({
-	  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
-	  dataType:'json',
-	  async : false					//동기 = 절차적 
-  }).done(function(datas){
-	  console.log(datas)
-	  data = datas;
-  }) 
+	  
+	  $.ajax({
+		  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
+		  method: 'POST',
+		  data: JSON.stringify(vo),
+		  contentType: "application/json",
+		  async : false					//동기 = 절차적 
+	  }).done(function(datas){
+		  console.log(datas)
+		  data = datas;
+	  }) 
+   
   
 /*    const dataSource = {
 		  api: {
@@ -179,12 +189,12 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          rowHeaders : [ 'checkbox' ],
-         columns,
+         columns
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
-         columnOptions: {
+         /* columnOptions: {
               frozenCount: 2, // 3개의 컬럼을 고정하고
               frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
-            }
+            } */
          });
     
 	grid.on('click',(ev) =>{
@@ -204,6 +214,8 @@
 		document.getElementById('FctImg').value = dataVO.FctImg;
 		document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
 		document.getElementById('empNo').value = dataVO.empNo;
+		document.getElementById('fctNm').value = dataVO.fctNm;
+		
 	})
     
     //클릭 이벤트 그리드
@@ -249,9 +261,6 @@
         btnSave.addEventListener("click", function(){
         	console.log('11111111111111')
         	console.log($('#infoFrm').serialize())
-    	   
-    	   
-    	   
     	   //등록아작스 
     	    $.ajax({
     	    	  
@@ -267,10 +276,27 @@
     	   
        		})
     	   //grid.request('modifyData');
-       })
+       })//add버튼 
+       
        btnFind.addEventListener("click", function(){
     	   //grid.;
        }) 
+       //수정 아작스 
+       btnEdit.addEventListener("click", function(){
+    	   console.log('수수수수수수수저엊어ㅓ저어저어정')
+    	   $.ajax({
+ 	    	  url: "Updateinfo",
+ 	    	  method: "POST",
+ 	    	  data:$('#infoFrm').serialize(),
+ 	    	  dataType:'Json',
+ 	    	  			
+ 	    	  success:function(result){
+ 	    		  console.log('성공')
+ 	    		  grid.resetData(result)
+ 	    	  }
+ 	   
+    		})
+       })
 
 </script>
 
