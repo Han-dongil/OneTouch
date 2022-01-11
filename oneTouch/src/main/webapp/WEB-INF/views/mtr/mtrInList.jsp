@@ -11,7 +11,7 @@
 
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -96,14 +96,10 @@ const columns = [
           hidden: true
         },
         {
-        header: '업체',
-        name: 'comNm'
-	    },
-        {
           header: '입고일자',
           name: 'inDate'
         },
-       	{//column name들
+       	{
           header: '자재코드',
           name: 'mtrCd'
         },
@@ -115,6 +111,10 @@ const columns = [
           header: '단위',
           name: 'unit',
         },
+        {
+        header: '업체',
+        name: 'comNm'
+	    },
         {
           header: '발주번호',
           name: 'ordNo',
@@ -131,7 +131,8 @@ const columns = [
         },
         {
           header: '단가',
-          name: 'unitCost'
+          name: 'unitCost',
+          editor: 'text'
         },
         {
           header: '총금액',
@@ -149,21 +150,6 @@ const dataSource = {
 		  contentType: 'application/json',
 		};
 
-      
-//조건조회 ajax
-function search(){
- $.ajax({
-   url:'./mtrInList',
-   method: 'POST',
-   data:$("#frm").serialize(),
-   dataType:'json',
-   async : false
-}).done(function(datas){
-   grid.resetData(datas);
-   //grid.resetOriginData();
-});
-}
-
 const grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
@@ -171,29 +157,14 @@ const grid = new Grid({
      columns
    });
    
-/*  
+  
 grid.on('response', function(ev) {
       // 성공/실패와 관계 없이 응답을 받았을 경우
-      
-      console.log(ev);
+      console.log(ev.xhr.response);
       grid.resetOriginData();
    });
-*/
-$.fn.serializeObject = function() {
-	var o = {};
-	var a = this.serializeArray();
-	$.each(a, function() {
-		if (o[this.name]) {
-			if (!o[this.name].push) {
-				o[this.name] = [ o[this.name] ];
-			}
-			o[this.name].push(this.value || '');
-		} else {
-			o[this.name] = this.value || '';
-		} 
-	});
-	return o;
-};
+
+
 btnAdd.addEventListener("click", function(){
    grid.appendRow({});
 })
@@ -205,9 +176,10 @@ btnSave.addEventListener("click", function(){
 })
 btnFind.addEventListener("click", function(){
    //grid.request('modifyData');
-   /* let a= $("#frm").serialize();
+   /*let a= $("#frm").serialize();/*
    let a= $("#frm").serializeArray(); */
    let a= $("#frm").serializeObject();
+   
    console.log(a);
    grid.readData(1,a,true);
 })

@@ -37,12 +37,56 @@
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->
+	<insert id="insert">
+		INSERT INTO MTR_IN 
+		(IN_NO,
+		MTR_CD,
+		IN_DATE,
+		ORD_NO,
+		UNIT,
+		IN_AMT,
+		FLT_AMT,
+		UNIT_COST,
+		TOT_COST
+		)
+		VALUES(
+		FN_MAKE_CODE_COL2('MIN', 'MTR_IN', 'IN_NO', 'IN_DATE'),
+		#{mtrCd},
+		SYSDATE,
+		#{ordNo},
+		#{unit},
+		#{inAmt},
+		#{fltAmt},
+		#{unitCost},
+		(#{unitCost}*#{inAmt})
+		)
+	</insert>
+	<update id="update">
+		UPDATE MTR_IN
+		SET
+		MTR_CD = #{mtrCd},
+		UNIT = #{unit},
+		IN_AMT = #{inAmt},
+		FLT_AMT = #{fltAmt},
+		UNIT_COST = #{unitCost},
+		TOT_COST = (#{unitCost}*#{inAmt})
+		WHERE
+		IN_NO = #{inNo}
+	</update>
+	<!-- 하나씩 삭제 -->
 	<delete id="delete">
-		delete 
-		from mtr_in
-		where in_no in
+		DELETE 
+		FROM MTR_IN
+		WHERE IN_NO = #{inNo}
+	</delete>
+	
+	<!-- 리스트로받아서 for문으로 다 삭제하는쿼리 -->
+	<!-- <delete id="delete">
+		DELETE 
+		FROM MTR_IN
+		WHERE IN_NO IN
 		<foreach collection="list" item="vo" open="(" close=")" separator=",">
 		#{vo.inNo}
 	</foreach>
-	</delete>
+	</delete> -->
 </mapper>

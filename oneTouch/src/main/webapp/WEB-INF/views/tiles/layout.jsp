@@ -28,7 +28,8 @@
   <link rel="stylesheet" href="${path}/resources/template/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="${path}/resources/template/images/favicon.png" />
-  
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -82,5 +83,7 @@
   <script src="${path}/resources/template/js/dashboard.js"></script>
   <script src="${path}/resources/template/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+    
+  <script src="${path}/resources/template/json.min.js"></script>
 </body>
 </html>

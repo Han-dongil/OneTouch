@@ -1,13 +1,9 @@
 package com.onetouch.web.mtr.in.dao;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper=false)
-public class InSearchVO extends InVO{
+public class InSearchVO{
 
 	String from;
 	String to;
