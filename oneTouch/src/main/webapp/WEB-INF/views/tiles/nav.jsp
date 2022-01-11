@@ -11,13 +11,13 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">UI Elements</span>
+              <span class="menu-title">공통 관리</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
+                <li class="nav-item"> <a class="nav-link" href="mngList">공정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">ㅋㅋ</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
               </ul>
             </div>
@@ -25,31 +25,32 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">한글</span>
+              <span class="menu-title">생산 관리</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
+                <li class="nav-item"><a class="nav-link" href="ordList">동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="PlanList">동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
               <i class="icon-bar-graph menu-icon"></i>
-              <span class="menu-title">Charts</span>
+              <span class="menu-title">자재 관리</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
+                <li class="nav-item"> <a class="nav-link" href="inList">입고자재관리</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
               <i class="icon-grid-2 menu-icon"></i>
-              <span class="menu-title">설비관리</span>
+              <span class="menu-title">설비 관리</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="tables">
