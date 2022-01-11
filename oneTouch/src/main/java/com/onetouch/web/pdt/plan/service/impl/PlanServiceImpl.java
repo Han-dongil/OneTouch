@@ -24,5 +24,15 @@ public class PlanServiceImpl implements PlanService {
 		
 		return mapper.selectDtl(no);
 	}
+	@Override
+	public List<PlanVO> findPrcCd(String no) {
+		// TODO Auto-generated method stub
+		return mapper.findPrcCd(no);
+	}
+	@Override
+	public void insertPlan(List<PlanVO> list) {
+		// TODO Auto-generated method stub
+		mapper.insertPlan(list);
+	}
 
 }

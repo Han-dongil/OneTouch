@@ -8,4 +8,19 @@
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
 </select>
+<select id="findPrcCd" resultType="com.onetouch.web.fct.info.dao.InfoVO">
+	select a.fct_cd , a.fct_nm , a.prc_cd
+	from fct_info a join (select prc_cd from adm_prc_flow where prd_cd=#{prdCd}) b
+	on(a.prc_cd = b.prc_cd)
+</select>
+<insert id="insertPlan">
+	<foreach collection="list" item="alist">
+	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE) 
+	values(
+   PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date')
+   ,to_date(#{alist.dueDate},'yyyy-mm-dd HH24:MI:SS')
+   ,#{alist.ordShtNo},#{alist.workProt},sysdate
+	)    <!--  동적쿼리하다감-->
+	</foreach>
+</insert>
 </mapper>
