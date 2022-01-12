@@ -22,6 +22,7 @@ public class InfoController {
 	@Autowired InfoMapper mapper;
 	
 	
+	
 	//수정
 	  @ResponseBody
 	  @PostMapping("Updateinfo")

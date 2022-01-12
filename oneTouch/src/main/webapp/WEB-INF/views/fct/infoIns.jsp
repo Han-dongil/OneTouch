@@ -14,8 +14,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <!-- 토스트그리드 cdn -->
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+
+<link rel="stylesheet"
+   href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+   crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 </head>
 <body>
+
+<div id="dialog-form" title="모달테스트"></div>
+<p class="validateTips">All form fields are required.</p>
 <div>
 	<button type="button" id='btnFind'>조회</button>
 	<button type="button" id='btnAdd'>추가</button>
@@ -66,12 +78,25 @@
 
 <div id="grid" style="padding-right"></div>
 
-<script type="text/javascript">
+
+<script>
+	let dialog = $("#dialog-form").dialog({
+		autoOpen: false,
+		modal:true
+	});
+	
+	$("#btnFind").on("click", function(){
+		dialog.dialog("open");
+		$("#dialog-form").load("searchCO.jsp",function(){
+			console.log("로드됨")
+		})
+	});
+	
 	let targetId = [];
 	let s = 'd';
    var Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
-   Grid.applyTheme('striped', {
+   Grid.applyTheme('striped', {	
         cell: {
           header: {
             background: '#eef'
@@ -154,7 +179,7 @@
   }
     ]
    
-
+	
 	let data;
     let dataVO;
     let checkPrcCd = 'd';    	//검색 조건을 사용하지 않지만 검색 메소드 매개변수에 vo가 있기 때문에 쓰레기 값을 넣어준다. 
