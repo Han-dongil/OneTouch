@@ -71,8 +71,8 @@ const dataSource = {
 		    readData: { url: './mtrInForm', method: 'POST' },
 	    	modifyData: { url: './mtrModify', method: 'POST' }
 		  },
-		  contentType: 'application/json',
-		  initialRequest: false  
+		  contentType: 'application/json'
+		  /* initialRequest: false */
 		};
 
 var grid = new Grid({
@@ -95,54 +95,71 @@ var grid = new Grid({
 						format: 'YYYY-MM-dd'
 						}
 					}, */
+					align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 					{
 				   header: '자재코드',
 				   name: 'mtrCd',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '단위',
 				   name: 'unit',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '업체',
 				   name: 'comNm',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '발주번호',
 				   name: 'ordNo',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
-				   sortable: true,
-				   editor: 'text'
+				   align: 'center',
+					editor: 'text',
+				   sortable: true
 				 },
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true,
-				   editor: 'text'
 				 },
 				 {
 				   header: '단가',
 				   name: 'unitCost',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true,
-				   editor: 'text'
 				 },
 				 {
 				   header: '총금액',
 				   name: 'totCost',
+				   align: 'center',
+					editor: 'text',
 				   sortable: true
 				 }
 				]
@@ -151,7 +168,9 @@ var grid = new Grid({
   
 grid.on('response', function(ev) {
       console.log(ev.xhr.response);
-      grid.resetOriginData();
+      if(ev.xhr.response == 0){
+      grid.readData();
+      }
    });
  
 /* 
@@ -178,6 +197,7 @@ btnDel.addEventListener("click", function(){
 	grid.removeCheckedRows(true);
 })
 btnSave.addEventListener("click", function(){
+	grid.blur();
 	grid.request('modifyData');
 })
 btnFind.addEventListener("click", function(){
