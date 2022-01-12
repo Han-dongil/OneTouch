@@ -16,7 +16,11 @@
 </head>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>자재입고 관리</h3>
+		<div align="right">
+			<button type="button" id="btnOrdFind">발주내역 조회</button>
+		<hr>
+		</div>
 		<form id="frm" method="post">
 			<div>
 				<div>
@@ -43,6 +47,9 @@
 		<div align="right">
 		<hr>
 			<button type="button" id="btnFind">조회</button>
+			<button type="button" id="btnSave">저장</button>
+			<button type="button" id="btnAdd">추가</button>
+			<button type="button" id="btnDel">삭제</button>
 		</div>
 	</div>
 <div id="grid"></div>
@@ -61,7 +68,7 @@ Grid.applyTheme('striped', { //cell style
    });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrInList', method: 'POST' },
+		    readData: { url: './mtrInForm', method: 'POST' },
 	    	modifyData: { url: './mtrModify', method: 'POST' }
 		  },
 		  contentType: 'application/json',
@@ -118,17 +125,20 @@ var grid = new Grid({
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
-				   sortable: true
+				   sortable: true,
+				   editor: 'text'
 				 },
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
-				   sortable: true
+				   sortable: true,
+				   editor: 'text'
 				 },
 				 {
 				   header: '단가',
 				   name: 'unitCost',
-				   sortable: true
+				   sortable: true,
+				   editor: 'text'
 				 },
 				 {
 				   header: '총금액',
@@ -138,12 +148,38 @@ var grid = new Grid({
 				]
      
    });
-   
   
 grid.on('response', function(ev) {
+      console.log(ev.xhr.response);
       grid.resetOriginData();
    });
  
+/* 
+var grid = new Grid({
+    el : document.getElementById('grid'),
+    data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+    rowHeaders : [ 'checkbox'],
+    columns : [
+    	
+    ]
+});
+ */
+
+
+
+
+
+
+
+btnAdd.addEventListener("click", function(){
+	grid.appendRow({});
+})
+btnDel.addEventListener("click", function(){
+	grid.removeCheckedRows(true);
+})
+btnSave.addEventListener("click", function(){
+	grid.request('modifyData');
+})
 btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    grid.readData(1,a,true);

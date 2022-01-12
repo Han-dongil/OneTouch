@@ -1,14 +1,14 @@
-package com.onetouch.web.mtr.in.service.impl;
+package com.onetouch.web.mtr.inForm.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.mtr.in.dao.InMapper;
-import com.onetouch.web.mtr.in.dao.InSearchVO;
-import com.onetouch.web.mtr.in.dao.InVO;
-import com.onetouch.web.mtr.in.service.InService;
+import com.onetouch.web.mtr.inForm.dao.InMapper;
+import com.onetouch.web.mtr.inForm.dao.InSearchVO;
+import com.onetouch.web.mtr.inForm.dao.InVO;
+import com.onetouch.web.mtr.inForm.service.InService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
@@ -19,7 +19,7 @@ public class InServiceImpl implements InService {
 		return mapper.list();
 	}
 	@Override
-	public List<InSearchVO> select(InSearchVO inSearchVO) {
+	public List<InVO> select(InSearchVO inSearchVO) {
 		return mapper.select(inSearchVO);
 	}
 	
