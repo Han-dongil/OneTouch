@@ -8,4 +8,6 @@ import com.onetouch.web.adm.bom.dao.PrdVO;
 public interface BomService {
 	List<PrdVO> selectBomPrd(PrdVO prdvo);
 	List<BomVO> selectBomDtl(BomVO bomvo);
+	List<PrdVO> selectPrdAll();
+	List<PrdVO> selectUsePrd();
 }

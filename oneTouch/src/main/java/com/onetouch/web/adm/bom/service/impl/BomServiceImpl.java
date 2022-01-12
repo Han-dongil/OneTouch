@@ -24,5 +24,15 @@ public class BomServiceImpl implements BomService {
 		return mapper.selectBomDtl(bomvo);
 	}
 
+	@Override
+	public List<PrdVO> selectPrdAll() {
+		return mapper.selectPrdAll();
+	}
+
+	@Override
+	public List<PrdVO> selectUsePrd() {
+		return mapper.selectUsePrd();
+	}
+
 
 }

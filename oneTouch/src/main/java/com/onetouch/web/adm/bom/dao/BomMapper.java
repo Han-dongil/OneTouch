@@ -5,4 +5,6 @@ import java.util.List;
 public interface BomMapper {
 	List<PrdVO> selectBomPrd(PrdVO prdvo);
 	List<BomVO> selectBomDtl(BomVO bomvo);
+	List<PrdVO> selectPrdAll();
+	List<PrdVO> selectUsePrd();
 }

@@ -6,5 +6,6 @@ import com.onetouch.web.adm.mtr.dao.MtrVO;
 
 public interface MtrService {
 	List<MtrVO> selectAdmMtrAll();
+	List<MtrVO> selectUseAdmMtr();
 	List<MtrVO> selectAdmMtrDtl(MtrVO mtrvo);
 }

@@ -14,19 +14,11 @@ import com.onetouch.web.adm.flw.service.FlwService;
 public class FlwServiceImpl implements FlwService{
 
 	@Autowired FlwMapper mapper;
-	@Override
-	public List<PrdVO> selectFlwPrd() {
-		return mapper.selectFlwPrd();
-	}
 
 	@Override
-	public List<PrdVO> selectFlwPrdDtl(PrdVO prdvo) {
-		return mapper.selectFlwPrdDtl(prdvo);
+	public List<FlwVO> selectFlw(FlwVO flwvo) {
+		return mapper.selectFlw(flwvo);
 	}
 
-	@Override
-	public List<FlwVO> selectFlwAll(FlwVO flwvo) {
-		return mapper.selectFlwAll(flwvo);
-	}
 
 }

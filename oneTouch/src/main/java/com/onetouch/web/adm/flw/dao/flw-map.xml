@@ -2,26 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.adm.flw.service.impl.FlwMapper">
 
-	<!-- 제품리스트 -->
-	<select id="selectFlwPrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
-		select	 prd_cd, prd_nm 
-		from	 adm_prd
-	</select>
-	
-	<!-- 제품클릭했을때 제품정보 보기 -->
-	<select id="selectFlwPrdDtl" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
-		select  prd_cd,
-		        prd_nm,
-		        prd_std,
-		        mng_unit,
-		        prd_sect,
-		        use_yn
-		from    adm_prd
-		where   prd_cd = #{prdCd}
-	</select>
-	
 	<!-- 공정전개 보기 -->
-	<select id="selectFlwAll" resultType="com.onetouch.web.adm.flw.dao.FlwVO">
+	<select id="selectFlw" resultType="com.onetouch.web.adm.flw.dao.FlwVO">
 		select   prc_seq,
 		         FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
 		         work_cmt,

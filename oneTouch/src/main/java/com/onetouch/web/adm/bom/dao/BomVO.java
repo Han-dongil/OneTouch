@@ -10,7 +10,9 @@ public class BomVO {
 	private String useAmt;	//사용량
 	private String ordChk;	//발주
 	private String pdtChk;	//생산
+	private String prcCd;	//공정코드
 	private String prcNm;	//공정명
 	private String cmt;		//비고
 	private String prdCd;	//제품코드
+	private String bomCd;	//bom코드
 }
