@@ -17,33 +17,35 @@
 <body>
 	<div class="container">
 		<h3>자재입고 조회</h3>
+		<hr>
 		<form id="frm" method="post">
 			<div>
 				<div>
 					<label>해당일자</label>
-					<input type="Date" id="startDate" name="startDate"> 
-					<label> ~ </label> 
+					<input type="Date" id="startDate" name="startDate">&nbsp;
+					<label> ~ </label>&nbsp;
 					<input type="Date" id="endDate" name="endDate">
 				</div>
 				<div>
-					<label>입고업체</label>
+					<label>업체코드</label>
 					<input type="text" id="inComCd" name="inComCd">
-					<button type="button" id="btnInCom">ㅇ</button>
+					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
+					<label>입고업체명</label>
 					<input type="text" id="inComName" name="inComName" readonly="true">
 				</div>
 				<div>
 					<label>자재코드</label>
 					<input type="text" id="ditemCode" name="ditemCode">
-					<button type="button" id="matrPopBtn">ㅇ</button>
-					<label>자재명</label>
-					<input type="text" id="dItemCodeNm" name="dItemCodeNm" readonly="readonly">
+					<button type="button" id="matrPopBtn">ㅇ</button>&nbsp;
+					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" id="dItemCodeNm" name="dItemCodeNm" readonly="true">
 				</div>
 			</div>
 		</form>
 		<div align="right">
-		<hr>
 			<button type="button" id="btnFind">조회</button>
 		</div>
+		<hr>
 	</div>
 	
 <div id="grid"></div>

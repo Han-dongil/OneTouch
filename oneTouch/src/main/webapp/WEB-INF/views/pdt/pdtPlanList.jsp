@@ -338,7 +338,6 @@
 		console.log(dataSource);
 		grid.request('modifyData'); //변경or추가된 데이터만 보냄
 		grid.readData();
-		
 	})
  	delBtn.addEventListener("click",function(){
 		grid.removeCheckedRows(true);
