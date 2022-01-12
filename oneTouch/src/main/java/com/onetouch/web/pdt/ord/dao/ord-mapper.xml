@@ -4,10 +4,17 @@
 
 <select id="list" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
 	select * from pdt_ord_sht
+	where 1=1
+	<if test="nowPhs =='' || nowPhs==null" >
+		And now_phs = 'N'
+	</if>
 </select>
 <select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
-	select * from pdt_ord_sht where to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
+	select * from pdt_ord_sht where to_char(ord_date,'yyyy-MM-dd')=#{ordDate} 
 </select>
+<update id="ordCheck">
+	update pdt_ord_sht set now_phs = 'Y' where ord_sht_no=#{ordShtNo}
+</update>
 <delete id="delete">
 	delete 
 	from pdt_ord_sht 

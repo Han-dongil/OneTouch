@@ -1,6 +1,5 @@
 package com.onetouch.web.pdt.plan.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,34 +13,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.mtr.lot.dao.LotVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class PlanController {
-	
 	@Autowired PlanService service;
 	
 	@RequestMapping("PlanList")
 	public String pdtListPage() {
-
 		return "tiles/pdt/pdtPlanList";
 	}
-	
 	@ResponseBody
 	@GetMapping("pdtPlanlist")
 	public Map<String,Object> pdtList() {
 	Map<String,Object> map=new HashMap<>();
 	map.put("contents", service.list());
-	
 	Map<String,Object> maps=new HashMap<>();
 	maps.put("result",true);
 	maps.put("data", map);
-	
-		
 		return maps;
 	}
-	
 	@ResponseBody
 	@PostMapping("pdtPlanDtllist")
 	public List<PlanVO> pdtPlanDtllist(PlanVO vo){
@@ -49,34 +43,27 @@ public class PlanController {
 //		System.out.println(no);
 //		Map<String,Object> map=new HashMap<>();
 //		map.put("contents", service.selectDtl(no));
-//		
 //		Map<String,Object> maps=new HashMap<>();
 //		maps.put("result",true);
 //		maps.put("data", map);
-		
-		
 		return service.selectDtl(no);
 	}
-	
 	@ResponseBody
 	@PostMapping("modifyData")
-	public List<PlanVO> modifyData(@RequestBody Map<String,List<PlanVO>> vo){
-		System.out.println(vo);
-		System.out.println(vo.get("createdRows"));
-		List<PlanVO> list=new ArrayList<>();
-		list=vo.get("createdRows");
-		System.out.println(list);
+	public String modifyData(@RequestBody ModifyVO<PlanVO> list){
 		service.insertPlan(list);
-		return null; 
+		return "a"; 
 	}
-	
 	@ResponseBody
 	@GetMapping("prdNameList/{prdCd}")
 	public List<PlanVO> prdList(@PathVariable String prdCd){
-		
 		return service.findPrcCd(prdCd);
 	}
-	
-	
-	
+	//lot별 재고조회
+	@ResponseBody
+	@PostMapping("lotCntList")
+	public List<LotVO> lotCntList(@RequestBody PlanVO vo){
+		
+		return service.lotCntSelect(vo);
+	}
 }

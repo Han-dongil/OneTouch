@@ -14,13 +14,29 @@
 	on(a.prc_cd = b.prc_cd)
 </select>
 <insert id="insertPlan">
-	<foreach collection="list" item="alist">
+	<!-- <foreach collection="list" item="alist">
 	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE) 
 	values(
    PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date')
    ,to_date(#{alist.dueDate},'yyyy-mm-dd HH24:MI:SS')
    ,#{alist.ordShtNo},#{alist.workProt},sysdate
-	)    <!--  동적쿼리하다감-->
-	</foreach>
+	)     동적쿼리하다감
+	</foreach> -->
+	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE) 
+	values(
+   PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date')
+   ,to_date(#{dueDate},'yyyy-mm-dd HH24:MI:SS')
+   ,#{ordShtNo},#{workProt},sysdate
+	)
 </insert>
+	<delete id="deletePlan">
+		delete from pdt_plan where plan_no=#{planNo}	
+	</delete>
+<!-- 제품명검색해서 로트별 재고보기 -->
+<select id="lotCntSelect" resultType="com.onetouch.web.mtr.lot.dao.LotVO">
+	select b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd
+    from adm_bom a join mtr_lot_stck b
+    on (a.mtr_cd = b.mtr_cd)
+    where a.prd_cd=#{prdCd}
+</select>	
 </mapper>
