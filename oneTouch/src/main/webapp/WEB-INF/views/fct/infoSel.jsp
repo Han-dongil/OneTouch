@@ -271,7 +271,7 @@
        btnFind.addEventListener("click", function(){
     	   //grid.;
        })  */
-
+       checkSeach();
 </script>
 </body>
 </html> 
