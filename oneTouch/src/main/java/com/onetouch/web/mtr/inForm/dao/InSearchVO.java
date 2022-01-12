@@ -1,4 +1,4 @@
-package com.onetouch.web.mtr.in.dao;
+package com.onetouch.web.mtr.inForm.dao;
 
 import lombok.Data;
 
@@ -12,6 +12,5 @@ public class InSearchVO{
 	String ditemCode;
 	String mtrCd;
 	String gubun;
-	String orderBy;
 }
 

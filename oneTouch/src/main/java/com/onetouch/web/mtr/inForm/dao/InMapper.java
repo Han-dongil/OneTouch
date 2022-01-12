@@ -1,4 +1,4 @@
-package com.onetouch.web.mtr.in.dao;
+package com.onetouch.web.mtr.inForm.dao;
 
 import java.util.List;
 

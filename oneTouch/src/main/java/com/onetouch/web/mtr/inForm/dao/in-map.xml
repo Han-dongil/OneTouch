@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.mtr.in.dao.InMapper">
-	<select id="list" resultType="com.onetouch.web.mtr.in.dao.InVO">
+<mapper namespace="com.onetouch.web.mtr.inForm.dao.InMapper">
+	<select id="list" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
 		SELECT * FROM MTR_IN
 	</select>
-	<select id="select" resultType="com.onetouch.web.mtr.in.dao.InVO">
+	<select id="select" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
 		SELECT A.IN_NO, A.IN_DATE, A.MTR_CD, B.MTR_NM, B.UNIT, A.ORD_NO, 
 		A.FLT_AMT, A.IN_AMT, A.UNIT_COST, A.TOT_COST,
 		<!-- FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COM_NM -->
@@ -23,15 +23,6 @@
 		</if>
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}
-		</if>
-		<if test="orderBy == 'dDate'">
-			ORDER BY A.IN_DATE
-		</if>
-		<if test="orderBy == 'dCompanyNm'">
-			ORDER BY COM_NM
-		</if>
-		<if test="orderBy == 'ditemcode'">
-			ORDER BY B.MTR_CD
 		</if>
 	</select>
 		<!-- SELECT * 
