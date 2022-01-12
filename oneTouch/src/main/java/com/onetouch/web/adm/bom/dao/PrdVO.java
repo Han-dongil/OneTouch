@@ -10,5 +10,7 @@ public class PrdVO {
 	private String mngUnit;	//관리단위
 	private String useYn;	//사용여부
 	private String prdSect;	//제품구분
+	private String fctCd;	//설비코드
 	private String stock; 	//재고
+	private String needCpnt;//필요부품 
 }

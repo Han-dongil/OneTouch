@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.adm.bom.dao.BomMapper">
 	
+	<!-- 전체제품조회리스트 -->
+	<select id="selectPrdAll" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select * 
+		from   adm_prd
+	</select>
+	
+	<!-- use_yn = 'y'인 select -->
+	<select id="selectUsePrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select * 
+		from   adm_prd
+		where  use_yn = 'y'
+	</select>
+	
 	<!-- 제품코드 선택하면 제품 정보가 뜬다-->
 	<select id="selectBomPrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
 		select  prd_cd,
@@ -27,5 +40,8 @@
 		from 	adm_bom
 		where 	prd_cd = #{prdCd}
 	</select>
+	
+
+	
 	
 </mapper>

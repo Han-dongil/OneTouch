@@ -21,4 +21,9 @@ public class MtrServiceImpl implements MtrService{
 		return mapper.selectAdmMtrDtl(mtrvo);
 	}
 
+	@Override
+	public List<MtrVO> selectUseAdmMtr() {
+		return mapper.selectUseAdmMtr();
+	}
+
 }

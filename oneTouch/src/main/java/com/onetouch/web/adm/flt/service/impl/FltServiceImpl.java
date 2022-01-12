@@ -13,9 +13,21 @@ import com.onetouch.web.adm.flt.service.FltService;
 public class FltServiceImpl implements FltService{
 
 	@Autowired FltMapper mapper;
+
+	@Override
+	public List<FltVO> selectFlt() {
+		return mapper.selectFlt();
+	}
+
 	@Override
 	public List<FltVO> selectFltAll() {
 		return mapper.selectFltAll();
 	}
+
+	@Override
+	public List<FltVO> selectUseFlt() {
+		return mapper.selectUseFlt();
+	}
+
 
 }

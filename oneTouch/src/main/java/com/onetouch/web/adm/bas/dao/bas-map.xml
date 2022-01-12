@@ -4,9 +4,7 @@
 
 	<!-- 기초코드 조회 -->
 	<select id="selectBasAll" resultType="com.onetouch.web.adm.bas.dao.BasVO">
-		select  bas_cd,
-		        bas_nm,
-		        bas_cmt
+		select  *
 		from    adm_bas_cd
 	</select>
 	
@@ -15,6 +13,19 @@
 		select  bas_nm 
 		from	adm_bas_cd 
 		where 	bas_nm like '%' || #{basNm} || '%'
+	</select>
+	
+	<!-- 상세코드 전체조회 -->
+	<select id="selectBasDtlAll" resultType="com.onetouch.web.adm.bas.dao.BasDtlVO">
+		select *
+		from   adm_bas_dtl_cd
+	</select>
+	
+	<!-- use_yn = 'y'인 상세코드 -->
+	<select id="selectUseBasDtl" resultType="com.onetouch.web.adm.bas.dao.BasDtlVO">
+		select	*
+		from	adm_bas_dtl_cd 
+		where	use_yn = 'y'
 	</select>
 	
 	<!-- 기초코드 선택하면 상세코드 종류 보여주기 -->

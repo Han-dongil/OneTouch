@@ -9,6 +9,7 @@ public class MtrVO {
 	private String mtrNm;		//자재명
 	private String std;			//규격
 	private String unit;		//단위
+	private String compCd;      //업체코드
 	private String compNm;		//업체명
 	private String safe_stck;	//안전재고
 	private String mtrSect;		//자재구분

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.mng.dao.MngVO;
 import com.onetouch.web.adm.mng.service.MngService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class MngController {
@@ -28,13 +29,12 @@ public class MngController {
 		return "tiles/adm/admMngList";
 	}
 	
-	//공정과정명 리스트 담아주기
+	//공정구분 리스트 담아주기
 	@ResponseBody
 	@GetMapping("/prcList")
 	public List<MngVO> prcList() {
 		List<MngVO> prcList = new ArrayList<>();
 		prcList = service.selectPrc();
-		System.out.println("222"+prcList);
 		return prcList;
 	}
 
@@ -48,7 +48,7 @@ public class MngController {
 	@GetMapping("/admMngList")
 	public Map<String, Object> mngListAll() {
 		Map<String, Object> map = new HashMap<>();
-		map.put("contents", service.selectAll());
+		map.put("contents", service.selectPrcMng());
 
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("result", true);
@@ -57,12 +57,11 @@ public class MngController {
 		return maps;
 	}
 	
-	
-
-	//삭제처리
-/*	@ResponseBody
-	@PostMapping("modifyData")
-	public List<MngVO> modifyData(Map<String, List<MngVO>> vo){
-		return null;
-	}*/
+	// 삭제,수정,등록 처리
+	@ResponseBody
+	@PostMapping("/admModifyData")
+	public void modify(@RequestBody ModifyVO<MngVO> mvo) {
+		System.out.println("modify" + mvo);
+		service.modify(mvo);
+	}
 }

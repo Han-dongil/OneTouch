@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class FlwVO {
 	private String prcSeq;		// 공정순서
+	private String prcCd;		// 공정코드
 	private String prcNm;		// 공정명
 	private String workCmt;		// 작업설명
 	private String stdLoad;		// 기준부하율

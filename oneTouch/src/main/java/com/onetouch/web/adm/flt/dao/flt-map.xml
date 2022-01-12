@@ -2,8 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.adm.flt.dao.FltMapper">
 	
-	<!-- 전체조회 -->
+	<!-- *쓴 불량전체조회 -->
 	<select id="selectFltAll" resultType="com.onetouch.web.adm.flt.dao.FltVO">
+		select *
+		from   adm_flt_cd
+	</select>
+	
+	<!-- use_yn = 'y'인 상세코드 -->
+	<select id="selectUseFlt" resultType="com.onetouch.web.adm.flt.dao.FltVO">
+		select	*
+		from	adm_flt_cd 
+		where	use_yn = 'y'
+	</select>
+	
+	<!-- 불량리스트(내가보고싶은) -->
+	<select id="selectFlt" resultType="com.onetouch.web.adm.flt.dao.FltVO">
 		select  flt_cd, 
 		        flt_nm, 
 		        flt_mtt, 
@@ -14,4 +27,5 @@
 		from    adm_flt_cd
 	</select>
 	
+
 </mapper>
