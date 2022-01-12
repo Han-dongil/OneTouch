@@ -45,6 +45,7 @@
 			<button type="button" id="btnFind">조회</button>
 		</div>
 	</div>
+	
 <div id="grid"></div>
 
 <script type="text/javascript">
@@ -61,11 +62,9 @@ Grid.applyTheme('striped', { //cell style
    });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrInList', method: 'POST' },
-	    	modifyData: { url: './mtrModify', method: 'POST' }
+		    readData: { url: './mtrInList', method: 'POST' }
 		  },
-		  contentType: 'application/json',
-		  initialRequest: false  
+		  contentType: 'application/json'
 		};
 
 var grid = new Grid({
@@ -88,51 +87,61 @@ var grid = new Grid({
 						format: 'YYYY-MM-dd'
 						}
 					}, */
+					align: 'center',
 				   sortable: true
 				 },
 					{
 				   header: '자재코드',
 				   name: 'mtrCd',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '단위',
 				   name: 'unit',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '업체',
 				   name: 'comNm',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '발주번호',
 				   name: 'ordNo',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '단가',
 				   name: 'unitCost',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
 				   header: '총금액',
 				   name: 'totCost',
+				   align: 'center',
 				   sortable: true
 				 }
 				]

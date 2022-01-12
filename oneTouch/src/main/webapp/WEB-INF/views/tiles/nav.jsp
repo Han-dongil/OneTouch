@@ -30,8 +30,8 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="ordList">동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="PlanList">동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="ordList">♡동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="PlanList">♨동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>
@@ -44,6 +44,7 @@
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="inForm">입고자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="inList">입고자재조회</a></li>
               </ul>
             </div>
           </li>

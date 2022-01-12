@@ -15,10 +15,6 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class InServiceImpl implements InService {
 	@Autowired InMapper mapper;
 	@Override
-	public List<InVO> list() {
-		return mapper.list();
-	}
-	@Override
 	public List<InVO> select(InSearchVO inSearchVO) {
 		return mapper.select(inSearchVO);
 	}
