@@ -26,20 +26,18 @@ public class InController {
 		return "tiles/mtr/mtrInList";
 	}
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("/mtrInList") public List<InVO> list(){ List<InVO> list= new
-	 * ArrayList<>(); list =service.list(); return list; }
-	 */
-	
 	//조건조회 grid
 	@ResponseBody
+<<<<<<< HEAD
 	@RequestMapping("/mtrInList")
 	public Map<String,Object> select(InSearchVO in){
+=======
+	@PostMapping("/mtrInList")
+	public Map<String,Object> select(@RequestBody InSearchVO in){
+>>>>>>> branch 'kdg' of https://github.com/Han-dongil/OneTouch.git
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
-		System.out.println(in);
+		System.out.println(in.getDitemCode());
 		data.put("result", true);
 		datas.put("contents", service.select(in));
 		data.put("data", datas);
@@ -49,9 +47,17 @@ public class InController {
 	
 	@ResponseBody
 	@PostMapping("/mtrModify")
+<<<<<<< HEAD
 	public int modify(@RequestBody ModifyVO<InVO> mvo){
+=======
+	public boolean modify(@RequestBody ModifyVO<InVO> mvo){
+>>>>>>> branch 'kdg' of https://github.com/Han-dongil/OneTouch.git
 		 service.modify(mvo);
+<<<<<<< HEAD
 		 return 0;
+=======
+		 return true;
+>>>>>>> branch 'kdg' of https://github.com/Han-dongil/OneTouch.git
 	}
 	
 }
