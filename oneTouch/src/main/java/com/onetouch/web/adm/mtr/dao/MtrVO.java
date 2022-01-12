@@ -11,7 +11,7 @@ public class MtrVO {
 	private String unit;		//단위
 	private String compCd;      //업체코드
 	private String compNm;		//업체명
-	private String safe_stck;	//안전재고
+	private String safeStck;	//안전재고
 	private String mtrSect;		//자재구분
 	private String useYn;		//사용여부
 	private String mngAmt;		//관리수량

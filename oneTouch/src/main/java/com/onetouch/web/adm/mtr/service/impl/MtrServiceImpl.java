@@ -3,11 +3,13 @@ package com.onetouch.web.adm.mtr.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.onetouch.web.adm.mtr.dao.MtrMapper;
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
 
+@Service
 public class MtrServiceImpl implements MtrService{
 
 	@Autowired	MtrMapper mapper;
