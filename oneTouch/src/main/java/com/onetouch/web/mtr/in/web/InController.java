@@ -36,20 +36,22 @@ public class InController {
 	//조건조회 grid
 	@ResponseBody
 	@RequestMapping("/mtrInList")
-	public void select(InSearchVO in){
+	public Map<String,Object> select(InSearchVO in){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		System.out.println(in);
 		data.put("result", true);
 		datas.put("contents", service.select(in));
 		data.put("data", datas);
+		return data;
 	}
 	
 	
 	@ResponseBody
 	@PostMapping("/mtrModify")
-	public void modify(@RequestBody ModifyVO<InVO> mvo){
+	public int modify(@RequestBody ModifyVO<InVO> mvo){
 		 service.modify(mvo);
+		 return 0;
 	}
 	
 }
