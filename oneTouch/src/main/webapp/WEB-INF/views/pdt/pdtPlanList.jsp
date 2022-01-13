@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="${path}/resources/template/json.min.js"></script>
 </head>
 <style>
 #abc {
@@ -61,6 +62,8 @@
 		<input type="hidden" name="needCnt" id="needCnt">
 		<input type="hidden" name="instrCnt" id="instrCnt">
 		<input type="hidden" name="mtrLot" id="mtrLot">
+		<input type="hidden" name="ordShtNo" id="ordShtNo">
+		<input type="hidden" name="fctCd" id="fctCd">
 	</form>
 	<script>
 	let lotGrid;
@@ -69,6 +72,7 @@
 	let inGridData;
 	let porObj;
   	let Grid = tui.Grid;
+  	let modalDataSource;
 	 	//그리드 테마적용
 	Grid.applyTheme('striped',{
 		cell:{
@@ -90,15 +94,10 @@
 	planDialog = $( "#paln-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
-		buttons:{"save":function(){alert("save")
-			fetch('planDtlInsert',{
-				method:'POST',
-				headers:{
-					"Content-Type": "application/json",
-				},
-				body:JSON.stringify($('#planFrm').serializeObject())
-				})
-			
+		buttons:{"save":function(){
+			alert("save")
+ 			lotGrid.blur();//커서 인풋밖으로빼냄
+ 			lotGrid.request('modifyData');  
 		}}
 	});
 	
@@ -127,6 +126,15 @@
     		  },
     		  contentType: 'application/json'
     		}
+    modalDataSource = {
+		  withCredentials: false,  
+		  initialRequest: true,
+		  api: {
+			  	readData: { url: '.',method: 'GET'},
+		     	 modifyData: { url: './planDtlInsert', method: 'POST' }  
+		  },
+		  contentType: 'application/json'
+		}
     	
 	//그리드 컬럼 설정	
 	const columns = [{
@@ -166,6 +174,7 @@
 	//로우 클릭 이벤트
      grid.on('click', ev => {
     	 if(ev.columnName=='planDate'){
+    	//	planFrm.planNo.value=grid.getValue(ev.rowKey,'planNo');
     		//히든태그에 계획번호 입력
     		document.getElementById("planNo").value=grid.getValue(ev.rowKey,'planNo');
     		planDialog.dialog( "open" );
@@ -179,47 +188,61 @@
 			/* document.getElementById("abc").style = 'display:block';
 			$("#inGrid").empty(); */
 			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
+			//히든폼에 주문번호저장
+			planFrm.ordShtNo.value=grid.getValue(ev.rowKey,'ordShtNo');
 			/*dataSource.api.readData= { url: 'order',method: 'GET'}
 			inGrid.readData(1,a,true);//모달창 그리드 데이터 갱신 */
 			//주문번호로 주문한제품 불러오기
 			
-				//자재lot그리드 useAmt
-			const lotColumns = [{
-				header : '자재코드',
-				name : 'mtrCd'
-			},{
-				header : 'LOT번호',
-				name : 'mtrLot'
-			},{
-				header : '재고수량',
-				name : 'stckCnt'
-			},{
-				header : '홀딩수량',
-				name : 'hldCnt',
-		  		editor : 'text'
-			},{
-				header : '지시수량',
-				name : 'instrCnt',
-		  		editor : 'text'
-			},{
-				header : '필요수량',
-				name : 'needCnt',
-			}];
-			lotGrid	= new Grid({
-				el: document.getElementById('paln-dialog-form'),
-				data:null,
-				columns:lotColumns
-			});	
-			
-			lotGrid.on("editingFinish",ev=>{
-				console.log(lotGrid.getValue(ev.rowKey,'instrCnt'));
-				lotGrid.setValue(ev.rowKey,'hldCnt',lotGrid.getValue(ev.rowKey,'instrCnt'),false)
-				//히든태그 prdcd 입력
-				document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
-				//히든태그 prdcd 입력
-				document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
-			})
-			
+/////////////////////////////////
+								//자재lot그리드 useAmt
+		const lotColumns = [{
+			header : '자재코드',
+			name : 'mtrCd'
+		},{
+			header : 'LOT번호',
+			name : 'mtrLot'
+		},{
+			header : '재고수량',
+			name : 'stckCnt'
+		},{
+			header : '홀딩수량',
+			name : 'hldCnt',
+	  		editor : 'text'
+		},{
+			header : '지시수량',
+			name : 'instrCnt',
+	  		editor : 'text'
+		},{
+			header : '필요수량',
+			name : 'needCnt',
+		},{
+			header : '계획번호',
+			name : 'planNo',
+			hidden:false
+		},{
+			header : '상품번호',
+			name : 'prdCd',
+			hidden:false
+		}];
+		lotGrid	= new Grid({
+			el: document.getElementById('paln-dialog-form'),
+			data:modalDataSource,
+			columns:lotColumns
+		});	
+		
+		lotGrid.on("editingFinish",ev=>{
+			console.log(lotGrid.getValue(ev.rowKey,'instrCnt'));
+			lotGrid.setValue(ev.rowKey,'hldCnt',lotGrid.getValue(ev.rowKey,'instrCnt'),false)
+			//히든태그 instrCnt 입력
+			document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
+			//히든태그 prdcd 입력
+			document.getElementById("mtrLot").value=lotGrid.getValue(ev.rowKey,'mtrLot');
+			//히든태그 planNo 입력
+			lotGrid.setValue(ev.rowKey,'planNo',document.getElementById("planNo").value,false)
+		})
+		
+		
 			$.ajax({
 				url:'./pdtPlanDtllist/',
 				method:'POST',
@@ -236,6 +259,9 @@
 					let inGridTag=document.getElementById('paln-dialog-form');
 					
 					inGridTag.appendChild(selectTag)
+					prdCd=planFrm.prdCd.value;
+					let prcCd=planFrm.prcCd.value;
+					let ordShtNo=planFrm.ordShtNo.value;
 					let abcde={'prdCd':result[0].prdCd, 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')};
 					//히든태그 needCnt 입력
 					document.getElementById("needCnt").value=result[0].needCnt;
@@ -243,11 +269,14 @@
 					//제품코드로 공정불러오기
 					needPrcCd(result[0].prdCd);
 					//lot재고 조회
+					abcde={'prdCd':prdCd, 'ordShtNo':ordShtNo , 'prcCd':prcCd};
 					needLotCnt(abcde);
 					//셀렉트태그 선택이벤트
 					selectTag.addEventListener("change",function(event){
 						$("#prdSelect").empty();
 						//히든태그 prdcd 입력
+						console.log("dddddddddddd");
+						console.log(event.target.value);
 						document.getElementById("prdCd").value=event.target.value;
 						//히든태그 needCnt 입력
 						document.getElementById("needCnt").value=event.target.value;
@@ -266,12 +295,26 @@
 	}) 
 
 	function liFnc(ev){
-		console.log("dddd")
-		console.log(event.target.innerHTML)
+		console.log(event.target)
 		//히든태그에 prcCd 입력
-		document.getElementById("prcCd").value=event.target.innerHTML;
+		document.getElementById("fctCd").value=event.target.innerHTML;
+		let b=event.target.parentNode.getAttribute("data-prcKey");
+		console.log(b);
+		document.getElementById("prcCd").value=b;
 		console.log(planFrm)
+		let prdCd=planFrm.prdCd.value;
+		let prcCd=planFrm.prcCd.value;
+		let ordShtNo=planFrm.ordShtNo.value;
+		
+
+		abcde={'prdCd':prdCd, 'ordShtNo':ordShtNo , 'prcCd':prcCd};
+		needLotCnt(abcde);
+		
+		
+		
 	}
+	
+     
 			
 	grid.on('click',function(ev){
 		
@@ -327,9 +370,9 @@ function needLotCnt(abcde){
 		})
 	}
 //제품코드로 공정조회
-function needPrcCd(prcCd){
+function needPrcCd(prdCd){
 	$.ajax({
-		url:'prdNameList/'+prcCd,
+		url:'prdNameList/'+prdCd,
 		success:function(result){
 			let ulDiv=document.getElementById("prdSelect");
 			console.log(ulDiv);
@@ -339,9 +382,11 @@ function needPrcCd(prcCd){
 			let set = new Set(uniquePrcCd);
 			let uniqueArr=[...set];
 			Array.isArray(uniqueArr)
+			console.log(result)
 			for(unique of uniqueArr){
 				let ulTag=document.createElement('ul');
-				ulTag.innerHTML="&nbsp;&nbsp;"+unique
+				ulTag.innerHTML=unique;
+				ulTag.setAttribute("data-prcKey",unique);
 				for(let obj of result){
 					if(obj.prcCd==unique){
 						let liTag=document.createElement('li');
