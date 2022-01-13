@@ -30,7 +30,6 @@ public class InListController {
 	public Map<String,Object> selectInList(@RequestBody InSearchVO in){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
-		System.out.println(in.getDitemCode());
 		data.put("result", true);
 		datas.put("contents", service.select(in));
 		data.put("data", datas);
