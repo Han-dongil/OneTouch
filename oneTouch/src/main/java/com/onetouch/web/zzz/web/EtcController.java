@@ -40,8 +40,7 @@ public class EtcController {
 	@ResponseBody
 	@GetMapping("msgAltList")
 	public List<MsgAltVO> selectAll(){
-		List<MsgAltVO> list = new ArrayList<MsgAltVO>();
-		list = service.selectAll();
+		List<MsgAltVO> list = service.selectAll();
 		
 		return list;
 	}
