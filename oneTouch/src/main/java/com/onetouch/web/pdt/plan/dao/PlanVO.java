@@ -15,7 +15,7 @@ public class PlanVO extends LotVO {
 	private String planDate;
 	private String planDtlNo;
 	private String prdCd;
-	private String prcCd;
+	private String prcCd;    
 	private String needCnt;
 	private String instrCnt;
 	private String workStrDate;

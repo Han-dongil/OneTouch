@@ -69,7 +69,27 @@
 		FROM MTR_IN
 		WHERE IN_NO = #{inNo}
 	</delete>
-	
+	<update id="prdNeed">
+		update mtr_in
+		set 
+		HLD_CNT = #{hldCnt},
+		STCK_CNT = STCK_CNT-#{hldCnt}
+		WHERE 
+		MTR_LOT = #{mtrLot}
+	</update>
+	<!-- 자재출고테이블 지시때 출고처리해야댐 -->
+	<!-- 지시때 lot재고에도 반영해야댐 -->
+	<insert id="prdOut">
+		<!-- hldCnt: "3"
+instrCnt: "3"
+mtrCd: "MF001"
+mtrLot: "MLT2022010061"
+needCnt: "100"
+planNo: "PPL202201110001"
+prdCd: "prd_001"
+stckCnt: "1" -->
+	</insert>
+
 	<!-- 리스트로받아서 for문으로 다 삭제하는쿼리 -->
 	<!-- <delete id="delete">
 		DELETE 
