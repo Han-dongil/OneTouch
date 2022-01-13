@@ -11,9 +11,8 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+
+
 </head>
 <body>
 
@@ -23,31 +22,33 @@
 		<button type="button" id='btnAdd'>추가</button>
 		<button	type="button" id='btnDel'>삭제</button>
 		<button type="button" id='btnSave'>저장</button>
-		<button type="button" id='btnEdit'>수정</button>
 	</div>
-  <input type="radio" id="requestRio" name="fixRio" value="수리요청" checked>
-  <label for="request">수리요청</label>
-    <input type="radio" id="fixingRio" name="fixRio" value="수리중">
-  <label for="fixing">수리중</label>
-    <input type="radio" id="completedRio" name="fixRio" value="수리완료">
-  <label for="completed">수리완료</label>
-  
-<span style="margin-left: 100px;">
-	<label>해당일자</label>
-	<input type="Date" id="from" name="from"> 
-	<label> ~ </label> 
-	<input type="Date" id="to" name="to">
-</span>
-<span >
-	<label>설비구분</label>
-	<select id="fctCd" name="fctCd"></select>
-</span>
+	<form id="fixFrm" method="post">
+		  <input type="radio" id="requestRio" name="fixPhs" value="수리요청" checked>
+		  <label for="request">수리요청</label>
+		  <input type="radio" id="fixingRio" name="fixPhs" value="수리중">
+		  <label for="fixing">수리중</label>
+		  <input type="radio" id="completedRio" name="fixPhs" value="수리완료">
+		  <label for="completed">수리완료</label>
+		  
+		<span style="margin-left: 100px;">
+			<label>해당일자</label>
+			<input type="Date" id="from" name="from"> 
+			<label> ~ </label> 
+			<input type="Date" id="to" name="to">
+		</span>
+		<span >
+			<label>설비구분</label>
+			<select id="fctCd" name="fctCd"></select>
+		</span>
+	</form>
 </div>
-	
 	<div id="grid"></div>
 <script>
 	let Grid = tui.Grid;
 	let data;
+	let checkForm;  //폼에 있는 조건을 담는 input을 가지고 옴 
+	let el; //button을 커스텀 랜덩링 클래스에서 만들어줌 
 	
 	Grid.applyTheme('striped', {	
         cell: {
@@ -65,12 +66,13 @@
         }
       });
 	
+	 
 	
 	
 //  let dataSource; //그리드에 들어갈 데이터변수
    var dataSource = {
 	  //withCredentials: false,  
-	  //initialRequest: true,
+	  initialRequest: false,
 	  api: {
 		readData: { url: './fctFixList',method: 'POST'},
 		//createData: { url: '/api/create', method: 'POST' },
@@ -93,7 +95,7 @@
 	    header: '수리요청일',
 	    name: 'reqDt',
 	    editor: 'text',
-	    editor: 'datePicker',
+	    editor: 'text',
     	sortable: true
 	  },
 	  {
@@ -117,6 +119,20 @@
 		    sortable: true
 	  },
 	  {
+			header : '설비수리상태',
+			name : 'fixPhs',
+			editor: {
+				type: 'radio',
+				options: {
+			        listItems: [
+			          { text: '수리요청', value: '수리요청'},
+			          { text: '수리시작', value: '수리중'},
+			          { text: '수리완료', value: '수리완료'}
+			        ]
+			     }
+			}
+	  },
+	  {
 		    header: '수량',
 		    name: 'cnt',
 		    sortable: true
@@ -134,33 +150,22 @@
 	  {
 		    header: '수리코드',
 		    name: 'fixCd',
-	    		  }
+	  }
 	    ]
+	    
+	    
 	   
     //라디오 클릭하면 값 가져오기 
-  	$("input[name='fixRio']:radio").change(function () {
+  	$("input[name='fixPhs']:radio").change(function () {
+  		
+  		console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+  		console.log(grid.getData())
   		checkRdo();
+  		
+  		
   	})
 	
-  	let vo={};	//검색값을 담는 배열
-	//체크된 라디오 버튼 value 값 가져오는 함수 
-	//라디오버튼 값을 이용해서 아작스 사용 
-	function checkRdo(){
-		var obj_value = $("input:radio[name='fixRio']:checked").val();
-		vo.checkRadio=obj_value;
-	  /*   $.ajax({
-	    	url:'fctFixList',
-	    	method:'POST',
-	    	data: JSON.stringify(vo),
-	    	contentType: "application/json",
-	    	async : false
-	    }).done(function(datas){
-	    	console.log('리스트조회 결과값 ')
-	    	console.log(datas)
-	    	grid.resetData(datas);
-	    	
-	    }) */
-	}
+  
 	   
   //그리드를 id 값안에다가 붙여넣어준다.
   let grid = new Grid({
@@ -175,13 +180,24 @@
             } */
          });
     grid.on('response', function(ev) {
-	   console.log(ev.xhr.response)
-	    if(ev.xhr.response.result != true){
-		   //grid.readData();
-	   } 
-	   
-	   
+	    if(ev.xhr.response ==0 ){
+		   grid.readData();
+	   	  } 
 	   });
+    
+    // 검색 조건을 readData로 넘겨주는 함수 
+    function checkRdo(){
+		   let checkFormdata = $("#fixFrm").serializeObject();
+	    	console.log('&&&&&&&&&&&&&&&&&')
+	    	console.log(checkFormdata);
+	    	grid.readData(1,checkFormdata, true);		
+		}
+    
+    
+   
+    btnFind.addEventListener("click", function(){
+    	checkRdo();
+    })
    
 	   btnDel.addEventListener("click", function(){
 		   grid.removeCheckedRows(true);
@@ -196,9 +212,14 @@
 	   btnAdd.addEventListener("click", function() {
 			grid.appendRow({})
 	   });	
+	   
+	   
 	  
-	  	//페이지 로드 될때 처음 라디오 checked 된 id 값 가져오기 
 	   checkRdo();
+	
+	  	
+	  	
+	  
    
 </script>
 </body>

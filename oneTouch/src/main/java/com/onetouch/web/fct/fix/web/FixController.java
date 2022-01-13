@@ -46,10 +46,12 @@ public class FixController {
     //삭제,수정,등록 처리
     @ResponseBody
     @PostMapping("fctModifyData")
-    public void modify(@RequestBody ModifyVO<FixVO> mvo) {
+    public int modify(@RequestBody ModifyVO<FixVO> mvo) {
     	System.out.println("컨트롤러 값 보여주기 ^^^^^^^^^^^^^^^^^^^^^^^");
     	System.out.println(mvo.getUpdatedRows().get(0).getFixCd());
     	fservice.modify(mvo);
+    	
+    	return 0; 
     	
     }
 	
