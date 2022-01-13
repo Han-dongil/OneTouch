@@ -28,8 +28,13 @@
   <link rel="stylesheet" href="${path}/resources/template/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="${path}/resources/template/images/favicon.png" />
+    <!-- plugins:js -->
+  <script src="${path}/resources/template/vendors/js/vendor.bundle.base.js"></script>
+ 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  
+  <script src="${path}/resources/template/json.min.js"></script>
 
 </head>
 <body>
@@ -63,8 +68,7 @@
   </div>
   <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="${path}/resources/template/vendors/js/vendor.bundle.base.js"></script>
+
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="${path}/resources/template/vendors/chart.js/Chart.min.js"></script>
@@ -85,6 +89,6 @@
   <script src="${path}/resources/template/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
     
-  <script src="${path}/resources/template/json.min.js"></script>
+ 
 </body>
 </html>

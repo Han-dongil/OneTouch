@@ -14,20 +14,24 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 
 
+<style type="text/css">
+	.tui-grid-cell-summary{
+		text-align: center;
+	}
+</style>
+
 </head>
 <body>
-
 	<div class="container">
 		<h3>자재입고 관리</h3>
 		<div align="right">
-			<button type="button" id="btnOrdFind">발주내역 조회</button>
-		<hr>
+			<button type="button" id="btnOrdFind" align="right">발주내역 조회</button>
 		</div>
+		<hr>
 		<form id="frm" method="post">
 			<div>
 				<div>
@@ -46,19 +50,19 @@
 				<div>
 					<label>자재코드</label>
 					<input type="text" id="ditemCode" name="ditemCode">
-					<button type="button" id="matrPopBtn">ㅇ</button>&nbsp;
+					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" id="dItemCodeNm" name="dItemCodeNm" readonly="true">
+					<input type="text" id="ditemCodeNm" name="ditemCodeNm" readonly="true">
 				</div>
 			</div>
 		</form>
 		<div align="right">
-		<hr>
 			<button type="button" id="btnFind">조회</button>
 			<button type="button" id="btnSave">저장</button>
 			<button type="button" id="btnAdd">추가</button>
 			<button type="button" id="btnDel">삭제</button>
 		</div>
+		<hr>
 	</div>
 <div id="grid"></div>
 <div id="dialog-form" title="title"></div>
@@ -67,7 +71,7 @@
 let rowk = -1;
 
 var Grid = tui.Grid;
-Grid.applyTheme('striped', { //cell style
+Grid.applyTheme('striped', {
      cell: {
        header: {
          background: '#eef'
@@ -77,6 +81,7 @@ Grid.applyTheme('striped', { //cell style
        }
      },
    });
+   
 const dataSource = {
 		  api: {
 		    readData: { url: './mtrInForm', method: 'POST' },
@@ -85,7 +90,7 @@ const dataSource = {
 		  contentType: 'application/json',
 		  initialRequest: false
 		};
-
+		
 var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
@@ -116,7 +121,9 @@ var grid = new Grid({
 				   align: 'center',
 					editor: 'text',
 				   sortable: true,
-				   validation: true
+				   validation: {
+		            	required: true
+		          	}
 				 },
 				 {
 				   header: '자재명',
@@ -132,8 +139,11 @@ var grid = new Grid({
 				 },
 				 {
 				   header: '업체',
-				   name: 'comNm',
+				   name: 'compNm',
 				   align: 'center',
+				   validation: {
+		            	required: true
+		          	},
 				   sortable: true
 				 },
 				 {
@@ -141,6 +151,9 @@ var grid = new Grid({
 				   name: 'ordNo',
 				   align: 'center',
 					editor: 'text',
+					validation: {
+		            	required: true
+		          	},
 				   sortable: true
 				 },
 				 {
@@ -148,6 +161,9 @@ var grid = new Grid({
 				   name: 'fltAmt',
 				   align: 'center',
 					editor: 'text',
+					validation: {
+						dataType: 'number'
+		          	},
 				   sortable: true
 				 },
 				 {
@@ -155,14 +171,21 @@ var grid = new Grid({
 				   name: 'inAmt',
 				   align: 'center',
 					editor: 'text',
-				   sortable: true,
+					validation: {
+						dataType: 'number',
+		            	required: true
+		          	},
+				   sortable: true
 				 },
 				 {
 				   header: '단가',
 				   name: 'unitCost',
 				   align: 'center',
 					editor: 'text',
-				   sortable: true,
+					validation: {
+		            	required: true
+		          	},
+				   sortable: true
 				 },
 				 {
 				   header: '총금액',
@@ -170,15 +193,60 @@ var grid = new Grid({
 				   align: 'center',
 					editor: 'text',
 				   sortable: true
+				 },
+				 {
+				   header: '자재LOT NO.',
+				   name: '',
+				   align: 'center',
+					editor: 'text',
+				   sortable: true
 				 }
-				]
-     
+				],
+				summary : {
+					height: 40,
+				   	position: 'bottom',
+				   	columnContent: {
+				   		ordNo: {
+			                template(summary) {
+			        			return '합 계';
+			                }
+			            },	
+			            fltAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            inAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            unitCost: {
+			                template(summary){
+			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
+			                } 
+			            },
+			            totCost: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            }
+					}
+				}
    });
+   
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
   
 grid.on('response', function(ev) {
-      console.log(ev.xhr.response);
+      /* console.log(ev.xhr.response); */
       if(ev.xhr.response == 0){
-      grid.readData();
+      	grid.readData();
       }
    });
  
@@ -188,80 +256,90 @@ var grid = new Grid({
     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
     rowHeaders : [ 'checkbox'],
     columns : [
-    	
     ]
 });
  */
 
-
-let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
-dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
+let dialog;
+dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
 });
 
-
-
-
+//추가버튼
 btnAdd.addEventListener("click", function(){
 	grid.appendRow({}, 
 			{
 				extendPrevRowSpan: true,
 				focus: true
 			});
-})
+});
+//삭제버튼
 btnDel.addEventListener("click", function(){
 	grid.removeCheckedRows(true);
-})
+});
+//저장버튼
 btnSave.addEventListener("click", function(){
 	grid.blur();
 	grid.request('modifyData');
-})
+});
+//조회버튼
 btnFind.addEventListener("click", function(){
-   let a= $("#frm").serializeObject();
-   grid.readData(1,a,true);
-})
+   let param= $("#frm").serializeObject();
+   grid.readData(1,param,true);
+});
+//발주내역버튼
 btnOrdFind.addEventListener("click", function(){
-})
+	
+});
+//업체검색버튼
 btnInCom.addEventListener("click", function(){
 	mBas('MTR_COM');
-})
+});
+//자재검색버튼
+btnMtrCd.addEventListener("click", function(){
+	mMtr();
+});
+
 grid.on("dblclick",(ev)=>{
 	console.log(ev);
-	console.log(grid);
-	
 	if (ev.columnName === 'mtrCd'){
 		rowk = ev.rowKey;
 		mMtr();
 	}
-})
+});
 
-grid.on("click",(ev)=>{
+//클릭한 셀의 rowKey와 columnName을 가지고오는 함수
+/* grid.on("click",(ev)=>{
 	console.log(grid.getFocusedCell());
-})
+}) */
 
+//업체검색모달 row더블클릭 이벤트
 function getModalBas(param){
 			$('#inComCd').val(param.dtlCd);
 			$('#inComName').val(param.dtlNm);
 			dialog.dialog("close");
-		}
-		
+		};
+//자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
+	/* console.log($('#ditemCode').val(param.mtrCd)) */
 	if(rowk >= 0){
-		console.log(11111111);
-		console.log(rowk);
-		console.log(param.mtrCd);
 		//grid.appendRow({});
-		
-		//grid.setValue(rowk+1, "mtrCd", "aa", false);
-		grid.appendRow({'mtrCd':'aa'});
-		
-		
+		grid.blur();
+		grid.setValue(rowk, "mtrCd", param.mtrCd, false);
+		grid.setValue(rowk, "mtrNm", param.mtrNm, false);
+		grid.setValue(rowk, "unit", param.unit, false);
+		grid.setValue(rowk, "compNm", param.compNm, false);
+		//grid.appendRow({'mtrCd':'aa'});
 		rowk = -1;
+	} else {
+		$('#ditemCode').val(param.mtrCd);
+		$('#ditemCodeNm').val(param.mtrNm);
 	}
-}
+};
 
 </script>
+
 </body>
 </html>

@@ -6,7 +6,7 @@ import lombok.Data;
 public class InVO {
 	private String inNo;
 	private String inDate;
-	private String comNm;
+	private String compNm;
 	private String mtrCd;
 	private String mtrNm;
 	private String ordNo;

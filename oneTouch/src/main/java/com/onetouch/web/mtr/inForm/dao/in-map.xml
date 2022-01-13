@@ -7,7 +7,7 @@
 	<select id="select" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
 		SELECT A.IN_NO, TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, A.MTR_CD, B.MTR_NM, B.UNIT, A.ORD_NO, 
 		A.FLT_AMT, A.IN_AMT, A.UNIT_COST, A.TOT_COST,
-		FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COM_NM  
+		FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
 		FROM MTR_IN A, ADM_MTR B
 		WHERE A.MTR_CD = B.MTR_CD
 		

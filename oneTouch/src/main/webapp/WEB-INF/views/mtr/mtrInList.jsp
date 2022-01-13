@@ -13,6 +13,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 
+<style type="text/css">
+	.tui-grid-cell-summary{
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -38,7 +43,7 @@
 					<input type="text" id="ditemCode" name="ditemCode">
 					<button type="button" id="matrPopBtn">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" id="dItemCodeNm" name="dItemCodeNm" readonly="true">
+					<input type="text" id="ditemCodeNm" name="ditemCodeNm" readonly="true">
 				</div>
 			</div>
 		</form>
@@ -112,7 +117,7 @@ var grid = new Grid({
 				 },
 				 {
 				   header: '업체',
-				   name: 'comNm',
+				   name: 'compNm',
 				   align: 'center',
 				   sortable: true
 				 },
@@ -146,15 +151,57 @@ var grid = new Grid({
 				   align: 'center',
 				   sortable: true
 				 }
-				]
-     
+				],
+				summary : {
+					
+					height: 40,
+				   	position: 'bottom',
+				   	columnContent: {
+				   		ordNo: {
+			                template(summary) {
+			        			return '합 계';
+			                } 
+			            },	
+			            fltAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            inAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            unitCost: {
+			                template(summary){
+			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
+			                } 
+			            },
+			            totCost: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            }
+					}
+				}
    });
    
-  
+let dialog;
+dialog = $( "#dialog-form" ).dialog({
+	autoOpen : false,
+	modal : true,
+});
+
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 grid.on('response', function(ev) {
       grid.resetOriginData();
    });
- 
 btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    grid.readData(1,a,true);
