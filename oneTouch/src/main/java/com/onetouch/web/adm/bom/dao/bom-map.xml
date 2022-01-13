@@ -16,14 +16,14 @@
 	</select>
 	
 	<!-- 제품코드 선택하면 제품 정보가 뜬다-->
-	<select id="selectBomPrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+	<select id="selectPrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
 		        mng_unit,
 		        use_yn,
 		        prd_sect,
-		        stock
+		        stck
 		from    adm_prd
 		where   prd_cd=#{prdCd}
 	</select>

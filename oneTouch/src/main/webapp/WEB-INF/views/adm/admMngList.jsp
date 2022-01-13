@@ -12,9 +12,14 @@
 
 </head>
 <body>
+<br>
+<h3>[공정관리]</h3><hr>
+<div align="right" style="margin-right: 3%;">
 <button type="button" id="btnAdd">추가</button>
 <button type="button" id="btnDel">삭제</button>
 <button type="button" id="btnSave">저장</button>
+</div>
+<h4 align="left">✔공정리스트</h4>
 <div id="grid"></div>
 <script type="text/javascript">
 	let checked=[];
@@ -31,7 +36,8 @@
 			}
 		}
 	})
-		
+	
+	//공정구분 상세코드에서 받아오기
 	$.ajax({
 		url: './prcList',
 		dataType:'json',

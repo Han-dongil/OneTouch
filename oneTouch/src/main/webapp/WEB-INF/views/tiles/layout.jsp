@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>OneTouch</title>
 
 
 <!-- Required meta tags -->
