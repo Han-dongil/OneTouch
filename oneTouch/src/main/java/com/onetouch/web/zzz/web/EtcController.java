@@ -64,6 +64,20 @@ public class EtcController {
 	}
 	
 	
+//	//modal호출 - 발주
+//	@RequestMapping("modalMtr")
+//	public String modalMtrOrd() {
+//		return "zzz/modalMtr";
+//	}
+//	
+//	@ResponseBody
+//	@GetMapping("modalMtrOrdList")
+//	public List<MtrVO> modalMtrOrdList(){
+//		List<MtrVO> list = new ArrayList<MtrVO>();		
+//		list = mtrService.selectAdmMtrAll();
+//		System.out.println(list);
+//		return list;
+//	}
 	//modal호출 - 자재
 	@RequestMapping("modalMtr")
 	public String modalMtr() {

@@ -199,6 +199,9 @@ var grid = new Grid({
 				   name: '',
 				   align: 'center',
 					editor: 'text',
+					validation: {
+		            	required: true
+		          	},
 				   sortable: true
 				 }
 				],
@@ -264,6 +267,9 @@ let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 300
 });
 
 //추가버튼
@@ -338,6 +344,7 @@ function getModalMtr(param){
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
+
 
 </script>
 

@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.mtr.inForm.dao.InMapper">
-	<select id="selectIn" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
-		SELECT A.IN_NO, TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, A.MTR_CD, B.MTR_NM, B.UNIT, A.ORD_NO, 
-		A.FLT_AMT, A.IN_AMT, A.UNIT_COST, A.TOT_COST,
-		FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
-		FROM MTR_IN A, ADM_MTR B
-		WHERE A.MTR_CD = B.MTR_CD
-		
+<mapper namespace="com.onetouch.web.mtr.ord.dao.OrdMapper">
+	<select id="select" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
+		SELECT 
+			ORD_NO,
+			ORD_DATE,
+			DLV_REQ_DATE,
+			FN_GET_BAS_DTL_CD_TO_NM(#{compCd}) AS COMP_NM,
+			FN_GET_MTR_CD_TO_NM(#{mtrCd}) AS MTR_CD,
+			UNIT,
+			UNIT_COST,
+			ORD_AMT,
+			IN_AMT,
+			NOTIN_AMT,
+			CMT
+		FROM MTR_ORD
+		WHERE 1=1 
+		<if test="compCd != null and compCd != ''"> 
+			<![CDATA[AND COMP_CD = #{compCd}]]>
+		</if>
+		<if test="mtrCd != null and mtrCd != ''"> 
+			<![CDATA[AND MTR_CD = #{mtrCd}]]>
+		</if>
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
 		<if test="endDate != null and endDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
 		</if>
-		<if test="inComCd != null and inComCd != ''">
-			AND B.COMP_CD = #{inComCd}
+		<if test="compCd != null and compCd != ''">
+			AND B.COMP_CD = #{compCd}
 		</if>
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}
@@ -24,7 +38,7 @@
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->
-	<insert id="insertIn">
+	<insert id="insert">
 		INSERT INTO MTR_IN 
 		(IN_NO,
 		MTR_CD,
@@ -48,7 +62,7 @@
 		(#{unitCost}*#{inAmt})
 		)
 	</insert>
-	<update id="updateIn">
+	<update id="update">
 		UPDATE MTR_IN
 		SET
 		MTR_CD = #{mtrCd},
@@ -60,24 +74,8 @@
 		WHERE
 		IN_NO = #{inNo}
 	</update>
-	<update id="updateOrd">
-		UPDATE MTR_ORD
-		SET
-		IN_AMT = #{inAmt},
-		NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
-		WHERE
-		ORD_NO = #{ordNo}
-	</update>
-	<update id="updateLot">
-		UPDATE MTR_LOT_STCK
-		SET
-		IN_AMT = #{inAmt},
-		NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
-		WHERE
-		ORD_NO = #{ordNo}
-	</update>
 	<!-- 하나씩 삭제 -->
-	<delete id="deleteIn">
+	<delete id="delete">
 		DELETE 
 		FROM MTR_IN
 		WHERE IN_NO = #{inNo}
