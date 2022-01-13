@@ -1,8 +1,13 @@
 package com.onetouch.web.pdt.plan.dao;
 
+import com.onetouch.web.mtr.lot.dao.LotVO;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 @Data
-public class PlanVO {
+@EqualsAndHashCode(callSuper=false)
+public class PlanVO extends LotVO {
 	private String planNo;
 	private String ordShtNo;
 	private String dueDate;

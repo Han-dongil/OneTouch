@@ -11,5 +11,5 @@ public interface PlanMapper {
 	List<PlanVO> findPrcCd(String no);
 	void insertPlan(PlanVO vo);
 	void deletePlan(PlanVO vo);
-	List<LotVO> lotCntSelect(PlanVO vo);
+	List<PlanVO> lotCntSelect(PlanVO vo);
 }

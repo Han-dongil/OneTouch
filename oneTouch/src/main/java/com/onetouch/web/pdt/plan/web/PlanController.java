@@ -62,8 +62,12 @@ public class PlanController {
 	//lot별 재고조회
 	@ResponseBody
 	@PostMapping("lotCntList")
-	public List<LotVO> lotCntList(@RequestBody PlanVO vo){
-		
+	public List<PlanVO> lotCntList(@RequestBody PlanVO vo){
 		return service.lotCntSelect(vo);
+	}
+	@ResponseBody
+	@PostMapping("planDtlInsert")
+	public void planDtlInsert(@RequestBody PlanVO vo){
+		System.out.println(vo);
 	}
 }
