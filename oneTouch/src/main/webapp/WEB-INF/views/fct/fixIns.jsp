@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>수리관리</title>
+<!-- 토스트 그리드 위에 데이트피커 가 선언되어야 작동이 된다 (순서가중요) -->
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
@@ -13,7 +16,15 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
+
 <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
+	<div  style="margin-left: 600px;">
+		<button type="button" id='btnFind'>조회</button>
+		<button type="button" id='btnAdd'>추가</button>
+		<button	type="button" id='btnDel'>삭제</button>
+		<button type="button" id='btnSave'>저장</button>
+		<button type="button" id='btnEdit'>수정</button>
+	</div>
   <input type="radio" id="requestRio" name="fixRio" value="수리요청" checked>
   <label for="request">수리요청</label>
     <input type="radio" id="fixingRio" name="fixRio" value="수리중">
@@ -21,18 +32,21 @@
     <input type="radio" id="completedRio" name="fixRio" value="수리완료">
   <label for="completed">수리완료</label>
   
-  <span style="margin-left: 100px;">
-  	<label>해당일자</label>
+<span style="margin-left: 100px;">
+	<label>해당일자</label>
 	<input type="Date" id="from" name="from"> 
 	<label> ~ </label> 
 	<input type="Date" id="to" name="to">
-	<button type="button" id='btnFind'>조회</button>
-	</span>
+</span>
+<span >
+	<label>설비구분</label>
+	<select id="fctCd" name="fctCd"></select>
+</span>
 </div>
 	
 	<div id="grid"></div>
 <script>
-	var Grid = tui.Grid;
+	let Grid = tui.Grid;
 	let data;
 	
 	Grid.applyTheme('striped', {	
@@ -50,85 +64,139 @@
              border: 'red'
         }
       });
+	
+	
+	
+//  let dataSource; //그리드에 들어갈 데이터변수
+   var dataSource = {
+	  //withCredentials: false,  
+	  //initialRequest: true,
+	  api: {
+		readData: { url: './fctFixList',method: 'POST'},
+		//createData: { url: '/api/create', method: 'POST' },
+		//updateData: { url: '/modifyData', method: 'POST' },
+		//deleteData: { url: '/api/delete', method: 'DELETE' },
+		modifyData: { url: './fctModifyData', method: 'POST' }  
+	  },
+	  contentType: 'application/json',
+	  };
 	 
-	   //th 영역
+//th 영역
 	    const columns = [
 	    {
 	    header: '설비코드',
 	    name: 'fctCd',
-	    editor: 'text'
+	    editor: 'text',
+    	sortable: true
 	  },
 	  {
 	    header: '수리요청일',
-	    name: 'fctNm',
-	    editor: 'text'
+	    name: 'reqDt',
+	    editor: 'text',
+	    editor: 'datePicker',
+    	sortable: true
 	  },
 	  {
 	    header: '수리시작일',
-	    name: 'prcCd',
-	    editor: 'text'
+	    name: 'strDt',
+	    editor: 'text',
+	    editor: 'datePicker',
+    	sortable: true
 	  },
 	  {
 		    header: '수리완료일',
-		    name: 'fctStd',
-		    editor: 'text'
+		    name: 'finDt',
+		    editor: 'text',
+		    editor: 'datePicker',
+	    	sortable: true
 	  },
 	  {
 		    header: '수리사항',
-		    name: 'fctModel',
-		    editor: 'text'
+		    name: 'fixCmt',
+		    editor: 'text',
+		    sortable: true
 	  },
 	  {
 		    header: '수량',
-		    name: 'compCd'
+		    name: 'cnt',
+		    sortable: true
 	  },
 	  {
 		    header: '단가',
-		    name: 'usePurp'
-	  },  
-	  {     //날짜(데이터피커) cdn 받아서 넣었다
-		     header: '금액',
-		     name: 'inDate',
-		     editor: 'datePicker'
-	  }
+		    name: 'unitCost',
+		    sortable: true
+	  },
+	  {
+		    header: '단가',
+		    name: 'unitCost',
+		    sortable: true
+	  },
+	  {
+		    header: '수리코드',
+		    name: 'fixCd',
+	    		  }
 	    ]
-	    const grid = new Grid({
-	         el: document.getElementById('grid'),
-	         data:data,  //이름이 같다면 생격가능
-	         rowHeaders : [ 'checkbox' ],
-	         columns
-	         //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
-	         /* columnOptions: {
-	              frozenCount: 2, // 3개의 컬럼을 고정하고
-	              frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
-	            } */
-	         });
+	   
+    //라디오 클릭하면 값 가져오기 
+  	$("input[name='fixRio']:radio").change(function () {
+  		checkRdo();
+  	})
+	
+  	let vo={};	//검색값을 담는 배열
+	//체크된 라디오 버튼 value 값 가져오는 함수 
+	//라디오버튼 값을 이용해서 아작스 사용 
+	function checkRdo(){
+		var obj_value = $("input:radio[name='fixRio']:checked").val();
+		vo.checkRadio=obj_value;
+	  /*   $.ajax({
+	    	url:'fctFixList',
+	    	method:'POST',
+	    	data: JSON.stringify(vo),
+	    	contentType: "application/json",
+	    	async : false
+	    }).done(function(datas){
+	    	console.log('리스트조회 결과값 ')
+	    	console.log(datas)
+	    	grid.resetData(datas);
+	    	
+	    }) */
+	}
+	   
+  //그리드를 id 값안에다가 붙여넣어준다.
+  let grid = new Grid({
+         el: document.getElementById('grid'),
+         data:dataSource,  //이름이 같다면 생격가능
+         rowHeaders : [ 'checkbox' ],
+         columns,
+         //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
+         /* columnOptions: {
+              frozenCount: 2, // 3개의 컬럼을 고정하고
+              frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
+            } */
+         });
+    grid.on('response', function(ev) {
+	   console.log(ev.xhr.response)
+	    if(ev.xhr.response.result != true){
+		   //grid.readData();
+	   } 
 	   
 	   
-	   //라디오 클릭하면 값 가져오기 
-	  	$("input[name='fixRio']:radio").change(function () {
-	  		checkRdo();
-	  	})
-		
-	  	let vo={};	//검색값을 담는 배열
-		//체크된 라디오 버튼 value 값 가져오는 함수 
-		//라디오버튼 값을 이용해서 아작스 사용 
-		function checkRdo(){
-			var obj_value = $("input:radio[name='fixRio']:checked").val();
-			vo.checkRadio=obj_value;
-		    $.ajax({
-		    	url:'ajax/fctFixList',
-		    	method:'POST',
-		    	data: JSON.stringify(vo),
-		    	contentType: "application/json",
-		    	async : false
-		    }).done(function(datas){
-		    	console.log('리스트조회 결과값 ')
-		    	console.log(datas)
-		    	data=datas;
-		    })
-		}
-		
+	   });
+   
+	   btnDel.addEventListener("click", function(){
+		   grid.removeCheckedRows(true);
+	   });
+	   
+	   btnSave.addEventListener("click", function(){
+		 	grid.blur();	//커서 빼주는 거 ?
+ 			grid.request('modifyData');
+	   });
+	   
+	   //등록버튼
+	   btnAdd.addEventListener("click", function() {
+			grid.appendRow({})
+	   });	
+	  
 	  	//페이지 로드 될때 처음 라디오 checked 된 id 값 가져오기 
 	   checkRdo();
    

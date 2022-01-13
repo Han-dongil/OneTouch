@@ -17,7 +17,7 @@
 </head>
 <body>
 <form id="frm" method="post">
-			<div>
+			<div style="margin-top: 10px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
 				<div>
 					<label>설비구분</label>
 					<select id="fctCd" name="fctCd"></select>

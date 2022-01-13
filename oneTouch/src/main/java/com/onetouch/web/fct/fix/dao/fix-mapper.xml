@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.fct.fix.dao.FixMapper">
 	<select id="fixSelectList" resultType="com.onetouch.web.fct.fix.dao.FixVO">
-		select * from fct_fix_mng
+		SELECT * FROM fct_fix_mng
 	</select>
+	
+	<delete id="deleteFtc">
+		DELETE
+		FROM fct_fix_mng
+		WHERE fix_cd = #{fixCd}
+	</delete>
+	
+	<update id="updateFtc">
+		UPDATE
+			fct_fix_mng set req_dt = sysdate-2, str_dt = sysdate -1, fin_dt = sysdate 
+		WHERE fix_cd = #{fixCd}
+	</update>
+	
+	<insert id="insertFtc">
+	
+	</insert>
 </mapper>
