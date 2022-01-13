@@ -1,67 +1,3 @@
-/*//자재업체 
-function mMtrComp(){
-	let mtrCompData;
-		
-	$.ajax({
-		url : './modalMtrCompList',
-		dataType : 'json',
-		async : false,
-		success : function(result){
-			console.log(result);
-			mtrCompData = result;
-		}
-	});
-	
-	dialog.dialog("open");
-			
-	$("#dialog-form").attr('title', '자재업체');
-	
-	$("#dialog-form").load("modalMtrComp", function(){
-		let mtrCompGrid = tui.Grid;
-		
-		mtrCompGrid.applyTheme('striped',{
-			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
-			}
-		})
-		
-		const mtrCompColumns = [ 
-			{
-				header: '자재업체코드',
-				name: 'dtlCd',
-				hidden: true
-			},
-			{
-				header: '자재업체명',
-				name: 'dtlNm'
-			}
-		];
-		
-		mtrCompGrid = new Grid({
-			el : document.getElementById('mtrComp_grid'),
-			data : mtrCompData,
-			columns : mtrCompColumns
-		});
-		
-		mtrCompGrid.on('dblclick', ev => {
-			console.log(mtrCompGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
-			getModalMtrComp(mtrCompGrid.getRow(ev.rowKey));
-		})
-		
-		mtrCompGrid.on('successResponse',function(ev){
-			console.log("성공")
-		})
-		mtrCompGrid.on('failResponse',function(ev){
-			console.log("실패")
-		})
-	});
-}*/
-
 
 //자재
 function mMtr(){
@@ -76,7 +12,6 @@ function mMtr(){
 			mtrData = result;
 		}
 	});
-	
 		
 	dialog.dialog("open");
 			
@@ -127,7 +62,7 @@ function mMtr(){
 				hidden: true
 			},
 			{
-				header: '업체코드',
+				header: '업체명',
 				name: 'compNm'
 			},
 			{
@@ -162,28 +97,28 @@ function mMtr(){
 }
 
 
-/*//생산업체 
-function mFctComp(){
-	let fctCompData;
+//제품
+function mPrd(){
+	let prdData;
 		
 	$.ajax({
-		url : './modalFctCompList',
+		url : './modalPrdList',
 		dataType : 'json',
 		async : false,
 		success : function(result){
 			console.log(result);
-			fctCompData = result;
+			prdData = result;
 		}
 	});
-	
+		
 	dialog.dialog("open");
 			
-	$("#dialog-form").attr('title', '설비업체');
+	$("#dialog-form").attr('title', '제품');
 	
-	$("#dialog-form").load("modalFctComp", function(){
-		let fctCompGrid = tui.Grid;
+	$("#dialog-form").load("modalPrd", function(){
+		let prdGrid = tui.Grid;
 		
-		fctCompGrid.applyTheme('striped',{
+		prdGrid.applyTheme('striped',{
 			cell:{
 				header:{
 					background:'#eef'
@@ -194,167 +129,150 @@ function mFctComp(){
 			}
 		})
 		
-		const fctCompColumns = [ 
+		const prdColumns = [ 
 			{
-				header: '설비업체코드',
-				name: 'dtlCd',
+				header: '제품코드',
+				name: 'prdCd',
 				hidden: true
 			},
 			{
-				header: '설비업체명',
-				name: 'dtlNm'
-			}
-		];
-		
-		fctCompGrid = new Grid({
-			el : document.getElementById('fctComp_grid'),
-			data : fctCompData,
-			columns : fctCompColumns
-		});
-		
-		fctCompGrid.on('dblclick', ev => {
-			console.log(fctCompGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
-			getModalFctComp(fctCompGrid.getRow(ev.rowKey));
-		})
-		
-		fctCompGrid.on('successResponse',function(ev){
-			console.log("성공")
-		})
-		fctCompGrid.on('failResponse',function(ev){
-			console.log("실패")
-		})
-	});
-}
-
-
-//자재구분
-function mMtrSect(){
-	let mtrSectData;
-		
-	$.ajax({
-		url : './modalMtrSectList',
-		dataType : 'json',
-		async : false,
-		success : function(result){
-			console.log(result);
-			mtrSectData = result;
-		}
-	});
-	
-	dialog.dialog("open");
-			
-	$("#dialog-form").attr('title', '자재구분');
-	
-	$("#dialog-form").load("modalMtrSect", function(){
-		let mtrSectGrid = tui.Grid;
-		
-		mtrSectGrid.applyTheme('striped',{
-			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
-			}
-		})
-		
-		const mtrSectColumns = [ 
+				header: '제품명',
+				name: 'prdNm'
+			},
 			{
-				header: '자재구분코드',
-				name: 'dtlCd',
+				header: '제품규격',
+				name: 'prdStd'
+			},
+			{
+				header: '관리단위',
+				name: 'mngUnit'
+			},
+			{
+				header: '필요부품',
+				name: 'needCpnt',
 				hidden: true
 			},
 			{
-				header: '자재구분',
-				name: 'dtlNm'
-			}
-		];
-		
-		mtrSectGrid = new Grid({
-			el : document.getElementById('mtrSect_grid'),
-			data : mtrSectData,
-			columns : mtrSectColumns
-		});
-		
-		mtrSectGrid.on('dblclick', ev => {
-			console.log(mtrSectGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
-			getModalMtrSect(mtrSectGrid.getRow(ev.rowKey));
-		})
-		
-		mtrSectGrid.on('successResponse',function(ev){
-			console.log("성공")
-		})
-		mtrSectGrid.on('failResponse',function(ev){
-			console.log("실패")
-		})
-	});
-}
-
-
-//제품구분
-function mPdtSect(){
-	let pdtSectData;
-		
-	$.ajax({
-		url : './modalPdtSectList',
-		dataType : 'json',
-		async : false,
-		success : function(result){
-			console.log(result);
-			pdtSectData = result;
-		}
-	});
-	
-	dialog.dialog("open");
-			
-	$("#dialog-form").attr('title', '제품구분');
-	
-	$("#dialog-form").load("modalPdtSect", function(){
-		let pdtSectGrid = tui.Grid;
-		
-		pdtSectGrid.applyTheme('striped',{
-			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
-			}
-		})
-		
-		const pdtSectColumns = [ 
-			{
-				header: '제품구분코드',
-				name: 'dtlCd',
-				hidden: true
+				header: '재고',
+				name: 'stck'
 			},
 			{
 				header: '제품구분',
-				name: 'dtlNm'
+				name: 'prdSect'
 			}
 		];
 		
-		pdtSectGrid = new Grid({
-			el : document.getElementById('pdtSect_grid'),
-			data : pdtSectData,
-			columns : pdtSectColumns
+		prdGrid = new Grid({
+			el : document.getElementById('prd_grid'),
+			data : prdData,
+			columns : prdColumns
 		});
 		
-		pdtSectGrid.on('dblclick', ev => {
-			console.log(pdtSectGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
-			getModalPdtSect(pdtSectGrid.getRow(ev.rowKey));
+		prdGrid.on('dblclick', ev => {
+			console.log(prdGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			getModalPrd(prdGrid.getRow(ev.rowKey));
 		})
 		
-		pdtSectGrid.on('successResponse',function(ev){
+		prdGrid.on('successResponse',function(ev){
 			console.log("성공")
 		})
-		pdtSectGrid.on('failResponse',function(ev){
+		prdGrid.on('failResponse',function(ev){
 			console.log("실패")
 		})
 	});
-}*/
+}
+
+
+//공정
+function mPrc(){
+	let prcData;
+		
+	$.ajax({
+		url : './modalPrcList',
+		dataType : 'json',
+		async : false,
+		success : function(result){
+			console.log(result);
+			prcData = result;
+		}
+	});
+		
+	dialog.dialog("open");
+			
+	$("#dialog-form").attr('title', '공정');
+	
+	$("#dialog-form").load("modalPrc", function(){
+		let prcGrid = tui.Grid;
+		
+		prcGrid.applyTheme('striped',{
+			cell:{
+				header:{
+					background:'#eef'
+				},
+				evenRow:{
+					background:'#fee'
+				}
+			}
+		})
+
+		const prcColumns = [ 
+			{
+				header: '공정코드',
+				name: 'prcCd',
+				hidden: true
+			},
+			{
+				header: '공정명',
+				name: 'prcNm'
+			},
+			{
+				header: '관리단위',
+				name: 'mngUnit'
+			},
+			{
+				header: '생산일수',
+				name: 'pdtDay'
+			},
+			/*{
+				header: '공정구분코드',
+				name: 'prcSect',
+				hidden: true
+			},*/
+			{
+				header: '공정구분',
+				name: 'dtlNm'
+			},
+			{
+				header: '비고',
+				name: 'cmt',
+				hidden: true
+			},
+			{
+				header: '표시순서',
+				name: 'seq',
+				hidden: true
+			}
+		];
+	console.log("333333333333")	
+		prcGrid = new Grid({
+			el : document.getElementById('prc_grid'),
+			data : prcData,
+			columns : prcColumns
+		});
+	console.log("444444444444")	
+		prcGrid.on('dblclick', ev => {
+			console.log(prcGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			getModalPrc(prcGrid.getRow(ev.rowKey));
+		})
+	console.log("5555555555555")	
+		prcGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		prcGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+	});
+}
 
 
 //공콩코드

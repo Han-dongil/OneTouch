@@ -15,6 +15,8 @@ import com.onetouch.web.adm.bas.dao.BasDtlVO;
 import com.onetouch.web.adm.bas.service.BasService;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.bom.service.BomService;
+import com.onetouch.web.adm.mng.dao.MngVO;
+import com.onetouch.web.adm.mng.service.MngService;
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
 import com.onetouch.web.zzz.dao.MsgAltVO;
@@ -27,6 +29,7 @@ public class EtcController {
 	@Autowired BasService basService;
 	@Autowired MtrService mtrService;
 	@Autowired BomService bomService;
+	@Autowired MngService mngService;
 	
 	@RequestMapping("msgAlt")
 	public String msgAltList() {
@@ -61,22 +64,6 @@ public class EtcController {
 		return service.selectAll();
 	}
 	
-	/*
-	 * //modal호출 - 자재업체
-	 * 
-	 * @RequestMapping("modalMtrComp") public String modalMtrComp() { return
-	 * "zzz/modalMtrComp"; }
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("modalMtrCompList") public List<BasDtlVO> modalMtrCompList(){
-	 * BasDtlVO vo = new BasDtlVO(); vo.setBasCd("MTR_COM"); System.out.println(vo);
-	 * 
-	 * List<BasDtlVO> list = new ArrayList<BasDtlVO>(); list =
-	 * basService.selectBasDtl(vo); System.out.println(list);
-	 * 
-	 * return list; } //-----------------------------
-	 */	
 	
 	//modal호출 - 자재
 	@RequestMapping("modalMtr")
@@ -105,62 +92,30 @@ public class EtcController {
 	@GetMapping("modalPrdList")
 	public List<PrdVO> modalPrdList(){
 		List<PrdVO> list = new ArrayList<PrdVO>();		
-		//list = bomService.selectBomPrd(); //머지하고 새로하기
+		list = bomService.selectUsePrd(); //머지하고 새로하기
 		System.out.println(list);
 		
 		return list;
 	}
 	//-----------------------------
 	
-	/*
-	 * //modal호출 - 설비업체
-	 * 
-	 * @RequestMapping("modalFctComp") public String modalFctComp() { return
-	 * "zzz/modalFctComp"; }
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("modalFctCompList") public List<BasDtlVO> modalFctCompList(){
-	 * BasDtlVO vo = new BasDtlVO(); vo.setBasCd("FCT_COM"); System.out.println(vo);
-	 * 
-	 * List<BasDtlVO> list = new ArrayList<BasDtlVO>(); list =
-	 * basService.selectBasDtl(vo); System.out.println(list);
-	 * 
-	 * return list; } //-----------------------------
-	 * 
-	 * //modal호출 - 자재구분
-	 * 
-	 * @RequestMapping("modalMtrSect") public String modalMtrSect() { return
-	 * "zzz/modalMtrSect"; }
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("modalMtrSectList") public List<BasDtlVO> modalMtrSectList(){
-	 * BasDtlVO vo = new BasDtlVO(); vo.setBasCd("MTR_SECT");
-	 * System.out.println(vo);
-	 * 
-	 * List<BasDtlVO> list = new ArrayList<BasDtlVO>(); list =
-	 * basService.selectBasDtl(vo); System.out.println(list);
-	 * 
-	 * return list; } //-----------------------------
-	 * 
-	 * 
-	 * //modal호출 - 제품구분
-	 * 
-	 * @RequestMapping("modalPdtSect") public String modalPdtSect() { return
-	 * "zzz/modalPdtSect"; }
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("modalPdtSectList") public List<BasDtlVO> modalPdtSectList(){
-	 * BasDtlVO vo = new BasDtlVO(); vo.setBasCd("PDT_SECT");
-	 * System.out.println(vo);
-	 * 
-	 * List<BasDtlVO> list = new ArrayList<BasDtlVO>(); list =
-	 * basService.selectBasDtl(vo); System.out.println(list);
-	 * 
-	 * return list; } //-----------------------------
-	 */	
+	//modal호출 - 제품
+	@RequestMapping("modalPrc")
+	public String modalPrc() {
+		return "zzz/modalPrc";
+	}
+	
+	@ResponseBody
+	@GetMapping("modalPrcList")
+	public List<MngVO> modalPrcList(){
+		List<MngVO> list = new ArrayList<MngVO>();		
+		list = mngService.selectPrcMng(); //머지하고 새로하기  selectUsePrc
+		System.out.println(list);
+		
+		return list;
+	}
+	//-----------------------------
+	
 	
 	//modal호출 - 공통
 	@RequestMapping("modalBas")
@@ -176,7 +131,7 @@ public class EtcController {
 		System.out.println(vo);
 		
 		List<BasDtlVO> list = new ArrayList<BasDtlVO>();		
-		list = basService.selectBasDtl(vo);
+		list = basService.selectBasDtl(vo); //selectUseBasDtl 에 where절 조건에 bas_cd 추가되면 수정하기
 		System.out.println(list);
 		
 		return list;
