@@ -8,11 +8,11 @@
 		from   adm_prd
 	</select>
 	
-	<!-- use_yn = 'y'인 select -->
+	<!-- use_yn = 'Y'인 select -->
 	<select id="selectUsePrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
 		select * 
 		from   adm_prd
-		where  use_yn = 'y'
+		where  use_yn = 'Y'
 	</select>
 	
 	<!-- 제품코드 선택하면 제품 정보가 뜬다-->
