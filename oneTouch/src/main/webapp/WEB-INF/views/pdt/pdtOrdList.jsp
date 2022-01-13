@@ -115,9 +115,16 @@
 	//체크박스 선택
 	grid.on('check',(e)=>{
 		checked.push(dataSource[e.rowKey]);
-		console.log(checked);
+		//console.log(grid.getValue(e.rowKey,'_checked'))
+		checked[e.rowKey]._attributes=true;
+		console.log(checked[e.rowKey]._attributes);
+		//console.log(checked[e.rowKey]._attributes.check);
 		
 	})
+		grid.on('uncheck',ev=>{
+			//console.log(grid.getValue(ev.rowKey,'_checked'))
+			console.log(checked[ev.rowKey]._attributes);
+	}) 
 	 //체크박스 삭제 ajax
  	function checkDelFnc(){
 		$.ajax({
@@ -133,6 +140,14 @@
 			}
 		})
 	}
+/* 	grid.on('check',function(ev){
+		console.log(grid[ev.rowkey]);
+		console.log(ev.c)
+	})
+	grid.on('uncheck',function(ev){
+		console.log(ev);
+		console.log(grid[ev.rowkey]);
+	}) */
 /* 	const dataSource={
 		api:{
 			readData:{url:'./pdtOrdlist',

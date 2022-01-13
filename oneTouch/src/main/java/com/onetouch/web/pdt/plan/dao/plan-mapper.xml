@@ -33,10 +33,12 @@
 		delete from pdt_plan where plan_no=#{planNo}	
 	</delete>
 <!-- 제품명검색해서 로트별 재고보기 -->
-<select id="lotCntSelect" resultType="com.onetouch.web.mtr.lot.dao.LotVO">
-	select b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd
-    from adm_bom a join mtr_lot_stck b
-    on (a.mtr_cd = b.mtr_cd)
-    where a.prd_cd=#{prdCd}
+<select id="lotCntSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+    select a.use_amt as useAmt,a.mtrlot as mtrLot , a.stckCnt as stckCnt , a.hldCnt as hldCnt , a.mtrcd as mtrCd , b.prd_cd as prdCd , b.need_cnt*a.use_amt as needCnt 
+    from (select a.use_amt as use_amt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prd_cd
+            from adm_bom a join mtr_lot_stck b
+            on (a.mtr_cd = b.mtr_cd)
+            where a.prd_cd=#{prdCd}) a join (select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}) b
+            on(a.prd_cd= b.prd_cd)
 </select>	
 </mapper>
