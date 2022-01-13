@@ -20,6 +20,7 @@
 <!-- modal창 호출 시 필요 -->
 <script src="${path}/resources/js/modal.js"></script>
 
+
 </head>
 <body>
 	<input id='rtn'>
@@ -29,17 +30,20 @@
 	<button type='button' id='btnMtrSect'>자재구분</button>
 	<button type='button' id='btnPdtSect'>제품구분</button>
 	<button type='button' id='btnFctDiv'>설비구분</button>
+	<button type='button' id='btnPrd'>제품</button>
+	<button type='button' id='btnPrc'>공정</button>
 	
 	
 	<!-- modal창 만들 때 필요 -->
 	<div id="dialog-form" title="title"></div>
 	
+	
 	<form>
 		<input type='date' id='altSendDt'>
 		<button action='' id='selBtn' name='selBtn' onClick='selectDate()'>조회</button>
 		<button type='button' id='delBtn' name='delBtn' onClick='DeleteChecked()'>선택삭제</button>
-		
 	</form>
+	
 	<div id='grid'></div>
 	
 	<script type="text/javascript">
@@ -50,6 +54,15 @@
 		let dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 			autoOpen : false,
 			modal : true,
+			resizable: false,
+			height: "auto",
+			width: 300, //530,  제품모달은 사이즈 530정도로~~
+			modal: true,
+			/* maxHeight: 600
+			maxWidth: 600
+			minHeight: 200
+			minWidth: 200
+			position: { my: "left top", at: "left bottom", of: button } */
 		});
 		
 		$("#btnMtr").on("click", function(){
@@ -64,86 +77,46 @@
 		}
 		//자재 Modal end=========================================================================================
 			
-		
-		/* //자재업체 Modal start=========================================================================================
+			
+		//제품 Modal start=========================================================================================
 		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 		//dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
 		//	autoOpen : false,
 		//	modal : true,
 		//});
 		
-		$("#btnMtrComp").on("click", function(){
-			mMtrComp();
+		$("#btnPrd").on("click", function(){
+			mPrd();
 		})
 		
-		function getModalMtrComp(param){ //모달에서 값을 선택했을 때 호출
+		function getModalPrd(param){//모달에서 값을 선택했을 때 호출
 			//선택한 값 parameter받아서 각자 처리
 			$("#rtn").val(param);
 			console.log(param);
 			dialog.dialog("close");
 		}
-		//자재업체 Modal end=========================================================================================
+		//제품 Modal end=========================================================================================
+			
 		
-		
-		//설비업체 Modal start=========================================================================================
+		//공정 Modal start=========================================================================================
 		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 		//dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
 		//	autoOpen : false,
 		//	modal : true,
 		//});
 		
-		$("#btnFctComp").on("click", function(){
-			mFctComp();
+		$("#btnPrc").on("click", function(){
+			mPrc();
 		})
 		
-		function getModalFctComp(param){ //모달에서 값을 선택했을 때 호출
+		function getModalPrc(param){//모달에서 값을 선택했을 때 호출
 			//선택한 값 parameter받아서 각자 처리
 			$("#rtn").val(param);
 			console.log(param);
 			dialog.dialog("close");
 		}
-		//설비업체 Modal end=========================================================================================
+		//공정 Modal end=========================================================================================
 			
-			
-		//자재구분 Modal start=========================================================================================
-		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
-		//dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
-		//	autoOpen : false,
-		//	modal : true,
-		//});
-		
-		$("#btnMtrSect").on("click", function(){
-			mMtrSect();
-		})
-		
-		function getModalMtrSect(param){ //모달에서 값을 선택했을 때 호출
-			//선택한 값 parameter받아서 각자 처리
-			$("#rtn").val(param);
-			console.log(param);
-			dialog.dialog("close");
-		}
-		//자재구분 Modal end=========================================================================================
-			
-			
-		//제품구분 Modal start=========================================================================================
-		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
-		//dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
-		//	autoOpen : false,
-		//	modal : true,
-		//});
-		
-		$("#btnPdtSect").on("click", function(){
-			mPdtSect();
-		})
-		
-		function getModalPdtSect(param){ //모달에서 값을 선택했을 때 호출
-			//선택한 값 parameter받아서 각자 처리
-			$("#rtn").val(param);
-			console.log(param);
-			dialog.dialog("close");
-		}
-		//제품구분 Modal end========================================================================================= */
-		
 		
 		//************************공통코드 모듈에서 가져다 쓰는 방법************************
 		//자재업체 Modal start=========================================================================================
