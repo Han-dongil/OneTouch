@@ -15,8 +15,8 @@ public class BomServiceImpl implements BomService {
 
 	@Autowired BomMapper mapper;
 	@Override
-	public List<PrdVO> selectBomPrd(PrdVO prdvo) {
-		return mapper.selectBomPrd(prdvo);
+	public List<PrdVO> selectPrd(PrdVO prdvo) {
+		return mapper.selectPrd(prdvo);
 	}
 
 	@Override

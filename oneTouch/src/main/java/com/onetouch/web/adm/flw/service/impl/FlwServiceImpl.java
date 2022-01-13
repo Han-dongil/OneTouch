@@ -16,6 +16,7 @@ public class FlwServiceImpl implements FlwService{
 
 	@Override
 	public List<FlwVO> selectFlw(FlwVO flwvo) {
+		System.out.println("serviceimpl"+ mapper.selectFlw(flwvo));
 		return mapper.selectFlw(flwvo);
 	}
 	
