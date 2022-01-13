@@ -17,7 +17,7 @@
 		from    adm_mtr
 	</select>
 	
-	<!-- use_yn='y' 자재리스트 -->
+	<!-- use_yn='Y' 자재리스트 -->
 	<select id="selectUseAdmMtr" resultType="com.onetouch.web.adm.mtr.dao.MtrVO">
 		select  mtr_cd, 
 		        mtr_nm, 
@@ -30,7 +30,7 @@
 		        use_yn,
 		        mng_amt
 		from    adm_mtr
-		where   use_yn='y' 
+		where   use_yn='Y' 
 	</select>
 	
 	<!-- 클릭한 자재 정보 조회 -->

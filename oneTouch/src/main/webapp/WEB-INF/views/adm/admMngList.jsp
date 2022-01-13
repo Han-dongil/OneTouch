@@ -104,7 +104,6 @@
 		let a = {}
 		a.text = prcLists[i].dtlNm;
 		a.value = prcLists[i].dtlNm;
-		
 		columns[4].editor.options.listItems.push(a);
 	}
 	

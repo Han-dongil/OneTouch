@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.flw.dao.FlwMapper;
 import com.onetouch.web.adm.flw.dao.FlwVO;
 import com.onetouch.web.adm.flw.service.FlwService;
@@ -19,6 +18,8 @@ public class FlwServiceImpl implements FlwService{
 	public List<FlwVO> selectFlw(FlwVO flwvo) {
 		return mapper.selectFlw(flwvo);
 	}
+	
+	
 
 
 }

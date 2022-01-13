@@ -27,12 +27,12 @@ public class BasServiceImpl implements BasService{
 		return mapper.selectBasDtl(basDtlvo);
 	}
 	@Override
-	public List<BasDtlVO> selectUseBasDtl() {
-		return mapper.selectUseBasDtl();
-	}
-	@Override
 	public List<BasDtlVO> selectBasDtlAll() {
 		return mapper.selectBasDtlAll();
+	}
+	@Override
+	public List<BasDtlVO> selectUseBasDtl(BasDtlVO basDtlvo) {
+		return mapper.selectUseBasDtl(basDtlvo);
 	}
 
 

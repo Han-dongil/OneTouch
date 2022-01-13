@@ -8,11 +8,19 @@
 		from   adm_prc_mng
 	</select>
 
-	<!-- 공정리스트 use_yn='y' -->
+	<!-- 공정리스트 use_yn='Y' -->
 	<select id="selectUsePrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
-		select *
+		select prc_cd, 
+               prc_nm, 
+               mng_unit, 
+               pdt_day,
+               prc_sect
+               FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtlNm, 
+               cmt,
+               seq,
+               use_yn
 		from   adm_prc_mng
-		where  use_yn='y' 
+		where  use_yn='Y' 
 	</select>
 
 	<!-- 공정리스트(내가 보고싶은대로) -->
@@ -31,7 +39,7 @@
 	
 	<!-- 공정구분 불러오기 -->
 	<select id="selectPrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
-		select dtl_nm from adm_bas_dtl_cd where bas_cd = 'pdt_prc'
+		select dtl_nm from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
 	</select>
 	
 	<delete id="deletePrc">
@@ -59,7 +67,7 @@
 		 mng_unit,
 		 pdt_day,
 		 prc_sect,
-		 cmt,
+		 <if test="cmt != null">cmt,</if>
 		 seq,
 		 use_yn)
 		 VALUES(
@@ -68,7 +76,7 @@
 		 #{mngUnit},
 		 #{pdtDay},
 		 FN_GET_BAS_DTL_NM_TO_CD(#{dtlNm}),
-		 #{cmt},
+		 <if test="cmt != null">#{cmt},</if>
 		 #{seq},
 		 #{useYn}
 		 )
