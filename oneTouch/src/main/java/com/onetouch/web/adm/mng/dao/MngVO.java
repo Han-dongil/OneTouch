@@ -13,4 +13,5 @@ public class MngVO {
 	private String cmt;		//비고
 	private String seq;		//표시순서
 	private String useYn;	//사용여부
+	private String prcSect;	//공정구분
 }

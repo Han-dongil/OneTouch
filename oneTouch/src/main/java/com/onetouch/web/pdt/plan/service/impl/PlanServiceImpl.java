@@ -1,5 +1,6 @@
 package com.onetouch.web.pdt.plan.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,7 @@ public class PlanServiceImpl implements PlanService {
 		list = new ModifyVO<PlanVO>();
 	}
 	@Override
-	public List<LotVO> lotCntSelect(PlanVO vo) {
-		
+	public List<PlanVO> lotCntSelect(PlanVO vo) {
 		return mapper.lotCntSelect(vo);
 	}
 }

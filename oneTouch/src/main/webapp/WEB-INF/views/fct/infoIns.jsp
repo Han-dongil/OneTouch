@@ -35,46 +35,47 @@
 	<button type="button" id='btnSave'>저장</button>
 	<button type="button" id='btnEdit'>수정</button>
 </div>
-
-<form id="infoFrm"  method="post">
-	<table>
-		<tr>
-			<td>설비코드</td>
-			<td><input type="text" id="fctCd" name = "fctCd" value= "" /></td>
-			<td>사용여부</td>
-			<td><input type="checkbox" id="useYn" name = "useYn" checked=""/></td>
-			<td>공정</td>
-			<td><input type="text" id="prcCd" name = "prcCd" value=""/></td>
-			<td>설비명</td>
-			<td><input type="hidden" id="fctNm" name = "fctNm" value=""/></td>
-		</tr>
-		<tr>
-			<td>설비규격</td>
-			<td><input type="text" id="fctStd" name = "fctStd" value=""/></td>
-			<td>모델명</td>
-			<td><input type="text" id="fctModel" name = "fctModel" value=""/></td>
-			<td>회사코드</td>
-			<td><input type="text" id="compCd" name = "compCd" value=""/></td>
-		</tr>
-		<tr>
-			<td>입고일</td>
-			<td><input type="date" id="inDate" name = "inDate" value=""/></td>
-			<td>구매금액</td>
-			<td><input type="text" id="purchCost" name = "purchCost" value=""/></td>
-			<td>점검주기</td>
-			<td><input type="text" id="chkProd" name = "chkProd" value=""/></td>
-		</tr>
-		<tr>
-			<td>이미지</td>
-			<td><input type="text" id="FctImg" name = "FctImg" value=""/></td>
-			<td>시간당 생산량</td>
-			<td><input type="text" id="uphPdtAmt" name = "uphPdtAmt" value=""/></td>
-			<td>담당자</td>
-			<td><input type="text" id="empNo" name = "empNo" value=""/></td>
-		</tr>
-		
-	</table>
-</form>
+<div style="margin-top: 10px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
+	<form id="infoFrm"  method="post">
+		<table>
+			<tr>
+				<td>설비코드</td>
+				<td><input type="text" id="fctCd" name = "fctCd" value= "" /></td>
+				<td>사용여부</td>
+				<td><input type="checkbox" id="useYn" name = "useYn" checked=""/></td>
+				<td>공정</td>
+				<td><input type="text" id="prcCd" name = "prcCd" value=""/></td>
+				<td>설비명</td>
+				<td><input type="hidden" id="fctNm" name = "fctNm" value=""/></td>
+			</tr>
+			<tr>
+				<td>설비규격</td>
+				<td><input type="text" id="fctStd" name = "fctStd" value=""/></td>
+				<td>모델명</td>
+				<td><input type="text" id="fctModel" name = "fctModel" value=""/></td>
+				<td>회사코드</td>
+				<td><input type="text" id="compCd" name = "compCd" value=""/></td>
+			</tr>
+			<tr>
+				<td>입고일</td>
+				<td><input type="date" id="inDate" name = "inDate" value=""/></td>
+				<td>구매금액</td>
+				<td><input type="text" id="purchCost" name = "purchCost" value=""/></td>
+				<td>점검주기</td>
+				<td><input type="text" id="chkProd" name = "chkProd" value=""/></td>
+			</tr>
+			<tr>
+				<td>이미지</td>
+				<td><input type="text" id="FctImg" name = "FctImg" value=""/></td>
+				<td>시간당 생산량</td>
+				<td><input type="text" id="uphPdtAmt" name = "uphPdtAmt" value=""/></td>
+				<td>담당자</td>
+				<td><input type="text" id="empNo" name = "empNo" value=""/></td>
+			</tr>
+			
+		</table>
+	</form>
+</div>
 
 <div id="grid" style="padding-right"></div>
 
