@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class FixVO {
 
-	String fixCD;
+	String fixCd;
 	String fctCd;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
