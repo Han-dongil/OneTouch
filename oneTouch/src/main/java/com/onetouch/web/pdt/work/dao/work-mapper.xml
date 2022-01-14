@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.pdt.work.dao.WorkMapper">
+	<select id="planListView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
+		a.due_date as dueDate , a.work_prot as workPort,
+		a.plan_date as planDate , b.plan_dtl_no as planDtlNo,
+		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as needCnt,
+		b.instr_cnt as instrCnt , b.work_str_date as workStrDate ,
+		b.work_plan_time as workPlanTime
+		from pdt_plan a join pdt_plan_dtl b
+		on(a.plan_no = b.plan_no)
+	</select>
 	<select id="workList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
-		select instr_no, plan_no, instr_date, pdt_fin_date
-		from pdt_work_inster
+		select * from pdt_work_instr
+		
 	</select>
 
 

@@ -6,9 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 <!--aop-context.xml  -->
-<bean id="logAspect" class="com.onetouch.web.advice.LogAspect"/>
+<!-- <bean id="logAspect" class="com.onetouch.web.advice.LogAspect"/>
 <bean id="logAfterAspect" class="com.onetouch.web.advice.LogAfterAspect"/>
-<bean id="exeTimeAspect" class="com.onetouch.web.advice.ExeTimeAspect"/> 
+<bean id="exeTimeAspect" class="com.onetouch.web.advice.ExeTimeAspect"/>  -->
 	<aop:config>
 		<aop:pointcut expression="execution( * com.onetouch.web..*Impl.*(..))" id="allpointcut"/><!-- 리턴타입 * 패키지 app ~~~ Impl 메서드 *(..) 모든메서드 매개변수암거나 --> 
 		<aop:aspect ref="logAspect">

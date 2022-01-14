@@ -54,7 +54,7 @@
 	insert into used_mtr_lot (mtr_lot, instr_dtl_no, dtl_select) 
 	values (
 	#{mtrLot},
-	#{planDtlNO},
+	#{planDtlNo},
 	'PD')
 </insert>
 <select id="findPlanSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
