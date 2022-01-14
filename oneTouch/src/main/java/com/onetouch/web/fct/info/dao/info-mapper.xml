@@ -11,14 +11,8 @@
 		<if test='checkPrcCd != "d" and checkPrcCd != null'>
 			and prc_cd = #{checkPrcCd}
 		</if>
-		
-	
+</select>
 
-</select>
-<!-- 공정코드 조회  -->
-<select id="selectPrcCd" resultType="AdmBasDtlCdVO">
-	select * from adm_bas_dtl_cd where bas_cd = 'fct_div'
-</select>
 
 
 <!-- 단건조회 -->
