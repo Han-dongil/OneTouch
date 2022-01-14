@@ -13,9 +13,10 @@
 		select prc_cd, 
                prc_nm, 
                mng_unit, 
+               FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
                pdt_day,
                prc_sect
-               FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtlNm, 
+               FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as prcSectNm, 
                cmt,
                seq,
                use_yn
@@ -28,8 +29,9 @@
 		SELECT   prc_cd, 
 		         prc_nm, 
 		         mng_unit, 
+		         FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		         pdt_day,
-		         FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as dtlNm, 
+		         FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as prcSectNm, 
 		         cmt,
 		         seq,
 		         use_yn

@@ -6,5 +6,6 @@ public interface BomMapper {
 	List<PrdVO> selectPrd(PrdVO prdvo);
 	List<BomVO> selectBomDtl(BomVO bomvo);
 	List<PrdVO> selectPrdAll();
+	List<PrdVO> selectUsePrdAll();
 	List<PrdVO> selectUsePrd();
 }

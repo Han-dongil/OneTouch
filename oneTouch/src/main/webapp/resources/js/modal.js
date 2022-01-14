@@ -52,9 +52,13 @@ function mMtr(){
 				hidden: true
 			},
 			{
-				header: '단위',
+				header: '단위코드',
 				name: 'unit',
 				hidden: true
+			},
+			{
+				header: '단위',
+				name: 'unitNm'
 			},
 			{
 				header: '업체코드',
@@ -66,8 +70,13 @@ function mMtr(){
 				name: 'compNm'
 			},
 			{
+				header: '자재구분코드',
+				name: 'mtrSect',
+				hidden: true
+			},
+			{
 				header: '자재구분',
-				name: 'mtrSect'
+				name: 'mtrSectNm'
 			},
 			{
 				header: '안전재고',
@@ -144,8 +153,13 @@ function mPrd(){
 				name: 'prdStd'
 			},
 			{
+				header: '관리단위코드',
+				name: 'mngUnit',
+				hidden: true
+			},
+			{
 				header: '관리단위',
-				name: 'mngUnit'
+				name: 'mngUnitNm'
 			},
 			{
 				header: '필요부품',
@@ -226,21 +240,25 @@ function mPrc(){
 				name: 'prcNm'
 			},
 			{
-				header: '관리단위',
+				header: '관리단위코드',
 				name: 'mngUnit'
+			},
+			{
+				header: '관리단위',
+				name: 'mngUnitNm'
 			},
 			{
 				header: '생산일수',
 				name: 'pdtDay'
 			},
-			/*{
+			{
 				header: '공정구분코드',
 				name: 'prcSect',
 				hidden: true
-			},*/
+			},
 			{
 				header: '공정구분',
-				name: 'dtlNm'
+				name: 'prcSectNm'
 			},
 			{
 				header: '비고',
@@ -253,18 +271,18 @@ function mPrc(){
 				hidden: true
 			}
 		];
-	console.log("333333333333")	
+	
 		prcGrid = new Grid({
 			el : document.getElementById('prc_grid'),
 			data : prcData,
 			columns : prcColumns
 		});
-	console.log("444444444444")	
+	
 		prcGrid.on('dblclick', ev => {
 			console.log(prcGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
 			getModalPrc(prcGrid.getRow(ev.rowKey));
 		})
-	console.log("5555555555555")	
+	
 		prcGrid.on('successResponse',function(ev){
 			console.log("성공")
 		})
