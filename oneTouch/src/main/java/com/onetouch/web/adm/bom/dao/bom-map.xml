@@ -53,7 +53,7 @@
 		        prd_nm,
 		        prd_std,
 		        mng_unit as mngUnitCd,
-		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnit,
+		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
 		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,

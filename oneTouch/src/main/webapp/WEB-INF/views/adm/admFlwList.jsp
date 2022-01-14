@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +9,11 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 </head>
 <body>
 <br>
-<h3>[공정흐름관리]</h3>
+<h3>[제품공정흐름관리]</h3>
 <hr>
 <div class="flex row">
 <div class = "col-4">
@@ -21,15 +22,18 @@
 	<br>
 </div>
 <div class= "col-8">
-	<h4>✔제품정보</h4><hr>
-	<form id=frm>
-		<label>제품코드&nbsp;</label><input id="prdCd">
-		<label>제품명&emsp;&nbsp;</label><input id="prdNm"><br>
-		<label>제품규격&nbsp;</label><input id="prdStd">
-		<label>관리단위&nbsp;</label><input id="mngUnit"><br>
-		<label>제품구분&nbsp;</label><input id="prdSect">
-		<label>재고&emsp;&emsp;&nbsp;</label><input id="stck"><br>
-		<label>사용여부&nbsp;</label><input id="useYn">
+	<h4>✔제품정보</h4>
+	<div align="right" style="margin-right: 3%;">
+		<button id="btnEdit">수정</button><hr>
+	</div>
+	<form id="flwFrm" name="flwFrm" method="post">
+		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" value=""/>
+		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" disabled="disabled"><br>
+		<label>제품규격&nbsp;</label><input id="prdStd" name="prdStd">
+		<label>재고&emsp;&emsp;&nbsp;</label><input id="stck" name="stck"><br>
+		<label>관리단위&nbsp;</label><input id="mngUnit" name="mngUnit">
+		<label>제품구분&nbsp;</label><input id="prdSect" name="prdSect"><br>
+		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox">
 	</form>
 	<hr>
 	<div align="right" style="margin-right: 3%;">
@@ -81,23 +85,32 @@
 	},
 	{
 		header : '작업설명',
-		name : 'workCmt'
+		name : 'workCmt',
+		editor : 'text'
 	},
 	{
 		header : '기준부하율',
-		name : 'stdLoad'
+		name : 'stdLoad',
+		editor : 'text'
 	},
 	{
 		header : '단가',
-		name : 'unitCost'
+		name : 'unitCost',
+		editor : 'text'
 	},
 	{
 		header : 'LEAD타임',
 		name : 'leadTime',
+		editor : 'text'
 	},
 	{
-		header : '코드',
+		header : '제품코드',
 		name : 'prdCd',
+		hidden : true
+	},
+	{
+		header : '공정코드',
+		name : 'prcCd',
 		hidden : true
 	}];
 	
@@ -128,7 +141,7 @@
 	const grid1 = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource1,
-		rowHead ers: ['checkbox'],
+		rowHeaders: ['checkbox'],
 		columns: columns1,
 		bodyHeight: 540,
 		minBodyHeight: 540
@@ -154,13 +167,27 @@
 				async : false
 			}).done(function(datas) {
 				PrdDtl = datas.data.contents[0];
-				$('#prdCd').val(PrdDtl.prdCd);
-				$('#prdNm').val(PrdDtl.prdNm);
-				$('#prdStd').val(PrdDtl.prdStd);
-				$('#mngUnit').val(PrdDtl.mngUnit);
-				$('#prdSect').val(PrdDtl.prdSect);
-				$('#stck').val(PrdDtl.stck);
-				$('#useYn').val(PrdDtl.useYn);
+				document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
+				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
+				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
+				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnitNm);
+				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSectNm);
+				document.getElementById('stck').setAttribute('value',PrdDtl.stck);
+				//$('#prdCd').val(PrdDtl.prdCd);
+				//$('#prdNm').val(PrdDtl.prdNm);
+				//$('#prdStd').val(PrdDtl.prdStd);
+				//$('#mngUnit').val(PrdDtl.mngUnitNm);
+				//$('#prdSect').val(PrdDtl.prdSectNm);
+				//$('#stck').val(PrdDtl.stck);
+				/* console.log(PrdDtl.useYn);
+				console.log($('#prdNm').val()); */
+				console.log($('#flwFrm').serialize());
+				
+				if(PrdDtl.useYn == 'Y') {
+					document.getElementById('useYn').checked = true
+				} else {
+					document.getElementById('useYn').checked = false
+				}
 			})
 		}
 	})
@@ -187,6 +214,33 @@
 		grid2.blur();
 		grid2.request('modifyData');
 	})
+	
+
+
+
+	
+	
+	//수정버튼
+	btnEdit.addEventListener("click", function() {
+		console.log($('#useYn').is(':checked'));
+		/* if($('#useYn').is(':checked')){
+			document.getElementById('useYn').setAttribute('value','Y');
+		} else {
+			document.getElementById('useYn').setAttribute('value','N');		}
+		 */
+		console.log($('#flwFrm'));
+		console.log(document.getElementById('useYn').getAttribute('value'));
+		
+		$.ajax({
+			url: "updatePrd",
+			method: "POST",
+			data: $('#flwFrm').serializeObject(),
+			contentType: 'application/json',
+			success: function(result) {
+				console.log(result)
+			}
+		})
+	})	
 	
 	
 </script>

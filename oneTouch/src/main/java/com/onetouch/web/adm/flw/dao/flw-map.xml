@@ -5,6 +5,8 @@
 	<!-- 공정전개 보기 -->
 	<select id="selectFlw" resultType="com.onetouch.web.adm.flw.dao.FlwVO">
 		select   prc_seq,
+				 prd_cd,
+				 prc_cd,
 		         FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
 		         work_cmt,
 		         std_load,
@@ -18,7 +20,32 @@
 	<!-- 공정전개 지우기 -->
 	<delete id="deleteFlw">
 		delete 
-		from adm_prc_flow
-		where prd_cd = #{prdCd}
+		from 	adm_prc_flow
+		where 	prd_cd = #{prdCd}
 	</delete>
+	
+	<update id="updateFlw">
+		UPDATE 	adm_prc_flow
+		SET 	work_cmt = #{workCmt},
+				std_load = #{stdLoad},
+				unit_cost = #{unitCost},
+				lead_time = #{leadTime}
+		WHERE	prc_cd = #{prcCd}
+	</update>
+	
+	<update id="updatePrd">
+		UPDATE 	adm_prd
+		SET 	prd_std = #{prdStd},
+				
+				stck = #{stck},
+				
+				use_yn = 
+				<if test = "useYn == null || useYn == ''" >
+					'N'
+				</if>
+				<if test = "useYn == 'on'">
+					'Y'
+				</if>
+		WHERE	prd_cd = #{prdCd}		
+	</update>
 </mapper>

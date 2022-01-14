@@ -31,6 +31,7 @@
 		         mng_unit, 
 		         FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		         pdt_day,
+		         prc_sect,
 		         FN_GET_BAS_DTL_CD_TO_NM(prc_sect) as prcSectNm, 
 		         cmt,
 		         seq,
@@ -41,7 +42,7 @@
 	
 	<!-- 공정구분 불러오기 -->
 	<select id="selectPrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
-		select dtl_nm from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
+		select dtl_nm as prcSectNm from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
 	</select>
 	
 	<delete id="deletePrc">
@@ -55,7 +56,7 @@
 		SET 	prc_nm = #{prcNm},
 				mng_unit = #{mngUnit},
 				pdt_day = #{pdtDay},
-				prc_sect = FN_GET_BAS_DTL_NM_TO_CD(#{dtlNm}),
+				prc_sect = FN_GET_BAS_DTL_NM_TO_CD(#{prcSectNm}),
 		<if test="cmt != null">cmt = #{cmt},</if>
 				seq = #{seq},
 				use_yn = #{useYn}
@@ -77,7 +78,7 @@
 		 #{prcNm},
 		 #{mngUnit},
 		 #{pdtDay},
-		 FN_GET_BAS_DTL_NM_TO_CD(#{dtlNm}),
+		 FN_GET_BAS_DTL_NM_TO_CD(#{prcSectNm}),
 		 <if test="cmt != null">#{cmt},</if>
 		 #{seq},
 		 #{useYn}

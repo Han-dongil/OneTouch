@@ -1,6 +1,7 @@
 package com.onetouch.web.adm.flw.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class FlwController {
 	@GetMapping("/admPrdDtlList")
 	public Map<String, Object> prdListDtl(PrdVO prdvo) {
 		
-		System.out.println(prdvo);
+		System.out.println("dtl"+prdvo);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("contents", bomservice.selectPrd(prdvo));
@@ -84,6 +85,15 @@ public class FlwController {
 	public void modify(@RequestBody ModifyVO<FlwVO> mvo) {
 		System.out.println("modify" + mvo);
 		flwservice.modify(mvo);
+	}
+	
+	//수정
+	@ResponseBody
+	@PostMapping("updatePrd")
+	public List<PrdVO> updatePrd(@RequestBody PrdVO prdvo) {
+		flwservice.updatePrd(prdvo);
+		System.out.println("upd"+prdvo);
+		return bomservice.selectPrd(prdvo);
 	}
 	
 }
