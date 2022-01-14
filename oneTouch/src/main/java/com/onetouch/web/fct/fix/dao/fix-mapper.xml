@@ -13,6 +13,21 @@
 		<if test="fixPhs == '수리완료'">
 			 AND fix_phs = #{fixPhs} 
 		</if>
+		<if test="fixTo != null">
+			<![CDATA[
+				AND fin_dt <= #{fixTo}
+			]]>
+		</if>
+		<if test="fixFrom != null">
+			<![CDATA[
+				AND fin_dt >= #{fixFrom}
+			]]>
+		</if>
+		<if test='fctCd != null and fctCd != "" and fctCd != "d"'>
+			<![CDATA[
+				AND substr(fct_cd,1,11) = #{fctCd}
+			]]>
+		</if>
 	</select>
 	
 	<delete id="deleteFtc">
@@ -24,11 +39,16 @@
 	<update id="updateFtc">
 		UPDATE
 			fct_fix_mng set
-			 <if test="strDt != null">req_dt = sysdate,</if>
-			str_dt = sysdate,
-			<if test="finDt != null">,fin_dt = #{finDt},</if> 
-			<if test="fixCmt != null">fix_cmt = #{fixCmt},</if> 
-						   fix_phs = #{fixPhs}
+			<if test='fixPhs.equals("수리중")'>
+				str_dt = sysdate,
+			</if>
+			<if test='fixPhs.equals("수리완료")'>
+				str_dt = #{strDt},			
+				fin_dt = sysdate,
+				fix_cmt = #{fixCmt},
+			</if> 
+			 
+		    fix_phs = #{fixPhs}
 		WHERE fix_cd = #{fixCd}
 	</update>
 	

@@ -11,34 +11,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.fct.info.dao.AdmBasDtlCdVO;
+import com.onetouch.web.adm.bas.dao.BasDtlVO;
+import com.onetouch.web.adm.bas.dao.BasMapper;
 import com.onetouch.web.fct.info.dao.InfoMapper;
 import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.fct.info.service.InfoService;
 
 @Controller
 public class InfoController {
-	@Autowired InfoService service;
-	@Autowired InfoMapper mapper;
+	@Autowired InfoService infoservice;
+	@Autowired InfoMapper infomapper;
+	@Autowired BasMapper basservice;
 	
 	
 	
-	//수정
-	  @ResponseBody
-	  @PostMapping("Updateinfo")
-	  public List<InfoVO> InfoUpdate(InfoVO infoVO) {
-		  service.InfoUpdate(infoVO);
-		  System.out.println("확인하기 업데이트 문제에서 조회 조건");
-		  System.out.println(infoVO.getCheckPrcCd());
-		  return service.selectFctInfoAll(infoVO);
-	  }
+//수정
+  @ResponseBody
+  @PostMapping("Updateinfo")
+  public List<InfoVO> InfoUpdate(InfoVO infoVO) {
+	  infoservice.InfoUpdate(infoVO);
+	  System.out.println("확인하기 업데이트 문제에서 조회 조건");
+	  System.out.println(infoVO.getCheckPrcCd());
+	  return infoservice.selectFctInfoAll(infoVO);
+  }
 	
 	//공정코드 조회 
 	@ResponseBody
 	@GetMapping("selectPrc")
-	public List<AdmBasDtlCdVO> showPrc() {
-		List<AdmBasDtlCdVO> list = new ArrayList<>();
-		list = service.selectPrcCd();
+	public List<BasDtlVO> showPrc() {
+		BasDtlVO basdtlVO = new BasDtlVO();
+		basdtlVO.setBasCd("fct_div");
+		List<BasDtlVO> list = basservice.selectBasDtl(basdtlVO);
+		System.out.println(list);
 		return list;
 	}
 	
@@ -67,7 +71,7 @@ public class InfoController {
 		  System.out.println("검색조건 넘어온지 확인하기 ");
 		  System.out.println(infoVO.getCheckPrcCd());
 		  List<InfoVO> list = new ArrayList<>();
-		  list = service.selectFctInfoAll(infoVO);
+		  list = infoservice.selectFctInfoAll(infoVO);
 	  return list; 
 	  }
 	  
@@ -76,15 +80,15 @@ public class InfoController {
 	  @PostMapping("deleteInfo")
 	  public List<InfoVO> delete(@RequestBody List<InfoVO> del,InfoVO infoVO) {
 		 
-		  service.deleteFctInfo(del);
-		  return service.selectFctInfoAll(infoVO);
+		  infoservice.deleteFctInfo(del);
+		  return infoservice.selectFctInfoAll(infoVO);
 	  }
 	  
 	  @ResponseBody
 	  @PostMapping("infoInsert")
 	  public List<InfoVO> InfoInsert(InfoVO infoVO) {
 		 
-		  service.insertFctInfo(infoVO);
-		  return service.selectFctInfoAll(infoVO);
+		  infoservice.insertFctInfo(infoVO);
+		  return infoservice.selectFctInfoAll(infoVO);
 	  }
 }
