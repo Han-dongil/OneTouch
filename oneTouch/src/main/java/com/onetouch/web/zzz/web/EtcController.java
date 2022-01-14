@@ -48,8 +48,7 @@ public class EtcController {
 	@ResponseBody
 	@PostMapping("msgAltDateList")
 	public List<MsgAltVO> selectDate(MsgAltVO vo){
-		List<MsgAltVO> list = new ArrayList<MsgAltVO>();
-		list = service.selectDate(vo);
+		List<MsgAltVO> list = service.selectDate(vo);
 		
 		return list;
 	}
@@ -64,6 +63,20 @@ public class EtcController {
 	}
 	
 	
+//	//modal호출 - 발주
+//	@RequestMapping("modalMtr")
+//	public String modalMtrOrd() {
+//		return "zzz/modalMtr";
+//	}
+//	
+//	@ResponseBody
+//	@GetMapping("modalMtrOrdList")
+//	public List<MtrVO> modalMtrOrdList(){
+//		List<MtrVO> list = new ArrayList<MtrVO>();		
+//		list = mtrService.selectAdmMtrAll();
+//		System.out.println(list);
+//		return list;
+//	}
 	//modal호출 - 자재
 	@RequestMapping("modalMtr")
 	public String modalMtr() {
@@ -73,8 +86,7 @@ public class EtcController {
 	@ResponseBody
 	@GetMapping("modalMtrList")
 	public List<MtrVO> modalMtrList(){
-		List<MtrVO> list = new ArrayList<MtrVO>();		
-		list = mtrService.selectAdmMtrAll();
+		List<MtrVO> list = mtrService.selectUseAdmMtr();
 		System.out.println(list);
 		
 		return list;
@@ -90,15 +102,14 @@ public class EtcController {
 	@ResponseBody
 	@GetMapping("modalPrdList")
 	public List<PrdVO> modalPrdList(){
-		List<PrdVO> list = new ArrayList<PrdVO>();		
-		list = bomService.selectUsePrd(); //머지하고 새로하기
+		List<PrdVO> list = bomService.selectUsePrdAll(); 
 		System.out.println(list);
 		
 		return list;
 	}
 	//-----------------------------
 	
-	//modal호출 - 제품
+	//modal호출 - 공정
 	@RequestMapping("modalPrc")
 	public String modalPrc() {
 		return "zzz/modalPrc";
@@ -107,8 +118,7 @@ public class EtcController {
 	@ResponseBody
 	@GetMapping("modalPrcList")
 	public List<MngVO> modalPrcList(){
-		List<MngVO> list = new ArrayList<MngVO>();		
-		list = mngService.selectPrcMng(); //머지하고 새로하기  selectUsePrc
+		List<MngVO> list = mngService.selectPrcMng(); //머지하고 새로하기  selectUsePrc
 		System.out.println(list);
 		
 		return list;
@@ -129,8 +139,7 @@ public class EtcController {
 		vo.setBasCd(basCd);
 		System.out.println(vo);
 		
-		List<BasDtlVO> list = new ArrayList<BasDtlVO>();		
-		list = basService.selectBasDtl(vo); //selectUseBasDtl 에 where절 조건에 bas_cd 추가되면 수정하기
+		List<BasDtlVO> list = basService.selectBasDtl(vo); //selectUseBasDtl 에 where절 조건에 bas_cd 추가되면 수정하기
 		System.out.println(list);
 		
 		return list;

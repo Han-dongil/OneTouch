@@ -33,9 +33,9 @@
 		  
 		<span style="margin-left: 100px;">
 			<label>해당일자</label>
-			<input type="Date" id="from" name="from"> 
+			<input type="Date" id="fixFrom" name="fixFrom"> 
 			<label> ~ </label> 
-			<input type="Date" id="to" name="to">
+			<input type="Date" id="fixTo" name="fixTo">
 		</span>
 		<span >
 			<label>설비구분</label>
@@ -45,6 +45,21 @@
 </div>
 	<div id="grid"></div>
 <script>
+
+//공정 코드 조회 ajax 요청
+
+	$.ajax({
+		url:'selectFixPrc',
+		dataType: 'json',
+		async : false
+	}).done(function(datas){
+		$('#fctCd').append("<option value='d'>전체</option>")
+		for(let data of datas){
+			$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
+		}
+	}) 
+
+
 	let Grid = tui.Grid;
 	let data;
 	let checkForm;  //폼에 있는 조건을 담는 input을 가지고 옴 
@@ -190,13 +205,16 @@
 		   let checkFormdata = $("#fixFrm").serializeObject();
 	    	console.log('&&&&&&&&&&&&&&&&&')
 	    	console.log(checkFormdata);
-	    	grid.readData(1,checkFormdata, true);		
+	    	grid.readData(1,checkFormdata, true);	
+	    	
+	    	
 		}
     
     
    
     btnFind.addEventListener("click", function(){
     	checkRdo();
+    	//
     })
    
 	   btnDel.addEventListener("click", function(){

@@ -13,6 +13,7 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(comp_cd) as compNm, 
 		        safe_stck,
 		        mtr_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(mtr_sect) as mtrSectNm,
 		        use_yn,
 		        mng_amt
 		from    adm_mtr
@@ -29,6 +30,7 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(comp_cd) as compNm, 
 		        safe_stck,
 		        mtr_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(mtr_sect) as mtrSectNm,
 		        use_yn,
 		        mng_amt
 		from    adm_mtr
@@ -44,6 +46,7 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(comp_cd) as compNm, 
 		        safe_stck,
 		        mtr_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(mtr_sect) as mtrSectNm,
 		        use_yn,
 		        mng_amt
 		from    adm_mtr

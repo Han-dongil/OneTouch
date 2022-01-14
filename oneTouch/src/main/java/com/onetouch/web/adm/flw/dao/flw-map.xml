@@ -13,5 +13,12 @@
 		from     adm_prc_flow
 		where    prd_cd = #{prdCd}
 		order by prc_seq
-</select>
+	</select>
+	
+	<!-- 공정전개 지우기 -->
+	<delete id="deleteFlw">
+		delete 
+		from adm_prc_flow
+		where prd_cd = #{prdCd}
+	</delete>
 </mapper>

@@ -28,6 +28,11 @@ public class BomServiceImpl implements BomService {
 	public List<PrdVO> selectPrdAll() {
 		return mapper.selectPrdAll();
 	}
+	
+	@Override
+	public List<PrdVO> selectUsePrdAll() {
+		return mapper.selectUsePrdAll();
+	}
 
 	@Override
 	public List<PrdVO> selectUsePrd() {

@@ -31,7 +31,7 @@ public class InListController {
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
-		datas.put("contents", service.select(in));
+		datas.put("contents", service.selectIn(in));
 		data.put("data", datas);
 		return data;
 	}

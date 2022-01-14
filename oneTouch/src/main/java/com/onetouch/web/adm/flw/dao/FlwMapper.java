@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface FlwMapper {
 	List<FlwVO> selectFlw(FlwVO flwvo);
+	void deleteFlw(FlwVO flwvo);
 }

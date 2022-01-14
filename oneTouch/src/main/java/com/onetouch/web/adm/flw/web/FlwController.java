@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,6 +15,7 @@ import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.bom.service.BomService;
 import com.onetouch.web.adm.flw.dao.FlwVO;
 import com.onetouch.web.adm.flw.service.FlwService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class FlwController {
@@ -76,4 +79,11 @@ public class FlwController {
 	}
 	
 	//공정흐름관리 저장
+	@ResponseBody
+	@PostMapping("/flwModifyData")
+	public void modify(@RequestBody ModifyVO<FlwVO> mvo) {
+		System.out.println("modify" + mvo);
+		flwservice.modify(mvo);
+	}
+	
 }

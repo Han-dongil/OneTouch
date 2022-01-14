@@ -105,7 +105,7 @@
 			}
 		}];
 	
-/* 		console.log(columns[4].editor.options.listItems); */
+/* 	console.log(columns[4].editor.options.listItems); */
 	for(i=0; i<prcLists.length; i++) {
 		let a = {}
 		a.text = prcLists[i].dtlNm;
