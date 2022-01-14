@@ -6,10 +6,10 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InMapper {
 
-	List<InVO> list();
-	List<InVO> select(InSearchVO inSearchVO);
-	void insert(InVO vo);
-	void delete(InVO vo);
-	void update(InVO vo);
+	List<InVO> selectIn(InSearchVO inSearchVO);
+	void insertIn(InVO vo);
+	void deleteIn(InVO vo);
+	void updateIn(InVO vo);
+	void updateOrd(InVO vo);
 	void prdNeed(PlanVO vo);
 }
