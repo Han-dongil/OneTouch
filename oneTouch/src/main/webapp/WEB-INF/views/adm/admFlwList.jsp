@@ -32,9 +32,12 @@
 		<label>사용여부&nbsp;</label><input id="useYn">
 	</form>
 	<hr>
-	<h4>✔공정흐름</h4>
-	<button id = "btnFlw" type="button">공정흐름보기</button>
-	<button id = "btnDel" type="button">공정흐름지우기</button><br><br>
+	<div align="right" style="margin-right: 3%;">
+	<button id="btnFlw" type="button">공정흐름보기</button>
+	<button id="btnDel" type="button">공정흐름지우기</button>
+	<button id="btnSave" type="button">저장</button>
+	</div>
+	<h4>✔공정흐름</h4><br>
 	<div id="grid2"></div>
 </div>
 </div>
@@ -90,7 +93,12 @@
 	},
 	{
 		header : 'LEAD타임',
-		name : 'leadTime'
+		name : 'leadTime',
+	},
+	{
+		header : '코드',
+		name : 'prdCd',
+		hidden : true
 	}];
 	
 	var dataSource1 = {
@@ -108,7 +116,10 @@
 				readData:{
 					url:'./admFlwList',
 					method:'GET',
-				}
+				},
+				modifyData: { 
+					url: './flwModifyData', 
+					method: 'POST'}
 			},
 			contentType: 'application/json',
 			initialRequest: false
@@ -117,16 +128,18 @@
 	const grid1 = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource1,
-		rowHeaders: ['checkbox'],
+		rowHead ers: ['checkbox'],
 		columns: columns1,
-		minBodyHeight: 650
+		bodyHeight: 540,
+		minBodyHeight: 540
 	});
 	
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		minBodyHeight: 380
+		bodyHeight: 272,
+		minBodyHeight: 272
 	})
 
 	grid1.on("click", (ev) =>{
@@ -167,6 +180,12 @@
 		for(i=0; i<cnt; i++) {
 			grid2.removeRow(i);
 		}
+	})
+	
+	//저장버튼
+	btnSave.addEventListener("click", function() {
+		grid2.blur();
+		grid2.request('modifyData');
 	})
 	
 	
