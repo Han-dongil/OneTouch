@@ -15,8 +15,8 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class InServiceImpl implements InService {
 	@Autowired InMapper mapper;
 	@Override
-	public List<InVO> select(InSearchVO inSearchVO) {
-		return mapper.select(inSearchVO);
+	public List<InVO> selectIn(InSearchVO inSearchVO) {
+		return mapper.selectIn(inSearchVO);
 	}
 	
 	/*
@@ -31,18 +31,21 @@ public class InServiceImpl implements InService {
 	 * }
 	 */
 	
-	public void modify(ModifyVO<InVO> mvo) {
+	public void modifyIn(ModifyVO<InVO> mvo) {
 		if(mvo.getCreatedRows() != null) {
 			for(InVO vo : mvo.getCreatedRows()){
-				mapper.insert(vo); };
+				mapper.insertIn(vo); 
+				mapper.updateOrd(vo);
+			};
 		}
 		if(mvo.getUpdatedRows() != null) {
 		    for(InVO vo : mvo.getUpdatedRows()){
-		    	mapper.update(vo); };
+		    	mapper.updateIn(vo);
+		    	};
 		}
 		if(mvo.getDeletedRows() != null) {
 		    for(InVO vo : mvo.getDeletedRows()){
-		    	mapper.delete(vo); };
+		    	mapper.deleteIn(vo); };
 		}
 	}
 

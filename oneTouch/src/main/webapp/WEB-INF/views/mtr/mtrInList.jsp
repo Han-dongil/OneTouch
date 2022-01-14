@@ -193,6 +193,9 @@ let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 300
 });
 
 function format(value){
@@ -206,6 +209,8 @@ btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    grid.readData(1,a,true);
 })
+
+
 </script>
 </body>
 </html>

@@ -1,4 +1,97 @@
-
+//발주
+/*function mMtrOrd(){
+	let mtrData;
+	$.ajax({
+		url : './',
+		dataType : 'json',
+		async : false,
+		success : function(result){
+			console.log(result);
+			mtrData = result;
+		}
+	});
+	dialog.dialog("open");
+			
+	$("#dialog-form").attr('title', '자재');
+	
+	$("#dialog-form").load("", function(){
+		let mtrGrid = tui.Grid;
+		
+		mtrGrid.applyTheme('striped',{
+			cell:{
+				header:{
+					background:'#eef'
+				},
+				evenRow:{
+					background:'#fee'
+				}
+			}
+		})
+		
+		const mtrColumns = [ 
+			{
+				header: '자재코드',
+				name: 'mtrCd',
+				hidden: true
+			},
+			{
+				header: '자재명',
+				name: 'mtrNm'
+			},
+			{
+				header: '규격',
+				name: 'std',
+				hidden: true
+			},
+			{
+				header: '관리수량',
+				name: 'mngAmt',
+				hidden: true
+			},
+			{
+				header: '단위',
+				name: 'unit',
+				hidden: true
+			},
+			{
+				header: '업체코드',
+				name: 'compCd',
+				hidden: true
+			},
+			{
+				header: '업체명',
+				name: 'compNm'
+			},
+			{
+				header: '자재구분',
+				name: 'mtrSect'
+			},
+			{
+				header: '안전재고',
+				name: 'safeStck',
+				hidden: true
+			}
+		];
+		
+		mtrGrid = new Grid({
+			el : document.getElementById('mtr_grid'),
+			data : mtrData,
+			columns : mtrColumns
+		});
+		
+		mtrGrid.on('dblclick', ev => {
+			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			getModalMtr(mtrGrid.getRow(ev.rowKey));
+		})
+		
+		mtrGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		mtrGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+	});
+}*/
 //자재
 function mMtr(){
 	let mtrData;

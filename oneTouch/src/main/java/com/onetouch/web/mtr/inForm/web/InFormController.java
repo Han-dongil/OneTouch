@@ -33,7 +33,7 @@ public class InFormController {
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
-		datas.put("contents", service.select(in));
+		datas.put("contents", service.selectIn(in));
 		data.put("data", datas);
 		return data;
 	}
@@ -41,8 +41,10 @@ public class InFormController {
 	@ResponseBody
 	@PostMapping("/mtrModify")
 	public int modify(@RequestBody ModifyVO<InVO> mvo){
-		 service.modify(mvo);
+		 service.modifyIn(mvo);
 		 return 0;
 	}
+	
+	
 	
 }
