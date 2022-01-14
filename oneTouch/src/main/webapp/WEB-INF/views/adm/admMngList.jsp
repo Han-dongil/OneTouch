@@ -61,7 +61,7 @@
 		},
 		{
 			header : '단위',
-			name : 'mngUnit',
+			name : 'mngUnitNm',
 			editor: 'text'
 		},
 		{
@@ -71,7 +71,7 @@
 		},
 		{
 			header : '공정구분',
-			name : 'dtlNm',
+			name : 'prcSectNm',
  				editor: {
 				type: 'radio',
 				options: {
@@ -105,11 +105,11 @@
 			}
 		}];
 	
-/* 	console.log(columns[4].editor.options.listItems); */
 	for(i=0; i<prcLists.length; i++) {
 		let a = {}
-		a.text = prcLists[i].dtlNm;
-		a.value = prcLists[i].dtlNm;
+
+		a.text = prcLists[i].prcSectNm;
+		a.value = prcLists[i].prcSectNm;
 		columns[4].editor.options.listItems.push(a);
 	}
 	
@@ -131,7 +131,7 @@
 	
 
 			
-	const grid = new Grid({
+	let grid = new Grid({
 	  el: document.getElementById('grid'),
 	  data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 	  rowHeaders : [ 'checkbox' ],
