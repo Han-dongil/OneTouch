@@ -468,7 +468,7 @@ function mBas(basCd){
 			{
 				header: title + '코드',
 				name: 'dtlCd',
-				hidden: true
+				//hidden: true
 			},
 			{
 				header: title,

@@ -59,6 +59,7 @@
                 <li class="nav-item"> <a class="nav-link" href="ftcIhfoIns">설비등록</a></li>
                 <li class="nav-item"> <a class="nav-link" href="ftcIhfoSel">설비조회</a></li>
                 <li class="nav-item"> <a class="nav-link" href="ftcFix">수리관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcProd">정기점검관리</a></li>
               </ul>
             </div>
           </li>
