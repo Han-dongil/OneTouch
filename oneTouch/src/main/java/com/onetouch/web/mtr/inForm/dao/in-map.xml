@@ -83,7 +83,7 @@
 		WHERE IN_NO = #{inNo}
 	</delete>
 	<update id="prdNeed">
-		update mtr_in
+		update MTR_LOT_STCK
 		set 
 		HLD_CNT = #{hldCnt},
 		STCK_CNT = STCK_CNT-#{hldCnt}

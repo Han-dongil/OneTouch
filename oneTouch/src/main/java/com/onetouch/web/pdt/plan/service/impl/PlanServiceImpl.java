@@ -1,12 +1,11 @@
 package com.onetouch.web.pdt.plan.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.mtr.lot.dao.LotVO;
+import com.onetouch.web.mtr.inForm.dao.InMapper;
 import com.onetouch.web.pdt.ord.dao.OrdMapper;
 import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
@@ -18,6 +17,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Autowired PlanMapper mapper;
 	@Autowired OrdMapper ordMapper;
+	@Autowired InMapper mtrMapper;
 	@Override
 	public List<PlanVO> list() {
 		return mapper.list();
@@ -54,4 +54,26 @@ public class PlanServiceImpl implements PlanService {
 	public List<PlanVO> lotCntSelect(PlanVO vo) {
 		return mapper.lotCntSelect(vo);
 	}
+	
+	@Override
+	public void insertPlanDtl(ModifyVO<PlanVO> list) {
+		if(list.getUpdatedRows()!=null) {
+			for(PlanVO vo : list.getUpdatedRows()) {
+				System.out.println("vo");
+				mapper.planDtlInsert(vo);
+				System.out.println("plandtl");
+				PlanVO vo2=new PlanVO();
+				vo2=mapper.findPlanSeq();
+				System.out.println("planseq");
+				System.out.println(vo2);
+				vo.setPlanDtlNo(vo2.getPlanDtlNo());
+				mapper.LotFindInsert(vo);
+				System.out.println("findinsert");
+				mtrMapper.prdNeed(vo);
+				System.out.println("prdneed");
+				
+			}
+		}
+	}
+	
 }

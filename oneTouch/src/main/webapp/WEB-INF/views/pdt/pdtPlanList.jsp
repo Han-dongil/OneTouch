@@ -224,6 +224,10 @@
 			header : '상품번호',
 			name : 'prdCd',
 			hidden:false
+		},{
+			header : '공정코드',
+			name : 'prcCd',
+			hidden:false
 		}];
 		lotGrid	= new Grid({
 			el: document.getElementById('paln-dialog-form'),
@@ -236,8 +240,11 @@
 			lotGrid.setValue(ev.rowKey,'hldCnt',lotGrid.getValue(ev.rowKey,'instrCnt'),false)
 			//히든태그 instrCnt 입력
 			document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
-			//히든태그 prdcd 입력
+			//히든태그 mtpLot 입력
 			document.getElementById("mtrLot").value=lotGrid.getValue(ev.rowKey,'mtrLot');
+ 			//lotGrid에 prcCd 입력
+			lotGrid.setValue(ev.rowKey,'prcCd',planFrm.prcCd.value,false)
+			
 			//히든태그 planNo 입력
 			lotGrid.setValue(ev.rowKey,'planNo',document.getElementById("planNo").value,false)
 		})
@@ -261,6 +268,7 @@
 					inGridTag.appendChild(selectTag)
 					prdCd=planFrm.prdCd.value;
 					let prcCd=planFrm.prcCd.value;
+
 					let ordShtNo=planFrm.ordShtNo.value;
 					let abcde={'prdCd':result[0].prdCd, 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')};
 					//히든태그 needCnt 입력

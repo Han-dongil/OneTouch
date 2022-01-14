@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.mtr.lot.dao.LotVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -67,8 +66,10 @@ public class PlanController {
 	}
 	@ResponseBody
 	@PostMapping("planDtlInsert")
-	public void planDtlInsert(@RequestBody ModifyVO<PlanVO> list){
-		System.out.println("dddddddddddddddddddddddddd");
+	public String planDtlInsert(@RequestBody ModifyVO<PlanVO> list){
 		System.out.println(list);
+		service.insertPlanDtl(list);
+		return "a";
 	}
+
 }

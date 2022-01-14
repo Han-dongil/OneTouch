@@ -12,4 +12,7 @@ public interface PlanMapper {
 	void insertPlan(PlanVO vo);
 	void deletePlan(PlanVO vo);
 	List<PlanVO> lotCntSelect(PlanVO vo);
+	void planDtlInsert(PlanVO vo);
+	void LotFindInsert(PlanVO vo);
+	PlanVO findPlanSeq();
 }
