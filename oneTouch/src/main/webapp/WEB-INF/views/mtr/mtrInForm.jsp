@@ -42,10 +42,10 @@
 				</div>
 				<div>
 					<label>업체코드</label>
-					<input type="text" id="inComCd" name="inComCd">
+					<input type="text" id="compCd" name=""compCd">
 					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
 					<label>입고업체명</label>
-					<input type="text" id="inComName" name="inComName" readonly="true">
+					<input type="text" id="compNm" name="compNm" readonly="true">
 				</div>
 				<div>
 					<label>자재코드</label>
@@ -65,7 +65,9 @@
 		<hr>
 	</div>
 <div id="grid"></div>
-<div id="dialog-form" title="title"></div>
+<div id="dialog-form" title="title">
+	
+</div>
 
 <script type="text/javascript">
 let rowk = -1;
@@ -263,14 +265,6 @@ var grid = new Grid({
 });
  */
 
-let dialog;
-dialog = $( "#dialog-form" ).dialog({
-	autoOpen : false,
-	modal : true,
-	resizable: false,
-	height: "auto",
-	width: 300
-});
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
@@ -296,7 +290,7 @@ btnFind.addEventListener("click", function(){
 });
 //발주내역버튼
 btnOrdFind.addEventListener("click", function(){
-	
+	mMtrOrd();
 });
 //업체검색버튼
 btnInCom.addEventListener("click", function(){
@@ -320,12 +314,41 @@ grid.on("dblclick",(ev)=>{
 	console.log(grid.getFocusedCell());
 }) */
 
+
+
+//모달 설정
+let dialog;
+dialog = $( "#dialog-form" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 300
+});
+
+let dialogOrd;
+dialogOrd = $( "#dialog-form" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 800
+});
+
+
+
+
+
+
+
+
 //업체검색모달 row더블클릭 이벤트
 function getModalBas(param){
 			$('#inComCd').val(param.dtlCd);
 			$('#inComName').val(param.dtlNm);
 			dialog.dialog("close");
 		};
+		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
@@ -344,6 +367,96 @@ function getModalMtr(param){
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
+
+
+//발주 모달
+function mMtrOrd(){
+	let ordData;
+	$.ajax({
+		url : './mtrOrdModal',
+		dataType : 'json',
+		async : false,
+		success : function(result){
+			ordData = result;
+		}
+	});
+	dialogOrd.dialog("open");
+			
+	$("#dialog-form").attr('title', '발주 내역');
+	
+		let ordGrid = tui.Grid;
+		
+		ordGrid.applyTheme('striped',{
+			cell:{
+				header:{
+					background:'#eef'
+				},
+				evenRow:{
+					background:'#fee'
+				}
+			}
+		})
+		
+		
+		mtrGrid = new Grid({
+			el : document.getElementById('#dialog-form'),
+			data : ordData,
+			columns : [ 
+						{
+							header: '발주번호',
+							name: 'ordNo',
+							hidden: true
+						},
+						{
+							header: '발주일자',
+							name: 'ordDate'
+						},
+						{
+							header: '입고업체명',
+							name: 'compNm'
+						},
+						{
+							header: '자재명',
+							name: 'mtrNm'
+						},
+						{
+							header: '단위',
+							name: 'unit',
+							hidden: true
+						},
+						{
+							header: '업체코드',
+							name: 'compCd',
+							hidden: true
+						},
+						{
+							header: '업체명',
+							name: 'compNm'
+						},
+						{
+							header: '자재구분',
+							name: 'mtrSect'
+						},
+						{
+							header: '안전재고',
+							name: 'safeStck',
+							hidden: trueㅎ
+						}
+						]
+		});
+		
+		ordGrid.on('dblclick', ev => {
+			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			getModalMtr(mtrGrid.getRow(ev.rowKey));
+		})
+		
+		ordGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		ordGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+} 
 
 
 </script>
