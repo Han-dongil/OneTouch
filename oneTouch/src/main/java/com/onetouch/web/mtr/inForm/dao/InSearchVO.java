@@ -7,8 +7,8 @@ public class InSearchVO{
 
 	String startDate;
 	String endDate;
-	String inComCd;
-	String inComName;
+	String compCd;
+	String compNm;
 	String ditemCode;
 	String mtrCd;
 	String gubun;

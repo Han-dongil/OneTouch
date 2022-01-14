@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.onetouch.web.mtr.inForm.dao.InMapper;
 import com.onetouch.web.mtr.inForm.dao.InSearchVO;
@@ -19,22 +20,11 @@ public class InServiceImpl implements InService {
 		return mapper.selectIn(inSearchVO);
 	}
 	
-	/*
-	 * @Override public void insert(InVO vo) { mapper.insert(vo); }
-	 * 
-	 * @Override public void update(InVO vo) { mapper.update(vo);
-	 * 
-	 * }
-	 * 
-	 * @Override public void delete(InVO vo) { mapper.delete(vo);
-	 * 
-	 * }
-	 */
-	
+	@Transactional
 	public void modifyIn(ModifyVO<InVO> mvo) {
 		if(mvo.getCreatedRows() != null) {
 			for(InVO vo : mvo.getCreatedRows()){
-				mapper.insertIn(vo); 
+				mapper.insertIn(vo);
 				mapper.updateOrd(vo);
 			};
 		}

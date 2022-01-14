@@ -14,8 +14,8 @@
 		<if test="endDate != null and endDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
 		</if>
-		<if test="inComCd != null and inComCd != ''">
-			AND B.COMP_CD = #{inComCd}
+		<if test="compCd != null and compCd != ''">
+			AND B.COMP_CD = #{compCd}
 		</if>
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}
@@ -68,13 +68,9 @@
 		WHERE
 		ORD_NO = #{ordNo}
 	</update>
-	<update id="updateLot">
-		UPDATE MTR_LOT_STCK
-		SET
-		IN_AMT = #{inAmt},
-		NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
-		WHERE
-		ORD_NO = #{ordNo}
+	<update id="insertLot">
+		INSERT INTO MTR_LOT_STCK VALUES()
+		
 	</update>
 	<!-- 하나씩 삭제 -->
 	<delete id="deleteIn">

@@ -5,17 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.mtr.ord.dao.MtrOrdVO;
 import com.onetouch.web.mtr.ord.dao.MtrOrdMapper;
+import com.onetouch.web.mtr.ord.dao.MtrOrdVO;
 import com.onetouch.web.mtr.ord.service.MtrOrdService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
 public class MtrOrdServiceImpl implements MtrOrdService {
 	@Autowired MtrOrdMapper mapper;
+	
 	@Override
-	public List<MtrOrdVO> select(MtrOrdVO vo) {
-		return mapper.select(vo);
+	public List<MtrOrdVO> ordMtrList() {
+		return mapper.ordMtrList();
+	}
+	
+	@Override
+	public List<MtrOrdVO> ordMtrSelect(MtrOrdVO vo) {
+		return mapper.ordMtrSelect(vo);
 	}
 		
 	public void modify(ModifyVO<MtrOrdVO> mvo) {
@@ -32,5 +38,7 @@ public class MtrOrdServiceImpl implements MtrOrdService {
 		    	mapper.delete(vo); };
 		}
 	}
+
+
 
 }
