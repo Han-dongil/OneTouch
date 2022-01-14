@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.mtr.ord.dao.OrdMapper">
-	<select id="select" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
+	<!--발주내역 전체조회 -->
+	<select id="ordMtrList" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
 		SELECT 
-			ORD_NO,
-			ORD_DATE,
-			DLV_REQ_DATE,
-			FN_GET_BAS_DTL_CD_TO_NM(#{compCd}) AS COMP_NM,
-			FN_GET_MTR_CD_TO_NM(#{mtrCd}) AS MTR_CD,
-			UNIT,
-			UNIT_COST,
-			ORD_AMT,
-			IN_AMT,
-			NOTIN_AMT,
-			CMT
-		FROM MTR_ORD
+			a.ORD_NO,
+			a.SEQ,
+			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
+			a.UNIT,
+			a.UNIT_COST,
+			a.AMT,
+			(a.UNIT_COST * a.AMT) AS TOT_COST,
+			a.ORD_AMT,
+			a.IN_AMT,
+			a.NOTIN_AMT,
+			b.ORD_DATE,
+			FN_GET_BAS_DTL_CD_TO_NM(b.COMP_CD) AS COMP_NM,
+			b.CMT
+		FROM MTR_ORD_DTL a, MTR_ORD b
+		WHERE a.ORD_NO = b.ORD_NO
+		<![CDATA[AND a.NOTIN_AMT > 0]]>
+	</select>
+	
+	<!-- 발주내역 조건조회 -->
+	<select id="ordMtrSelect" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
+		SELECT 
+			a.ORD_NO,
+			a.SEQ,
+			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
+			a.UNIT,
+			a.UNIT_COST,
+			a.AMT,
+			(a.UNIT_COST * a.AMT) AS TOT_COST,
+			a.ORD_AMT,
+			a.IN_AMT,
+			a.NOTIN_AMT,
+			b.ORD_DATE,
+			FN_GET_BAS_DTL_CD_TO_NM(COMP_CD) AS COMP_NM,
+			b.CMT
+		FROM MTR_ORD_DTL a, MTR_ORD b
 		WHERE 1=1 
 		<if test="compCd != null and compCd != ''"> 
-			<![CDATA[AND COMP_CD = #{compCd}]]>
+			<![CDATA[AND a.COMP_CD = #{compCd}]]>
 		</if>
 		<if test="mtrCd != null and mtrCd != ''"> 
-			<![CDATA[AND MTR_CD = #{mtrCd}]]>
+			<![CDATA[AND a.MTR_CD = #{mtrCd}]]>
 		</if>
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
@@ -34,80 +58,6 @@
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}
 		</if>
+		
 	</select>
-		<!-- SELECT * 
-		FROM MTR_IN A LEFT JOIN ADM_MTR B 
-		ON A.MTR_CD = B.MTR_CD -->
-	<insert id="insert">
-		INSERT INTO MTR_IN 
-		(IN_NO,
-		MTR_CD,
-		IN_DATE,
-		ORD_NO,
-		UNIT,
-		IN_AMT,
-		FLT_AMT,
-		UNIT_COST,
-		TOT_COST
-		)
-		VALUES(
-		FN_MAKE_CODE_COL2('MIN', 'MTR_IN', 'IN_NO', 'IN_DATE'),
-		#{mtrCd},
-		SYSDATE,
-		#{ordNo},
-		#{unit},
-		#{inAmt},
-		#{fltAmt},
-		#{unitCost},
-		(#{unitCost}*#{inAmt})
-		)
-	</insert>
-	<update id="update">
-		UPDATE MTR_IN
-		SET
-		MTR_CD = #{mtrCd},
-		UNIT = #{unit},
-		IN_AMT = #{inAmt},
-		FLT_AMT = #{fltAmt},
-		UNIT_COST = #{unitCost},
-		TOT_COST = (#{unitCost}*#{inAmt})
-		WHERE
-		IN_NO = #{inNo}
-	</update>
-	<!-- 하나씩 삭제 -->
-	<delete id="delete">
-		DELETE 
-		FROM MTR_IN
-		WHERE IN_NO = #{inNo}
-	</delete>
-	<update id="prdNeed">
-		update mtr_in
-		set 
-		HLD_CNT = #{hldCnt},
-		STCK_CNT = STCK_CNT-#{hldCnt}
-		WHERE 
-		MTR_LOT = #{mtrLot}
-	</update>
-	<!-- 자재출고테이블 지시때 출고처리해야댐 -->
-	<!-- 지시때 lot재고에도 반영해야댐 -->
-	<insert id="prdOut">
-		<!-- hldCnt: "3"
-instrCnt: "3"
-mtrCd: "MF001"
-mtrLot: "MLT2022010061"
-needCnt: "100"
-planNo: "PPL202201110001"
-prdCd: "prd_001"
-stckCnt: "1" -->
-	</insert>
-
-	<!-- 리스트로받아서 for문으로 다 삭제하는쿼리 -->
-	<!-- <delete id="delete">
-		DELETE 
-		FROM MTR_IN
-		WHERE IN_NO IN
-		<foreach collection="list" item="vo" open="(" close=")" separator=",">
-		#{vo.inNo}
-	</foreach>
-	</delete> -->
 </mapper>

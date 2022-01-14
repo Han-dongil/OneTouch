@@ -9,11 +9,13 @@
 <!-- transaction-context.xml -->
 	
 	<!-- Transaction Manager 설정 -->
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<tx:annotation-driven/>
 	<!-- Transaction Advice 설정 -->
-	<tx:advice id="txAdvice" transaction-manager="txManager">
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="select*" read-only="true" />
 			<tx:method name="get*" read-only="true" />
@@ -22,7 +24,7 @@
 	</tx:advice>
 	<!-- Transaction AOP 설정 -->
 	<aop:config>
-		<aop:pointcut expression="execution(public * com.onetouch..*(..))" id="txPointCut"/>
+		<aop:pointcut expression="execution( * com.onetouch..*Impl.*(..))" id="txPointCut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
 	</aop:config>
 
