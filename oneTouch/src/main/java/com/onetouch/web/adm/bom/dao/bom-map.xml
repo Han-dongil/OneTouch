@@ -4,15 +4,47 @@
 	
 	<!-- 전체제품조회리스트 -->
 	<select id="selectPrdAll" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
-		select * 
-		from   adm_prd
+		select  prd_cd,
+		        prd_nm,
+		        prd_std,
+		        mng_unit,
+		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
+		        use_yn,
+		        prd_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        stck
+		from    adm_prd
+	</select>
+	
+	<!-- use_yn = 'Y'인 select -->
+	<select id="selectUsePrdAll" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select  prd_cd,
+		        prd_nm,
+		        prd_std,
+		        mng_unit,
+		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
+		        use_yn,
+		        prd_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        stck
+		from    adm_prd
+		where   use_yn = 'Y'
 	</select>
 	
 	<!-- use_yn = 'Y'인 select -->
 	<select id="selectUsePrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
-		select * 
-		from   adm_prd
-		where  use_yn = 'Y'
+		select  prd_cd,
+		        prd_nm,
+		        prd_std,
+		        mng_unit,
+		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
+		        use_yn,
+		        prd_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        stck
+		from    adm_prd
+		where   prd_cd=#{prdCd}
+		and 	use_yn = 'Y'
 	</select>
 	
 	<!-- 제품코드 선택하면 제품 정보가 뜬다-->
@@ -20,9 +52,11 @@
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
-		        mng_unit,
+		        mng_unit as mngUnitCd,
+		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnit,
 		        use_yn,
 		        prd_sect,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
 		        stck
 		from    adm_prd
 		where   prd_cd=#{prdCd}
