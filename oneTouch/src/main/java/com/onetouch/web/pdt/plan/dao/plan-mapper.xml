@@ -42,13 +42,22 @@
             on(a.prd_cd= b.prd_cd) 
 </select>	
 <insert id="planDtlInsert">
-	insert into pdt_plan_dtl (plan_dtl_no,plan_no,prd_cd,prc_cd,need_cnt,instr_cnt) 
-	values(PKG_MAKE_CODE.CODE('PPD','PDT_PLAN_DTL','prc_cd'),
+	insert into pdt_plan_dtl (plan_dtl_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt) 
+	values(PKG_MAKE_CODE.CODE('PPD','PDT_PLAN_DTL','PLAN_DTL_NO'),
 	#{planNo},
 	#{prdCd},
 	#{prcCd},
 	#{needCnt},
 	#{instrCnt})
 </insert>
-
+<insert id="LotFindInsert">
+	insert into used_mtr_lot (mtr_lot, instr_dtl_no, dtl_select) 
+	values (
+	#{mtrLot},
+	#{planDtlNO},
+	'PD')
+</insert>
+<select id="findPlanSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual
+</select>
 </mapper>

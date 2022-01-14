@@ -12,4 +12,5 @@ public interface PlanService {
 	List<PlanVO> findPrcCd(String no);
 	void insertPlan(ModifyVO<PlanVO> list);
 	List<PlanVO> lotCntSelect(PlanVO vo);
+	void insertPlanDtl(ModifyVO<PlanVO> list);
 }
