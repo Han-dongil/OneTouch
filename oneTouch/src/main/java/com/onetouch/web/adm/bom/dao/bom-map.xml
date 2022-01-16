@@ -7,12 +7,12 @@
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
 		        mng_unit,
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
-		        stck
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
 		from    adm_prd
 	</select>
 	
@@ -21,27 +21,27 @@
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
 		        mng_unit,
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
-		        stck
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
 		from    adm_prd
 		where   use_yn = 'Y'
 	</select>
 	
-	<!-- use_yn = 'Y'인 select -->
+	<!-- use_yn = 'Y'인 select (prd_cd=#{prdCd}) -->
 	<select id="selectUsePrd" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
 		        mng_unit,
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
-		        stck
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
 		from    adm_prd
 		where   prd_cd=#{prdCd}
 		and 	use_yn = 'Y'
@@ -52,12 +52,12 @@
 		select  prd_cd,
 		        prd_nm,
 		        prd_std,
-		        mng_unit as mngUnitCd,
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
+		        mng_unit,
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
-		        stck
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
 		from    adm_prd
 		where   prd_cd=#{prdCd}
 	</select>
@@ -65,17 +65,50 @@
 	<!-- 제품 선택했을때 bom조회 -->
 	<select id="selectBomDtl" resultType="com.onetouch.web.adm.bom.dao.BomVO">
 		select  mtr_cd, 
-		        FN_GET_BAS_DTL_CD_TO_NM(mtr_cd) as mtrNm,
+		        FN_GET_MTR_CD_TO_NM(mtr_cd) as mtrNm,
 		        use_amt,
 		        ord_chk,
 		        pdt_chk,
-		        FN_GET_BAS_DTL_CD_TO_NM(prc_cd) as prcNm,
-		        cmt
+		        FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
+		        cmt,
+		        bom_cd,
+		        prc_cd,
+		        prd_cd
 		from 	adm_bom
 		where 	prd_cd = #{prdCd}
 	</select>
-	
 
+	<delete id="deleteBom">
+		delete 
+		from 	adm_bom
+		where	bom_cd=#{bomCd}
+	</delete>
 	
+	<update id="updateBom">
+		update 	adm_bom
+		set		mtr_cd = #{mtrCd},
+				use_amt = #{useAmt},
+				ord_chk = #{ordChk},
+				pdt_chk = #{pdtChk},
+				prc_cd = #{prcCd},
+		<if test="cmt != null">cmt = #{cmt},</if>
+		where	bom_cd=#{bomCd}
+	</update>
 	
+	<insert id="insertBom">
+		INSERT INTO adm_bom
+		(mtr_cd,
+		 use_amt,
+		 ord_chk,
+		 pdt_chk,
+		 prc_cd,
+		 <if test="cmt != null">cmt</if>)
+		 VALUES(
+		 #{mtrCd},
+		 #{useAmt},
+		 #{ordChk},
+		 #{pdtChk},
+		 #{prcCd},
+		 <if test="cmt != null">#{cmt}</if>)
+	</insert>
 </mapper>

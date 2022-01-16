@@ -9,6 +9,7 @@ import com.onetouch.web.adm.bom.dao.BomMapper;
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.bom.service.BomService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
 public class BomServiceImpl implements BomService {
@@ -37,6 +38,26 @@ public class BomServiceImpl implements BomService {
 	@Override
 	public List<PrdVO> selectUsePrd() {
 		return mapper.selectUsePrd();
+	}
+
+	@Override
+	public void modify(ModifyVO<BomVO> mvo) {
+		if(mvo.getCreatedRows() != null) {
+			for(BomVO mngvo : mvo.getCreatedRows()) {
+				mapper.insertBom(mngvo);
+			};
+		}
+		if(mvo.getUpdatedRows() != null) {
+			for(BomVO mngvo : mvo.getUpdatedRows()) {
+				mapper.updateBom(mngvo);
+			};
+		}
+		if(mvo.getDeletedRows() != null) {
+			for(BomVO mngvo : mvo.getDeletedRows()) {
+				mapper.deleteBom(mngvo);
+			};
+		}
+		
 	}
 
 
