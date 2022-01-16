@@ -12,6 +12,9 @@
 		on(a.plan_no = b.plan_no)
 		where a.plan_no=#{planVo}
 	</select>
+	<select id="workok">
+		select plan_no from pdt_work_instr
+	</select>
 	<select id="workList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select * from pdt_work_instr
 	</select>
@@ -26,6 +29,22 @@
 		on a.mtr_lot = b. mtr_lot
 		where a.instr_dtl_no =#{planDtlNo}
 	</select>
+	<insert id="workInsert">
+		insert into pdt_work_instr (instr_no , plan_no , work_prot, instr_date , pdt_fin_date )
+		values (PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no', 'pdt_fin_date'),#{planNo},#{workProt},sysdate,sysdate)
+	</insert>
+	<insert id="workInsertDtl">
+		insert into pdt_work_instr_dtl (instr_dtl_no, instr_no, prd_cd , instr_cnt ,  work_str_date , work_str_time)
+		values (PKG_MAKE_CODE.CODE('PWD','PDT_WORK_INSTR_DTL','INSTR_DTL_NO'),#{instrNo},#{prdCd},#{instrCnt},#{inStrDate},#{inStrTime})
+	</insert><!--null 포인트 그만...........멈춰 ..............ㅅㅂ............  -->
+	<select id="findWorkSeq" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no') as inserDtlNo from dual
+	</select>
+	<select id="findWorkSeqOnlyNum" resultType="int">
+		select PKG_MAKE_CODE_SEQ.CODE('pdt_work_instr','instr_no') from dual
+	</select>
+	
+	
 
 
 </mapper>

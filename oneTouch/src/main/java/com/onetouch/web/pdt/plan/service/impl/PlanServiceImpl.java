@@ -64,12 +64,12 @@ public class PlanServiceImpl implements PlanService {
 		if(list.getUpdatedRows()!=null) {
 			for(PlanVO vo : list.getUpdatedRows()) {
 				
-				mapper.planDtlInsert(vo);
+				mapper.planDtlInsert(vo); // commit 계획서 번호 조회가능
 				PlanVO vo2=new PlanVO();
 				seq=seq+i;
 				String a=newSeq+seq;
 				vo.setPlanDtlNo(a);
-				mapper.LotFindInsert(vo);
+				mapper.LotFindInsert(vo);  // 계획서번호넣어야댐   
 				mtrMapper.prdNeed(vo);
 				
 				i++;
