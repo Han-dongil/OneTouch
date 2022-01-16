@@ -350,7 +350,7 @@ function mBas(basCd){
 			break;
 		case 'PDT_SIZE':
 			title ='제품규격종류'
-			break;
+			break; 
 	}
 			
 	$("#dialog-form").attr('title', title);
