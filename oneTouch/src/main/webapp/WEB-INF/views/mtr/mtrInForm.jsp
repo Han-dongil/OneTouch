@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -42,17 +43,17 @@
 				</div>
 				<div>
 					<label>업체코드</label>
-					<input type="text" id="compCd" name=""compCd">
+					<input type="text" id="compCd" name="compCd">
 					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
 					<label>입고업체명</label>
-					<input type="text" id="compNm" name="compNm" readonly="true">
+					<input type="text" id="compNm" name="compNm" disabled="disabled">
 				</div>
 				<div>
 					<label>자재코드</label>
 					<input type="text" id="ditemCode" name="ditemCode">
 					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" id="ditemCodeNm" name="ditemCodeNm" readonly="true">
+					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
 			</div>
 		</form>
@@ -65,9 +66,8 @@
 		<hr>
 	</div>
 <div id="grid"></div>
-<div id="dialog-form" title="title">
-	
-</div>
+<div id="dialog-form" title="title"></div>
+<div id="dialog-form2" title="title"></div>
 
 <script type="text/javascript">
 let rowk = -1;
@@ -242,7 +242,8 @@ var grid = new Grid({
 					}
 				}
    });
-   
+
+
 function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -255,16 +256,140 @@ grid.on('response', function(ev) {
       }
    });
  
-/* 
-var grid = new Grid({
-    el : document.getElementById('grid'),
-    data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
-    rowHeaders : [ 'checkbox'],
-    columns : [
-    ]
-});
- */
 
+grid.on("dblclick",(ev)=>{
+	console.log(ev);
+	if (ev.columnName === 'mtrCd'){
+		rowk = ev.rowKey;
+		mMtr();
+	}
+});
+
+//클릭한 셀의 rowKey와 columnName을 가지고오는 함수
+/* grid.on("click",(ev)=>{
+	console.log(grid.getFocusedCell());
+}) */
+
+
+
+//모달 설정
+let dialog = $( "#dialog-form" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 500
+});
+
+let dialogOrd = $( "#dialog-form2" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 500
+});
+
+
+//업체검색모달 row더블클릭 이벤트
+function getModalBas(param){
+			$('#compCd').val(param.dtlCd);
+			$('#compNm').val(param.dtlNm);
+			dialog.dialog("close");
+		};
+		
+//자재검색모달 row더블클릭 이벤트
+function getModalMtr(param){
+	dialog.dialog("close");
+	/* console.log($('#ditemCode').val(param.mtrCd)) */
+	if(rowk >= 0){
+		//grid.appendRow({});
+		grid.blur();
+		grid.setValue(rowk, "mtrCd", param.mtrCd, false);
+		grid.setValue(rowk, "mtrNm", param.mtrNm, false);
+		grid.setValue(rowk, "unit", param.unit, false);
+		grid.setValue(rowk, "compNm", param.compNm, false);
+		//grid.appendRow({'mtrCd':'aa'});
+		rowk = -1;
+	} else {
+		$('#ditemCode').val(param.mtrCd);
+		$('#ditemCodeNm').val(param.mtrNm);
+	}
+};
+
+let modalDataSource = {
+		  api: {
+			  	readData: { url: '.',method: 'GET'
+		     	 }  
+		  },
+		  contentType: 'application/json'
+		}
+
+let ordGrid = new tui.Grid({
+el : document.getElementById('dialog-form2'),
+data : modalDataSource,
+columns : [ 
+			{
+				header: '발주번호',
+				name: 'ordNo',
+				hidden: true
+			},
+			{
+				header: '발주일자',
+				name: 'ordDate'
+			},
+			{
+				header: '입고업체명',
+				name: 'compNm'
+			},
+			{
+				header: '자재명',
+				name: 'mtrNm'
+			},
+			{
+				header: '단위',
+				name: 'unit'
+			}						
+			]
+});
+
+//발주 모달
+function mMtrOrd(){
+	let ordData;
+	$.ajax({
+		url : './mtrOrdModal',
+		dataType : 'json',
+		async : false,
+		success : function(a){
+			/* ordData = {'result':true};
+			ordData.data = {'contents':a}; */
+			console.log(a);
+			ordGrid.resetData(a);
+		}
+	});
+	$("#dialog-form2").attr('title', '발주 내역');
+	
+	dialogOrd.dialog("open");
+	
+		
+		ordGrid.on('dblclick', ev => {
+			console.log(ordGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			getModalOrd(ordGrid.getRow(ev.rowKey));
+		})
+		
+		ordGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		ordGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+} 
+
+//발주내역모달
+function getModalOrd(param){
+	console.log(param);
+	grid.appendRow(param);		
+	dialogOrd.dialog("close");
+};
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
@@ -300,163 +425,6 @@ btnInCom.addEventListener("click", function(){
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 });
-
-grid.on("dblclick",(ev)=>{
-	console.log(ev);
-	if (ev.columnName === 'mtrCd'){
-		rowk = ev.rowKey;
-		mMtr();
-	}
-});
-
-//클릭한 셀의 rowKey와 columnName을 가지고오는 함수
-/* grid.on("click",(ev)=>{
-	console.log(grid.getFocusedCell());
-}) */
-
-
-
-//모달 설정
-let dialog;
-dialog = $( "#dialog-form" ).dialog({
-	autoOpen : false,
-	modal : true,
-	resizable: false,
-	height: "auto",
-	width: 300
-});
-
-let dialogOrd;
-dialogOrd = $( "#dialog-form" ).dialog({
-	autoOpen : false,
-	modal : true,
-	resizable: false,
-	height: "auto",
-	width: 800
-});
-
-
-
-
-
-
-
-
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-			$('#inComCd').val(param.dtlCd);
-			$('#inComName').val(param.dtlNm);
-			dialog.dialog("close");
-		};
-		
-//자재검색모달 row더블클릭 이벤트
-function getModalMtr(param){
-	dialog.dialog("close");
-	/* console.log($('#ditemCode').val(param.mtrCd)) */
-	if(rowk >= 0){
-		//grid.appendRow({});
-		grid.blur();
-		grid.setValue(rowk, "mtrCd", param.mtrCd, false);
-		grid.setValue(rowk, "mtrNm", param.mtrNm, false);
-		grid.setValue(rowk, "unit", param.unit, false);
-		grid.setValue(rowk, "compNm", param.compNm, false);
-		//grid.appendRow({'mtrCd':'aa'});
-		rowk = -1;
-	} else {
-		$('#ditemCode').val(param.mtrCd);
-		$('#ditemCodeNm').val(param.mtrNm);
-	}
-};
-
-
-//발주 모달
-function mMtrOrd(){
-	let ordData;
-	$.ajax({
-		url : './mtrOrdModal',
-		dataType : 'json',
-		async : false,
-		success : function(result){
-			ordData = result;
-		}
-	});
-	dialogOrd.dialog("open");
-			
-	$("#dialog-form").attr('title', '발주 내역');
-	
-		let ordGrid = tui.Grid;
-		
-		ordGrid.applyTheme('striped',{
-			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
-			}
-		})
-		
-		
-		mtrGrid = new Grid({
-			el : document.getElementById('#dialog-form'),
-			data : ordData,
-			columns : [ 
-						{
-							header: '발주번호',
-							name: 'ordNo',
-							hidden: true
-						},
-						{
-							header: '발주일자',
-							name: 'ordDate'
-						},
-						{
-							header: '입고업체명',
-							name: 'compNm'
-						},
-						{
-							header: '자재명',
-							name: 'mtrNm'
-						},
-						{
-							header: '단위',
-							name: 'unit',
-							hidden: true
-						},
-						{
-							header: '업체코드',
-							name: 'compCd',
-							hidden: true
-						},
-						{
-							header: '업체명',
-							name: 'compNm'
-						},
-						{
-							header: '자재구분',
-							name: 'mtrSect'
-						},
-						{
-							header: '안전재고',
-							name: 'safeStck',
-							hidden: trueㅎ
-						}
-						]
-		});
-		
-		ordGrid.on('dblclick', ev => {
-			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
-			getModalMtr(mtrGrid.getRow(ev.rowKey));
-		})
-		
-		ordGrid.on('successResponse',function(ev){
-			console.log("성공")
-		})
-		ordGrid.on('failResponse',function(ev){
-			console.log("실패")
-		})
-} 
 
 
 </script>

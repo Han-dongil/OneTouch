@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.mtr.ord.dao.OrdMapper">
+<mapper namespace="com.onetouch.web.mtr.ord.dao.MtrOrdMapper">
 	<!--발주내역 전체조회 -->
 	<select id="ordMtrList" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
 		SELECT 
@@ -9,8 +9,8 @@
 			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
 			a.UNIT,
 			a.UNIT_COST,
-			a.AMT,
-			(a.UNIT_COST * a.AMT) AS TOT_COST,
+			a.ORD_CNT,
+			(a.UNIT_COST * a.ORD_CNT) AS TOT_COST,
 			a.ORD_AMT,
 			a.IN_AMT,
 			a.NOTIN_AMT,
