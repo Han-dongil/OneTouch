@@ -22,6 +22,7 @@
 	display: none;
 	width: 100%;
 	height: 2000px;
+	
 	top: 0px;
 	background-color: rgba(0, 0, 0, 0.3);
 	position: absolute;
@@ -373,7 +374,6 @@ function needLotCnt(abcde){
 			})
 		.then(response=>response.json())
 		.then(result=>{
-			console.log(result);
 			lotGrid.resetData(result);
 		})
 	}
