@@ -70,7 +70,7 @@ public class FixController {
 	@GetMapping("selectFixPrc")
 	public List<BasDtlVO> showPrc() {
 		BasDtlVO basdtlVO = new BasDtlVO();
-		basdtlVO.setBasCd("fct_div");
+		basdtlVO.setBasCd("FCT_DIV");
 		List<BasDtlVO> list = basservice.selectBasDtl(basdtlVO);
 		System.out.println(list);
 		return list;

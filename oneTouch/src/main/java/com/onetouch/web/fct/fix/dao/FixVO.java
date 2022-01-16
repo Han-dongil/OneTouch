@@ -33,4 +33,6 @@ public class FixVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	Date fixFrom;		//날짜조회
+	String dtlCd;	//설비종류
+	String dtlNm;	//설비종류 이름
 }
