@@ -1,6 +1,6 @@
 package com.onetouch.web.pdt.plan.dao;
 
-import com.onetouch.web.mtr.lot.dao.LotVO;
+import com.onetouch.web.mtr.stck.dao.LotVO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

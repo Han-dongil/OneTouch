@@ -1,4 +1,4 @@
-package com.onetouch.web.mtr.inForm.service.impl;
+package com.onetouch.web.mtr.in.service.impl;
 
 import java.util.List;
 
@@ -6,35 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.onetouch.web.mtr.inForm.dao.InMapper;
-import com.onetouch.web.mtr.inForm.dao.SearchVO;
-import com.onetouch.web.mtr.inForm.dao.InVO;
-import com.onetouch.web.mtr.inForm.service.InService;
+import com.onetouch.web.mtr.in.dao.MtrInMapper;
+import com.onetouch.web.mtr.in.dao.MtrInVO;
+import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.in.service.MtrInService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
-public class InServiceImpl implements InService {
-	@Autowired InMapper mapper;
+public class MtrInServiceImpl implements MtrInService {
+	@Autowired MtrInMapper mapper;
 	@Override
-	public List<InVO> selectIn(SearchVO inSearchVO) {
+	public List<MtrInVO> selectIn(MtrSearchVO inSearchVO) {
 		return mapper.selectIn(inSearchVO);
 	}
 	
 	@Transactional
-	public void modifyIn(ModifyVO<InVO> mvo) {
+	public void modifyIn(ModifyVO<MtrInVO> mvo) {
 		if(mvo.getCreatedRows() != null) {
-			for(InVO vo : mvo.getCreatedRows()){
+			for(MtrInVO vo : mvo.getCreatedRows()){
 				mapper.insertIn(vo);
 				mapper.updateOrd(vo);
 			};
 		}
 		if(mvo.getUpdatedRows() != null) {
-		    for(InVO vo : mvo.getUpdatedRows()){
+		    for(MtrInVO vo : mvo.getUpdatedRows()){
 		    	mapper.updateIn(vo);
 		    	};
 		}
 		if(mvo.getDeletedRows() != null) {
-		    for(InVO vo : mvo.getDeletedRows()){
+		    for(MtrInVO vo : mvo.getDeletedRows()){
 		    	mapper.deleteIn(vo); };
 		}
 	}

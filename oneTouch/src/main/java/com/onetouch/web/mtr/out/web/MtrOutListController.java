@@ -1,5 +1,5 @@
 
-package com.onetouch.web.mtr.outForm.web;
+package com.onetouch.web.mtr.out.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.mtr.inForm.dao.SearchVO;
-import com.onetouch.web.mtr.outForm.service.OutService;
+import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.out.service.MtrOutService;
 
 @Controller
-public class OutListController {
+public class MtrOutListController {
 
-	@Autowired OutService outService;
+	@Autowired MtrOutService outService;
 	
 	@RequestMapping("outList")
 	public String outForm() {
@@ -27,7 +27,7 @@ public class OutListController {
 	//grid readData
 	@ResponseBody
 	@PostMapping("/mtrOutList")
-	public Map<String,Object> selectOutList(@RequestBody SearchVO searchVO){
+	public Map<String,Object> selectOutList(@RequestBody MtrSearchVO searchVO){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);

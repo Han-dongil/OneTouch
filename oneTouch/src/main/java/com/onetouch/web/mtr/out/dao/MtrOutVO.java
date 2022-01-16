@@ -1,9 +1,9 @@
-package com.onetouch.web.mtr.outForm.dao;
+package com.onetouch.web.mtr.out.dao;
 
 import lombok.Data;
 
 @Data
-public class OutVO {
+public class MtrOutVO {
 	private String ordNo;
 	private String mtrLot;
 	private String outDt;
