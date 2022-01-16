@@ -1,5 +1,8 @@
 package com.onetouch.web.fct.prod.dao;
 
-public interface ProdMapper {
+import java.util.List;
 
+public interface ProdMapper {
+	List<ProdVO> prodSelect(ProdVO prodVO);
+	List<ProdVO> prodCheckSelectList(ProdVO prodVO);
 }
