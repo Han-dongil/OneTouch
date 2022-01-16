@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MtrOrdVO {
 	private String ordNo;
-	private String seq;
+	private String mtrCd;
 	private String mtrNm;
 	private String unit;
 	private String unitCost;

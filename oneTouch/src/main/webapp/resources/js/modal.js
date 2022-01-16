@@ -13,8 +13,6 @@ function mMtr(){
 	});
 		
 	dialog.dialog("open");
-			
-	$("#dialog-form").attr('title', '자재');
 	
 	$("#dialog-form").load("modalMtr", function(){
 		let mtrGrid = tui.Grid;
@@ -91,7 +89,6 @@ function mMtr(){
 		});
 		
 		mtrGrid.on('dblclick', ev => {
-			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
 			getModalMtr(mtrGrid.getRow(ev.rowKey));
 		})
 		

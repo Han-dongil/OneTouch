@@ -1,9 +1,9 @@
-package com.onetouch.web.mtr.inForm.dao;
+package com.onetouch.web.mtr.in.dao;
 
 import lombok.Data;
 
 @Data
-public class InVO {
+public class MtrInVO {
 	private String inNo;
 	private String inDate;
 	private String compNm;

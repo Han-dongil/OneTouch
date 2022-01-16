@@ -2,7 +2,7 @@ package com.onetouch.web.pdt.plan.service;
 
 import java.util.List;
 
-import com.onetouch.web.mtr.lot.dao.LotVO;
+import com.onetouch.web.mtr.stck.dao.LotVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.zzz.dao.ModifyVO;
 

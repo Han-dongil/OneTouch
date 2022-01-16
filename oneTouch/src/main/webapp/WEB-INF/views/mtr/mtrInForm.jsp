@@ -254,7 +254,7 @@ function format(value){
 mainGrid.on('response', function(ev) {
       /* console.log(ev.xhr.response); */
       if(ev.xhr.response == 0){
-      	grid.readData();
+      	mainGrid.readData();
       }
    });
  
@@ -282,6 +282,7 @@ let dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//발주내역모달 설정
 let ordDialog = $( "#dialog-ord" ).dialog({
 	autoOpen : false,
 	modal : true,
@@ -301,11 +302,11 @@ function getModalBas(param){
 function getModalMtr(param){
 	dialog.dialog("close");
 	if(rowk >= 0){
-		grid.blur();
-		grid.setValue(rowk, "mtrCd", param.mtrCd, false);
-		grid.setValue(rowk, "mtrNm", param.mtrNm, false);
-		grid.setValue(rowk, "unit", param.unit, false);
-		grid.setValue(rowk, "compNm", param.compNm, false);
+		mainGrid.blur();
+		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
+		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
+		mainGrid.setValue(rowk, "unit", param.unit, false);
+		mainGrid.setValue(rowk, "compNm", param.compNm, false);
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
@@ -379,11 +380,9 @@ function mMtrOrd(){
 
 //발주내역모달
 function getModalOrd(param){
-	
 	/* console.log(param); */
 	mainGrid.appendRow(param);	
 	ordDialog.dialog("close");
-	
 };
 
 //추가버튼

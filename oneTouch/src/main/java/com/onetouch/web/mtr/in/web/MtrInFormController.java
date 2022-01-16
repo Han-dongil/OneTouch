@@ -1,5 +1,5 @@
 
-package com.onetouch.web.mtr.inForm.web;
+package com.onetouch.web.mtr.in.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.mtr.inForm.dao.InVO;
-import com.onetouch.web.mtr.inForm.dao.SearchVO;
-import com.onetouch.web.mtr.inForm.service.InService;
+import com.onetouch.web.mtr.in.dao.MtrInVO;
+import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.in.service.MtrInService;
 import com.onetouch.web.mtr.ord.service.MtrOrdService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
-public class InFormController {
+public class MtrInFormController {
 
-	@Autowired InService inService;
+	@Autowired MtrInService inService;
 	@Autowired MtrOrdService mtrOrdService;
 	
 	@RequestMapping("inForm")
@@ -32,7 +32,7 @@ public class InFormController {
 	//grid readData
 	@ResponseBody
 	@PostMapping("/mtrInForm")
-	public Map<String,Object> selectInList(@RequestBody SearchVO searchVO){
+	public Map<String,Object> selectInList(@RequestBody MtrSearchVO searchVO){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
@@ -44,7 +44,7 @@ public class InFormController {
 	//grid modify
 	@ResponseBody
 	@PostMapping("/mtrModify")
-	public int modify(@RequestBody ModifyVO<InVO> mvo){
+	public int modify(@RequestBody ModifyVO<MtrInVO> mvo){
 		inService.modifyIn(mvo);
 		 return 0;
 	}

@@ -1,4 +1,4 @@
-package com.onetouch.web.mtr.lot.dao;
+package com.onetouch.web.mtr.stck.dao;
 
 import lombok.Data;
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.mtr.inForm.dao.InMapper">
-	<select id="selectIn" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
+<mapper namespace="com.onetouch.web.mtr.in.dao.MtrInMapper">
+	<!-- 자재입고 조건 조회 -->
+	<select id="selectIn" resultType="com.onetouch.web.mtr.in.dao.MtrInVO">
 		SELECT 
 			A.IN_NO, 
 			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
@@ -35,6 +36,8 @@
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->
+		
+	<!-- 입고 테이블에 등록 -->
 	<insert id="insertIn">
 		INSERT INTO MTR_IN (
 			IN_NO,
@@ -59,6 +62,20 @@
 			(#{unitCost}*#{inAmt})
 			)
 	</insert>
+	<!-- 입고등록후 발주디테일에 수량업데이트 -->
+	<update id="updateOrd">
+		UPDATE MTR_ORD_DTL
+		SET
+			IN_AMT = #{inAmt},
+			NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
+		WHERE
+			ORD_NO = #{ordNo} AND MTR_CD = #{mtrCd}
+	</update>
+	<!-- 입고등록후 LOT별 재고에 LOT별로 등록 -->
+	<update id="insertLot">
+		INSERT INTO MTR_LOT_STCK VALUES()
+	</update>
+	
 	<update id="updateIn">
 		UPDATE MTR_IN
 		SET
@@ -70,18 +87,6 @@
 			TOT_COST = (#{unitCost}*#{inAmt})
 		WHERE
 			IN_NO = #{inNo}
-	</update>
-	<update id="updateOrd">
-		UPDATE MTR_ORD
-		SET
-			IN_AMT = #{inAmt},
-			NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
-		WHERE
-			ORD_NO = #{ordNo}
-	</update>
-	<update id="insertLot">
-		INSERT INTO MTR_LOT_STCK VALUES()
-		
 	</update>
 	<!-- 하나씩 삭제 -->
 	<delete id="deleteIn">

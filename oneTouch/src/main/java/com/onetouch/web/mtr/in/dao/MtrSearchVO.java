@@ -1,9 +1,9 @@
-package com.onetouch.web.mtr.inForm.dao;
+package com.onetouch.web.mtr.in.dao;
 
 import lombok.Data;
 
 @Data
-public class SearchVO{
+public class MtrSearchVO{
 
 	String startDate;
 	String endDate;

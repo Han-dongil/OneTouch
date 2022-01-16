@@ -46,6 +46,8 @@
                 <li class="nav-item"> <a class="nav-link" href="inForm">입고자재관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="inList">입고자재조회</a></li>
                 <li class="nav-item"> <a class="nav-link" href="outList">출고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="outList">자재반품관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="outList">자재반품조회</a></li>
               </ul>
             </div>
           </li>

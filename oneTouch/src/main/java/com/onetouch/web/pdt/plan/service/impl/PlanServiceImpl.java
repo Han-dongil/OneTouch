@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.mtr.inForm.dao.InMapper;
+import com.onetouch.web.mtr.in.dao.MtrInMapper;
 import com.onetouch.web.pdt.ord.dao.OrdMapper;
 import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
@@ -17,7 +17,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Autowired PlanMapper mapper;
 	@Autowired OrdMapper ordMapper;
-	@Autowired InMapper mtrMapper;
+	@Autowired MtrInMapper mtrMapper;
 	@Override
 	public List<PlanVO> list() {
 		return mapper.list();

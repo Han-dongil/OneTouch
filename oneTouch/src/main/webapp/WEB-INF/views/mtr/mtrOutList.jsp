@@ -50,6 +50,12 @@
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
+				<div>
+				  <input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT001" checked>
+				  <label for="mtrRadio">원자재</label>
+				  <input type="radio" id="semiRadio" name="mtrSect" value="MTR_SECT002">
+				  <label for="semiRadio">반제품</label>
+				</div>
 			</div>
 		</form>
 		<div align="right">
@@ -74,9 +80,10 @@ Grid.applyTheme('striped', {
    });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrOutForm', method: 'POST' }
+		    readData: { url: './mtrOutList', method: 'POST' }
 		  },
-		  contentType: 'application/json'
+		  contentType: 'application/json',
+		  initialRequest: false
 		};
 
 var grid = new Grid({
@@ -184,12 +191,16 @@ function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
 /* grid.on('response', function(ev) {
       grid.resetOriginData();
       grid.readData();
    }); */
+   
+//조회 버튼
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
+   console.log(param);
    grid.readData(1,param,true);
 })
 //공정검색모달 row더블클릭 이벤트

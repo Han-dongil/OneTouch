@@ -5,7 +5,7 @@
 	<select id="ordMtrList" resultType="com.onetouch.web.mtr.ord.dao.MtrOrdVO">
 		SELECT 
 			a.ORD_NO,
-			a.SEQ,
+			a.MTR_CD,
 			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
 			a.UNIT,
 			a.UNIT_COST,
