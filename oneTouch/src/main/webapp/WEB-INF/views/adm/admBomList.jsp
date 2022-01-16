@@ -8,9 +8,12 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-
 </head>
 <body>
+<br>
+<h3>[제품BOM관리]</h3>
+<hr>
+
 <div id="grid"></div>
 <script>
 	let Grid = tui.Grid;
