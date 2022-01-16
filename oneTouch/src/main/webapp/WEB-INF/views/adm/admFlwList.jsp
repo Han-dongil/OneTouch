@@ -38,17 +38,19 @@
 	<form id="flwFrm" name="flwFrm" method="post">
 		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly><br>
 		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
-		<label>재고&emsp;&emsp;&nbsp;</label><input id="stck" name="stck"><br>
-		<label>제품규격&nbsp;</label><input id="prdStd" name="prdStd">
-			<button type="button" id="btnprdStd">o</button><br>
-		<label>관리단위&nbsp;</label><input id="mngUnit" name="mngUnit">
-			<button type="button" id="btnmngUnit">o</button><br>
-		<label>제품구분&nbsp;</label><input id="prdSect" name="prdSect">
-			<button type="button" id="btnprdSect">o</button><br>
+		<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm">
+			<button type="button" id="btnprdStd">🔍</button><br>
+		<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm">
+			<button type="button" id="btnmngUnit">🔍</button><br>
+		<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm">
+			<button type="button" id="btnprdSect">🔍</button><br>
+		<input type="hidden" id="prdSect" name="prdSect">
+		<input type="hidden" id="mngUnit" name="mngUnit">
+		<input type="hidden" id="prdStd" name="prdStd">
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
-	<hr>
 	<div align="right" style="margin-right: 3%;">
+	<hr>
 	<button id="btnFlw" type="button">공정흐름보기</button>
 	<button id="btnDel" type="button">공정흐름지우기</button>
 	<button id="btnSave" type="button">저장</button>
@@ -79,7 +81,7 @@
 		
 			header : '제품코드',
 			name : 'prdCd',
-			sortable : true
+			sortable : true //정렬
 		},
 		{
 			header : '제품명',
@@ -154,10 +156,9 @@
 	const grid1 = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource1,
-		rowHeaders: ['checkbox'],
 		columns: columns1,
-		bodyHeight: 680,
-		minBodyHeight: 680
+		bodyHeight: 650,
+		minBodyHeight: 650
 	});
 	
 	const grid2 = new Grid({
@@ -183,18 +184,12 @@
 				console.log(PrdDtl);
 				document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
 				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
+				document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
+				document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
+				document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
 				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
-				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnitNm);
-				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSectNm);
-				document.getElementById('stck').setAttribute('value',PrdDtl.stck);
-				//$('#prdCd').val(PrdDtl.prdCd);
-				//$('#prdNm').val(PrdDtl.prdNm);
-				//$('#prdStd').val(PrdDtl.prdStd);
-				//$('#mngUnit').val(PrdDtl.mngUnitNm);
-				//$('#prdSect').val(PrdDtl.prdSectNm);
-				//$('#stck').val(PrdDtl.stck);
-				/* console.log(PrdDtl.useYn);
-				console.log($('#prdNm').val()); */
+				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
+				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
 				console.log($('#flwFrm').serialize());
 				
 				if(PrdDtl.useYn == 'Y') {
@@ -232,16 +227,19 @@
 	//제품규격검색버튼
 	btnprdStd.addEventListener("click", function() {
 		mBas('PDT_SIZE');
+		$('#ui-id-1').html('제품규격종류');
 	})
 	
 	//단위검색버튼
 	btnmngUnit.addEventListener("click", function() {
 		mBas('MTR_UNIT');
+		$('#ui-id-1').html('단위구분');
 	})
 	
 	//제품구분검색버튼
 	btnprdSect.addEventListener("click", function() {
 		mBas('PDT_SECT');
+		$('#ui-id-1').html('제품구분');
 	})
 
 	
@@ -259,8 +257,21 @@
 	
 	function getModalBas(param){
 		//선택한 값 parameter받아서 각자 처리
-		$("#prdSect").val(param.dtlNm);
-		console.log(param.dtlNm);
+		//각각의 인풋에 값 넣어주기 위해서 if문 쓰기
+		if(param.dtlCd.includes('PDT_SECT')) {
+			console.log("1")
+			$("#prdSectNm").val(param.dtlNm);
+			$("#prdSect").val(param.dtlCd);
+		} else if(param.dtlCd.includes('MTR')) {
+			console.log("2")
+			$("#mngUnitNm").val(param.dtlNm);
+			$("#mngUnit").val(param.dtlCd);
+		} else {
+			console.log("3")
+			$("#prdStdNm").val(param.dtlNm);
+			$("#prdStd").val(param.dtlCd);
+		}
+		//console.log(param.dtlNm);
 		dialog.dialog("close");
 	} 
 
@@ -268,21 +279,20 @@
 	
 	//수정버튼
 	btnEdit.addEventListener("click", function() {
-		console.log($('#useYn').is(':checked'));
-		/* if($('#useYn').is(':checked')){
-			document.getElementById('useYn').setAttribute('value','Y');
-		} else {
-			document.getElementById('useYn').setAttribute('value','N');		}
-		 */
-		console.log($('#flwFrm'));
-		console.log(document.getElementById('useYn').getAttribute('value'));
-		
+		//console.log($('#useYn').is(':checked'));
+		//console.log($('#flwFrm'));
+		//console.log(document.getElementById('useYn').getAttribute('value'));
+		if(!confirm("수정하시겠습니까?")){
+			return false;
+		}
 		$.ajax({
 			url: "updatePrd",
 			method: "POST",
 			data: $('#flwFrm').serializeObject(),
-			contentType: 'application/json',
+			dataType: 'json',
+			//contentType: 'application/json',
 			success: function(result) {
+				console.log("수정완료!!!!!!!!!!!")
 				console.log(result)
 			}
 		})

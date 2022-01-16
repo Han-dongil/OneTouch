@@ -87,10 +87,10 @@ public class FlwController {
 		flwservice.modify(mvo);
 	}
 	
-	//수정
+	//form 수정
 	@ResponseBody
 	@PostMapping("updatePrd")
-	public List<PrdVO> updatePrd(@RequestBody PrdVO prdvo) {
+	public List<PrdVO> updatePrd(PrdVO prdvo) {
 		flwservice.updatePrd(prdvo);
 		System.out.println("upd"+prdvo);
 		return bomservice.selectPrd(prdvo);

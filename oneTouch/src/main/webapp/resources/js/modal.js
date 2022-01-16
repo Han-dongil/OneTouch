@@ -166,10 +166,6 @@ function mPrd(){
 				hidden: true
 			},
 			{
-				header: '재고',
-				name: 'stck'
-			},
-			{
 				header: '제품구분',
 				name: 'prdSect'
 			}
@@ -351,6 +347,9 @@ function mBas(basCd){
 			break;
 		case 'DEPT':
 			title ='부서'
+			break;
+		case 'PDT_SIZE':
+			title ='제품규격종류'
 			break;
 	}
 			

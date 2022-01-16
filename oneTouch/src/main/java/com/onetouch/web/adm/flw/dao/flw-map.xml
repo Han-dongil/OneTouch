@@ -36,9 +36,8 @@
 	<update id="updatePrd">
 		UPDATE 	adm_prd
 		SET 	prd_std = #{prdStd},
-				
-				stck = #{stck},
-				
+				mng_unit = #{mngUnit},
+				prd_sect = #{prdSect},
 				use_yn = 
 				<if test = "useYn == null || useYn == ''" >
 					'N'

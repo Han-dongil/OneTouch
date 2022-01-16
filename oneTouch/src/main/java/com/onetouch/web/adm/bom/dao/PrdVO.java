@@ -6,7 +6,8 @@ import lombok.Data;
 public class PrdVO {
 	private String prdCd;	  //제품코드
 	private String prdNm;	  //제품명
-	private String prdStd;	  //제품규격
+	private String prdStd;	  //제품규격코드
+	private String prdStdNm;	  //제품규격코드
 	private String mngUnit;   //관리단위
 	private String mngUnitNm; //관리단위이름
 	private String useYn;	  //사용여부

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface BomService {
 	List<PrdVO> selectPrd(PrdVO prdvo);
@@ -11,4 +12,6 @@ public interface BomService {
 	List<PrdVO> selectPrdAll();
 	List<PrdVO> selectUsePrdAll();
 	List<PrdVO> selectUsePrd();
+	
+	void modify(ModifyVO<BomVO> mvo);
 }
