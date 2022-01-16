@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.onetouch.web.mtr.inForm.dao.InMapper;
-import com.onetouch.web.mtr.inForm.dao.InSearchVO;
+import com.onetouch.web.mtr.inForm.dao.SearchVO;
 import com.onetouch.web.mtr.inForm.dao.InVO;
 import com.onetouch.web.mtr.inForm.service.InService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -16,7 +16,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class InServiceImpl implements InService {
 	@Autowired InMapper mapper;
 	@Override
-	public List<InVO> selectIn(InSearchVO inSearchVO) {
+	public List<InVO> selectIn(SearchVO inSearchVO) {
 		return mapper.selectIn(inSearchVO);
 	}
 	

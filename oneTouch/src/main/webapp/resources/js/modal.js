@@ -231,8 +231,7 @@ function mPrc(){
 		const prcColumns = [ 
 			{
 				header: '공정코드',
-				name: 'prcCd',
-				hidden: true
+				name: 'prcCd'
 			},
 			{
 				header: '공정명',
@@ -240,15 +239,18 @@ function mPrc(){
 			},
 			{
 				header: '관리단위코드',
-				name: 'mngUnit'
+				name: 'mngUnit',
+				hidden: true
 			},
 			{
 				header: '관리단위',
-				name: 'mngUnitNm'
+				name: 'mngUnitNm',
+				hidden: true
 			},
 			{
 				header: '생산일수',
-				name: 'pdtDay'
+				name: 'pdtDay',
+				hidden: true
 			},
 			{
 				header: '공정구분코드',
@@ -257,7 +259,8 @@ function mPrc(){
 			},
 			{
 				header: '공정구분',
-				name: 'prcSectNm'
+				name: 'prcSectNm',
+				hidden: true
 			},
 			{
 				header: '비고',

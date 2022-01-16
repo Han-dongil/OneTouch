@@ -26,7 +26,7 @@
 </head>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>자재출고 조회</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>
@@ -37,11 +37,11 @@
 					<input type="Date" id="endDate" name="endDate">
 				</div>
 				<div>
-					<label>업체코드</label>
-					<input type="text" id="compCd" name="compCd">
-					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
-					<label>입고업체명</label>
-					<input type="text" id="compNm" name="compNm" disabled="disabled">
+					<label>공정코드</label>
+					<input type="text" id="prcCd" name="prcCd">
+					<button type="button" id="btnPrcCd">ㅇ</button>&nbsp;
+					<label>출고공정명</label>
+					<input type="text" id="prcNm" name="prcNm" disabled="disabled">
 				</div>
 				<div>
 					<label>자재코드</label>
@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
 var Grid = tui.Grid;
-Grid.applyTheme('striped', { //cell style
+Grid.applyTheme('striped', {
      cell: {
        header: {
          background: '#eef'
@@ -74,24 +74,24 @@ Grid.applyTheme('striped', { //cell style
    });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrInList', method: 'POST' }
+		    readData: { url: './mtrOutForm', method: 'POST' }
 		  },
 		  contentType: 'application/json'
 		};
 
 var grid = new Grid({
      el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     data : dataSource,
      rowHeaders : [ 'checkbox'],
      columns : [
 				{
-				   header: '입고번호',
-				   name: 'inNo',
+				   header: '출고번호',
+				   name: 'outNo',
 				   hidden: true
 				 },
 				 {
-				   header: '입고일자',
-				   name: 'inDate',
+				   header: '출고일자',
+				   name: 'outDt',
 				   /* editor: {
 						type: 'datePicker',
 						options: {
@@ -116,43 +116,37 @@ var grid = new Grid({
 				 },
 				 {
 				   header: '단위',
-				   name: 'unit',
+				   name: 'unitNm',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '업체',
-				   name: 'compNm',
+				   header: '자재구분',
+				   name: 'mtrSectNm',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '발주번호',
-				   name: 'ordNo',
+				   header: '자재LOT NO.',
+				   name: 'mtrLot',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '불량량',
-				   name: 'fltAmt',
+				   header: '출고공정',
+				   name: 'prcNm',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '입고량',
-				   name: 'inAmt',
+				   header: '출고량',
+				   name: 'outAmt',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '단가',
-				   name: 'unitCost',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '총금액',
-				   name: 'totCost',
+				   header: '비고',
+				   name: 'cmt',
 				   align: 'center',
 				   sortable: true
 				 }
@@ -162,29 +156,12 @@ var grid = new Grid({
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
-				   		ordNo: {
+				   		mtrLot: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
 			            },	
-			            fltAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            inAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            unitCost: {
-			                template(summary){
-			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
-			                } 
-			            },
-			            totCost: {
+			            outAmt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
@@ -207,19 +184,20 @@ function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
-grid.on('response', function(ev) {
+/* grid.on('response', function(ev) {
       grid.resetOriginData();
-   });
+      grid.readData();
+   }); */
 btnFind.addEventListener("click", function(){
-   let a= $("#frm").serializeObject();
-   grid.readData(1,a,true);
+   let param= $("#frm").serializeObject();
+   grid.readData(1,param,true);
 })
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-			$('#compCd').val(param.dtlCd);
-			$('#compNm').val(param.dtlNm);
-			dialog.dialog("close");
-		};
+//공정검색모달 row더블클릭 이벤트
+function getModalPrc(param){
+	dialog.dialog("close");
+	$('#prcCd').val(param.prcCd);
+	$('#prcNm').val(param.prcNm);
+}
 		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
@@ -228,9 +206,9 @@ function getModalMtr(param){
 	$('#ditemCodeNm').val(param.mtrNm);
 };
 //업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
-	$('#ui-id-1').html('업체 검색');
+btnPrcCd.addEventListener("click", function(){
+	mPrc();
+	$('#ui-id-1').html('공정 검색');
 });
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){

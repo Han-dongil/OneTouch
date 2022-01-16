@@ -6,7 +6,7 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InMapper {
 
-	List<InVO> selectIn(InSearchVO inSearchVO);
+	List<InVO> selectIn(SearchVO inSearchVO);
 	void insertIn(InVO vo);
 	void deleteIn(InVO vo);
 	void updateIn(InVO vo);

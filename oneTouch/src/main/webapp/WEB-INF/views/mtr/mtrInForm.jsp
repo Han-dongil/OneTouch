@@ -66,11 +66,12 @@
 		<hr>
 	</div>
 <div id="grid"></div>
-<div id="dialog-form" title="title"></div>
-<div id="dialog-form2" title="title"></div>
+<div id="dialog-form"></div>
+<div id="dialog-ord" title="발주 내역"></div>
 
 <script type="text/javascript">
 let rowk = -1;
+
 
 var Grid = tui.Grid;
 Grid.applyTheme('striped', {
@@ -83,6 +84,7 @@ Grid.applyTheme('striped', {
        }
      },
    });
+
    
 const dataSource = {
 		  api: {
@@ -93,7 +95,7 @@ const dataSource = {
 		  initialRequest: false
 		};
 		
-var grid = new Grid({
+var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
      rowHeaders : [ 'checkbox'],
@@ -249,7 +251,7 @@ function format(value){
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
   
-grid.on('response', function(ev) {
+mainGrid.on('response', function(ev) {
       /* console.log(ev.xhr.response); */
       if(ev.xhr.response == 0){
       	grid.readData();
@@ -257,7 +259,7 @@ grid.on('response', function(ev) {
    });
  
 
-grid.on("dblclick",(ev)=>{
+mainGrid.on("dblclick",(ev)=>{
 	console.log(ev);
 	if (ev.columnName === 'mtrCd'){
 		rowk = ev.rowKey;
@@ -280,15 +282,13 @@ let dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
-
-let dialogOrd = $( "#dialog-form2" ).dialog({
+let ordDialog = $( "#dialog-ord" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
 	height: "auto",
-	width: 500
+	width: 800
 });
-
 
 //업체검색모달 row더블클릭 이벤트
 function getModalBas(param){
@@ -300,15 +300,12 @@ function getModalBas(param){
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
-	/* console.log($('#ditemCode').val(param.mtrCd)) */
 	if(rowk >= 0){
-		//grid.appendRow({});
 		grid.blur();
 		grid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		grid.setValue(rowk, "mtrNm", param.mtrNm, false);
 		grid.setValue(rowk, "unit", param.unit, false);
 		grid.setValue(rowk, "compNm", param.compNm, false);
-		//grid.appendRow({'mtrCd':'aa'});
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
@@ -318,14 +315,14 @@ function getModalMtr(param){
 
 let modalDataSource = {
 		  api: {
-			  	readData: { url: '.',method: 'GET'
-		     	 }  
+			  	readData: { url: './mtrOrdModal',method: 'GET'
+		     	 }
 		  },
 		  contentType: 'application/json'
 		}
 
-let ordGrid = new tui.Grid({
-el : document.getElementById('dialog-form2'),
+let ordGrid = new Grid({
+el : document.getElementById('dialog-ord'),
 data : modalDataSource,
 columns : [ 
 			{
@@ -348,52 +345,50 @@ columns : [
 			{
 				header: '단위',
 				name: 'unit'
-			}						
+			}				
 			]
 });
 
 //발주 모달
 function mMtrOrd(){
-	let ordData;
+	/*let ordData;
 	$.ajax({
 		url : './mtrOrdModal',
 		dataType : 'json',
 		async : false,
 		success : function(a){
-			/* ordData = {'result':true};
-			ordData.data = {'contents':a}; */
 			console.log(a);
 			ordGrid.resetData(a);
 		}
-	});
-	$("#dialog-form2").attr('title', '발주 내역');
-	
-	dialogOrd.dialog("open");
+	}); */
+	ordDialog.dialog("open");
 	
 		
 		ordGrid.on('dblclick', ev => {
-			console.log(ordGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
+			console.log(ordGrid.getRow(ev.rowKey));
 			getModalOrd(ordGrid.getRow(ev.rowKey));
-		})
+		});
 		
 		ordGrid.on('successResponse',function(ev){
 			console.log("성공")
-		})
+		});
 		ordGrid.on('failResponse',function(ev){
 			console.log("실패")
-		})
-} 
+		});
+}
 
 //발주내역모달
 function getModalOrd(param){
-	console.log(param);
-	grid.appendRow(param);		
-	dialogOrd.dialog("close");
+	
+	/* console.log(param); */
+	mainGrid.appendRow(param);	
+	ordDialog.dialog("close");
+	
 };
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
-	grid.appendRow({}, 
+	mainGrid.appendRow({}, 
 			{
 				extendPrevRowSpan: true,
 				focus: true
@@ -401,17 +396,17 @@ btnAdd.addEventListener("click", function(){
 });
 //삭제버튼
 btnDel.addEventListener("click", function(){
-	grid.removeCheckedRows(true);
+	mainGrid.removeCheckedRows(true);
 });
 //저장버튼
 btnSave.addEventListener("click", function(){
-	grid.blur();
-	grid.request('modifyData');
+	mainGrid.blur();
+	mainGrid.request('modifyData');
 });
 //조회버튼
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
-   grid.readData(1,param,true);
+   mainGrid.readData(1,param,true);
 });
 //발주내역버튼
 btnOrdFind.addEventListener("click", function(){
@@ -420,10 +415,12 @@ btnOrdFind.addEventListener("click", function(){
 //업체검색버튼
 btnInCom.addEventListener("click", function(){
 	mBas('MTR_COM');
+	$('#ui-id-1').html('업체 검색');
 });
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
+	$('#ui-id-1').html('자재 검색');
 });
 
 
