@@ -51,6 +51,7 @@
 		//Modal~~~~
 		
 		//자재 Modal start=========================================================================================
+		$("#dialog-form").attr('title', '자재');
 		let dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 			autoOpen : false,
 			modal : true,
