@@ -69,6 +69,8 @@
 	let data;
 	let prodCheckObj;	//점검대상인 데이터를 담는 변수
 	let dialog;
+	let checkedRowdata;	//체크 행의 데이터를 저장하는 변수
+	
 	
 	Grid.applyTheme('striped', {	
         cell: {
@@ -89,10 +91,18 @@
 	 dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 		autoOpen : false,
 		modal : true,
-		resizable: false,
+		resizable: true,
 		height: "auto",
-		width: 300, //530,  제품모달은 사이즈 530정도로~~
+		width: 700, //530,  제품모달은 사이즈 530정도로~~
 		modal: true,
+		buttons:{"불러오기":function(){ 
+			console.log(checkedRowdata)
+			mainGrid.resetData(checkedRowdata);
+			console.log('save')
+			dialog.dialog( "close" );
+			
+			
+		}}
 		/* maxHeight: 600
 		maxWidth: 600
 		minHeight: 200
@@ -113,6 +123,18 @@
 		 },
 		 contentType: 'application/json',
 	 };
+	 
+	 var dataSourceProdCheck = {
+			 initialRequest: true,
+			 api: {
+				readData: { url: './prodChekList',method: 'POST'},
+				//createData: { url: '/api/create', method: 'POST' },
+				//updateData: { url: '/modifyData', method: 'POST' },
+				//deleteData: { url: '/api/delete', method: 'DELETE' },
+				//modifyData: { url: './fctModifyData', method: 'POST' }  
+			 },
+			 contentType: 'application/json',
+		 };
    
    //th 영역
     const columns = [
@@ -157,13 +179,40 @@
   }
     ]
    
-	let grid = new Grid({
+	let mainGrid = new Grid({
 	    el: document.getElementById('grid'),
 	    data:dataSource,  //이름이 같다면 생격가능
 	    rowHeaders : [ 'checkbox' ],
-	    columns
+	    columns: columns
 	 });
    
+   
+   
+  //th 영역
+    const columnsProdCheck = [
+    {
+    header: '정기점검이력번호',
+    name: 'prodChkNo',
+    editor: 'text',
+    width: 200
+  },
+  {
+    header: '설비코드',
+    name: 'fctCd',
+    editor: 'text',
+    width: 200
+  }
+    ]
+   
+    let prodCheckGrid = new Grid({
+	    el: document.getElementById('dialog-form'),
+	    data: dataSourceProdCheck,  //이름이 같다면 생격가능
+	    rowHeaders : [ 
+	    	{type : 'rowNum', width: 100, align : 'left', valign : 'botton'},
+	    	{type : 'checkbox'} ],
+	   columns: columnsProdCheck
+	 });
+    
 
     btnFind.addEventListener("click", function(){
     	checkRdo();
@@ -190,20 +239,45 @@
    	
 	   console.log('점검완료 등록')
 	   dialog.dialog( "open" );
-	   prodChekSelect();
+	   
+	   //button
+	   /* let btn = document.createElement('button');
+	   btn.innerHTML = '확인'
+	   document.getElementById('dialog-form').appendChild(btn) */
+	   
+	   
    });
+   
+   //체크 이벤트 처리 
+    //클릭 이벤트 그리드
+     prodCheckGrid.on('check', (ev) => {
+    	 console.table(prodCheckGrid.getCheckedRows(ev.rowKey))
+    	checkedRowdata = prodCheckGrid.getCheckedRows(ev.rowKey);
+    	 console.log('오브젝트배열 담는 변수 찍어보기 ')
+    	 console.log(checkedRowdata)
+    	/* let vo = {prodChkNo:""};
+       vo.prodChkNo = data[ev.rowKey].prodChkNo;
+      console.log(vo)
+      targetId.push(vo);
+      console.log('111111111111111111111111111111111222222')
+      console.log(targetId) */
+    	  
+    });
+     prodCheckGrid.on('uncheck', (ev) => {
+    	  alert(`uncheck: ${ev.rowKey}`);
+     });
 	 
    // 조회를 하기 위한 조건데이터를 form직렬화를 시켜서 json 타입으로 readData로 넘겨주는 함수 
    function checkRdo(){
 	   let checkFormdata = $("#fixFrm").serializeObject();
     	console.log('&&&&&&&&&&&&&&&&&')
     	console.log(checkFormdata);
-    	grid.readData(1,checkFormdata, true);	
+    	mainGrid.readData(1,checkFormdata, true);	
 	}
 	
 	//점검대상 모달에 조회 
 	function prodChekSelect(){
-		fetch('prodChekList',{
+		/* fetch('prodChekList',{
 			method:'POST',
 			body: JSON.stringify(data),
 			headers:{
@@ -214,8 +288,9 @@
 		.then(result=>{
 			prodCheckObj=result;
 			console.table(prodCheckObj);
+			dataSouce = result;
 			//grid.resetData(result)
-		})
+		}) */
 	}
 	
 	

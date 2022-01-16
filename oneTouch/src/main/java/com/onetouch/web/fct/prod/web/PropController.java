@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.fct.fix.dao.FixVO;
 import com.onetouch.web.fct.prod.dao.ProdVO;
 import com.onetouch.web.fct.prod.service.ProdService;
 
@@ -20,18 +21,31 @@ public class PropController {
 
 	@Autowired ProdService prodservice;
 	
-	//모달창에서 점검대상 조회 
-	@ResponseBody
-	@PostMapping("prodChekList")
-	public List<ProdVO> list(ProdVO prodVO){
-		
-		List<ProdVO> list = new ArrayList<>();
-		list = prodservice.prodCheckSelectList(prodVO);
-		System.out.println("점검대상 조회 컨트롤러 성공 ");
-		System.out.println(list);	
-		return list;
-	}
+	/*
+	 * //모달창에서 점검대상 조회
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("prodChekList") public List<ProdVO> list(ProdVO prodVO){
+	 * 
+	 * List<ProdVO> list = new ArrayList<>(); list =
+	 * prodservice.prodCheckSelectList(prodVO);
+	 * System.out.println("점검대상 조회 컨트롤러 성공 "); System.out.println(list); return
+	 * list; }
+	 */
 	
+	@ResponseBody
+    @PostMapping("prodChekList")
+    public Map<String,Object> selectFixList(@RequestBody ProdVO prodVO){
+    	Map<String, Object> datas = new HashMap<>();
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("result", true);
+    	datas.put("contents", prodservice.prodCheckSelectList(prodVO));
+    	data.put("data", datas);
+    	System.out.println("검색 조건 확인하기");
+    	System.out.println(data);
+    	return data;
+    }
 	
 	//정기점검 조회 
 	@ResponseBody
