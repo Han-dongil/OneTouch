@@ -18,7 +18,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="mngList">공정관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="FlwList">ㅋㅋ</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                <li class="nav-item"> <a class="nav-link" href="BomList">Bom</a></li>
               </ul>
             </div>
           </li>

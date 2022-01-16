@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +9,16 @@
 <title>공정흐름관리</title>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="${path}/resources/js/modal.js"></script>
+<style>
+	input {
+		width : 200px;
+	}
+</style>
 </head>
 <body>
 <br>
@@ -27,13 +36,16 @@
 		<button id="btnEdit">수정</button><hr>
 	</div>
 	<form id="flwFrm" name="flwFrm" method="post">
-		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" value=""/>
-		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" disabled="disabled"><br>
-		<label>제품규격&nbsp;</label><input id="prdStd" name="prdStd">
+		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly><br>
+		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
 		<label>재고&emsp;&emsp;&nbsp;</label><input id="stck" name="stck"><br>
+		<label>제품규격&nbsp;</label><input id="prdStd" name="prdStd">
+			<button type="button" id="btnprdStd">o</button><br>
 		<label>관리단위&nbsp;</label><input id="mngUnit" name="mngUnit">
-		<label>제품구분&nbsp;</label><input id="prdSect" name="prdSect"><br>
-		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox">
+			<button type="button" id="btnmngUnit">o</button><br>
+		<label>제품구분&nbsp;</label><input id="prdSect" name="prdSect">
+			<button type="button" id="btnprdSect">o</button><br>
+		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
 	<hr>
 	<div align="right" style="margin-right: 3%;">
@@ -43,6 +55,7 @@
 	</div>
 	<h4>✔공정흐름</h4><br>
 	<div id="grid2"></div>
+	<div id="dialog-form" title="title"></div>
 </div>
 </div>
 <script type="text/javascript">
@@ -143,16 +156,16 @@
 		data: dataSource1,
 		rowHeaders: ['checkbox'],
 		columns: columns1,
-		bodyHeight: 540,
-		minBodyHeight: 540
+		bodyHeight: 680,
+		minBodyHeight: 680
 	});
 	
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		bodyHeight: 272,
-		minBodyHeight: 272
+		bodyHeight: 280,
+		minBodyHeight: 280
 	})
 
 	grid1.on("click", (ev) =>{
@@ -167,6 +180,7 @@
 				async : false
 			}).done(function(datas) {
 				PrdDtl = datas.data.contents[0];
+				console.log(PrdDtl);
 				document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
 				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
 				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
@@ -215,8 +229,40 @@
 		grid2.request('modifyData');
 	})
 	
+	//제품규격검색버튼
+	btnprdStd.addEventListener("click", function() {
+		mBas('PDT_SIZE');
+	})
+	
+	//단위검색버튼
+	btnmngUnit.addEventListener("click", function() {
+		mBas('MTR_UNIT');
+	})
+	
+	//제품구분검색버튼
+	btnprdSect.addEventListener("click", function() {
+		mBas('PDT_SECT');
+	})
 
+	
+	//모달설정
+	let dialog;
+	dialog = $( "#dialog-form" ).dialog({
+		autoOpen : false,
+		modal : true,
+		resizable: false,
+		height: "auto",
+		width: 300
+	});
+	
 
+	
+	function getModalBas(param){
+		//선택한 값 parameter받아서 각자 처리
+		$("#prdSect").val(param.dtlNm);
+		console.log(param.dtlNm);
+		dialog.dialog("close");
+	} 
 
 	
 	
