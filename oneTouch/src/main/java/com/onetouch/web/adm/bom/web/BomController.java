@@ -16,7 +16,7 @@ import com.onetouch.web.adm.bom.service.BomService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
-public class BomController {
+public class BomController { 
 
 	@Autowired BomService bomservice;
 	

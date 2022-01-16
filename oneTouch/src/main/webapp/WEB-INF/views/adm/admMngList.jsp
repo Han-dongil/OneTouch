@@ -136,7 +136,7 @@
 	  data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 	  rowHeaders : [ 'checkbox' ],
 	  columns
-	});
+	}); 
 		
 	
 	

@@ -53,7 +53,7 @@
 				background:'#fee'
 			}
 		}
-	})
+	}) 
 	
 	btnPrdCd.addEventListener("click", function() {
 		mPrd();
