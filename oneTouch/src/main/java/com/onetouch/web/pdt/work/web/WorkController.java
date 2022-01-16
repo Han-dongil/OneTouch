@@ -1,6 +1,7 @@
 package com.onetouch.web.pdt.work.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.pdt.work.dao.WorkVO;
 import com.onetouch.web.pdt.work.service.WorkService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class WorkController {
@@ -48,7 +50,6 @@ public class WorkController {
 	@GetMapping("planDtlList/{planNo}")
 	public List<PlanVO> modalPlanList(@PathVariable String planNo){
 		
-		
 		return service.planListView(planNo);
 	}
 	//자재 데이터 
@@ -64,5 +65,14 @@ public class WorkController {
 	public List<PlanVO> planDtlPrc(@RequestBody PlanVO vo){
 		return planService.findPrcCd(vo.getPrdCd());
 	}
+	//지시 인서트
+	@ResponseBody
+	@PostMapping("workInsertAll")
+	public String workInsertAll(@RequestBody Map<String,List<WorkVO>> map) {
+		service.workInsert(map);
+		return null;
+	}
+	
+	
 	
 }

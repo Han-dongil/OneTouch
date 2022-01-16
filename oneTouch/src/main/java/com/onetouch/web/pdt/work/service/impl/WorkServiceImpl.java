@@ -1,6 +1,7 @@
 package com.onetouch.web.pdt.work.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,25 @@ public class WorkServiceImpl implements WorkService {
 	@Override
 	public List<PlanVO> findLotMtrCnt(PlanVO vo) {
 		return mapper.findLotMtrCnt(vo);
+	}
+	@Override
+	public void workInsert(Map<String,List<WorkVO>> map) {
+		WorkVO seqVo=mapper.findWorkSeq();
+		System.out.println("seq"+seqVo);
+		System.out.println(map.get("planData").get(0).getWorkProt());
+		mapper.workInsert(map.get("planData").get(0));
+		System.out.println("workInsert");
+		for(WorkVO vo : map.get("detailData")) {
+			System.out.println("forStart");
+			vo.setPrdCd(map.get("planData").get(0).getPrdCd());
+			System.out.println(map.get("planData").get(0).getPrdCd());
+			vo.setInstrNo(seqVo.getInstrNo());
+			System.out.println(vo);
+			mapper.workInsertDtl(vo);
+		}
+		
+		
+		
 	}
 
 	

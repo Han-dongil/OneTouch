@@ -4,10 +4,14 @@ import java.util.List;
 
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 
-public interface WorkMapper {
+public interface WorkMapper{
 	List<PlanVO> planJoinListView(String planNo);
 	List<WorkVO> workList();
 	List<PlanVO> planList();
 	List<PlanVO> findLotMtrCnt(PlanVO vo);
+	void workInsert(WorkVO vo);
+	PlanVO workok();
+	WorkVO findWorkSeq();
+	void workInsertDtl(WorkVO vo);
 
 }

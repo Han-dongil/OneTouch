@@ -1,9 +1,13 @@
 package com.onetouch.web.pdt.work.dao;
 
+import com.onetouch.web.pdt.plan.dao.PlanVO;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class WorkVO {
+@EqualsAndHashCode(callSuper=false)
+public class WorkVO extends PlanVO{
 	private String instrNo;
 	private String planNo;
 	private String workProt;
