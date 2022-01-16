@@ -9,7 +9,7 @@ public class MtrOrdVO {
 	private String mtrNm;
 	private String unit;
 	private String unitCost;
-	private String amt;
+	private String ordCnt;
 	private String totCost;
 	private String ordAmt;
 	private String inAmt;

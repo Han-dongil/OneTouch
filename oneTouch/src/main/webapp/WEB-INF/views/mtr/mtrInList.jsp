@@ -33,17 +33,17 @@
 				</div>
 				<div>
 					<label>업체코드</label>
-					<input type="text" id="inComCd" name="inComCd">
+					<input type="text" id="compCd" name="compCd">
 					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
 					<label>입고업체명</label>
-					<input type="text" id="inComName" name="inComName" readonly="true">
+					<input type="text" id="compNm" name="compNm" disabled="disabled">
 				</div>
 				<div>
 					<label>자재코드</label>
 					<input type="text" id="ditemCode" name="ditemCode">
-					<button type="button" id="matrPopBtn">ㅇ</button>&nbsp;
+					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" id="ditemCodeNm" name="ditemCodeNm" readonly="true">
+					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
 			</div>
 		</form>

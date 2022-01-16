@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +53,11 @@ public class InFormController {
 	
 	//mtrOrd modal
 	@ResponseBody
-	@PostMapping("/mtrOrdModal")
+	@GetMapping("mtrOrdModal")
 	public List<MtrOrdVO> ordList(){
+		System.out.println("11111111111111111");
 		List<MtrOrdVO> list = mtrOrdService.ordMtrList();
+		System.out.println(list);
 		return list;
 	}
 	
