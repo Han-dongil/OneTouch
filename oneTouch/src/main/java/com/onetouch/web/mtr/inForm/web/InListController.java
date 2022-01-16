@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.mtr.inForm.dao.InSearchVO;
+import com.onetouch.web.mtr.inForm.dao.SearchVO;
 import com.onetouch.web.mtr.inForm.service.InService;
 
 @Controller
@@ -27,11 +27,11 @@ public class InListController {
 	//조건조회 grid
 	@ResponseBody
 	@PostMapping("/mtrInList")
-	public Map<String,Object> selectInList(@RequestBody InSearchVO in){
+	public Map<String,Object> selectInList(@RequestBody SearchVO searchVO){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
-		datas.put("contents", service.selectIn(in));
+		datas.put("contents", service.selectIn(searchVO));
 		data.put("data", datas);
 		return data;
 	}

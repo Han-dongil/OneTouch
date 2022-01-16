@@ -14,7 +14,7 @@
 			a.ORD_AMT,
 			a.IN_AMT,
 			a.NOTIN_AMT,
-			b.ORD_DATE,
+			TO_CHAR(b.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE,
 			FN_GET_BAS_DTL_CD_TO_NM(b.COMP_CD) AS COMP_NM,
 			b.CMT
 		FROM MTR_ORD_DTL a, MTR_ORD b

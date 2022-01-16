@@ -2,11 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.mtr.inForm.dao.InMapper">
 	<select id="selectIn" resultType="com.onetouch.web.mtr.inForm.dao.InVO">
-		SELECT A.IN_NO, TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, A.MTR_CD, B.MTR_NM, B.UNIT, A.ORD_NO, 
-		A.FLT_AMT, A.IN_AMT, A.UNIT_COST, A.TOT_COST,
-		FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
-		FROM MTR_IN A, ADM_MTR B
-		WHERE A.MTR_CD = B.MTR_CD
+		SELECT 
+			A.IN_NO, 
+			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
+			A.MTR_CD, 
+			B.MTR_NM, 
+			B.UNIT, 
+			A.ORD_NO, 
+			A.FLT_AMT, 
+			A.IN_AMT, 
+			A.UNIT_COST, 
+			A.TOT_COST,
+			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
+		FROM 
+			MTR_IN A, ADM_MTR B
+		WHERE 
+			A.MTR_CD = B.MTR_CD
 		
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
@@ -25,48 +36,48 @@
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->
 	<insert id="insertIn">
-		INSERT INTO MTR_IN 
-		(IN_NO,
-		MTR_CD,
-		IN_DATE,
-		ORD_NO,
-		UNIT,
-		IN_AMT,
-		FLT_AMT,
-		UNIT_COST,
-		TOT_COST
-		)
+		INSERT INTO MTR_IN (
+			IN_NO,
+			MTR_CD,
+			IN_DATE,
+			ORD_NO,
+			UNIT,
+			IN_AMT,
+			FLT_AMT,
+			UNIT_COST,
+			TOT_COST
+			)
 		VALUES(
-		FN_MAKE_CODE_COL2('MIN', 'MTR_IN', 'IN_NO', 'IN_DATE'),
-		#{mtrCd},
-		SYSDATE,
-		#{ordNo},
-		#{unit},
-		#{inAmt},
-		#{fltAmt},
-		#{unitCost},
-		(#{unitCost}*#{inAmt})
-		)
+			FN_MAKE_CODE_COL2('MIN', 'MTR_IN', 'IN_NO', 'IN_DATE'),
+			#{mtrCd},
+			SYSDATE,
+			#{ordNo},
+			#{unit},
+			#{inAmt},
+			#{fltAmt},
+			#{unitCost},
+			(#{unitCost}*#{inAmt})
+			)
 	</insert>
 	<update id="updateIn">
 		UPDATE MTR_IN
 		SET
-		MTR_CD = #{mtrCd},
-		UNIT = #{unit},
-		IN_AMT = #{inAmt},
-		FLT_AMT = #{fltAmt},
-		UNIT_COST = #{unitCost},
-		TOT_COST = (#{unitCost}*#{inAmt})
+			MTR_CD = #{mtrCd},
+			UNIT = #{unit},
+			IN_AMT = #{inAmt},
+			FLT_AMT = #{fltAmt},
+			UNIT_COST = #{unitCost},
+			TOT_COST = (#{unitCost}*#{inAmt})
 		WHERE
-		IN_NO = #{inNo}
+			IN_NO = #{inNo}
 	</update>
 	<update id="updateOrd">
 		UPDATE MTR_ORD
 		SET
-		IN_AMT = #{inAmt},
-		NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
+			IN_AMT = #{inAmt},
+			NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
 		WHERE
-		ORD_NO = #{ordNo}
+			ORD_NO = #{ordNo}
 	</update>
 	<update id="insertLot">
 		INSERT INTO MTR_LOT_STCK VALUES()

@@ -3,7 +3,7 @@ package com.onetouch.web.mtr.inForm.dao;
 import lombok.Data;
 
 @Data
-public class InSearchVO{
+public class SearchVO{
 
 	String startDate;
 	String endDate;
@@ -11,6 +11,7 @@ public class InSearchVO{
 	String compNm;
 	String ditemCode;
 	String mtrCd;
-	String gubun;
+	String mtrSect;
+	String prcCd;
 }
 
