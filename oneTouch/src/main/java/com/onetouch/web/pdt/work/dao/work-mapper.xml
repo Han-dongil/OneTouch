@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.pdt.work.dao.WorkMapper">
-	<select id="planListView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	<select id="planJoinListView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
 		a.due_date as dueDate , a.work_prot as workPort,
 		a.plan_date as planDate , b.plan_dtl_no as planDtlNo,
 		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as needCnt,
-		b.instr_cnt as instrCnt , b.work_str_date as workStrDate ,
+		b.instr_cnt as instrCnt , b.work_str_date as workStrDate,
 		b.work_plan_time as workPlanTime
 		from pdt_plan a join pdt_plan_dtl b
 		on(a.plan_no = b.plan_no)
+		where a.plan_no=#{planVo}
 	</select>
 	<select id="workList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select * from pdt_work_instr
-		
+	</select>
+	<select id="planList" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+		select plan_no,due_date,ord_sht_no,work_prot,plan_date 
+		from pdt_plan
+	
+	</select>
+	<select id="findLotMtrCnt" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+		select a.mtr_lot as mtrLot , b.in_no as inNo , b.mtr_cd as mtrCd , b.hld_cnt as hldCnt , b.stck_cnt as stckCnt 
+		from used_mtr_lot a join mtr_lot_stck b
+		on a.mtr_lot = b. mtr_lot
+		where a.instr_dtl_no =#{planDtlNo}
 	</select>
 
 

@@ -19,10 +19,17 @@ public class WorkServiceImpl implements WorkService {
 		return mapper.workList();
 	}
 	@Override
-	public List<PlanVO> planListView() {
-		System.out.println(mapper.planListView());
-
-		return mapper.planListView();
+	public List<PlanVO> planListView(String planNo) {
+		return mapper.planJoinListView(planNo);
+	}
+	@Override
+	public List<PlanVO> planList() {
+		List<PlanVO> list=mapper.planList();
+		return list;
+	}
+	@Override
+	public List<PlanVO> findLotMtrCnt(PlanVO vo) {
+		return mapper.findLotMtrCnt(vo);
 	}
 
 	

@@ -43,7 +43,8 @@
 </select>	
 <insert id="planDtlInsert">
 	insert into pdt_plan_dtl (plan_dtl_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt) 
-	values(PKG_MAKE_CODE.CODE('PPD','PDT_PLAN_DTL','PLAN_DTL_NO'),
+	values(
+	substr((select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual),0,11)||lpad((select PKG_MAKE_CODE_SEQ.CODE('PDT_PLAN_DTL','PLAN_DTL_NO') from dual) ,4,'0'),
 	#{planNo},
 	#{prdCd},
 	#{prcCd},
@@ -54,10 +55,14 @@
 	insert into used_mtr_lot (mtr_lot, instr_dtl_no, dtl_select) 
 	values (
 	#{mtrLot},
-	#{planDtlNo},
+	substr(#{planDtlNo},0,11)||lpad(substr(#{planDtlNo},12,4),4,'0'),
 	'PD')
 </insert>
 <select id="findPlanSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual
 </select>
+<select id="findPlanSeqOnlyNum" resultType="int">
+	select PKG_MAKE_CODE_SEQ.CODE('PDT_PLAN_DTL','PLAN_DTL_NO') from dual
+</select>
+
 </mapper>

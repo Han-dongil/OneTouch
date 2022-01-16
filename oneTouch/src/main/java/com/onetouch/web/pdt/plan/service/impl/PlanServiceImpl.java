@@ -57,20 +57,22 @@ public class PlanServiceImpl implements PlanService {
 	
 	@Override
 	public void insertPlanDtl(ModifyVO<PlanVO> list) {
+		PlanVO nextSeq=mapper.findPlanSeq();
+		int seq=mapper.findPlanSeqOnlyNum();
+		String newSeq=nextSeq.getPlanDtlNo().substring(0,11);
+		int i=0;
 		if(list.getUpdatedRows()!=null) {
 			for(PlanVO vo : list.getUpdatedRows()) {
-				System.out.println("vo");
+				
 				mapper.planDtlInsert(vo);
-				System.out.println("plandtl");
 				PlanVO vo2=new PlanVO();
-				vo2=mapper.findPlanSeq();
-				System.out.println("planseq");
-				System.out.println(vo2);
-				vo.setPlanDtlNo(vo2.getPlanDtlNo());
+				seq=seq+i;
+				String a=newSeq+seq;
+				vo.setPlanDtlNo(a);
 				mapper.LotFindInsert(vo);
-				System.out.println("findinsert");
 				mtrMapper.prdNeed(vo);
-				System.out.println("prdneed");
+				
+				i++;
 				
 			}
 		}
