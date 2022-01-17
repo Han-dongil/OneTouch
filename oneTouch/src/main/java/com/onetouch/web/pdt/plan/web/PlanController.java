@@ -66,7 +66,7 @@ public class PlanController {
 	}
 	@ResponseBody
 	@PostMapping("planDtlInsert")
-	public String planDtlInsert(@RequestBody ModifyVO<PlanVO> list){
+	public String planDtlInsert(@RequestBody List<PlanVO> list){
 		System.out.println(list);
 		service.insertPlanDtl(list);
 		return "a";

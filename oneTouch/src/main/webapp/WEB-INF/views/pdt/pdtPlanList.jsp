@@ -13,9 +13,7 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-<script src="${path}/resources/template/json.min.js"></script>
 </head>
 <style>
 #abc {
@@ -97,8 +95,19 @@
 		modal:true,
 		buttons:{"save":function(){
 			alert("save")
+			console.log(planFrm)
  			lotGrid.blur();//커서 인풋밖으로빼냄
- 			lotGrid.request('modifyData');  
+ 			let planFormData=$("#planFrm").serializeObject()
+ 			console.log(planFormData);
+ 			fetch('planDtlInsert',{
+ 				method:'POST',
+ 				headers:{
+					"Content-Type": "application/json",
+				},
+				body:JSON.stringify([planFormData])
+ 			})
+ 			
+ 			//lotGrid.request('modifyData');  
 		}}
 	});
 	
