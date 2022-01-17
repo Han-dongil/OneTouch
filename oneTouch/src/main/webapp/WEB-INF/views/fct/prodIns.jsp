@@ -98,6 +98,8 @@
 		buttons:{"불러오기":function(){ 
 			console.log(checkedRowdata)
 			mainGrid.resetData(checkedRowdata);
+			
+			
 			console.log('save')
 			dialog.dialog( "close" );
 			
@@ -213,6 +215,7 @@
 	   columns: columnsProdCheck
 	 });
     
+    
 
     btnFind.addEventListener("click", function(){
     	checkRdo();
@@ -239,6 +242,9 @@
    	
 	   console.log('점검완료 등록')
 	   dialog.dialog( "open" );
+	   
+	   
+	   
 	   
 	   //button
 	   /* let btn = document.createElement('button');
@@ -309,7 +315,7 @@
 			}
 		}) 
 	   
-
+		
 </script>
 </body>
 </html>
