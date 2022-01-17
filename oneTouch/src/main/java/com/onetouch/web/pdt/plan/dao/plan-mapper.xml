@@ -22,11 +22,11 @@
    ,#{alist.ordShtNo},#{alist.workProt},sysdate
 	)     동적쿼리하다감
 	</foreach> -->
-	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE) 
+	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,PLAN_DATE) 
 	values(
-   PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date')
-   ,to_date(#{dueDate},'yyyy-mm-dd HH24:MI:SS')
-   ,#{ordShtNo},#{workProt},sysdate
+   (select PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date') from dual)
+   ,to_date(sysdate,'yyyy-mm-dd HH24:MI:SS')<!-- dueDate ->sysdate -->
+   ,#{ordShtNo},sysdate
 	)
 </insert>
 	<delete id="deletePlan">
@@ -44,7 +44,7 @@
 <insert id="planDtlInsert">
 	insert into pdt_plan_dtl (plan_dtl_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt) 
 	values(
-	substr((select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual),0,11)||lpad((select PKG_MAKE_CODE_SEQ.CODE('PDT_PLAN_DTL','PLAN_DTL_NO') from dual) ,4,'0'),
+	PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO'),
 	#{planNo},
 	#{prdCd},
 	#{prcCd},
@@ -59,6 +59,9 @@
 	'PD')
 </insert>
 <select id="findPlanSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO') as planNo from dual
+</select>
+<select id="findPlanDTLSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual
 </select>
 <select id="findPlanSeqOnlyNum" resultType="int">

@@ -56,23 +56,44 @@ public class PlanServiceImpl implements PlanService {
 	}
 	
 	@Override
-	public void insertPlanDtl(ModifyVO<PlanVO> list) {
+	public void insertPlanDtl(List<PlanVO> list) {
 		PlanVO nextSeq=mapper.findPlanSeq();
+		System.out.println(nextSeq);
+		System.out.println("11111");
+		mapper.insertPlan(list.get(0));
 		int seq=mapper.findPlanSeqOnlyNum();
-		String newSeq=nextSeq.getPlanDtlNo().substring(0,11);
+		System.out.println(seq);
+		System.out.println("22222");
+		PlanVO a=mapper.findPlanDTLSeq();
+		String newSeq=a.getPlanDtlNo().substring(0,11);
+		System.out.println(newSeq);
+		System.out.println("33333");
 		int i=0;
-		if(list.getUpdatedRows()!=null) {
-			for(PlanVO vo : list.getUpdatedRows()) {
-				
-				mapper.planDtlInsert(vo); // commit 계획서 번호 조회가능
-				PlanVO vo2=new PlanVO();
+		if(list!=null) {
+			for(PlanVO vo : list) {
 				seq=seq+i;
-				String a=newSeq+seq;
-				vo.setPlanDtlNo(a);
-				mapper.LotFindInsert(vo);  // 계획서번호넣어야댐   
+				String b=newSeq+seq;
+				vo.setPlanDtlNo(b);
+				vo.setPlanNo(nextSeq.getPlanNo());
+				System.out.println(b);
+				
+				
+				System.out.println("aaaaaa");
+				
+				System.out.println(vo.getPlanNo());
+				mapper.planDtlInsert(vo);
+				System.out.println("bbbbbbbb");
+				System.out.println(vo);
+				
+				
+				vo.setPlanNo(nextSeq.getPlanNo());
+				System.out.println("ddddd");
+				System.out.println(vo);
+				mapper.LotFindInsert(vo);
+				System.out.println("qqqqqqqqq");
 				mtrMapper.prdNeed(vo);
 				
-				i++;
+				//i++;
 				
 			}
 		}

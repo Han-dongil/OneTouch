@@ -16,4 +16,5 @@ public interface PlanMapper {
 	void LotFindInsert(PlanVO vo);
 	PlanVO findPlanSeq();
 	int findPlanSeqOnlyNum();
+	PlanVO findPlanDTLSeq();
 }
