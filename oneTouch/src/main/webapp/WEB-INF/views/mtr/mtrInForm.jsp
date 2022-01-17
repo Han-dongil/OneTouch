@@ -211,6 +211,10 @@ var mainGrid = new Grid({
 		            	required: true
 		          	},
 				   sortable: true
+				 },
+				{
+				   header: '관리수량',
+				   name: 'mngAmt'
 				 }
 				],
 				summary : {
@@ -289,7 +293,7 @@ mainGrid.on("dblclick",(ev)=>{
 
 
 //모달 설정
-let smallDialog = $( "#dialog-form" ).dialog({
+let dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
@@ -322,18 +326,19 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 function getModalBas(param){
 			$('#compCd').val(param.dtlCd);
 			$('#compNm').val(param.dtlNm);
-			smallDialog.dialog("close");
+			dialog.dialog("close");
 		};
 		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
-	smallDialog.dialog("close");
+	dialog.dialog("close");
 	if(rowk >= 0){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
 		mainGrid.setValue(rowk, "unit", param.unit, false);
 		mainGrid.setValue(rowk, "compNm", param.compNm, false);
+		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false);
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
@@ -392,11 +397,6 @@ el : document.getElementById('dialog-ord'),
 data : ordDataSource,
 columns : [ 
 			{
-				header: '발주번호',
-				name: 'ordNo',
-				hidden: true
-			},
-			{
 				header: '발주일자',
 				name: 'ordDate'
 			},
@@ -411,7 +411,17 @@ columns : [
 			{
 				header: '단위',
 				name: 'unit'
-			}				
+			},
+			{
+				header: '관리수량',
+				name: 'mngAmt',
+				hidden: true
+			},		
+			{
+				header: '발주번호',
+				name: 'ordNo',
+				hidden: true
+			}
 			]
 });
 ordGrid.on('dblclick', ev => {
@@ -427,8 +437,10 @@ ordGrid.on('failResponse',function(ev){
 
 //발주내역모달
 function getModalOrd(param){
-	/* console.log(param); */
+	console.log(param)
+	param.rowKey = mainGrid.getRowCount();
 	mainGrid.appendRow(param);	
+	
 	wideDialog.dialog("close");
 };
 
@@ -448,6 +460,7 @@ btnDel.addEventListener("click", function(){
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
 	mainGrid.request('modifyData');
+	
 });
 //조회버튼
 btnFind.addEventListener("click", function(){

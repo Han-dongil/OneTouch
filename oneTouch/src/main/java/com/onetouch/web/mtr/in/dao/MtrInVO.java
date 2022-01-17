@@ -15,4 +15,8 @@ public class MtrInVO {
 	private String unitCost;
 	private String totCost;
 	private String fltAmt;
+	private String mngAmt;
+	private String mtrLot;
+	private String stckCnt;
+	private String cmt;
 }

@@ -8,7 +8,8 @@
 			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
 			A.MTR_CD, 
 			B.MTR_NM, 
-			B.UNIT, 
+			B.UNIT,
+			B.MNG_AMT,
 			A.ORD_NO, 
 			A.FLT_AMT, 
 			A.IN_AMT, 
@@ -36,7 +37,12 @@
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->
-		
+	<select id="selectInNo" resultType="int">
+		SELECT 
+			PKG_MAKE_CODE_SEQ.CODE('MTR_IN', 'IN_NO', 'IN_DATE')
+		FROM
+			DUAL
+	</select>
 	<!-- 입고 테이블에 등록 -->
 	<insert id="insertIn">
 		INSERT INTO MTR_IN (
@@ -51,7 +57,7 @@
 			TOT_COST
 			)
 		VALUES(
-			FN_MAKE_CODE_COL2('MIN', 'MTR_IN', 'IN_NO', 'IN_DATE'),
+			#{inNo},
 			#{mtrCd},
 			SYSDATE,
 			#{ordNo},
@@ -71,11 +77,6 @@
 		WHERE
 			ORD_NO = #{ordNo} AND MTR_CD = #{mtrCd}
 	</update>
-	<!-- 입고등록후 LOT별 재고에 LOT별로 등록 -->
-	<update id="insertLot">
-		INSERT INTO MTR_LOT_STCK VALUES()
-	</update>
-	
 	<update id="updateIn">
 		UPDATE MTR_IN
 		SET

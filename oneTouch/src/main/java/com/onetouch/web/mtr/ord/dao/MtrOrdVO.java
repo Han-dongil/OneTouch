@@ -17,4 +17,5 @@ public class MtrOrdVO {
 	private String ordDate;
 	private String compNm;
 	private String cmt;
+	private String mngAmt;
 }
