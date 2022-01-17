@@ -76,7 +76,7 @@
           
         },
         //고정칼럼 색상 설정
-        frozenBorder: {
+        frozenBorder: { 
              border: 'red'
         }
       });
