@@ -11,4 +11,8 @@ public class LotVO {
 	private String stckCnt;
 	private String cmt;
 	private String inNo;
+	private String mngAmt;
+	private String inAmt;
+	private String seq;
+	
 }

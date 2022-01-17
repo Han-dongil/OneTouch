@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
 var Grid = tui.Grid;
-Grid.applyTheme('striped', { //cell style
+Grid.applyTheme('striped', {
      cell: {
        header: {
          background: '#eef'

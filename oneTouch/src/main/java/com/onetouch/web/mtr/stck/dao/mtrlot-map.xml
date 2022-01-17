@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.mtr.stck.dao.MtrLotMapper">
+	<select id="listLot" resultType="com.onetouch.web.mtr.stck.dao.LotVO">
+		SELECT
+			(select
+				PKG_MAKE_CODE.CODE('MLT','MTR_LOT_STCK','MTR_LOT') 
+			from dual) AS MTR_LOT,
+			
+			
+			 
+		FROM
+			MTR_LOT_STCK
+		WHERE
+			MTR_LOT
+	</select>
+	
+	<insert id="insertLot">
+		INSERT INTO MTR_LOT_STCK(
+			MTR_LOT,
+			MTR_CD,
+			IN_NO,
+			HLD_CNT,
+			STCK_CNT,
+			CMT
+			)
+		VALUES(
+			(select PKG_MAKE_CODE.CODE('MLT','MTR_LOT_STCK','MTR_LOT') from dual),
+			#{mtrCd},
+			#{inNo},
+			#{hldCnt},
+			#{stckCnt},
+			#{cmt}
+			)
+	</insert>
+</mapper>

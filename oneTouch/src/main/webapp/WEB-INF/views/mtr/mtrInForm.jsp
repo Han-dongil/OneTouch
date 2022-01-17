@@ -67,10 +67,13 @@
 	</div>
 <div id="grid"></div>
 <div id="dialog-form"></div>
-<div id="dialog-ord" title="발주 내역"></div>
+<div id="dialog-ord"></div>
+<div id="dialog-lot"></div>
 
 <script type="text/javascript">
 let rowk = -1;
+let lotGrid;
+let lotDataSource;
 
 
 var Grid = tui.Grid;
@@ -102,8 +105,9 @@ var mainGrid = new Grid({
      columns : [
 				{
 				   header: '입고번호',
-				   name: 'inNo',
-				   hidden: true
+				   name: 'inNo'
+				   /* ,
+				   hidden: true */
 				 },
 				 {
 				   header: '입고일자',
@@ -132,19 +136,19 @@ var mainGrid = new Grid({
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 },
 				 {
 				   header: '단위',
 				   name: 'unit',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 },
 				 {
 				   header: '업체',
 				   name: 'compNm',
-				   align: 'center',
+				   align: 'left',
 				   validation: {
 		            	required: true
 		          	},
@@ -163,7 +167,7 @@ var mainGrid = new Grid({
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
-				   align: 'center',
+				   align: 'right',
 					editor: 'text',
 					validation: {
 						dataType: 'number'
@@ -173,7 +177,7 @@ var mainGrid = new Grid({
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
-				   align: 'center',
+				   align: 'right',
 					editor: 'text',
 					validation: {
 						dataType: 'number',
@@ -184,7 +188,7 @@ var mainGrid = new Grid({
 				 {
 				   header: '단가',
 				   name: 'unitCost',
-				   align: 'center',
+				   align: 'right',
 					editor: 'text',
 					validation: {
 		            	required: true
@@ -194,7 +198,7 @@ var mainGrid = new Grid({
 				 {
 				   header: '총금액',
 				   name: 'totCost',
-				   align: 'center',
+				   align: 'right',
 					editor: 'text',
 				   sortable: true
 				 },
@@ -266,6 +270,13 @@ mainGrid.on("dblclick",(ev)=>{
 		mMtr();
 	} else if(ev.columnName === 'mtrLot'){
 		rowk = ev.rowKey;
+		mainGrid.getValue(rowk,'mtrCd');
+		mainGrid.getValue(rowk,'inAmt');
+		let data = [{'mtrCd':mainGrid.getValue(rowk,'mtrCd'),
+					'inAmt':mainGrid.getValue(rowk,'inAmt')}]
+		console.log(data)
+		mMtrLot();
+		lotGrid.readData(1,data,true)
 		
 	}
 });
@@ -293,6 +304,19 @@ let wideDialog = $( "#dialog-ord" ).dialog({
 	height: "auto",
 	width: 800
 });
+//lot부여모달 설정
+let lotDialog = $( "#dialog-lot" ).dialog({
+	autoOpen : false,
+	modal : true,
+	buttons:{"저장":function(){
+		alert("lot부여완료")
+		lotGrid.blur();
+		lotGrid.request('modifyData');
+	}},
+	resizable: false,
+	height: "auto",
+	width: 800
+});
 
 //업체검색모달 row더블클릭 이벤트
 function getModalBas(param){
@@ -316,8 +340,46 @@ function getModalMtr(param){
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
+//mtrLot modal
+function mMtrLot(){
+lotDataSource = {
+		  api: {
+			  	readData: { url: './mtrLotModal',method: 'Post'
+		     	 }
+		  },
+		  contentType: 'application/json'
+		}
 
-let modalDataSource = {
+lotGrid = new Grid({
+el : document.getElementById('dialog-lot'),
+data : lotDataSource,
+columns : [ 
+			{
+				header: '순서',
+				name: 'seq'
+			},
+			{
+				header: '자재LOTNO',
+				name: 'mtrLot'
+			},
+			{
+				header: '입고량',
+				name: 'stckCnt'
+			},
+			{
+				header: '비고',
+				name: 'cmt'
+			}
+			]
+});
+/* lotGrid.on('dblclick', ev => {
+	getModalOrd(ordGrid.getRow(ev.rowKey));
+}); */
+}
+/* $('#dialog-ord').empty(); */
+
+//mtrOrd modal
+let ordDataSource = {
 		  api: {
 			  	readData: { url: './mtrOrdModal',method: 'GET'
 		     	 }
@@ -327,7 +389,7 @@ let modalDataSource = {
 
 let ordGrid = new Grid({
 el : document.getElementById('dialog-ord'),
-data : modalDataSource,
+data : ordDataSource,
 columns : [ 
 			{
 				header: '발주번호',
@@ -396,6 +458,8 @@ btnFind.addEventListener("click", function(){
 btnOrdFind.addEventListener("click", function(){
 	wideDialog.dialog("open");
 	ordGrid.readData();
+	$('#ui-id-1').html('발주 내역');
+	ordGrid.refreshLayout();
 });
 //업체검색버튼
 btnInCom.addEventListener("click", function(){
