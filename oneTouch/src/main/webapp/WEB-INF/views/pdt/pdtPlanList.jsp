@@ -6,6 +6,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <script type="text/javascript"
@@ -93,6 +97,8 @@
 	planDialog = $( "#paln-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
+		height: 500,
+		width: 1000,
 		buttons:{"save":function(){
 			alert("save")
 			console.log(planFrm)
@@ -162,7 +168,7 @@
 	},{
 		header : '납기일자',
 		name : 'dueDate',
-		editor : 'text'
+		editor:'datePicker'
 		
 	},{
 		header : '작업우선순위',
@@ -170,7 +176,8 @@
 		editor : 'text'
 	},{
 		header : '계획일자',
-		name : 'planDate'
+		name : 'planDate',
+		editor:'datePicker'
 	}];
 
 
@@ -188,12 +195,69 @@
 	
 	//로우 클릭 이벤트
      grid.on('click', ev => {
-    	 if(ev.columnName=='planDate'){
+    	 $("#paln-dialog-form").empty();
+    	 if(grid.getValue(ev.rowKey,'planNo')==null && ev.columnName=='planDate'){
+		  	planDialog.dialog( "open" );
+	 		const planColumns = [{
+			header : '제품코드',
+			name : 'prdCd',          
+			formatter: 'listItemText',
+			      editor: {
+			    	 type: 'select',
+			         options: {
+			            listItems: [
+			              { text: 'Pop', value: '1' },
+			            ]
+			          }
+			        },
+			},{
+				header : '공정코드',
+				name : 'prcCd',
+			 		editor : 'text'
+			},{
+				header : '필요수량',
+				name : 'needCnt',
+			 		editor : 'text'
+			},{
+				header : '지시수량',
+				name : 'instrCnt',
+			 		editor : 'text'
+			},{
+				header : '지시날자',
+				name : 'workStrDate',
+			 		editor : 'text',
+				editor:'datePicker'
+			},{
+				header : '작업시간',
+				name : 'workPlanTime',
+				editor:'datePicker'
+			},{
+				header : '설비코드',
+				name : 'fctCd',
+				hidden:false
+			}];
+    		 planGrid= new Grid({
+    				el: document.getElementById('paln-dialog-form'),
+    				data:null,
+    				rowHeaders:['checkbox'],
+    				columns:planColumns
+    			});	
+    		 planGrid.on('dblclick',ev=>{
+    			 if(ev.columnName=='prdCd'){
+    				 
+    			 }
+    		 })
+   			 lotGrid.on("editingFinish",ev=>{
+   				
+   				
+   			 })
+    	 }
+    	 
+    	 if(ev.columnName=='planDate'&&grid.getValue(ev.rowKey,'planNo')!=null){
+	    	 planDialog.dialog( "open" );
     	//	planFrm.planNo.value=grid.getValue(ev.rowKey,'planNo');
     		//히든태그에 계획번호 입력
     		document.getElementById("planNo").value=grid.getValue(ev.rowKey,'planNo');
-    		planDialog.dialog( "open" );
-    		$("#paln-dialog-form").empty();
     		let ulDiv=document.createElement("div");
  			ulDiv.id="prdSelect";   	
  			document.getElementById("paln-dialog-form").appendChild(ulDiv);
@@ -316,6 +380,7 @@
 				}
 			})
     	 }
+
 	}) 
 
 	function liFnc(ev){
