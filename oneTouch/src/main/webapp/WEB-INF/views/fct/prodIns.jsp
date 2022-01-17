@@ -96,11 +96,11 @@
 		width: 1300, //530,  제품모달은 사이즈 530정도로~~
 		modal: true,
 		buttons:{"불러오기":function(){ 
-			console.log('55555555555555555555555555S') 
+			console.log('55555555555555555555555555S')
 			console.log(checkedRowdata)
 			var temp = [];
 			for(i=0; i<checkedRowdata.length; i++){
-				temp.push({chkDt:checkedRowdata[i].chkDt, fctCd:checkedRowdata[i].fctCd, fctNm:checkedRowdata[i].fctNm})
+				temp.push({ fctCd:checkedRowdata[i].fctCd, fctNm:checkedRowdata[i].fctNm})
 			}
 			
 			mainGrid.resetData(temp);
@@ -182,6 +182,16 @@
 	    editor: 'text'
   },
   {
+	    header: '점검주기',
+	    name: 'chkProd',
+	    editor: 'text'
+  },
+  {
+	    header: '점검주기단위',
+	    name: 'chkProdUnit',
+	    editor: 'text'
+  },
+  {
 	    header: '판정',
 	    name: 'chkRslt',
 	    editor: 'text'
@@ -257,7 +267,6 @@
 	   grid.removeCheckedRows(true);
    });
 	   
-   
 	   
    //등록버튼
    btnAdd.addEventListener("click", function() {
