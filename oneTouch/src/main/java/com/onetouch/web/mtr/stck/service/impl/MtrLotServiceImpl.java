@@ -19,13 +19,7 @@ public class MtrLotServiceImpl implements MtrLotService{
 	}
 	@Override
 	public void insertLot(List<LotVO> list) {
-		
-		if(list != null) {
-			for(int i=0; i < list.size(); i++){
-				System.out.println(list.get(i));
-				mapper.insertLot(list.get(i));
-			}
-		}
+	
 	}
 
 }
