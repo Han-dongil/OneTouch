@@ -90,25 +90,31 @@
 				use_amt = #{useAmt},
 				ord_chk = #{ordChk},
 				pdt_chk = #{pdtChk},
-				prc_cd = #{prcCd},
 		<if test="cmt != null">cmt = #{cmt},</if>
+				prc_cd = #{prcCd}
 		where	bom_cd=#{bomCd}
 	</update>
 	
 	<insert id="insertBom">
 		INSERT INTO adm_bom
 		(mtr_cd,
+		 prd_cd,
 		 use_amt,
 		 ord_chk,
 		 pdt_chk,
 		 prc_cd,
-		 <if test="cmt != null">cmt</if>)
+		 bom_cd
+		 <if test="cmt != null">,cmt</if>
+		 )
 		 VALUES(
 		 #{mtrCd},
+		 #{prdCd},
 		 #{useAmt},
 		 #{ordChk},
 		 #{pdtChk},
 		 #{prcCd},
-		 <if test="cmt != null">#{cmt}</if>)
+		 FN_MAKE_BOMCD()
+		 <if test="cmt != null">,#{cmt}</if>
+		 )
 	</insert>
 </mapper>

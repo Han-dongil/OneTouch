@@ -13,11 +13,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
-<style>
-	input {
-		width : 200px;
-	}
-</style>
 </head>
 <body>
 <br>
@@ -43,7 +38,9 @@
 <div id="grid1"></div>
 <div id="dialog-form" title="title"></div>
 <script>
+	let rowk = -1;
 	let Grid = tui.Grid;
+	
 	Grid.applyTheme('striped',{
 		cell:{
 			header:{
@@ -60,7 +57,9 @@
 		$('#ui-id-1').html('제품코드');
 	})
 	
-		//모달설정
+
+	
+	//모달설정
 	let dialog;
 	dialog = $( "#dialog-form" ).dialog({
 		autoOpen : false,
@@ -72,13 +71,11 @@
 	
 	const columns = [{
 		header: '자재코드',
-		name: 'mtrCd',
-		editor: 'text'
+		name: 'mtrCd'
 	},
 	{
 		header: '자재명',
-		name: 'mtrNm',
-		editor: 'text'
+		name: 'mtrNm'
 	},
 	{
 		header: '사용량',
@@ -113,8 +110,7 @@
 	},
 	{
 		header: '사용공정명',
-		name: 'prcNm',
-		editor: 'text'
+		name: 'prcNm'
 	},
 	{
 		header: '비고',
@@ -180,6 +176,42 @@
 		mainGrid.readData(1,prdCode,true);
 	}
 	
+	//자재명 더블클릭 모달띄우기
+	mainGrid.on("dblclick", (ev)=> {
+		console.log(ev);
+		if (ev.columnName === 'mtrNm') {
+			rowk = ev.rowKey;
+			mMtr();
+			$('#ui-id-1').html('자재');
+		}
+	})
+	
+	//자재명 더블클릭한 모달창안에서 더블클릭
+	function getModalMtr(param) {
+		console.log("더블클릭자재");
+		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
+		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
+		dialog.dialog("close");	
+	}
+	
+	//사용공정명 더블클릭 모달띄우기
+	mainGrid.on("dblclick", (ev)=> {
+		console.log(ev);
+		if (ev.columnName === 'prcNm') {
+			rowk = ev.rowKey;
+			mPrc();
+			$('#ui-id-1').html('사용공정명');
+		}
+	})
+	
+	//사용공정명 더블클릭한 모달창 안에서 더블클릭
+	function getModalPrc(param) {
+		console.log("더블클릭공정");
+		mainGrid.setValue(rowk, "prcCd", param.prcCd, false);
+		mainGrid.setValue(rowk, "prcNm", param.prcNm, false);
+		dialog.dialog("close");	
+	}
+	
 	//삭제버튼
 	btnDel.addEventListener("click", function() {
 		mainGrid.removeCheckedRows(true);
@@ -193,7 +225,11 @@
 	
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		mainGrid.appendRow({})
+		mainGrid.appendRow({});
+		rowk = mainGrid.getRowCount() - 1;
+		prdCdVal = document.getElementById("prdCd").value
+		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
+		console.log(mainGrid.getValue(rowk,'prdCd'));
 	})	
 </script>
 </body>
