@@ -293,6 +293,7 @@
 			height: 500,
 			width: 1000,
 			buttons:{"save":function(){
+				console.log(inputTime.value);
 				prcGrid.setValue(setTimeCheck,'workStrTime',inputTime.value);
 				dateDialog.dialog('close');
 				alert("save");

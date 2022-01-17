@@ -15,6 +15,10 @@
 <body>
 	<form>
 		<input type='date' id='inputDate'>
+		<select name="phs" id="phs">
+			<option value="N">미지시</option>
+			<option value="Y">지시완료</option>
+		</select>
 		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
 		<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 	</form>
@@ -98,12 +102,13 @@
 	})
 	//날짜별 조회 ajax
 	function dateSelectFnc(){
+		console.log(document.getElementById('phs').value);
 		let inputDate=document.getElementById('inputDate').value;
 		event.preventDefault();
 		$.ajax({
 			url:'./ord',
 			method:'POST',
-			data:'ordDate='+inputDate,
+			data:'ordDate='+inputDate+'&nowPhs='+document.getElementById('phs').value,
 			success:function(result){
 				console.log(result)
 				grid.resetData(result);

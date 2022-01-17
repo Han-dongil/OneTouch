@@ -1,6 +1,7 @@
 package com.onetouch.web.pdt.plan.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,11 +57,13 @@ public class PlanServiceImpl implements PlanService {
 	}
 	
 	@Override
-	public void insertPlanDtl(List<PlanVO> list) {
+	public void insertPlanDtl(Map<String,List<PlanVO>> map) {
+		List<PlanVO> list=map.get("detail");
+		PlanVO inVo=map.get("plan").get(0);
 		PlanVO nextSeq=mapper.findPlanSeq();
 		System.out.println(nextSeq);
 		System.out.println("11111");
-		mapper.insertPlan(list.get(0));
+		mapper.insertPlan(inVo);
 		int seq=mapper.findPlanSeqOnlyNum();
 		System.out.println(seq);
 		System.out.println("22222");
@@ -91,7 +94,13 @@ public class PlanServiceImpl implements PlanService {
 				System.out.println(vo);
 				mapper.LotFindInsert(vo);
 				System.out.println("qqqqqqqqq");
+				vo.setHldCnt(vo.getInstrCnt());
+				System.out.println(vo.getHldCnt());
+				System.out.println(vo.getMtrLot());
+				System.out.println(vo);
 				mtrMapper.prdNeed(vo);
+				System.out.println("aaaaaaa");
+				ordMapper.ordCheck(inVo.getOrdShtNo());
 				
 				//i++;
 				

@@ -38,13 +38,10 @@ public class WorkServiceImpl implements WorkService {
 		System.out.println("seq"+seqVo);
 		System.out.println(map.get("planData").get(0).getWorkProt());
 		mapper.workInsert(map.get("planData").get(0));
-		System.out.println("workInsert");
 		for(WorkVO vo : map.get("detailData")) {
-			System.out.println("forStart");
 			vo.setPrdCd(map.get("planData").get(0).getPrdCd());
-			System.out.println(map.get("planData").get(0).getPrdCd());
 			vo.setInstrNo(seqVo.getInstrNo());
-			System.out.println(vo);
+			System.out.println(vo.getInstrNo());
 			mapper.workInsertDtl(vo);
 		}
 		
