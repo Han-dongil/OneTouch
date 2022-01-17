@@ -29,6 +29,23 @@
 	</select>
 	
 	<select id="prodCheckSelectList" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
-		SELECT * FROM fct_prod_chk where chk_dt is null
+		<![CDATA[ select * from 
+(SELECT distinct p.fct_cd as fctCd, 
+       p.prod_chk_no as prodChkNo,
+       f.fct_nm as fctNm, 
+       (select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) as chkDt, 
+       p.chk_rslt as chkRslt, 
+       p.msr_mtt as msrMtt, 
+       p.msr_cmt as msrCmt,
+       case when f.chk_prod_unit = 'Y' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), (f.chk_prod * 12)), 'yyyy-MM-dd')
+            when f.chk_prod_unit = 'M' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), f.chk_prod), 'yyyy-MM-dd')
+            when f.chk_prod_unit = 'W' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + (f.chk_prod * 7), 'yyyy-MM-dd')
+            when f.chk_prod_unit = 'D' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + f.chk_prod, 'yyyy-MM-dd')
+           end as chkExpectDt
+        From fct_prod_chk p, fct_info f
+      WHERE p.fct_cd= f.fct_cd)
+   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')
+   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd')
+   ]]>
 	</select>
 </mapper>

@@ -4,7 +4,7 @@
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 <meta charset="UTF-8">
 <title>설비등록페이지</title>
 <!-- 토스트그리드 cdn -->
