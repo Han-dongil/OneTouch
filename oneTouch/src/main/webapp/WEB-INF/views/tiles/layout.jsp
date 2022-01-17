@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="${path}/resources/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="${path}/resources/template/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="${path}/resources/template/js/select.dataTables.min.css">
+  <link rel="stylesheet" href="${path}/resources/template/vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="${path}/resources/template/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/template/css/vertical-layout-light/style.css">
@@ -75,6 +77,8 @@
   <script src="${path}/resources/template/vendors/datatables.net/jquery.dataTables.js"></script>
   <script src="${path}/resources/template/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="${path}/resources/template/js/dataTables.select.min.js"></script>
+  <script src="${path}/resources/template/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+  <script src="${path}/resources/template/vendors/select2/select2.min.js"></script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->
@@ -87,6 +91,9 @@
   <!-- Custom js for this page-->
   <script src="${path}/resources/template/js/dashboard.js"></script>
   <script src="${path}/resources/template/js/Chart.roundedBarCharts.js"></script>
+  <script src="${path}/resources/template/js/file-upload.js"></script>
+  <script src="${path}/resources/template/js/typeahead.js"></script>
+  <script src="${path}/resources/template/js/select2.js"></script>
   <!-- End custom js for this page-->
     
  

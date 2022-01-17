@@ -16,34 +16,81 @@
 </head>
 <body>
 
-<div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
-	<div  style="margin-left: 600px;">
-		<button type="button" id='btnFind'>조회</button>
-		<button type="button" id='btnAdd'>추가</button>
-		<button	type="button" id='btnDel'>삭제</button>
-		<button type="button" id='btnSave'>저장</button>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">작업수리내역관리</h3>
+				</div>
+			</div>
+		</div>
 	</div>
-	<form id="fixFrm" method="post">
-		  <input type="radio" id="requestRio" name="fixPhs" value="수리요청" checked>
-		  <label for="request">수리요청</label>
-		  <input type="radio" id="fixingRio" name="fixPhs" value="수리중">
-		  <label for="fixing">수리중</label>
-		  <input type="radio" id="completedRio" name="fixPhs" value="수리완료">
-		  <label for="completed">수리완료</label>
-		  
-		<span style="margin-left: 100px;">
-			<label>해당일자</label>
-			<input type="Date" id="fixFrom" name="fixFrom"> 
-			<label> ~ </label> 
-			<input type="Date" id="fixTo" name="fixTo">
-		</span>
-		<span >
-			<label>설비구분</label>
-			<select id="fctCd" name="fctCd"></select>
-		</span>
-	</form>
-</div>
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">조회조건</h4>
+					
+					<form id="fixFrm" method="post" class="forms-sample">
+						<label class="form-check-label" for="request">
+						  	<input type="radio" class="form-check-input" id="requestRio" name="fixPhs" value="수리요청" checked>
+						  		수리요청
+							<i class="input-helper"></i>
+						</label>
+						
+						<label class="form-check-label" for="fixing">
+						  	<input type="radio" class="form-check-input" id="fixingRio" name="fixPhs" value="수리중">
+						  		수리중
+							<i class="input-helper"></i>
+						</label>
+						
+						<label class="form-check-label" for="completed">
+						  	<input type="radio" class="form-check-input" id="completedRio" name="fixPhs" value="수리완료">
+						  		수리완료
+							<i class="input-helper"></i>
+						</label>
+					
+					
+					
+						  <!-- <input type="radio" id="requestRio" name="fixPhs" value="수리요청" checked>
+						  <label for="request">수리요청</label>
+						  <input type="radio" id="fixingRio" name="fixPhs" value="수리중">
+						  <label for="fixing">수리중</label>
+						  <input type="radio" id="completedRio" name="fixPhs" value="수리완료">
+						  <label for="completed">수리완료</label> -->
+						  
+						<span style="margin-left: 100px;">
+							<label>해당일자</label>
+							<input type="Date" id="fixFrom" name="fixFrom"> 
+							<label> ~ </label> 
+							<input type="Date" id="fixTo" name="fixTo">
+						</span>
+						<span >
+							<label>설비구분</label>
+							<select id="fctCd" name="fctCd"></select>
+						</span>
+						
+						<div>
+							<button type="button" id='btnFind'>조회</button>
+							
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<button type="button" id='btnAdd'>추가</button>
+			<button	type="button" id='btnDel'>삭제</button>
+			<button type="button" id='btnSave'>저장</button>
+		</div>
+	</div>
+	
 	<div id="grid"></div>
+</div>
+
+
 <script>
 
 //공정 코드 조회 ajax 요청
