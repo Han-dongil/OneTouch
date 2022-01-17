@@ -16,9 +16,10 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="BasList">공통자료관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="mngList">공정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="FlwList">ㅋㅋ</a></li>
-                <li class="nav-item"> <a class="nav-link" href="BomList">Bom</a></li>
+                <li class="nav-item"> <a class="nav-link" href="FlwList">제품공정흐름관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="BomList">Bom관리</a></li>
               </ul>
             </div>
           </li>

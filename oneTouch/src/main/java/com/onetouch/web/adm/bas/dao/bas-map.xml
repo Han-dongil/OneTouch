@@ -4,15 +4,13 @@
 
 	<!-- 기초코드 조회 -->
 	<select id="selectBasAll" resultType="com.onetouch.web.adm.bas.dao.BasVO">
-		select  *
-		from    adm_bas_cd
-	</select>
-	
-	<!-- 제품명으로 검색 -->
-	<select id="selectBasSrc" resultType="com.onetouch.web.adm.bas.dao.BasVO">
-		select  bas_nm 
-		from	adm_bas_cd 
-		where 	bas_nm like '%' || #{basNm} || '%'
+		select   *
+		from     adm_bas_cd
+		where	 1=1
+		<if test="basNm != null and basNm !=''">
+			AND bas_nm like '%' || #{basNm} || '%'
+		</if>
+		order by bas_nm
 	</select>
 	
 	<!-- 상세코드 전체조회 -->
@@ -30,12 +28,41 @@
 	
 	<!-- 기초코드 선택하면 상세코드 종류 보여주기 -->
 	<select id="selectBasDtl" resultType="com.onetouch.web.adm.bas.dao.BasDtlVO">
-		select  dtl_cd,
-		        dtl_nm,
-		        dtl_cmt,
-		        seq,
-		        use_yn
-		from 	adm_bas_dtl_cd 
-		where 	bas_cd = #{basCd}
+		select   dtl_cd,
+		         dtl_nm,
+		         dtl_cmt,
+		         seq,
+		         use_yn
+		from 	 adm_bas_dtl_cd 
+		where 	 bas_cd = #{basCd}
+		order by seq
 	</select>
+	
+	<insert id="insertBas">
+		INSERT INTO adm_bas_dtl_cd
+		(dtl_cd,
+		 dtl_nm,
+		 bas_cd,
+		 <if test="dtlCmt != null">dtl_cmt,</if>
+		 seq,
+		 use_yn
+		 )
+		 VALUES(
+		 #{dtlCd},
+		 #{dtlNm},
+		 #{basCd},
+		 <if test="dtlCmt != null">#{dtlCmt},</if>
+		 #{seq},
+		 #{useYn}
+		 )
+	</insert>
+	
+	<update id="updateBas">
+		UPDATE  adm_bas_dtl_cd
+		SET 	dtl_nm = #{dtlNm},
+		<if test="dtlCmt != null">dtl_cmt = #{dtlCmt},</if>
+				seq = #{seq},
+				use_yn = #{useYn}
+		WHERE	dtl_cd = #{dtlCd}
+	</update>
 </mapper>

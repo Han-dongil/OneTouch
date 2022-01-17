@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공정흐름관리</title>
+<title>제품공정흐름관리</title>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
@@ -27,7 +27,7 @@
 	<br>
 </div>
 <div class= "col-8">
-	<h4>✔제품정보</h4>
+	<h4>✔제품상세정보</h4>
 	<div align="right" style="margin-right: 3%;">
 		<button id="btnEdit">수정</button><hr>
 	</div>
@@ -165,6 +165,7 @@
 		minBodyHeight: 280
 	})
 
+	//제품명 클릭하면 제품상세정보 받아옴
 	grid1.on("click", (ev) =>{
 		if(ev.columnName === 'prdNm'){
 			prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
@@ -199,7 +200,7 @@
 
 	//공정흐름보기 버튼
 	btnFlw.addEventListener("click", function() {
-		prdCode2 = {'prdCd':$('#prdCd').val()};
+		prdCode2 = {'prdCd' : $('#prdCd').val()};
 		console.log(prdCode2);
 		grid2.readData(1,prdCode2,true);
 	})
