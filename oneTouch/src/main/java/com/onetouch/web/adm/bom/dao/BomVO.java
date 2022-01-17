@@ -1,9 +1,13 @@
 package com.onetouch.web.adm.bom.dao;
 
+import com.onetouch.web.adm.mng.dao.MngVO;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class BomVO {
+@EqualsAndHashCode(callSuper=false)
+public class BomVO extends MngVO{
 	
 	private String mtrCd;	//자재코드
 	private String mtrNm;	//자재명

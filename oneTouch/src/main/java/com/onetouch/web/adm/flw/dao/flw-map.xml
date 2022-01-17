@@ -47,4 +47,20 @@
 				</if>
 		WHERE	prd_cd = #{prdCd}		
 	</update>
+	
+	<!-- 공정흐름 // 공정관리 // 공통bom join -->
+	<select id="selectFlwPrcBom" resultType="com.onetouch.web.adm.bom.dao.BomVO">
+		select a.prdCd as prdCd , a.prcSeq as prcSeq , 
+		    a.prcCd as prcCd , a.workCmt as workCmt ,a.stdLoad as stdLoad , 
+		    a.unitCost as unitCost , a.leadTime as leadTime , a.prcNm as prcNm , 
+		    a.mngUnit as mngUnit , a.pdtDay as pdtDay , a.prcSect as prcSect ,
+		    b.bom_cd as bomCd , b.mtr_cd as mtrCd ,b.use_amt as useAmt 
+		from (select a.prd_cd as prdCd , a.prc_seq as prcSeq , 
+		    a.prc_cd as prcCd , a.work_cmt as workCmt ,a.std_load as stdLoad , 
+		    a.unit_cost as unitCost , a.lead_time as leadTime , b.prc_nm as prcNm , 
+		    b.mng_unit as mngUnit , b.pdt_day as pdtDay , b.prc_sect as prcSect 
+		    from adm_prc_flow a join adm_prc_mng b
+		    on (a.prc_cd=b.prc_cd)) a join adm_bom b
+		on(a.prcCd = b.prc_cd);
+	</select>
 </mapper>
