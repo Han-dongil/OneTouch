@@ -200,7 +200,7 @@ var mainGrid = new Grid({
 				 },
 				 {
 				   header: '자재LOT NO.',
-				   name: '',
+				   name: 'mtrLot',
 				   align: 'center',
 					editor: 'text',
 					validation: {
@@ -264,6 +264,9 @@ mainGrid.on("dblclick",(ev)=>{
 	if (ev.columnName === 'mtrCd'){
 		rowk = ev.rowKey;
 		mMtr();
+	} else if(ev.columnName === 'mtrLot'){
+		rowk = ev.rowKey;
+		
 	}
 });
 
@@ -275,7 +278,7 @@ mainGrid.on("dblclick",(ev)=>{
 
 
 //모달 설정
-let dialog = $( "#dialog-form" ).dialog({
+let smallDialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
@@ -283,7 +286,7 @@ let dialog = $( "#dialog-form" ).dialog({
 	width: 500
 });
 //발주내역모달 설정
-let ordDialog = $( "#dialog-ord" ).dialog({
+let wideDialog = $( "#dialog-ord" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
@@ -295,12 +298,12 @@ let ordDialog = $( "#dialog-ord" ).dialog({
 function getModalBas(param){
 			$('#compCd').val(param.dtlCd);
 			$('#compNm').val(param.dtlNm);
-			dialog.dialog("close");
+			smallDialog.dialog("close");
 		};
 		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
-	dialog.dialog("close");
+	smallDialog.dialog("close");
 	if(rowk >= 0){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
@@ -349,40 +352,22 @@ columns : [
 			}				
 			]
 });
+ordGrid.on('dblclick', ev => {
+	getModalOrd(ordGrid.getRow(ev.rowKey));
+});
 
-//발주 모달
-function mMtrOrd(){
-	/*let ordData;
-	$.ajax({
-		url : './mtrOrdModal',
-		dataType : 'json',
-		async : false,
-		success : function(a){
-			console.log(a);
-			ordGrid.resetData(a);
-		}
-	}); */
-	ordDialog.dialog("open");
-	
-		
-		ordGrid.on('dblclick', ev => {
-			console.log(ordGrid.getRow(ev.rowKey));
-			getModalOrd(ordGrid.getRow(ev.rowKey));
-		});
-		
-		ordGrid.on('successResponse',function(ev){
-			console.log("성공")
-		});
-		ordGrid.on('failResponse',function(ev){
-			console.log("실패")
-		});
-}
+ordGrid.on('successResponse',function(ev){
+	console.log("성공")
+});
+ordGrid.on('failResponse',function(ev){
+	console.log("실패")
+});
 
 //발주내역모달
 function getModalOrd(param){
 	/* console.log(param); */
 	mainGrid.appendRow(param);	
-	ordDialog.dialog("close");
+	wideDialog.dialog("close");
 };
 
 //추가버튼
@@ -409,7 +394,8 @@ btnFind.addEventListener("click", function(){
 });
 //발주내역버튼
 btnOrdFind.addEventListener("click", function(){
-	mMtrOrd();
+	wideDialog.dialog("open");
+	ordGrid.readData();
 });
 //업체검색버튼
 btnInCom.addEventListener("click", function(){
