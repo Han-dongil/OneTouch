@@ -5,11 +5,14 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.onetouch.web.adm.mng.dao.MngVO;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class InfoVO {
+@EqualsAndHashCode(callSuper=false)			
+public class InfoVO extends MngVO  {
 	
 	String fctCd;		//설비코드 
 	String fctNm;		//설비명
@@ -31,7 +34,9 @@ public class InfoVO {
 	String empNo;		//사번
 	String checkPrcCd; //설비 조회 페이지에서 검색 조건으로 선택하는 공정코드를 담는 변수 
 	String checkRadio;	//설비수리 페이지 에서 radio value값을 담는 변수 
-
+	
+	
+	
 	
 	
 

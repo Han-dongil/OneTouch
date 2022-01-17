@@ -27,5 +27,7 @@ public class ProdVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	Date fixFrom;		//날짜조회
+	int chkProd;
+	String chkProdUnit;
 	
 }

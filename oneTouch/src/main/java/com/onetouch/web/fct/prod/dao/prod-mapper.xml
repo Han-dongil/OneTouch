@@ -3,12 +3,13 @@
 <mapper namespace="com.onetouch.web.fct.prod.dao.ProdMapper">
 
 	<select id="prodSelect" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
-		SELECT p.prod_chk_no as prodChkNo, p.fct_cd as fctCd, f.fct_nm as fctNm, p.chk_dt as chkDt, p.chk_rslt as chkRslt, p.msr_mtt as msrMtt, p.msr_cmt as msrCmt,
+		SELECT p.prod_chk_no as prodChkNo, p.fct_cd as fctCd, f.fct_nm as fctNm, p.chk_dt as chkDt, f.chk_prod as chkProd, p.chk_rslt as chkRslt, p.msr_mtt as msrMtt, p.msr_cmt as msrCmt,
         	case when f.chk_prod_unit = 'Y' then to_char(add_months(p.chk_dt, (f.chk_prod * 12)), 'yyyy-MM-dd')
 	             when f.chk_prod_unit = 'M' then to_char(add_months(p.chk_dt, f.chk_prod), 'yyyy-MM-dd')
 	             when f.chk_prod_unit = 'W' then to_char(p.chk_dt + (f.chk_prod * 7), 'yyyy-MM-dd')
 	             when f.chk_prod_unit = 'D' then to_char(p.chk_dt + f.chk_prod, 'yyyy-MM-dd')
-	        	 end as chkExpectDt
+	        	 end as chkExpectDt,
+	        	 decode(f.chk_prod_unit,'Y', '년','M','달','W','주','D','일') as chkProdUnit 
         From fct_prod_chk p, fct_info f
 		WHERE p.fct_cd= f.fct_cd
 		<if test="fixTo != null">

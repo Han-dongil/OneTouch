@@ -5,9 +5,12 @@ import java.util.List;
 
 public interface InfoMapper {
 
+	
+	//공정관리테이블 join
+	List<InfoVO> selectprcCd(InfoVO infoVO);
+	
 	//설비관리 수정
 	int InfoUpdate(InfoVO infoVO);
-
 	//설비 등록 조회 
 	List<InfoVO> selectFctInfoAll(InfoVO infoVO);
 	InfoVO selectFctInfo(InfoVO infoVO);

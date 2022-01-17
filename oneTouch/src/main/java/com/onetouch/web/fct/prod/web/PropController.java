@@ -1,8 +1,6 @@
 package com.onetouch.web.fct.prod.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onetouch.web.fct.fix.dao.FixVO;
 import com.onetouch.web.fct.prod.dao.ProdVO;
 import com.onetouch.web.fct.prod.service.ProdService;
 
