@@ -67,7 +67,7 @@
 	
 	Grid.applyTheme('striped', {	
         cell: {
-          header: {
+          header: { 
             background: '#eef'
           },
           evenRow: {
