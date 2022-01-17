@@ -22,11 +22,11 @@
    ,#{alist.ordShtNo},#{alist.workProt},sysdate
 	)     동적쿼리하다감
 	</foreach> -->
-	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,PLAN_DATE) 
+	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,PLAN_DATE,now_phs) 
 	values(
    (select PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date') from dual)
    ,to_date(sysdate,'yyyy-mm-dd HH24:MI:SS')<!-- dueDate ->sysdate -->
-   ,#{ordShtNo},sysdate
+   ,#{ordShtNo},sysdate,'N'
 	)
 </insert>
 	<delete id="deletePlan">
@@ -54,7 +54,6 @@
 <insert id="LotFindInsert">
 	insert into used_mtr_lot (mtr_lot, instr_dtl_no, dtl_select) 
 	values (
-	#{mtrLot},
 	substr(#{planDtlNo},0,11)||lpad(substr(#{planDtlNo},12,4),4,'0'),
 	'PD')
 </insert>
