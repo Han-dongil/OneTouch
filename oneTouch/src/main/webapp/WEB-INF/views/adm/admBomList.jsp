@@ -38,7 +38,7 @@
 <div id="grid1"></div>
 <div id="dialog-form" title="title"></div>
 <script>
-	let rowk = -1;
+	let rowk;
 	let Grid = tui.Grid;
 	
 	Grid.applyTheme('striped',{
@@ -227,6 +227,7 @@
 	btnAdd.addEventListener("click", function() {
 		mainGrid.appendRow({});
 		rowk = mainGrid.getRowCount() - 1;
+		console.log(rowk);
 		prdCdVal = document.getElementById("prdCd").value
 		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
 		console.log(mainGrid.getValue(rowk,'prdCd'));
