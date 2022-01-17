@@ -35,10 +35,10 @@
 	</insert>
 	<insert id="workInsertDtl">
 		insert into pdt_work_instr_dtl (instr_dtl_no, instr_no, prd_cd , instr_cnt ,  work_str_date , work_str_time)
-		values (PKG_MAKE_CODE.CODE('PWD','PDT_WORK_INSTR_DTL','INSTR_DTL_NO'),#{instrNo},#{prdCd},#{instrCnt},#{inStrDate},#{inStrTime})
+		values (PKG_MAKE_CODE.CODE('PWD','PDT_WORK_INSTR_DTL','INSTR_DTL_NO'),#{instrNo},#{prdCd},#{hldCnt},#{instrDate},#{workStrTime})
 	</insert><!--null 포인트 그만...........멈춰 ..............ㅅㅂ............  -->
 	<select id="findWorkSeq" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
-		select PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no') as inserDtlNo from dual
+		select PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no') as instrNo from dual
 	</select>
 	<select id="findWorkSeqOnlyNum" resultType="int">
 		select PKG_MAKE_CODE_SEQ.CODE('pdt_work_instr','instr_no') from dual

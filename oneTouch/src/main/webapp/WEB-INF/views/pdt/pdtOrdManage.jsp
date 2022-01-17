@@ -18,7 +18,7 @@
 		let Grid = tui.Grid;
 		Grid.applyTheme('striped',{
 			cell:{
-				header:{
+				header:{ 
 					background:'#eef'
 				},
 				evenRow:{

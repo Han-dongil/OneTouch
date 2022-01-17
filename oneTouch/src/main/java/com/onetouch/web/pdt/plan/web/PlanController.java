@@ -66,9 +66,12 @@ public class PlanController {
 	}
 	@ResponseBody
 	@PostMapping("planDtlInsert")
-	public String planDtlInsert(@RequestBody List<PlanVO> list){
-		System.out.println(list);
-		service.insertPlanDtl(list);
+	public String planDtlInsert(@RequestBody Map<String,List<PlanVO>> map){
+		System.out.println(map.get("detail"));
+		System.out.println(map.get("plan"));
+		
+		//System.out.println(list);
+		service.insertPlanDtl(map);
 		return "a";
 	}
 

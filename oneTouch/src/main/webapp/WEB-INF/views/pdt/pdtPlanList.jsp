@@ -99,13 +99,18 @@
  			lotGrid.blur();//커서 인풋밖으로빼냄
  			let planFormData=$("#planFrm").serializeObject()
  			console.log(planFormData);
- 			fetch('planDtlInsert',{
+ 			lotGrid.getModifiedRows()
+ 			let insertData={}
+ 			insertData.plan=[planFormData];
+ 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
+ 			console.log(insertData);
+ 			 fetch('planDtlInsert',{
  				method:'POST',
  				headers:{
 					"Content-Type": "application/json",
 				},
-				body:JSON.stringify([planFormData])
- 			})
+				body:JSON.stringify(insertData)
+ 			}) 
  			
  			//lotGrid.request('modifyData');  
 		}}
@@ -242,6 +247,7 @@
 		lotGrid	= new Grid({
 			el: document.getElementById('paln-dialog-form'),
 			data:modalDataSource,
+			rowHeaders:['checkbox'],
 			columns:lotColumns
 		});	
 		

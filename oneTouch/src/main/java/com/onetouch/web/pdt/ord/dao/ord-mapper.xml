@@ -10,7 +10,17 @@
 	</if>
 </select>
 <select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
-	select * from pdt_ord_sht where to_char(ord_date,'yyyy-MM-dd')=#{ordDate} 
+	select * from pdt_ord_sht where 1=1
+	<if test='ordDate!=""'>
+		and to_char(ord_date,'yyyy-MM-dd')=#{ordDate} 
+	</if> 
+	<if test='nowPhs =="Y"'>
+		and now_phs ='Y'
+	</if>
+	<if test='nowPhs =="N"'>
+		and now_phs ='N'
+	</if>
+	
 </select>
 <update id="ordCheck">
 	update pdt_ord_sht set now_phs = 'Y' where ord_sht_no=#{ordShtNo}
