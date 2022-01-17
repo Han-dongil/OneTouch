@@ -13,6 +13,8 @@ function mMtr(){
 	});
 		
 	dialog.dialog("open");
+			
+	$("#dialog-form").attr('title', '자재');
 	
 	$("#dialog-form").load("modalMtr", function(){
 		let mtrGrid = tui.Grid;
@@ -89,6 +91,7 @@ function mMtr(){
 		});
 		
 		mtrGrid.on('dblclick', ev => {
+			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
 			getModalMtr(mtrGrid.getRow(ev.rowKey));
 		})
 		
@@ -163,6 +166,10 @@ function mPrd(){
 				hidden: true
 			},
 			{
+				header: '재고',
+				name: 'stck'
+			},
+			{
 				header: '제품구분',
 				name: 'prdSect'
 			}
@@ -224,7 +231,8 @@ function mPrc(){
 		const prcColumns = [ 
 			{
 				header: '공정코드',
-				name: 'prcCd'
+				name: 'prcCd',
+				hidden: true
 			},
 			{
 				header: '공정명',
@@ -232,18 +240,15 @@ function mPrc(){
 			},
 			{
 				header: '관리단위코드',
-				name: 'mngUnit',
-				hidden: true
+				name: 'mngUnit'
 			},
 			{
 				header: '관리단위',
-				name: 'mngUnitNm',
-				hidden: true
+				name: 'mngUnitNm'
 			},
 			{
 				header: '생산일수',
-				name: 'pdtDay',
-				hidden: true
+				name: 'pdtDay'
 			},
 			{
 				header: '공정구분코드',
@@ -252,8 +257,7 @@ function mPrc(){
 			},
 			{
 				header: '공정구분',
-				name: 'prcSectNm',
-				hidden: true
+				name: 'prcSectNm'
 			},
 			{
 				header: '비고',
@@ -348,9 +352,6 @@ function mBas(basCd){
 		case 'DEPT':
 			title ='부서'
 			break;
-		case 'PDT_SIZE':
-			title ='제품규격종류'
-			break; 
 	}
 			
 	$("#dialog-form").attr('title', title);
