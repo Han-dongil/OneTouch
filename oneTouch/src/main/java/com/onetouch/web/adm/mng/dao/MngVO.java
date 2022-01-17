@@ -1,9 +1,13 @@
 package com.onetouch.web.adm.mng.dao;
 
+import com.onetouch.web.adm.flw.dao.FlwVO;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class MngVO {
+@EqualsAndHashCode(callSuper=false)
+public class MngVO extends FlwVO{
 
 	private String prcCd;	  //공정코드
 	private String prcNm;	  //공정명
