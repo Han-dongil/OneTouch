@@ -1,9 +1,6 @@
 package com.onetouch.web.pdt.plan.dao;
 
 import java.util.List;
-import java.util.Map;
-
-import com.onetouch.web.mtr.stck.dao.LotVO;
 
 public interface PlanMapper {
 	
@@ -18,4 +15,6 @@ public interface PlanMapper {
 	PlanVO findPlanSeq();
 	int findPlanSeqOnlyNum();
 	PlanVO findPlanDTLSeq();
+	List<PlanVO> addPlanLotSelect(PlanVO vo);
+	
 }
