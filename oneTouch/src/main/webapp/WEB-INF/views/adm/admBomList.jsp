@@ -52,12 +52,11 @@
 		}
 	}) 
 	
+	//제품코드옆의 돋보기 누르면
 	btnPrdCd.addEventListener("click", function() {
 		mPrd();
 		$('#ui-id-1').html('제품코드');
 	})
-	
-
 	
 	//모달설정
 	let dialog;

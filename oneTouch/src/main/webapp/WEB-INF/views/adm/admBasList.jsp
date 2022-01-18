@@ -152,7 +152,7 @@
 	
 	//기초코드명 클릭하면 상세코드 받아옴
 	grid1.on("click", (ev) => {
-		if(ev.columnName === 'basNm') {
+		if(ev.columnName === 'basCd' || ev.columnName === 'basNm') {
 			basCodeVal = grid1.getValue(ev.rowKey,'basCd');
 			basCode = {'basCd' : basCodeVal};
 			grid2.readData(1,basCode,true);

@@ -15,7 +15,7 @@
 		        flt_nm, 
 		        flt_mtt, 
 		        prc_cd,
-		        FN_GET_BAS_DTL_CD_TO_NM(prc_cd) as prcNm, 
+		        FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm, 
 		        cmt,
 		        seq
 		from	adm_flt_cd 
@@ -24,16 +24,54 @@
 	
 	<!-- 불량리스트(내가보고싶은) -->
 	<select id="selectFlt" resultType="com.onetouch.web.adm.flt.dao.FltVO">
-		select  flt_cd, 
-				flt_sect,
-		        flt_nm, 
-		        flt_mtt, 
-		        prc_cd,
-		        FN_GET_BAS_DTL_CD_TO_NM(prc_cd) as prcNm, 
-		        cmt,
-		        seq
-		from    adm_flt_cd
+		select   flt_cd, 
+				 flt_sect,
+		         flt_nm, 
+		         flt_mtt, 
+		         prc_cd,
+		         nvl(FN_GET_PRC_CD_TO_NM(prc_cd),'해당사항없음') as prcNm, 
+		         cmt,
+		         seq
+		from     adm_flt_cd
+		order by seq
 	</select>
 	
+	<insert id="insertFlt">
+		INSERT INTO adm_flt_cd
+		(flt_cd,
+		 flt_sect,
+		 flt_nm,
+		 flt_mtt,
+		 <if test="prcCd != null">prc_cd,</if> 
+		 <if test="cmt != null">cmt,</if>
+		 seq
+		 )
+		 VALUES(
+		 FN_MAKE_FLTCD(),
+		 #{fltSect},
+		 #{fltNm},
+		 #{fltMtt},
+		 <if test="prcCd != null">#{prcCd},</if>
+		 <if test="cmt != null">#{cmt},</if>
+		 #{seq}
+		 )
+	</insert>
 
+	<update id="updateFlt">
+		update 	adm_flt_cd
+		set		flt_sect = #{fltSect},
+				flt_nm = #{fltNm},
+				flt_mtt = #{fltMtt},
+				<if test="cmt != null">cmt = #{cmt},</if>
+				<if test="prcCd != null">prc_cd = #{prcCd},</if>
+				seq = #{seq}
+		where	flt_cd = #{fltCd}
+	</update>
+	
+	<delete id="deleteFlt">
+		DELETE	
+		FROM	adm_flt_cd
+		WHERE	flt_cd = #{fltCd}
+	</delete>
+	
 </mapper>

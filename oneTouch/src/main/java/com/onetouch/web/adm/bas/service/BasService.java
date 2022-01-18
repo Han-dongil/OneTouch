@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.onetouch.web.adm.bas.dao.BasDtlVO;
 import com.onetouch.web.adm.bas.dao.BasVO;
-import com.onetouch.web.adm.mng.dao.MngVO;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface BasService {
