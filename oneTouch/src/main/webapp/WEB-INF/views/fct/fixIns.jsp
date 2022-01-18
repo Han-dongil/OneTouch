@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,39 +12,131 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
- 
- 
+
+
+<style>
+
+.datepicker:focus,
+.selectoption:focus {
+	box-shadow: none !important;
+	outline: none; 
+}
+
+.datepicker, .selectoption{
+	color: #495057;
+	background-color: #fdfdff;
+	border: 1px solid #ced4da;
+  	border-color: #e4e6fc; 
+  	border-radius: 3px;
+	height: 34px;
+}
+
+.datepicker:focus,
+.selectoption:focus {
+	background-color: #fefeff;
+	border-color: #95a0f4;
+}
+
+.schCondLabel{
+	min-height: 18px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.floatright{
+	float: right;
+}
+
+.newalign{
+	margin-right:0.2rem !important;
+	margin-left:0.2rem !important;
+	margin-bottom: 0.3rem !important;
+}
+
+</style>
+
 </head>
 <body>
 
-<div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
-	<div  style="margin-left: 600px;">
-		<button type="button" id='btnFind'>조회</button>
-		<button type="button" id='btnAdd'>추가</button>
-		<button	type="button" id='btnDel'>삭제</button>
-		<button type="button" id='btnSave'>저장</button>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">작업수리내역관리</h3>
+				</div>
+			</div>
+		</div>
 	</div>
-	<form id="fixFrm" method="post">
-		  <input type="radio" id="requestRio" name="fixPhs" value="수리요청" checked>
-		  <label for="request">수리요청</label>
-		  <input type="radio" id="fixingRio" name="fixPhs" value="수리중">
-		  <label for="fixing">수리중</label>
-		  <input type="radio" id="completedRio" name="fixPhs" value="수리완료">
-		  <label for="completed">수리완료</label>
-		  
-		<span style="margin-left: 100px;">
-			<label>해당일자</label>
-			<input type="Date" id="fixFrom" name="fixFrom"> 
-			<label> ~ </label> 
-			<input type="Date" id="fixTo" name="fixTo">
-		</span>
-		<span >
-			<label>설비구분</label>
-			<select id="fctCd" name="fctCd"></select>
-		</span>
-	</form>
-</div>
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">조회조건</h4>
+					
+					<form id="fixFrm" method="post">
+						<!-- <div class="form-group"> -->
+							<div class="form-check" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="request">
+							  		<input type="radio" class="form-check-input" id="requestRio" name="fixPhs" value="수리요청" checked>
+							  		수리요청&nbsp;&nbsp;
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="fixing">
+							  		<input type="radio" class="form-check-input" id="fixingRio" name="fixPhs" value="수리중">
+							  		수리중&nbsp;&nbsp;
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="completed">
+							  		<input type="radio" class="form-check-input" id="completedRio" name="fixPhs" value="수리완료">
+							  		수리완료&nbsp;&nbsp;
+									<i class="input-helper"></i>
+								</label>
+							</div>
+						<!-- </div> -->
+						<br>
+						
+						
+						<span>
+							<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
+							<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
+							<label> ~ </label> 
+							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
+						</span>&nbsp;&nbsp;
+						
+						<span >
+							<label class="form-check-label">설비구분</label>
+							<select id="fctCd" name="fctCd" class="selectoption"></select>
+						</span>
+						
+						<span>
+							<button type="button" id='btnFind' class="btn btn-primary mr-2 floatright">조회</button>
+						</span>
+						
+					</form> 
+						
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<span class="floatright">
+		<button type="button" id='btnAdd' class="btn btn-inverse-primary newalign">추가</button>
+		<button	type="button" id='btnDel' class="btn btn-inverse-primary newalign">삭제</button>
+		<button type="button" id='btnSave' class="btn btn-primary newalign">저장</button> 
+	</span>
+	<br><br>
+	<hr>
 	<div id="grid"></div>
+</div>
+
+
 <script>
 
 //공정 코드 조회 ajax 요청
@@ -67,7 +160,7 @@
 	
 	Grid.applyTheme('striped', {	
         cell: {
-          header: { 
+          header: {
             background: '#eef'
           },
           evenRow: {
@@ -76,7 +169,7 @@
           
         },
         //고정칼럼 색상 설정
-        frozenBorder: { 
+        frozenBorder: {
              border: 'red'
         }
       });
