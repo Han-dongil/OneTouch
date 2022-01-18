@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.fct.prod.dao.ProdVO;
 import com.onetouch.web.fct.prod.service.ProdService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class PropController {
@@ -31,6 +32,20 @@ public class PropController {
 	 * list; }
 	 */
 	
+	//삭제, 수정, 등록처리 
+	@ResponseBody
+	@PostMapping("prodModifyData")
+	public int modify(@RequestBody ModifyVO<ProdVO> mvo) {
+		System.out.println("컨트롤값 보여주기");
+		System.out.println("업데이트"+mvo.getUpdatedRows());
+		System.out.println("등록"+mvo.getCreatedRows());
+		System.out.println("삭제"+mvo.getDeletedRows());
+		prodservice.modify(mvo);
+		
+		return -0;
+	}	
+			
+			
 	@ResponseBody
     @PostMapping("prodChekList")
     public Map<String,Object> selectFixList(@RequestBody ProdVO prodVO){

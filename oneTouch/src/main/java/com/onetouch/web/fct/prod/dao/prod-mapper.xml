@@ -12,6 +12,7 @@
 	        	 decode(f.chk_prod_unit,'Y', '년','M','달','W','주','D','일') as chkProdUnit 
         From fct_prod_chk p, fct_info f
 		WHERE p.fct_cd= f.fct_cd
+		
 		<if test="fixTo != null">
 			<![CDATA[
 				AND p.chk_dt <= #{fixTo}
@@ -25,28 +26,57 @@
 		<if test='fctCd != null and fctCd != "" and fctCd != "d"'>
 			<![CDATA[
 				AND substr(p.fct_cd,1,11) = #{fctCd}
+				order by p.chk_dt 
 			]]>
 		</if>
 	</select>
 	
 	<select id="prodCheckSelectList" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
-		<![CDATA[ select * from 
-(SELECT distinct p.fct_cd as fctCd, 
-       p.prod_chk_no as prodChkNo,
-       f.fct_nm as fctNm, 
-       (select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) as chkDt, 
-       p.chk_rslt as chkRslt, 
-       p.msr_mtt as msrMtt, 
-       p.msr_cmt as msrCmt,
-       case when f.chk_prod_unit = 'Y' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), (f.chk_prod * 12)), 'yyyy-MM-dd')
-            when f.chk_prod_unit = 'M' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), f.chk_prod), 'yyyy-MM-dd')
-            when f.chk_prod_unit = 'W' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + (f.chk_prod * 7), 'yyyy-MM-dd')
-            when f.chk_prod_unit = 'D' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + f.chk_prod, 'yyyy-MM-dd')
-           end as chkExpectDt
-        From fct_prod_chk p, fct_info f
-      WHERE p.fct_cd= f.fct_cd)
-   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')
-   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd')
+		<![CDATA[ select a.*,  (to_date(chkExpectDt, 'yyyy-MM-dd') - trunc(sysdate)) as day_diff
+			from 
+			(SELECT distinct p.fct_cd as fctCd, 
+			       p.prod_chk_no as prodChkNo,
+			       f.fct_nm as fctNm, 
+			       (select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) as chkDt, 
+			       p.chk_rslt as chkRslt, 
+			       p.msr_mtt as msrMtt, 
+			       p.msr_cmt as msrCmt,
+			       case when f.chk_prod_unit = 'Y' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), (f.chk_prod * 12)), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'M' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), f.chk_prod), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'W' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + (f.chk_prod * 7), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'D' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + f.chk_prod, 'yyyy-MM-dd')
+			           end as chkExpectDt
+			        From fct_prod_chk p, fct_info f
+			      WHERE p.fct_cd= f.fct_cd) a
+			   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')
+			   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd')
    ]]>
 	</select>
+	
+	<insert id="insertProd">
+		Insert into ONE.FCT_PROD_CHK (PROD_CHK_NO
+									 ,FCT_CD
+									 ,CHK_DT
+									 ,CHK_RSLT
+									 ,MSR_MTT
+									 ,MSR_CMT
+									 ) 
+		values ( PKG_MAKE_CODE.CODE('FRC', 'FCT_PROD_CHK', 'PROD_CHK_NO')
+		       ,#{fctCd}
+		       ,sysdate
+		       ,#{chkRslt}
+		       ,#{msrMtt}
+		       ,#{msrCmt}
+		       )
+	</insert>
+	<update id="updateProd">
+		UPDATE FCT_PROD_CHK SET chk_rslt=#{chkRslt}
+							   ,msr_mtt=#{msrMtt}
+							   ,msr_cmt=#{msrCmt} 
+		where prod_chk_no = #{prodChkNo}
+	</update>
+	
+	<delete id="deleteProd">
+		Delete FROM FCT_PROD_CHK  WHERE PROD_CHK_NO = #{prodChkNo}
+	</delete>
 </mapper>

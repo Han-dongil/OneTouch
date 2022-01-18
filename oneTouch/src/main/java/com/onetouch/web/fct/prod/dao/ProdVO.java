@@ -29,5 +29,6 @@ public class ProdVO {
 	Date fixFrom;		//날짜조회
 	int chkProd;
 	String chkProdUnit;
+	int dayDiff;
 	
 }

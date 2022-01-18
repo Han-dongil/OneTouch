@@ -22,6 +22,10 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+<!-- toastr -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 
@@ -45,7 +49,7 @@
 	</form>
 		<button type="button" id='btnFind'>조회</button>
 		<button type="button" id='btnAdd'>추가</button>
-		<button	type="button" id='btnDel'>clear</button>
+		<button	type="button" id='btnDel'>삭제</button>
 		<button type="button" id='btnSave'>저장</button>
 		</span>
 		</div>
@@ -71,22 +75,18 @@
 	let dialog;
 	let checkedRowdata;	//체크 행의 데이터를 저장하는 변수
 	
-	
-	Grid.applyTheme('striped', {	
+	//disabled에 대한 속성 값 추가 
+	Grid.applyTheme('clean',{	
         cell: {
-          header: {
-            background: '#eef'
+            header: {
+              background: '#eef'
+            }
           },
-          evenRow: {
-            background: '#fee'
+          //고정칼럼 색상 설정
+          frozenBorder: {
+               border: 'red'
           }
-          
-        },
-        //고정칼럼 색상 설정
-        frozenBorder: {
-             border: 'red'
-        }
-      });
+     	}) ; 
 	
 	 dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 		autoOpen : false,
@@ -100,11 +100,19 @@
 			console.log(checkedRowdata)
 			var temp = [];
 			for(i=0; i<checkedRowdata.length; i++){
-				temp.push({ fctCd:checkedRowdata[i].fctCd, fctNm:checkedRowdata[i].fctNm})
+				temp.push({chkDt:''
+					       ,chkExpectDt:''
+					       ,fctCd:checkedRowdata[i].fctCd
+					       ,chkRslt:''
+					       ,fctNm:checkedRowdata[i].fctNm
+						   ,msrMtt:''		   
+						   ,msrCmt:''})
 			}
-			
+			console.table(temp)
+			//mainGrid.appendRows(temp);
 			mainGrid.resetData(temp);
-			mainGrid.resetOriginData();
+			
+			
 			let rowK = mainGrid.getRowCount();
 			
 	    	console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
@@ -137,7 +145,7 @@
 			//createData: { url: '/api/create', method: 'POST' },
 			//updateData: { url: '/modifyData', method: 'POST' },
 			//deleteData: { url: '/api/delete', method: 'DELETE' },
-			modifyData: { url: './fctModifyData', method: 'POST' }  
+			modifyData: { url: './prodModifyData', method: 'POST' }  
 		 },
 		 contentType: 'application/json',
 	 };
@@ -159,51 +167,92 @@
     {
 	    header: '정기점검이력번호',
 	    name: 'prodChkNo',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	   header: '설비코드',
 	   name: 'fctCd',
-	   editor: 'text'
+	   editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '설비이름',
 	    name: 'fctNm',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '점검일자',
 	    name: 'chkDt',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '차기점검일',
 	    name: 'chkExpectDt',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '점검주기',
 	    name: 'chkProd',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '점검주기단위',
 	    name: 'chkProdUnit',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : true
+	    },
+	    align:'left'
   },
   {
 	    header: '판정',
 	    name: 'chkRslt',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : false
+	    },
+	    align:'left'
   },
   {
 	    header: '조치사항',
-	    name: 'msrMtt'
+	    name: 'msrMtt',
+	    editor: 'text',
+	    validation : {
+	    	required : false
+	    },
+	    align:'left'
   },
   {
 	    header: '조치내역',
 	    name: 'msrCmt',
-	    editor: 'text'
+	    editor: 'text',
+	    validation : {
+	    	required : false
+	    },
+	    align:'left'
   }
     ]
    
@@ -214,6 +263,33 @@
 	    columns: columns
 	 });
    
+   //disapbleColumn 컬럼수정을 막는 코드
+    /* mainGrid.disableColumn('prodChkNo')
+	mainGrid.disableColumn('chkDt')
+	mainGrid.disableColumn('chkExpectDt')
+	mainGrid.disableColumn('chkProd')
+	mainGrid.disableColumn('chkProdUnit') */
+   
+   mainGrid.on('editingStart', (ev) => {
+	   console.log('startstartstartstartstart')
+	   try{
+		   console.log('trytrytrytrytrytry')
+		   if(ev.columnName == "prodChkNo" || ev.columnName == "chkDt" || ev.columnName == "chkExpectDt" || ev.columnName == "chkProd" || ev.columnName == "chkProdUnit" || ev.columnName == "prodChkNo" || ev.columnName == "fctCd" || ev.columnName == "fctNm"){
+				console.log('ininininininininininininininininin')
+			  	//success: 성공(초록), info : 정보(하늘색), warning:경고(주항), error:에러(빨강)
+				toastr["warning"]("변경할 수 없는 코드 입니다.", "경고입니다.")
+				
+				//현재함수 종료
+			   ev.stop();
+		   }
+	   }catch (err)
+	   {
+		   alert('예외에러 발생<위치: 338줄>' + err);
+	   }
+   });
+	   
+	   
+	   
    
    
   //th 영역
@@ -244,6 +320,13 @@
 		    header: '차기점검일',
 		    name: 'chkExpectDt',
 		    editor: 'text'
+	  },
+	  {
+		    header: '남은 점검일수',
+		    name: 'dayDiff',
+		    editor: 'text',
+		    hidden: true
+		    
 	  }
     ]
    
@@ -264,17 +347,18 @@
     })
    
    btnDel.addEventListener("click", function(){
-	   grid.removeCheckedRows(true);
+	   mainGrid.removeCheckedRows(true);
    });
 	   
 	   
-   //등록버튼
+   
    btnAdd.addEventListener("click", function() {
-		grid.appendRow({})
+		mainGrid.appendRow({})
    });	
    
    btnSave.addEventListener("click", function() {
-   		
+	    mainGrid.blur();	//커서 빼주는 거 ?
+		mainGrid.request('modifyData');
    });
    
    //점검완료 등록 이벤트 
