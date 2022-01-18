@@ -15,9 +15,14 @@
 			a.NOTIN_AMT,
 			TO_CHAR(b.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE,
 			FN_GET_BAS_DTL_CD_TO_NM(b.COMP_CD) AS COMP_NM,
-			b.CMT
-		FROM MTR_ORD_DTL a, MTR_ORD b
-		WHERE a.ORD_NO = b.ORD_NO
+			b.CMT,
+			c.MNG_AMT
+		FROM
+			MTR_ORD_DTL a, MTR_ORD b, ADM_MTR c
+		WHERE
+			a.ORD_NO = b.ORD_NO
+		AND
+			a.MTR_CD = c.MTR_CD
 		<![CDATA[AND a.NOTIN_AMT > 0]]>
 	</select>
 	

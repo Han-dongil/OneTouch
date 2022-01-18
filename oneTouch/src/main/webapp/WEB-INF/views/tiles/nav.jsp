@@ -16,9 +16,12 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="BasList">공통코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="BomList">제품Bom관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="mngList">공정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="FlwList">ㅋㅋ</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                <li class="nav-item"> <a class="nav-link" href="FlwList">공정흐름관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="FltList">불량코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="mtrList">자재정보관리</a></li>
               </ul>
             </div>
           </li>
@@ -32,6 +35,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="ordList">♡동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="PlanList">♨동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="workList">♬동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>
@@ -45,6 +49,10 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="inForm">입고자재관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="inList">입고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="outList">출고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="rtnForm">반품자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="rtnList">반품자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="stckList">현재재고조회</a></li>
               </ul>
             </div>
           </li>

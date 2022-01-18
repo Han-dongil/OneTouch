@@ -3,16 +3,13 @@
 <mapper namespace="com.onetouch.web.mtr.stck.dao.MtrLotMapper">
 	<select id="listLot" resultType="com.onetouch.web.mtr.stck.dao.LotVO">
 		SELECT
-			(select
-				PKG_MAKE_CODE.CODE('MLT','MTR_LOT_STCK','MTR_LOT') 
-			from dual) AS MTR_LOT,
-			
-			
-			 
+			MTR_LOT,
+			HLD_CNT,
+			STCK_CNT
 		FROM
 			MTR_LOT_STCK
 		WHERE
-			MTR_LOT
+			IN_NO = #{inNo}
 	</select>
 	
 	<insert id="insertLot">
@@ -28,9 +25,20 @@
 			(select PKG_MAKE_CODE.CODE('MLT','MTR_LOT_STCK','MTR_LOT') from dual),
 			#{mtrCd},
 			#{inNo},
-			#{hldCnt},
+			0,
 			#{stckCnt},
-			#{cmt}
+			''
 			)
 	</insert>
+	
+	<select id="selectLot" resultType="com.onetouch.web.mtr.stck.dao.LotVO">
+		SELECT 
+			MTR_LOT,
+			HLD_CNT,
+			STCK_CNT
+		FROM 
+			MTR_LOT_STCK
+		WHERE MTR_CD = #{mtrCd} 
+		AND IN_NO = #{inNo}
+	</select>
 </mapper>

@@ -18,7 +18,7 @@
 		let Grid = tui.Grid;
 		Grid.applyTheme('striped',{
 			cell:{
-				header:{ 
+				header:{
 					background:'#eef'
 				},
 				evenRow:{
@@ -27,15 +27,15 @@
 			}
 		})
 		const dataSource={
-				api:{
-					readData:{url:'./pdtOrdManage',
-						method:'GET',
-						initParams:{param:'param'}},
-				/* 	modifyData:{url:'./pdtOrdlist',method:'PUT'}, */
-				},
-				contentType:'application/json'
-			}	
-		const columns = [ {
+			api:{
+				readData:{url:'./pdtOrdManage',
+					method:'GET',
+					initParams:{param:'param'}},
+			/* 	modifyData:{url:'./pdtOrdlist',method:'PUT'}, */
+			},
+			contentType:'application/json'
+		}
+		const columns = [{
 			header : '주문번호',
 			name : 'ordShtNo'
 		}];
@@ -49,8 +49,7 @@
 				  frozenCount :2,
 				  frozenBorderWidth:2
 			  }
-
-			});
+		});
 		grid.on('successResponse',function(ev){
 			console.log("성공")
 		})

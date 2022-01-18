@@ -356,9 +356,11 @@
 		mainGrid.appendRow({})
    });	
    
+
    btnSave.addEventListener("click", function() {
 	    mainGrid.blur();	//커서 빼주는 거 ?
 		mainGrid.request('modifyData');
+
    });
    
    //점검완료 등록 이벤트 

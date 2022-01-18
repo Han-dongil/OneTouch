@@ -2,7 +2,6 @@
 package com.onetouch.web.mtr.in.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import com.onetouch.web.mtr.in.dao.MtrInVO;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.in.service.MtrInService;
 import com.onetouch.web.mtr.ord.service.MtrOrdService;
-import com.onetouch.web.mtr.stck.dao.LotVO;
 import com.onetouch.web.mtr.stck.service.MtrLotService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
@@ -65,28 +63,5 @@ public class MtrInFormController {
 		System.out.println(data);
 		return data;
 	}
-	
-	//mtrLot modal
-	@ResponseBody
-	@PostMapping("/mtrLotModal")
-	public Map<String,Object> LotList(@RequestBody MtrInVO vo ){
-		System.out.println("gggg"+vo);
-		Map<String,Object> datas = new HashMap<>();
-		Map<String,Object> data = new HashMap<>();
-		data.put("result", true);
-		datas.put("contents", mtrLotService.listLot(vo));
-		data.put("data", datas);
-		System.out.println(data);
-		return data;
-	}
-	//lot insert
-	@ResponseBody
-	@PostMapping("/mtrLotModify")
-	public int lotInsert(@RequestBody List<LotVO> list){
-		mtrLotService.insertLot(list);
-		return 0;
-	}
-	
-	
 	
 }

@@ -115,6 +115,16 @@
 /*-------------------------------------------------------------------*/
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
+@font-face{
+	src:url("/onetouch/resources/template/fonts/font/웰컴체 Bold.ttf");
+	font-family: "welcomeB";
+} 
+
+.page-title {
+	font-family: "welcomeB" !important;
+} 
+
+
 /* === SCSS Compass Functions === */
 @-moz-keyframes flash {
   0% {
@@ -17008,6 +17018,11 @@ button.bg-dark:focus,
   margin-right: 0.5rem !important;
 }
 
+.mr-2{
+	margin-left: 0.8rem !important;
+	witdh: auto !important;
+}
+
 .mb-2,
 .my-2 {
   margin-bottom: 0.5rem !important;
@@ -24774,6 +24789,12 @@ dl li {
   background: #4B49AC;
 }
 
+/*요거추가했다가 주석처리  */
+/* a.nav-link.active {
+  background: #4745a3 !important;
+} */
+
+
 .nav-pills-secondary .nav-link {
   color: #a3a4a5;
 }
@@ -28434,7 +28455,7 @@ div.tagsinput span.tag a {
 .main-panel {
   transition: width 0.25s ease, margin 0.25s ease;
   width: calc(100% - 235px);
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px); 
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -28452,6 +28473,7 @@ div.tagsinput span.tag a {
   background: #F5F7FF;
   padding: 2.375rem 2.375rem;
   width: 100%;
+  min-height: calc(100vh - 60px - 95.5px);
   -webkit-flex-grow: 1;
   flex-grow: 1;
 }

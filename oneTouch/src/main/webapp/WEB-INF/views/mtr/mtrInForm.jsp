@@ -9,13 +9,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
 <script src="${path}/resources/js/modal.js"></script>
 
 
@@ -73,8 +73,6 @@
 <script type="text/javascript">
 let rowk = -1;
 let lotGrid;
-let lotDataSource;
-
 
 var Grid = tui.Grid;
 Grid.applyTheme('striped', {
@@ -88,46 +86,42 @@ Grid.applyTheme('striped', {
      },
    });
 
-   
-const dataSource = {
-		  api: {
-		    readData: { url: './mtrInForm', method: 'POST' },
-	    	modifyData: { url: './mtrModify', method: 'POST' }
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
-		
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     data : {
+		  api: {
+			    readData: { url: './mtrInForm', method: 'POST' },
+		    	modifyData: { url: './mtrModify', method: 'POST' }
+			  },
+			  contentType: 'application/json',
+			  initialRequest: false
+			},  // 컬럼명과 data명이 같다면 생략가능 
      rowHeaders : [ 'checkbox'],
      columns : [
 				{
 				   header: '입고번호',
-				   name: 'inNo'
-				   /* ,
-				   hidden: true */
+				   name: 'inNo',
+				   hidden: true
 				 },
 				 {
 				   header: '입고일자',
 				   name: 'inDate',
-				   /* editor: {
-						type: 'datePicker',
-						options: {
-						language: 'ko',
-						format: 'YYYY-MM-dd'
-						}
-					}, */
+				   /* editor: 'datePicker', */
+				   editor: {
+					type: 'datePicker',
+					options: {
+					language: 'ko',
+					format: 'yyyy-MM-dd'
+					}
+				},
 					align: 'center',
-					editor: 'text',
+					/* editor: 'text', */
 				   sortable: true
 				 },
 					{
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
-					editor: 'text',
 				   sortable: true,
 				   validation: {
 		            	required: true
@@ -142,7 +136,7 @@ var mainGrid = new Grid({
 				 {
 				   header: '단위',
 				   name: 'unit',
-				   align: 'left',
+				   align: 'center',
 				   sortable: true
 				 },
 				 {
@@ -158,10 +152,7 @@ var mainGrid = new Grid({
 				   header: '발주번호',
 				   name: 'ordNo',
 				   align: 'center',
-					editor: 'text',
-					validation: {
-		            	required: true
-		          	},
+				   width: 150,
 				   sortable: true
 				 },
 				 {
@@ -179,10 +170,10 @@ var mainGrid = new Grid({
 				   name: 'inAmt',
 				   align: 'right',
 					editor: 'text',
-					validation: {
+					/* validation: {
 						dataType: 'number',
 		            	required: true
-		          	},
+		          	}, */
 				   sortable: true
 				 },
 				 {
@@ -203,14 +194,9 @@ var mainGrid = new Grid({
 				   sortable: true
 				 },
 				 {
-				   header: '자재LOT NO.',
-				   name: 'mtrLot',
-				   align: 'center',
-					editor: 'text',
-					validation: {
-		            	required: true
-		          	},
-				   sortable: true
+				   header: '관리수량',
+				   name: 'mngAmt',
+				   hidden: true
 				 }
 				],
 				summary : {
@@ -274,9 +260,8 @@ mainGrid.on("dblclick",(ev)=>{
 		mainGrid.getValue(rowk,'inAmt');
 		let data = [{'mtrCd':mainGrid.getValue(rowk,'mtrCd'),
 					'inAmt':mainGrid.getValue(rowk,'inAmt')}]
-		console.log(data)
 		mMtrLot();
-		lotGrid.readData(1,data,true)
+		/* lotGrid.readData(1,data,true) */
 		
 	}
 });
@@ -289,7 +274,7 @@ mainGrid.on("dblclick",(ev)=>{
 
 
 //모달 설정
-let smallDialog = $( "#dialog-form" ).dialog({
+let dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
@@ -304,11 +289,11 @@ let wideDialog = $( "#dialog-ord" ).dialog({
 	height: "auto",
 	width: 800
 });
-//lot부여모달 설정
-let lotDialog = $( "#dialog-lot" ).dialog({
+//lot list 모달 설정
+/* let lotDialog = $( "#dialog-lot" ).dialog({
 	autoOpen : false,
 	modal : true,
-	buttons:{"저장":function(){
+	buttons:{"확인":function(){
 		alert("lot부여완료")
 		lotGrid.blur();
 		lotGrid.request('modifyData');
@@ -316,24 +301,25 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 	resizable: false,
 	height: "auto",
 	width: 800
-});
+}); */
 
 //업체검색모달 row더블클릭 이벤트
 function getModalBas(param){
 			$('#compCd').val(param.dtlCd);
 			$('#compNm').val(param.dtlNm);
-			smallDialog.dialog("close");
+			dialog.dialog("close");
 		};
 		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
-	smallDialog.dialog("close");
+	dialog.dialog("close");
 	if(rowk >= 0){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
 		mainGrid.setValue(rowk, "unit", param.unit, false);
 		mainGrid.setValue(rowk, "compNm", param.compNm, false);
+		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false);
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
@@ -341,41 +327,40 @@ function getModalMtr(param){
 	}
 };
 //mtrLot modal
-function mMtrLot(){
-lotDataSource = {
+/* function mMtrLot(){
+
+	lotGrid = new Grid({
+	el : document.getElementById('dialog-lot'),
+	data : {
 		  api: {
 			  	readData: { url: './mtrLotModal',method: 'Post'
 		     	 }
 		  },
 		  contentType: 'application/json'
-		}
-
-lotGrid = new Grid({
-el : document.getElementById('dialog-lot'),
-data : lotDataSource,
-columns : [ 
-			{
-				header: '순서',
-				name: 'seq'
-			},
-			{
-				header: '자재LOTNO',
-				name: 'mtrLot'
-			},
-			{
-				header: '입고량',
-				name: 'stckCnt'
-			},
-			{
-				header: '비고',
-				name: 'cmt'
-			}
-			]
-});
-/* lotGrid.on('dblclick', ev => {
-	getModalOrd(ordGrid.getRow(ev.rowKey));
-}); */
-}
+		},
+	columns : [ 
+				{
+					header: '순서',
+					name: 'seq'
+				},
+				{
+					header: '자재LOTNO',
+					name: 'mtrLot'
+				},
+				{
+					header: '입고량',
+					name: 'stckCnt'
+				},
+				{
+					header: '비고',
+					name: 'cmt'
+				}
+				]
+	});
+	lotGrid.on('dblclick', ev => {
+		getModalOrd(ordGrid.getRow(ev.rowKey));
+	});
+} */
 /* $('#dialog-ord').empty(); */
 
 //mtrOrd modal
@@ -392,11 +377,6 @@ el : document.getElementById('dialog-ord'),
 data : ordDataSource,
 columns : [ 
 			{
-				header: '발주번호',
-				name: 'ordNo',
-				hidden: true
-			},
-			{
 				header: '발주일자',
 				name: 'ordDate'
 			},
@@ -411,7 +391,17 @@ columns : [
 			{
 				header: '단위',
 				name: 'unit'
-			}				
+			},
+			{
+				header: '관리수량',
+				name: 'mngAmt',
+				hidden: true
+			},		
+			{
+				header: '발주번호',
+				name: 'ordNo',
+				hidden: true
+			}
 			]
 });
 ordGrid.on('dblclick', ev => {
@@ -427,8 +417,10 @@ ordGrid.on('failResponse',function(ev){
 
 //발주내역모달
 function getModalOrd(param){
-	/* console.log(param); */
+	console.log(param)
+	param.rowKey = mainGrid.getRowCount();
 	mainGrid.appendRow(param);	
+	
 	wideDialog.dialog("close");
 };
 
@@ -448,6 +440,7 @@ btnDel.addEventListener("click", function(){
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
 	mainGrid.request('modifyData');
+	
 });
 //조회버튼
 btnFind.addEventListener("click", function(){
