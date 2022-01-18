@@ -37,18 +37,18 @@
 					<input type="Date" id="endDate" name="endDate">
 				</div>
 				<div>
-					<label>업체코드</label>
-					<input type="text" id="compCd" name="compCd">
-					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
-					<label>입고업체명</label>
-					<input type="text" id="compNm" name="compNm" disabled="disabled">
-				</div>
-				<div>
 					<label>자재코드</label>
 					<input type="text" id="ditemCode" name="ditemCode">
 					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
+				</div>
+				<div>
+					<label>해당일자</label>
+					<input type="radio" id="lotRadio" name="mtrSect" value="MTR_SECT001" checked>
+					<label for="lotRadio">LOT별</label>
+					<input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT002">
+					<label for="mtrRadio">자재별</label>
 				</div>
 			</div>
 		</form>
@@ -81,82 +81,9 @@ const dataSource = {
 
 var grid = new Grid({
      el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     data : dataSource,
      rowHeaders : [ 'checkbox'],
-     columns : [
-				{
-				   header: '입고번호',
-				   name: 'inNo',
-				   hidden: true
-				 },
-				 {
-				   header: '입고일자',
-				   name: 'inDate',
-				   /* editor: {
-						type: 'datePicker',
-						options: {
-						language: 'ko',
-						format: 'YYYY-MM-dd'
-						}
-					}, */
-					align: 'center',
-				   sortable: true
-				 },
-					{
-				   header: '자재코드',
-				   name: 'mtrCd',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '자재명',
-				   name: 'mtrNm',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '단위',
-				   name: 'unit',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '업체',
-				   name: 'compNm',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '발주번호',
-				   name: 'ordNo',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '불량량',
-				   name: 'fltAmt',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '입고량',
-				   name: 'inAmt',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '단가',
-				   name: 'unitCost',
-				   align: 'center',
-				   sortable: true
-				 },
-				 {
-				   header: '총금액',
-				   name: 'totCost',
-				   align: 'center',
-				   sortable: true
-				 }
-				],
+     columns : lotColumns,
 				summary : {
 					
 					height: 40,
@@ -194,6 +121,99 @@ var grid = new Grid({
 				}
    });
    
+   
+	const lotColumns = [{
+						   header: '자재코드',
+						   name: 'mtrCd',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '자재명',
+						   name: 'mtrNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '단위명',
+						   name: 'unitNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '자재구분',
+						   name: 'mtrSectNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: 'Lot No',
+						   name: 'mtrLot',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '홀딩수량',
+						   name: 'hldCnt',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '현재고',
+						   name: 'lotStckCnt',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '비고',
+						   name: 'cmt',
+						   align: 'center',
+						   sortable: true
+						 }
+						]
+	const mtrColumns = [{
+						   header: '자재코드',
+						   name: 'mtrCd',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '자재명',
+						   name: 'mtrNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '단위명',
+						   name: 'unitNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '자재구분',
+						   name: 'mtrSectNm',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '홀딩수량',
+						   name: 'hldCnt',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '현재고',
+						   name: 'mtrStckCnt',
+						   align: 'center',
+						   sortable: true
+						 },
+						 {
+						   header: '안전재고',
+						   name: 'safeStck',
+						   align: 'center',
+						   sortable: true
+						 }
+						 ];
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
