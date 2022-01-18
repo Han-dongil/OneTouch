@@ -8,7 +8,7 @@
 			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
 			A.MTR_CD, 
 			B.MTR_NM, 
-			B.UNIT,
+			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT,
 			B.MNG_AMT,
 			A.ORD_NO, 
 			A.FLT_AMT, 
@@ -72,8 +72,8 @@
 	<update id="updateOrd">
 		UPDATE MTR_ORD_DTL
 		SET
-			IN_AMT = #{inAmt},
-			NOTIN_AMT = (SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt}
+			IN_AMT = (IN_AMT+#{inAmt}),
+			NOTIN_AMT = ((SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt})
 		WHERE
 			ORD_NO = #{ordNo} AND MTR_CD = #{mtrCd}
 	</update>

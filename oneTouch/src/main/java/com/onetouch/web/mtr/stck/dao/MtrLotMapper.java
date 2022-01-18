@@ -7,5 +7,5 @@ import com.onetouch.web.mtr.in.dao.MtrInVO;
 public interface MtrLotMapper {
 	List<LotVO> listLot(MtrInVO vo);
 	void insertLot(MtrInVO vo);
-//	List<LotVO>selectLot( list);
+//	List<LotVO> selectLot(list);
 }

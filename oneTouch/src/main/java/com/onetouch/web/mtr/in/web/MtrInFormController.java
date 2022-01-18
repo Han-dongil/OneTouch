@@ -64,18 +64,4 @@ public class MtrInFormController {
 		return data;
 	}
 	
-	//mtrLot modal
-	@ResponseBody
-	@PostMapping("/mtrLotModal")
-	public Map<String,Object> LotList(@RequestBody MtrInVO vo){
-		System.out.println("gggg"+vo);
-		Map<String,Object> datas = new HashMap<>();
-		Map<String,Object> data = new HashMap<>();
-		data.put("result", true);
-		datas.put("contents", mtrLotService.listLot(vo));
-		data.put("data", datas);
-		System.out.println(data);
-		return data;
-	}
-	
 }
