@@ -38,7 +38,7 @@ public class MtrInServiceImpl implements MtrInService {
 		String in="";
 		MtrInVO vo;
 		
-		//LOT번호 부여 + insert
+		//LOT번호 부여 + LOT별재고테이블 insert
 		if(mvo.getCreatedRows() != null) {
 			for(int i=0; i<mvo.getCreatedRows().size(); i++) {
 				no = inMapper.selectInNo()+i;
