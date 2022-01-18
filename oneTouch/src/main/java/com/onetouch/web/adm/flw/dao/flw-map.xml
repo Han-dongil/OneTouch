@@ -61,6 +61,7 @@
 		    b.mng_unit as mngUnit , b.pdt_day as pdtDay , b.prc_sect as prcSect 
 		    from adm_prc_flow a join adm_prc_mng b
 		    on (a.prc_cd=b.prc_cd)) a join adm_bom b
-		on(a.prcCd = b.prc_cd);
+		on(a.prcCd = b.prc_cd)
+		where prdCd=#{prdCd}
 	</select>
 </mapper>
