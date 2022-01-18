@@ -60,15 +60,12 @@
 	let prdCode1;
 	let prdCode2;
 	let PrdDtl;
-
 	let Grid = tui.Grid;
+	
 	Grid.applyTheme('striped',{
 		cell:{
 			header:{
 				background:'#fee'
-			},
-			evenRow:{
-				background:'#eef'
 			}
 		}
 	})
@@ -81,7 +78,8 @@
 		},
 		{
 			header : '제품명',
-			name : 'prdNm'
+			name : 'prdNm',
+			sortable : true
 		}];
 	
 	const columns2 = [{
@@ -167,7 +165,7 @@
 
 	//제품명 클릭하면 제품상세정보 받아옴
 	grid1.on("click", (ev) =>{
-		if(ev.columnName === 'prdNm'){
+		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){
 			prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
 			console.log(prdCode1);
 			//제품상세정보 받아오기

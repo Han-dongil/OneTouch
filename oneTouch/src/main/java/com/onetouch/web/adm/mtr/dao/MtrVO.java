@@ -8,6 +8,7 @@ public class MtrVO {
 	private String mtrCd;		//자재코드
 	private String mtrNm;		//자재명
 	private String std;			//규격
+	private String stdNm;		//규격이름
 	private String unit;		//단위코드
 	private String unitNm;		//단위이름
 	private String compCd;      //업체코드

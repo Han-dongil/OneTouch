@@ -21,7 +21,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class MngController {
 
 	@Autowired
-	MngService service;
+	MngService mngservice;
 
 	// 공정리스트 보여주는 페이지로 이동
 	@RequestMapping("mngList")
@@ -34,7 +34,7 @@ public class MngController {
 	@GetMapping("/prcList")
 	public List<MngVO> prcList() {
 		List<MngVO> prcList = new ArrayList<>();
-		prcList = service.selectPrc();
+		prcList = mngservice.selectPrc();
 		return prcList;
 	}
 
@@ -49,7 +49,7 @@ public class MngController {
 	@GetMapping("/admMngList")
 	public Map<String, Object> mngListAll() {
 		Map<String, Object> map = new HashMap<>();
-		map.put("contents", service.selectPrcMng());
+		map.put("contents", mngservice.selectPrcMng());
 
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("result", true);
@@ -63,6 +63,6 @@ public class MngController {
 	@PostMapping("/admModifyData")
 	public void modify(@RequestBody ModifyVO<MngVO> mvo) {
 		System.out.println("modify" + mvo);
-		service.modify(mvo);
+		mngservice.modify(mvo);
 	}
 }
