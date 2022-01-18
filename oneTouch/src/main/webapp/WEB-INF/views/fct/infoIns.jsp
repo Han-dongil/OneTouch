@@ -42,7 +42,7 @@
 	</div>
 	<div
 		style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-		<form id="infoFrm" method="post">
+		<form id="infoFrm" method="post" >
 			<table>
 				<tr>
 					<td>설비코드</td>
@@ -51,8 +51,7 @@
 					<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
 					<td>공정</td>
 					<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
-					<td>설비명</td>
-					<td><input type="hidden" id="fctNm" name="fctNm" value="" /></td>
+					<td rowspan="3"><img src="resources/img/아이유.jpg" id="fctImg" style="width: 300px; height: 90px;"></td>
 				</tr>
 				<tr>
 					<td>설비규격</td>
@@ -66,8 +65,7 @@
 					<td>입고일</td>
 					<td><input type="date" id="inDate" name="inDate" value="" /></td>
 					<td>구매금액</td>
-					<td><input type="text" id="purchCost" name="purchCost"
-						value="" /></td>
+					<td><input type="text" id="purchCost" name="purchCost" value="" /></td>
 					<td>점검주기</td>
 					<td><input type="text" id="chkProd" name="chkProd" value="" /></td>
 				</tr>
@@ -79,6 +77,7 @@
 						value="" /></td>
 					<td>담당자</td>
 					<td><input type="text" id="empNo" name="empNo" value="" /></td>
+					<td><input type="file" id="fctFile" name="fctFile" value="" onchange="setThumbnail(event)"/></td>
 				</tr>
 
 			</table>
@@ -380,6 +379,18 @@
  	   
     		})
        })
+
+       
+	function setThumbnail(event) { 
+		
+		var reader = new FileReader(); 
+		reader.onload = function(event) { 
+			
+			document.getElementById('fctImg').setAttribute("src", event.target.result); 
+			
+		}; 
+		reader.readAsDataURL(event.target.files[0]); 
+	}
 
 </script>
 
