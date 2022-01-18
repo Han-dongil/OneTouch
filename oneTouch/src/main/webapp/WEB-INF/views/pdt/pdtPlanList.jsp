@@ -76,6 +76,66 @@
 	let porObj;
   	let Grid = tui.Grid;
   	let modalDataSource;
+  	let gridSelect;
+  	let lotDiv;
+  	let resetdataaa;
+  	let gridw;
+  	let planColumns = [{
+		header : '제품코드',
+		name : 'prdCd',          
+		formatter: 'listItemText',
+		      editor: {
+		    	 type: 'select',
+		         options: {
+		            listItems: [
+		              
+		            ]
+		          }
+		        },
+		},{
+			header : '공정코드',
+			name : 'prcCd',          
+			formatter: 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
+					listItems: [
+					  
+					]
+				}
+			},
+		 		
+		},{
+			header : '필요수량',
+			name : 'needCnt',
+		 		editor : 'text'
+		},{
+			header : '지시수량',
+			name : 'instrCnt',
+		 		editor : 'text'
+		},{
+			header : '지시날자',
+			name : 'workStrDate',
+	 		editor : 'text',
+			editor:'datePicker'
+		},{
+			header : '작업시간',
+			name : 'workPlanTime',
+			editor: {
+				type: 'select',
+				options: {
+					listItems: [
+						{text:'00:00~08:00',value:'1'},
+						{text:'08:00~14:00',value:'2'},
+						{text:'14:00~24:00',value:'3'}
+					]
+				}
+			}
+		},{
+			header : '설비코드',
+			name : 'fctCd',
+			hidden:false
+		}];
 	 	//그리드 테마적용
 	Grid.applyTheme('striped',{
 		cell:{
@@ -99,24 +159,55 @@
 		modal:true,
 		height: 500,
 		width: 1000,
-		buttons:{"save":function(){
-			alert("save")
-			console.log(planFrm)
- 			lotGrid.blur();//커서 인풋밖으로빼냄
- 			let planFormData=$("#planFrm").serializeObject()
- 			console.log(planFormData);
- 			lotGrid.getModifiedRows()
- 			let insertData={}
- 			insertData.plan=[planFormData];
- 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
- 			console.log(insertData);
- 			 fetch('planDtlInsert',{
- 				method:'POST',
- 				headers:{
-					"Content-Type": "application/json",
-				},
-				body:JSON.stringify(insertData)
- 			}) 
+		buttons:{"행추가":function(){
+			planGrid.appendRow({})
+			fetch('prdCdFind')
+			.then(response=>response.json())
+			.then(result=>{
+				 //planGrid.resetData(result)
+				 console.log(result)
+				 let i=0
+				 for(let obj of result){
+					 planColumns[0].editor.options.listItems[i]={text:obj.prdCd,value:obj.prdCd}
+					 i++;
+				 }
+			})
+		},
+
+		"save":function(){
+				alert("save")
+			  	if(gridSelect=='addLot'){
+					console.log(planFrm)
+		 			lotGrid.blur();//커서 인풋밖으로빼냄
+		 			let planFormData=$("#planFrm").serializeObject()
+		 			console.log(planFormData);
+		 			lotGrid.getModifiedRows()
+		 			let insertData={}
+		 			insertData.plan=[planFormData];
+		 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
+		 			console.log(insertData);
+		 			fetch('planDtlInsert',{
+		 				method:'POST',
+		 				headers:{
+							"Content-Type": "application/json",
+						},
+						body:JSON.stringify(insertData)
+		 			}) 
+			  		
+			  	}
+			  	else if(gridSelect=='addPlan'){
+			  		console.log('plan');
+			  		let insertObject={};
+			  		insertObject.plan=grid.getModifiedRows().createdRows
+			  		insertObject.detail=planGrid.getModifiedRows().createdRows
+			  		fetch('addInsertPlan',{
+		 				method:'POST',
+		 				headers:{
+							"Content-Type": "application/json",
+						},
+						body:JSON.stringify(insertObject)
+		 			})
+			  	}
  			
  			//lotGrid.request('modifyData');  
 		}}
@@ -169,7 +260,6 @@
 		header : '납기일자',
 		name : 'dueDate',
 		editor:'datePicker'
-		
 	},{
 		header : '작업우선순위',
 		name : 'workProt',
@@ -183,203 +273,226 @@
 
 	//그리드 생성
 	grid = new Grid({
-		  el: document.getElementById('grid'),
-		  data:dataSource,
-		  rowHeaders:['checkbox'],
-		  columns,
-		  /* columnOptions: {
-			  frozenCount :6,
-			  frozenBorderWidth:3
-		 	} */ 
-		 });
+		el: document.getElementById('grid'),
+		data:dataSource,
+		rowHeaders:['checkbox'],
+		columns,
+	});
 	
+
+
+
 	//로우 클릭 이벤트
      grid.on('click', ev => {
     	 $("#paln-dialog-form").empty();
     	 if(grid.getValue(ev.rowKey,'planNo')==null && ev.columnName=='planDate'){
 		  	planDialog.dialog( "open" );
-	 		const planColumns = [{
-			header : '제품코드',
-			name : 'prdCd',          
-			formatter: 'listItemText',
-			      editor: {
-			    	 type: 'select',
-			         options: {
-			            listItems: [
-			              { text: 'Pop', value: '1' },
-			            ]
-			          }
-			        },
-			},{
-				header : '공정코드',
-				name : 'prcCd',
-			 		editor : 'text'
-			},{
-				header : '필요수량',
-				name : 'needCnt',
-			 		editor : 'text'
-			},{
-				header : '지시수량',
-				name : 'instrCnt',
-			 		editor : 'text'
-			},{
-				header : '지시날자',
-				name : 'workStrDate',
-			 		editor : 'text',
-				editor:'datePicker'
-			},{
-				header : '작업시간',
-				name : 'workPlanTime',
-				editor:'datePicker'
-			},{
-				header : '설비코드',
-				name : 'fctCd',
-				hidden:false
-			}];
-    		 planGrid= new Grid({
+		  	gridSelect='addPlan';
+	 		
+    	     planGrid= new Grid({
     				el: document.getElementById('paln-dialog-form'),
     				data:null,
     				rowHeaders:['checkbox'],
     				columns:planColumns
-    			});	
-    		 planGrid.on('dblclick',ev=>{
-    			 if(ev.columnName=='prdCd'){
-    				 
-    			 }
-    		 })
-   			 lotGrid.on("editingFinish",ev=>{
-   				
-   				
-   			 })
-    	 }
-    	 
-    	 if(ev.columnName=='planDate'&&grid.getValue(ev.rowKey,'planNo')!=null){
-	    	 planDialog.dialog( "open" );
-    	//	planFrm.planNo.value=grid.getValue(ev.rowKey,'planNo');
-    		//히든태그에 계획번호 입력
-    		document.getElementById("planNo").value=grid.getValue(ev.rowKey,'planNo');
-    		let ulDiv=document.createElement("div");
- 			ulDiv.id="prdSelect";   	
- 			document.getElementById("paln-dialog-form").appendChild(ulDiv);
- 			console.log(ulDiv)
-/*     		let prdCdOrdNo={'prdCd':event.target.value , 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
-			needPrcCd(prdCdOrdNo); */
-			/* document.getElementById("abc").style = 'display:block';
-			$("#inGrid").empty(); */
-			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
-			//히든폼에 주문번호저장
-			planFrm.ordShtNo.value=grid.getValue(ev.rowKey,'ordShtNo');
-			/*dataSource.api.readData= { url: 'order',method: 'GET'}
-			inGrid.readData(1,a,true);//모달창 그리드 데이터 갱신 */
-			//주문번호로 주문한제품 불러오기
-			
-/////////////////////////////////
-								//자재lot그리드 useAmt
-		const lotColumns = [{
-			header : '자재코드',
-			name : 'mtrCd'
-		},{
-			header : 'LOT번호',
-			name : 'mtrLot'
-		},{
-			header : '재고수량',
-			name : 'stckCnt'
-		},{
-			header : '홀딩수량',
-			name : 'hldCnt',
-	  		editor : 'text'
-		},{
-			header : '지시수량',
-			name : 'instrCnt',
-	  		editor : 'text'
-		},{
-			header : '필요수량',
-			name : 'needCnt',
-		},{
-			header : '계획번호',
-			name : 'planNo',
-			hidden:false
-		},{
-			header : '상품번호',
-			name : 'prdCd',
-			hidden:false
-		},{
-			header : '공정코드',
-			name : 'prcCd',
-			hidden:false
-		}];
-		lotGrid	= new Grid({
-			el: document.getElementById('paln-dialog-form'),
-			data:modalDataSource,
-			rowHeaders:['checkbox'],
-			columns:lotColumns
-		});	
-		
-		lotGrid.on("editingFinish",ev=>{
-			console.log(lotGrid.getValue(ev.rowKey,'instrCnt'));
-			lotGrid.setValue(ev.rowKey,'hldCnt',lotGrid.getValue(ev.rowKey,'instrCnt'),false)
-			//히든태그 instrCnt 입력
-			document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
-			//히든태그 mtpLot 입력
-			document.getElementById("mtrLot").value=lotGrid.getValue(ev.rowKey,'mtrLot');
- 			//lotGrid에 prcCd 입력
-			lotGrid.setValue(ev.rowKey,'prcCd',planFrm.prcCd.value,false)
-			
-			//히든태그 planNo 입력
-			lotGrid.setValue(ev.rowKey,'planNo',document.getElementById("planNo").value,false)
-		})
-		
-		
-			$.ajax({
-				url:'./pdtPlanDtllist/',
-				method:'POST',
-				data:a,
-				success:function(result){
-					selectTag=document.createElement('select');
-					console.log(result);
-					for(let obj of result){
-						let optionTag=document.createElement('option');
-						optionTag.value=obj.prdCd;
-						optionTag.innerHTML=obj.prdCd;
-						selectTag.appendChild(optionTag);
-					}
-					let inGridTag=document.getElementById('paln-dialog-form');
-					
-					inGridTag.appendChild(selectTag)
-					prdCd=planFrm.prdCd.value;
-					let prcCd=planFrm.prcCd.value;
+   			});	
+    	     
+   		 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
+   		 	planGrid.on('editingFinish',ev=>{
+   		 		if(ev.columnName=='prcCd'){
 
-					let ordShtNo=planFrm.ordShtNo.value;
-					let abcde={'prdCd':result[0].prdCd, 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')};
-					//히든태그 needCnt 입력
-					document.getElementById("needCnt").value=result[0].needCnt;
-					document.getElementById("prdCd").value=result[0].prdCd;
-					//제품코드로 공정불러오기
-					needPrcCd(result[0].prdCd);
-					//lot재고 조회
-					abcde={'prdCd':prdCd, 'ordShtNo':ordShtNo , 'prcCd':prcCd};
-					needLotCnt(abcde);
-					//셀렉트태그 선택이벤트
-					selectTag.addEventListener("change",function(event){
-						$("#prdSelect").empty();
-						//히든태그 prdcd 입력
-						console.log("dddddddddddd");
-						console.log(event.target.value);
-						document.getElementById("prdCd").value=event.target.value;
-						//히든태그 needCnt 입력
-						document.getElementById("needCnt").value=event.target.value;
-						prdCdOrdNo={'prdCd':event.target.value , 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
-
-						console.log(planFrm)
-						//제품코드로 공정불러오기
+   		 			console.log(planGrid.getValue(ev.rowKey,'prcCd'));
+   		 			fetch('lotCdFind/'+planGrid.getValue(ev.rowKey,'prcCd')+'/'+planGrid.getValue(ev.rowKey,'prdCd'))
+   		 			.then(response=>response.json())
+   		 			.then(result=>{
+   		 				console.log(result);
+   		 			if(document.getElementById('lotDiv'))	
+		 			{
+   		 				document.getElementById('lotDiv').remove()
+ 		 			}
+   		 			lotDiv=document.createElement('div')
+   		 			lotDiv.id='lotDiv';
+   		 			document.getElementById('paln-dialog-form').appendChild(lotDiv);
+   		 			
 						
-						needPrcCd(event.target.value);
-						//lot재고 조회
-						needLotCnt(prdCdOrdNo);
-					})
-				}
-			})
+   		 			//////////////////////////////
+	   		     	  	let gridw = new Grid({
+	   		    			el: document.getElementById('lotDiv'),
+	   		    			data:null,
+	   		    			rowHeaders:['checkbox'],
+	   		    			columns:[{
+	   		    				header : '자재코드',
+	   		    				name : 'mtrCd'
+	   		    			},{
+	   		    				header : '자재로트',
+	   		    				name : 'mtrLot',
+	   		    			},{
+	   		    				header : '현재재고',
+	   		    				name : 'stckCnt',
+	   		    				editor : 'text'
+	   		    			},{
+	   		    				header : '홀딩수량',
+	   		    				name : 'hldCnt',
+	   		    				editor : 'text'
+	   		    			},{
+	   		    				header : '사용량',
+	   		    				name : 'useAmt',
+	   		    			}],
+	   		    		}); 
+	   		     		gridw.resetData(result);
+   		 			})
+   		 		}
+   		 		else if(ev.columnName=='prdCd'){
+	   		 		fetch('prcCdFind/'+planGrid.getValue(ev.rowKey,'prdCd'))
+	   		 		.then(response=>response.json())
+	   		 		.then(result=>{
+	   		 			console.log(result)
+	   		 			let i=0
+						for(let obj of result){
+							planColumns[1].editor.options.listItems[i]={text:obj.prcCd,value:obj.prcCd}
+							i++;
+					 	}
+	   		 		})
+   		 		}
+   		 		
+   		 	})     
+    				
+    		 
+    		planGrid.on('dblclick',ev=>{
+
+    		})
     	 }
+    	 /////////////////////////////////////////////////
+    	 if(ev.columnName=='planDate'&&grid.getValue(ev.rowKey,'planNo')!=null){
+   		  	gridSelect='addLot';
+  	    	 planDialog.dialog( "open" );
+      	//	planFrm.planNo.value=grid.getValue(ev.rowKey,'planNo');
+      		//히든태그에 계획번호 입력
+      		document.getElementById("planNo").value=grid.getValue(ev.rowKey,'planNo');
+      		let ulDiv=document.createElement("div");
+   			ulDiv.id="prdSelect";   	
+   			document.getElementById("paln-dialog-form").appendChild(ulDiv);
+   			console.log(ulDiv)
+  /*     		let prdCdOrdNo={'prdCd':event.target.value , 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
+  			needPrcCd(prdCdOrdNo); */
+  			/* document.getElementById("abc").style = 'display:block';
+  			$("#inGrid").empty(); */
+  			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
+  			//히든폼에 주문번호저장
+  			planFrm.ordShtNo.value=grid.getValue(ev.rowKey,'ordShtNo');
+  			/*dataSource.api.readData= { url: 'order',method: 'GET'}
+  			inGrid.readData(1,a,true);//모달창 그리드 데이터 갱신 */
+  			//주문번호로 주문한제품 불러오기
+  			
+  /////////////////////////////////
+  								//자재lot그리드 useAmt
+  		const lotColumns = [{
+  			header : '자재코드',
+  			name : 'mtrCd'
+  		},{
+  			header : 'LOT번호',
+  			name : 'mtrLot'
+  		},{
+  			header : '재고수량',
+  			name : 'stckCnt'
+  		},{
+  			header : '홀딩수량',
+  			name : 'hldCnt',
+  	  		editor : 'text'
+  		},{
+  			header : '지시수량',
+  			name : 'instrCnt',
+  	  		editor : 'text'
+  		},{
+  			header : '필요수량',
+  			name : 'needCnt',
+  		},{
+  			header : '계획번호',
+  			name : 'planNo',
+  			hidden:false
+  		},{
+  			header : '상품번호',
+  			name : 'prdCd',
+  			hidden:false
+  		},{
+  			header : '공정코드',
+  			name : 'prcCd',
+  			hidden:false
+  		}];
+  		lotGrid	= new Grid({
+  			el: document.getElementById('paln-dialog-form'),
+  			data:modalDataSource,
+  			rowHeaders:['checkbox'],
+  			columns:lotColumns
+  		});	
+  		
+  		lotGrid.on("editingFinish",ev=>{
+  			console.log(lotGrid.getValue(ev.rowKey,'instrCnt'));
+  			lotGrid.setValue(ev.rowKey,'hldCnt',lotGrid.getValue(ev.rowKey,'instrCnt'),false)
+  			//히든태그 instrCnt 입력
+  			document.getElementById("instrCnt").value=lotGrid.getValue(ev.rowKey,'instrCnt');
+  			//히든태그 mtpLot 입력
+  			document.getElementById("mtrLot").value=lotGrid.getValue(ev.rowKey,'mtrLot');
+   			//lotGrid에 prcCd 입력
+  			lotGrid.setValue(ev.rowKey,'prcCd',planFrm.prcCd.value,false)
+  			
+  			//히든태그 planNo 입력
+  			lotGrid.setValue(ev.rowKey,'planNo',document.getElementById("planNo").value,false)
+  		})
+  		
+  		
+  			$.ajax({
+  				url:'./pdtPlanDtllist/',
+  				method:'POST',
+  				data:a,
+  				success:function(result){
+  					selectTag=document.createElement('select');
+  					console.log(result);
+  					for(let obj of result){
+  						let optionTag=document.createElement('option');
+  						optionTag.value=obj.prdCd;
+  						optionTag.innerHTML=obj.prdCd;
+  						selectTag.appendChild(optionTag);
+  					}
+  					let inGridTag=document.getElementById('paln-dialog-form');
+  					
+  					inGridTag.appendChild(selectTag)
+  					prdCd=planFrm.prdCd.value;
+  					let prcCd=planFrm.prcCd.value;
+
+  					let ordShtNo=planFrm.ordShtNo.value;
+  					let abcde={'prdCd':result[0].prdCd, 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')};
+  					//히든태그 needCnt 입력
+  					document.getElementById("needCnt").value=result[0].needCnt;
+  					document.getElementById("prdCd").value=result[0].prdCd;
+  					//제품코드로 공정불러오기
+  					needPrcCd(result[0].prdCd);
+  					//lot재고 조회
+  					abcde={'prdCd':prdCd, 'ordShtNo':ordShtNo , 'prcCd':prcCd};
+  					needLotCnt(abcde);
+  					//셀렉트태그 선택이벤트
+  					selectTag.addEventListener("change",function(event){
+  						$("#prdSelect").empty();
+  						//히든태그 prdcd 입력
+  						console.log("dddddddddddd");
+  						console.log(event.target.value);
+  						document.getElementById("prdCd").value=event.target.value;
+  						//히든태그 needCnt 입력
+  						document.getElementById("needCnt").value=event.target.value;
+  						prdCdOrdNo={'prdCd':event.target.value , 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
+
+  						console.log(planFrm)
+  						//제품코드로 공정불러오기
+  						
+  						needPrcCd(event.target.value);
+  						//lot재고 조회
+  						needLotCnt(prdCdOrdNo);
+  					})
+  				}
+  			})
+      	 }
+    	 
+    	 
+////////////////////////////////////////////////메모장자리
 
 	}) 
 
@@ -403,8 +516,7 @@
 		
 	}
 	
-     
-			
+	
 	grid.on('click',function(ev){
 		
 /* 		console.log(grid.getDescendantRows(ev.rowKey));
@@ -519,7 +631,7 @@ function needOrdCd(){
 	})
 }
 	
-	
+
 	</script>
 
 </body>

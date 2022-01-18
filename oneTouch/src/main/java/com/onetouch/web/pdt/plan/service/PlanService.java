@@ -3,7 +3,8 @@ package com.onetouch.web.pdt.plan.service;
 import java.util.List;
 import java.util.Map;
 
-import com.onetouch.web.mtr.stck.dao.LotVO;
+import com.onetouch.web.adm.bom.dao.BomVO;
+import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
@@ -14,4 +15,8 @@ public interface PlanService {
 	void insertPlan(ModifyVO<PlanVO> list);
 	List<PlanVO> lotCntSelect(PlanVO vo);
 	void insertPlanDtl(Map<String,List<PlanVO>> map);
+	List<PrdVO> prdCdFind();
+	List<BomVO> prcCdFind(PlanVO vo);
+	void addInsertPlan (Map<String,List<PlanVO>> map);
+	List<PlanVO> addPlanLotSelect(PlanVO vo);
 }

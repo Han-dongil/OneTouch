@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.adm.bom.dao.BomVO;
+import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -20,7 +22,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 @Controller
 public class PlanController {
 	@Autowired PlanService service;
-	
+
 	@RequestMapping("PlanList")
 	public String pdtListPage() {
 		return "tiles/pdt/pdtPlanList";
@@ -74,5 +76,31 @@ public class PlanController {
 		service.insertPlanDtl(map);
 		return "a";
 	}
+	@ResponseBody
+	@GetMapping("prdCdFind")
+	public List<PrdVO> prdCdFind(){
+		return service.prdCdFind();
+	}
 
-}
+	@ResponseBody
+	@GetMapping("prcCdFind/{prdCd}")
+	public List<BomVO> prcCdFind(@PathVariable String prdCd){
+		PlanVO vo=new PlanVO();
+		vo.setPrdCd(prdCd);
+		return service.prcCdFind(vo);
+	}
+	@ResponseBody
+	@PostMapping("addInsertPlan")
+	public void addInsertPlan(@RequestBody Map<String,List<PlanVO>> map) {
+		System.out.println(map);
+		service.addInsertPlan(map);
+	}
+	@ResponseBody
+	@GetMapping("lotCdFind/{prcCd}/{prdCd}")
+	public List<PlanVO> lotCdFind(@PathVariable String prcCd ,@PathVariable String prdCd){
+		PlanVO vo=new PlanVO();
+		vo.setPrcCd(prcCd);
+		vo.setPrdCd(prdCd);
+		return service.addPlanLotSelect(vo);
+	}
+ }
