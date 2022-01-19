@@ -39,16 +39,13 @@
 	let rowk;
 	let Grid = tui.Grid;
 	
-/* 	Grid.applyTheme('striped',{
+ 	Grid.applyTheme('default',{
 		cell:{
 			header:{
 				background:'#eef'
-			},
-			evenRow:{
-				background:'#fee'
 			}
 		}
-	}) */
+	}) 
 	
 	const columns1 = [{
 		
@@ -66,17 +63,19 @@
 		
 			header : '상세코드',
 			name : 'dtlCd',
-			editor: 'text'
+			editor : 'text'
 		},
 		{
 			header : '상세코드명',
 			name : 'dtlNm',
-			editor: 'text'
+			editor : 'text',
+			width : 180
 		},
 		{
 			header : '코드설명란',
 			name : 'dtlCmt',
-			editor: 'text'
+			editor: 'text',
+			width : 150
 		},
 		{
 			header : '표시순서',
@@ -140,6 +139,17 @@
 		columns: columns2,
 		bodyHeight: 505,
 		minBodyHeight: 505
+	})
+	
+	grid2.on('editingStart', (ev) => {
+		if(ev.columnName == 'dtlCd') {
+			var value = grid2.getValue(ev.rowKey, 'dtlCd');
+			if(value != null) {
+				console.log(value);
+				alert('공정코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
 	})
 
 	//검색버튼

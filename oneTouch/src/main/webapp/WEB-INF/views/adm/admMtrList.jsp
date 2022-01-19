@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,15 +48,16 @@
 				<input type="hidden" id="compCd" name="compCd">
 				<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 			</form>
+			<div id="dialog-form" title="title"></div>
 	</div>
 </div>
 <script type="text/javascript">
 	let Grid = tui.Grid;
 	
-	Grid.applyTheme('striped',{
+	Grid.applyTheme('default',{
 		cell:{
 			header:{
-				background:'#fee'
+				background:'#eef'
 			}
 		}
 	})
@@ -125,6 +128,83 @@
 			})
 		}
 	})
+	
+		//수정버튼
+	btnEdit.addEventListener("click", function() {
+		//console.log($('#useYn').is(':checked'));
+		//console.log($('#flwFrm'));
+		//console.log(document.getElementById('useYn').getAttribute('value'));
+		if(!confirm("수정하시겠습니까?")){
+			return false;
+		}
+		$.ajax({
+			url: "updateMtr",
+			method: "POST",
+			data: $('#mtrFrm').serializeObject(),
+			dataType: 'json',
+			//contentType: 'application/json',
+			success: function(result) {
+				console.log("수정완료!!!!!!!!!!!")
+				console.log(result)
+			}
+		})
+	})
+	
+	//자재규격검색버튼
+	btnStd.addEventListener("click", function() {
+		mBas('MTR_SIZE');
+		$('#ui-id-1').html('자재규격종류');
+	});
+	
+	//관리단위검색버튼
+	btnUnit.addEventListener("click", function() {
+		mBas('MTR_UNIT');
+		$('#ui-id-1').html('관리단위');
+	});
+	
+	//자재구분검색버튼
+	btnMtrSect.addEventListener("click", function() {
+		mBas('MTR_SECT');
+		$('#ui-id-1').html('자재구분');
+	});
+	
+	//업체명검색버튼
+	btnCompCd.addEventListener("click", function() {
+		mBas('MTR_COM');
+		$('#ui-id-1').html('업체명');
+	});
+	
+	//모달설정
+	let dialog;
+	dialog = $( "#dialog-form" ).dialog({
+		autoOpen : false,
+		modal : true,
+		resizable: false,
+		height: "auto",
+		width: 400
+	});
+	
+	//모달창내에서 더블클릭
+	function getModalBas(param){
+		//선택한 값 parameter받아서 각자 처리
+		//각각의 인풋에 값 넣어주기 위해서 if문 쓰기
+		if(param.dtlCd.includes('SIZE')) {
+			$("#stdNm").val(param.dtlNm);
+			$("#std").val(param.dtlCd);
+		} else if(param.dtlCd.includes('UNIT')) {
+			$("#unitNm").val(param.dtlNm);
+			$("#unit").val(param.dtlCd);
+		} else if(param.dtlCd.includes('SECT')) {
+			$("#mtrSectNm").val(param.dtlNm);
+			$("#mtrSect").val(param.dtlCd);
+		} else {
+			$("#compNm").val(param.dtlNm);
+			$("#compCd").val(param.dtlCd);
+		}
+		//console.log(param.dtlNm);
+		dialog.dialog("close");
+	} 
+
 	
 </script>
 </body>

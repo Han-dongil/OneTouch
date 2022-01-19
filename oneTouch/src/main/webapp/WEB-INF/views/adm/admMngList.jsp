@@ -24,15 +24,13 @@
 <script type="text/javascript">
 	let checked=[];
 	let prcLists=[];
+	let value2;
 	
 	let Grid = tui.Grid;
-	Grid.applyTheme('striped',{
+	Grid.applyTheme('default',{
 		cell:{
 			header:{
 				background:'#eef'
-			},
-			evenRow:{
-				background:'#fee'
 			}
 		}
 	})
@@ -48,7 +46,6 @@
 	});
 	
 
-	
 	const columns = [{
 			header : '공정코드',
 			name : 'prcCd',
@@ -72,7 +69,7 @@
 		{
 			header : '공정구분',
 			name : 'prcSectNm',
- 				editor: {
+ 			editor: {
 				type: 'radio',
 				options: {
 					listItems: [
@@ -103,6 +100,12 @@
 			        ]
 			     }
 			}
+		},
+		{
+			header : '공정구분코드',
+			name : 'prcSect',
+			hidden : true,
+			
 		}];
 	
 	for(i=0; i<prcLists.length; i++) {
@@ -138,7 +141,30 @@
 	  columns
 	}); 
 		
+	grid.on('editingStart', (ev) => {
+		if(ev.columnName == 'prcCd') {
+			var value = grid.getValue(ev.rowKey, 'prcCd');
+				console.log(value);
+			if(value != null) {
+				alert('공정코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
+	})
 	
+	grid.on("editingFinish", ev => {
+		if(ev.columnName == 'prcSectNm') {
+			for(i=0; i<prcLists.length; i++) {
+				/* console.log(prcLists[i].prcSectNm);
+				console.log(grid.getValue(ev.rowKey,'prcSectNm')); */
+				if(prcLists[i].prcSectNm == grid.getValue(ev.rowKey,'prcSectNm')) {
+					value2 = prcLists[i].prcSect
+				}
+			}
+			console.log(value2);
+			grid.setValue(ev.rowKey, 'prcSect', value2, false );
+		}
+	})
 	
 	//삭제버튼
 	btnDel.addEventListener("click", function() {
@@ -153,7 +179,8 @@
 	
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		grid.appendRow({})
+		console.log();
+		grid.appendRow({});
 	})	
 
 </script>

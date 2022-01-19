@@ -62,10 +62,10 @@
 	let PrdDtl;
 	let Grid = tui.Grid;
 	
-	Grid.applyTheme('striped',{
+	Grid.applyTheme('default',{
 		cell:{
 			header:{
-				background:'#fee'
+				background:'#eef'
 			}
 		}
 	})
@@ -249,7 +249,7 @@
 	});
 	
 
-	
+	//모달창내에서 더블클릭
 	function getModalBas(param){
 		//선택한 값 parameter받아서 각자 처리
 		//각각의 인풋에 값 넣어주기 위해서 if문 쓰기
