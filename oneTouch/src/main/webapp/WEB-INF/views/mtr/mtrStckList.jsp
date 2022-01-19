@@ -43,12 +43,14 @@
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
-				<div>
-					<label>구분</label>
-					<input type="radio" id="lotRadio" name="mtrSect" value="lot" checked>
-					<label for="lotRadio">LOT별</label>
-					<input type="radio" id="mtrRadio" name="mtrSect" value="mtr">
-					<label for="mtrRadio">자재별</label>
+				<div id="mtrRadio">
+					<label>자재구분</label>
+					<input type="radio" id="allRadio" name="mtrSect" value="" checked>
+					<label for="allRadio">전체</label>
+					<!-- <input type="radio" id="lotRadio" name="mtrSect" value="MTR_SECT001">
+					<label for="lotRadio">원자재</label>
+					<input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT002">
+					<label for="mtrRadio">반제품</label> -->
 				</div>
 			</div>
 		</form>
@@ -68,6 +70,24 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+fetch('mtrStckRadio')
+.then(response=>response.json())
+.then(result=>{
+	console.log("result");
+	let div = document.getElementById("mtrRadio");
+	for(let i = 0; i < result.length; i++){
+		let input = document.createElement("input");
+		let label = document.createElement("label");
+		input.type = "radio";
+		input.name = "mtrSect";
+		input.id = result[i].dtlCd;
+		input.value = result[i].dtlCd;
+		label.setAttribute("for",result[i].dtlCd);
+		label.innerText = result[i].dtlCmt;
+		div.appendChild(input);
+		div.appendChild(label);
+		}
+})
 //Jquery tabs
 $( function() {
     $( "#tabs" ).tabs({
@@ -155,7 +175,6 @@ const lotColumns = [{
 var lotGrid = new Grid({
      el : document.getElementById('lotTab'),
      data : lotDataSource,
-     rowHeaders : [ 'checkbox'],
      columns : lotColumns,
 				summary : {
 					height: 40,
@@ -243,13 +262,12 @@ const mtrColumns = [{
 var mtrGrid = new Grid({
      el : document.getElementById('mtrTab'),
      data : mtrDataSource,
-     rowHeaders : [ 'checkbox'],
      columns : mtrColumns,
 				summary : {
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
-				   		ordNo: {
+				   		mtrSectNm: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
@@ -261,12 +279,6 @@ var mtrGrid = new Grid({
 			                } 
 			            },
 			            mtrStckCnt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            safeStck: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
