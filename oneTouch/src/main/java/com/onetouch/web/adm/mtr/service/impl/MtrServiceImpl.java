@@ -28,4 +28,11 @@ public class MtrServiceImpl implements MtrService{
 		return mapper.selectUseAdmMtr();
 	}
 
+	@Override
+	public void updateMtr(MtrVO mtrvo) {
+		mapper.updateMtr(mtrvo);
+	}
+
+
+
 }

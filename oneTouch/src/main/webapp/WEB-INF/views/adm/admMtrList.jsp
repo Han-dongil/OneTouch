@@ -28,24 +28,24 @@
 			<button id="btnEdit">수정</button><hr>
 		</div>
 			<form id="mtrFrm" name="mtrFrm" method="post">
-		<label>자재코드&nbsp;</label><input id="mtrCd" name="mtrCd" readonly><br>
-		<label>자재명&emsp;&nbsp;</label><input id="mtrNm" name="mtrNm" readonly><br>
-		<label>자재규격&nbsp;</label><input id="stdNm" name="stdNm">
-			<button type="button" id="btnStd">🔍</button><br>
-		<label>관리단위&nbsp;</label><input id="unitNm" name="unitNm">
-			<button type="button" id="btnUnit">🔍</button><br>
-		<label>자재구분&nbsp;</label><input id="mtrSectNm" name="mtrSectNm">
-			<button type="button" id="btnMtrSect">🔍</button><br>
-		<label>업체명&emsp;&nbsp;</label><input id="compNm" name="compNm">
-			<button type="button" id="btnCompCd">🔍</button><br>
-		<label>관리수량&nbsp;</label><input id="mngAmt" name="mngAmt" readonly><br>
-		<label>안전재고&nbsp;</label><input id="safeStck" name="safeStck" readonly><br>
-		<input type="hidden" id="std" name="std">
-		<input type="hidden" id="unit" name="unit">
-		<input type="hidden" id="mtrSect" name="mtrSect">
-		<input type="hidden" id="compCd" name="compCd">
-		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
-	</form>
+				<label>자재코드&nbsp;</label><input id="mtrCd" name="mtrCd" readonly><br>
+				<label>자재명&emsp;&nbsp;</label><input id="mtrNm" name="mtrNm" readonly><br>
+				<label>자재규격&nbsp;</label><input id="stdNm" name="stdNm">
+					<button type="button" id="btnStd">🔍</button><br>
+				<label>관리단위&nbsp;</label><input id="unitNm" name="unitNm">
+					<button type="button" id="btnUnit">🔍</button><br>
+				<label>자재구분&nbsp;</label><input id="mtrSectNm" name="mtrSectNm">
+					<button type="button" id="btnMtrSect">🔍</button><br>
+				<label>업체명&emsp;&nbsp;</label><input id="compNm" name="compNm">
+					<button type="button" id="btnCompCd">🔍</button><br>
+				<label>관리수량&nbsp;</label><input id="mngAmt" name="mngAmt" readonly><br>
+				<label>안전재고&nbsp;</label><input id="safeStck" name="safeStck" readonly><br>
+				<input type="hidden" id="std" name="std">
+				<input type="hidden" id="unit" name="unit">
+				<input type="hidden" id="mtrSect" name="mtrSect">
+				<input type="hidden" id="compCd" name="compCd">
+				<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
+			</form>
 	</div>
 </div>
 <script type="text/javascript">
@@ -91,7 +91,38 @@
 	
 	grid.on("click", (ev) => {
 		if(ev.columnName === 'mtrCd' || ev.columnName === 'mtrNm') {
-			mtrCode = {};
+			mtrCode = {'mtrCd': grid.getValue(ev.rowKey,'mtrCd')};
+			console.log(mtrCode);
+			
+			//자재상세정보 받아오기
+			$.ajax({
+				url:'./admMtrDtlList',
+				dataType:'json',
+				data : mtrCode,
+				async : false
+			}).done(function(datas) {
+				MtrDtl = datas.data.contents[0];
+				console.log(MtrDtl);
+				document.getElementById('mtrCd').setAttribute('value',MtrDtl.mtrCd);
+				document.getElementById('mtrNm').setAttribute('value',MtrDtl.mtrNm);
+				document.getElementById('stdNm').setAttribute('value',MtrDtl.stdNm);
+				document.getElementById('unitNm').setAttribute('value',MtrDtl.unitNm);
+				document.getElementById('mtrSectNm').setAttribute('value',MtrDtl.mtrSectNm);
+				document.getElementById('compNm').setAttribute('value',MtrDtl.compNm);
+				document.getElementById('mngAmt').setAttribute('value',MtrDtl.mngAmt);
+				document.getElementById('safeStck').setAttribute('value',MtrDtl.safeStck);
+				document.getElementById('std').setAttribute('value',MtrDtl.std);
+				document.getElementById('unit').setAttribute('value',MtrDtl.unit);
+				document.getElementById('mtrSect').setAttribute('value',MtrDtl.mtrSect);
+				document.getElementById('compCd').setAttribute('value',MtrDtl.compCd);
+				//console.log($('#mtrFrm').serialize());
+				
+				if(MtrDtl.useYn == 'Y') {
+					document.getElementById('useYn').checked = true
+				} else {
+					document.getElementById('useYn').checked = false
+				}
+			})
 		}
 	})
 	
