@@ -7,25 +7,7 @@
 
 <!-- 공정관리VO를 상속받는 설비VO를 리절트 타입으로  -->
 <select id="selectprcCd" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	SELECT f.FCT_CD
-		   ,f.FCT_NM
-		   ,f.PRC_CD
-		   ,f.FCT_STD
-		   ,f.FCT_MODEL
-		   ,f.COMP_CD
-		   ,f.USE_PURP
-		   ,f.IN_DATE
-		   ,f.PURCH_COST
-		   ,f.CHK_PROD
-		   ,f.CHK_PROD_UNIT
-		   ,f.FCT_IMG
-		   ,f.TOT_PDT_AMT
-		   ,f.UPH_PDT_AMT
-		   ,f.FCT_PHS
-		   ,f.USE_YN
-		   ,f.EMP_NO 
-	FROM fct_info f JOIN adm_prc_mng a
-     ON f.prc_cd = a.prc_cd 
+select * from fct_info where line_no = #{lineNo}
 </select>
 
 <!-- 등록 목록조회 -->
@@ -84,6 +66,6 @@
 <!-- 삭제 -->
 <delete id="deleteFctInfo">
 	delete fct_info where fct_cd in <foreach collection="list" item="lists" open="(" close=")" separator=",">#{lists.fctCd}</foreach> 
-</delete>												
+</delete>	
 </mapper>
 

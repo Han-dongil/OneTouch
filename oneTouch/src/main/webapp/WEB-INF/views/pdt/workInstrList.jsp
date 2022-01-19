@@ -77,6 +77,17 @@
 			} 
 		//메인 그리드 컬럼 설정	
 		const mainColumns = [{
+			header : '제품번호',
+			name : 'prdCd',       
+			formatter: 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
+					listItems: [
+					]
+				}
+			},
+		},{
 			header : '계획번호',
 			name : 'planNo'
 		},{
@@ -98,10 +109,6 @@
 		},{
 			header : '계획디테일번호',
 			name : 'planDtlNo' 
-		},{
-			header : '제품번호',
-			name : 'prdCd',
-			editor : 'text'
 		},{
 			header : '공정번호',
 			name : 'prcCd',
@@ -531,7 +538,20 @@
 		})
 		//////////////////////////////////////이벤트/////////////////////////////////////////
 		mainGrid.on("click",ev=>{
-			//if(ev.col)
+			if(ev.columnName=='prdCd'){
+				fetch('prdCdFind')
+				.then(response=>response.json())
+				.then(result=>{
+					 //planGrid.resetData(result)
+					 console.log(result)
+					 let i=0
+					 for(let obj of result){
+						 mainColumns[0].editor.options.listItems[i]={text:obj.prdCd,value:obj.prdCd}
+						 i++;
+					 }
+				})
+			}
+			
 		})
 		//////////////////////////////////////히든그리드///////////////////////////////////////
 		

@@ -1,5 +1,6 @@
 package com.onetouch.web.pdt.plan.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import com.onetouch.web.adm.bom.dao.BomMapper;
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.flw.dao.FlwMapper;
+import com.onetouch.web.fct.info.dao.InfoMapper;
+import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.mtr.in.dao.MtrInMapper;
 import com.onetouch.web.pdt.ord.dao.OrdMapper;
 import com.onetouch.web.pdt.plan.dao.PlanMapper;
@@ -25,6 +28,7 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired MtrInMapper mtrMapper;
 	@Autowired FlwMapper flwMapper;
 	@Autowired BomMapper bomMapper;
+	@Autowired InfoMapper infoMapper;
 	@Override
 	public List<PlanVO> list(String nowPhs) {
 		return mapper.list(nowPhs);
@@ -69,15 +73,8 @@ public class PlanServiceImpl implements PlanService {
 		PlanVO nextSeq=mapper.findPlanSeq();
 		
 		mapper.insertPlan(inVo);
-		int seq=mapper.findPlanSeqOnlyNum();
-		PlanVO a=mapper.findPlanDTLSeq();
-		String newSeq=a.getPlanDtlNo().substring(0,11);
-		int i=0;
 		if(list!=null) {
 			for(PlanVO vo : list) {
-				seq=seq+i;
-				String b=newSeq+seq;
-				vo.setPlanDtlNo(b);
 				vo.setPlanNo(nextSeq.getPlanNo());
 				mapper.planDtlInsert(vo);
 				mapper.LotFindInsert(vo);
@@ -85,7 +82,6 @@ public class PlanServiceImpl implements PlanService {
 				mtrMapper.prdNeed(vo);
 				ordMapper.ordCheck(inVo.getOrdShtNo());
 				
-				i++;
 				
 			}
 		}
@@ -107,20 +103,12 @@ public class PlanServiceImpl implements PlanService {
 		List<PlanVO> lotList=map.get("lot");
 		PlanVO inVo=map.get("plan").get(0);
 		ordMapper.ordCheck(inVo.getOrdShtNo());
-		System.out.println("6666");
 		PlanVO nextSeq=mapper.findPlanSeq();
 		System.out.println("111111");
 		mapper.insertPlan(inVo);
-		int seq=mapper.findPlanSeqOnlyNum();
-		PlanVO a=mapper.findPlanDTLSeq();
-		System.out.println("2222");
-		String newSeq=a.getPlanDtlNo().substring(0,11);
 		int i=0;
 		if(list!=null) {
 			for(PlanVO vo : list) {
-				seq=seq+i;
-				String b=newSeq+seq;
-				vo.setPlanDtlNo(b);
 				vo.setPlanNo(nextSeq.getPlanNo());
 				mapper.planDtlInsert(vo);
 				System.out.println("3333");
@@ -144,6 +132,27 @@ public class PlanServiceImpl implements PlanService {
 	public List<PlanVO> addPlanLotSelect(PlanVO vo) {
 		
 		return mapper.addPlanLotSelect(vo);
+	}
+	@Override
+	public List<PlanVO> findLineNo(String prdCd) {
+		String lines=mapper.findLineNo(prdCd).getLineNo();
+		System.out.println(lines);
+		String line[]=lines.split("/");
+		List<PlanVO> list=new ArrayList<>();
+		for(int i=0; i<line.length;i++) {
+			PlanVO vo=new PlanVO();
+			vo.setLineNo(line[i]);
+			System.out.println(vo.getLineNo());
+			list.add(vo);
+		}
+		System.out.println(list);
+		return list;
+	}
+	@Override
+	public List<InfoVO> prcLineFine(PlanVO vo) {
+		infoMapper.selectprcCd(vo);
+		
+		return infoMapper.selectprcCd(vo);
 	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기

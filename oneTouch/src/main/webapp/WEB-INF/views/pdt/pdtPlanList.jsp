@@ -54,10 +54,10 @@
 	<button id="btnFindCo">주문서조회</button>
 	<div id="dialog-form" title="주문서조회">미확인 주문서 목록</div>
 	<div id="paln-dialog-form" title="생산계획 디테일">
-	<div id='planGrid'></div>
-	<div id="lotDiv" style="display:none"></div>
-	<div id='hidden'></div>
-	생산계획 디테일
+		생산계획 디테일
+		<div id='planGrid'></div>
+		<div id="lotDiv" style="display:none"></div>
+		<div id='hidden'></div>
 	</div>
 	<div id="grid"></div>
 	<form id="planFrm" name="planFrm">
@@ -79,9 +79,8 @@
   	let Grid = tui.Grid;
   	let modalDataSource;
   	let gridSelect;
-  	let lotDiv;
+  	let lotDiv = document.getElementById('lotDiv');
   	let resetdataaa;
-  	let gridw;
   	let hiddenGrid;
   	function dateSelectFnc(){
 		event.preventDefault();
@@ -107,15 +106,26 @@
   	//생산계획모달 (주문서x)메인그리드
   	let planColumns = [{
 		header : '제품코드',
-		name : 'prdCd',          
-		formatter: 'listItemText',
+		name : 'prdCd',
+		 formatter: 'listItemText',
 		      editor: {
 		    	 type: 'select',
 		         options: {
 		            listItems: [
 		            ]
 		          }
-		        },
+		        }, 
+		},{
+			header : '라인번호',
+			name : 'lineNo',          
+			formatter: 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
+					listItems: [
+					]
+				}
+			},
 		},{
 			header : '공정코드',
 			name : 'prcCd',          
@@ -167,7 +177,7 @@
 		height: 500,
 		width: 1000,
 		buttons:{"자재등록":()=>{
-			hiddenGrid.appendRows(gridw.getModifiedRows().updatedRows);
+			hiddenGrid.appendRows(lotGrid.getModifiedRows().updatedRows);
 			document.getElementById('hidden')
 			
 		},
@@ -190,10 +200,10 @@
 			alert("save")
 		  	if(gridSelect=='addLot'){
 				console.log(planFrm)
-	 			lotGrid.blur();//커서 인풋밖으로빼냄
+	 			//lotGrid.blur();//커서 인풋밖으로빼냄
 	 			let planFormData=$("#planFrm").serializeObject()
 	 			console.log(planFormData);
-	 			lotGrid.getModifiedRows()
+	 			//lotGrid.getModifiedRows()
 	 			let insertData={}
 	 			insertData.plan=[planFormData];
 	 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
@@ -323,7 +333,7 @@
 	});	
 	
 
-	gridw = new Grid({
+	lotGrid = new Grid({
 		el: document.getElementById('lotDiv'),
 		data:null,
 		rowHeaders:['checkbox'],
@@ -347,21 +357,49 @@
 		}],
 	});
 	
+	//document.getElementById('lotDiv').style="display:block"; //lot 그리드 히든풀기
+	
 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
 	 	planGrid.on('editingFinish',ev=>{
-	 		if(ev.columnName=='prcCd'){
-	 			document.getElementById('lotDiv').style="display:block";
-	 			console.log(planGrid.getValue(ev.rowKey,'prcCd'));
-	 			fetch('lotCdFind/'+planGrid.getValue(ev.rowKey,'prcCd')+'/'+planGrid.getValue(ev.rowKey,'prdCd'))
+	 		//plan 그리드 
+	 		//라인번호 선택하면 공정코드가져옴
+	 		if(ev.columnName=='lineNo'){
+	 			fetch('lotLineFind/'+planGrid.getValue(ev.rowKey,'lineNo'))
 	 			.then(response=>response.json())
 	 			.then(result=>{
-		     		gridw.resetData(result);
-		     		console.log(gridw.getData())
+	 				let i=0;
+	 				for(obj of result){
+		 				planColumns[2].editor.options.listItems[i]={text:obj.prcCd,value:obj.prcCd}
+		 				lotGrid.resetData(result);
+		 				i++;
+	 				}
 		     		//hiddenGrid.resetData(gridw.getModifiedRows().createdRows());
 	 			})
 	 		}
+	 		//제품코드로 라인번호 가져오기
 	 		else if(ev.columnName=='prdCd'){
-		 		fetch('prcCdFind/'+planGrid.getValue(ev.rowKey,'prdCd'))
+		 		fetch("lineNoFind/"+planGrid.getValue(ev.rowKey,'prdCd'))
+		 		.then(response=>response.json())
+		 		.then(result=>{
+		 			let i=0;
+					for(obj of result){
+						console.log(obj)
+		 				planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
+						i++;
+					}
+		 		})
+	 		}
+	 		//상품코드 공정코드로 자재목록 불러오기
+	 		else if(ev.columnName=="prcCd"){
+	 			lotDiv.style="display:block";
+	 			fetch("lotCdFind/"+planGrid.getValue(ev.rowKey,'prdCd')+'/'+planGrid.getValue(ev.rowKey,'prcCd'))
+	 			.then(response=>response.json())
+	 			.then(result=>{
+	 				console.log(result)
+	 				lotGrid.resetData(result);
+	 			})
+	 		}	
+	 			/* fetch('prcCdFind/'+planGrid.getValue(ev.rowKey,'prdCd'))
 		 		.then(response=>response.json())
 		 		.then(result=>{
 		 			console.log(result)
@@ -370,9 +408,8 @@
 						planColumns[1].editor.options.listItems[i]={text:obj.prcCd,value:obj.prcCd}
 						i++;
 				 	}
-		 		})
-	 		}
-	 	})
+		 		}) */
+ 		})
 
 	//로우 클릭 이벤트
      grid.on('click', ev => {
@@ -380,6 +417,9 @@
     	 if(grid.getValue(ev.rowKey,'planNo')==null && ev.columnName=='planDate'){
 		  	planDialog.dialog( "open" );
 		  	gridSelect='addPlan';
+		  	planGrid.refreshLayout();
+	    	lotGrid.refreshLayout();
+	    	hiddenGrid.refreshLayout();
     	 }
     	 /////////////////////////////////////////////////
     	 if(ev.columnName=='planDate'&&grid.getValue(ev.rowKey,'planNo')!=null){
@@ -433,8 +473,8 @@
   			name : 'prcCd',
   			hidden:false
   		}];
-  		lotGrid	= new Grid({
-  			el: document.getElementById('paln-dialog-form'),
+  	/* 	lotGrid	= new Grid({
+  			el: document.getElementById('lotDiv'),
   			data:modalDataSource,
   			rowHeaders:['checkbox'],
   			columns:lotColumns
@@ -453,7 +493,7 @@
   			//히든태그 planNo 입력
   			lotGrid.setValue(ev.rowKey,'planNo',document.getElementById("planNo").value,false)
   		})
-  		
+  		 */
   		
   			$.ajax({
   				url:'./pdtPlanDtllist/',

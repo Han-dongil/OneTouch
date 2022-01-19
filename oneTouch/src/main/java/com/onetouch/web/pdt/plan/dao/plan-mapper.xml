@@ -55,9 +55,9 @@
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd}
 </select>
 <insert id="planDtlInsert">
-	insert into pdt_plan_dtl (plan_dtl_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_plan_time,work_str_date) 
+	insert into pdt_plan_dtl (line_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_plan_time,work_str_date) 
 	values(
-	PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO'),
+	#{lineNo},
 	#{planNo},
 	#{prdCd},
 	#{prcCd},
@@ -67,19 +67,17 @@
 	to_date(#{workStrDate},'yyyy-MM-dd'))
 </insert>
 <insert id="LotFindInsert">
-	insert into used_mtr_lot (mtr_lot, instr_dtl_no, dtl_select) 
+	insert into used_mtr_lot (mtr_lot,plan_no ,line_no, dtl_select) 
 	values (#{mtrLot},
-	substr(#{planDtlNo},0,11)||lpad(substr(#{planDtlNo},12,4),4,'0'),
+	#{planNo},
+	#{lineNo},
 	'PD')
 </insert>
 <select id="findPlanSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO') as planNo from dual
 </select>
-<select id="findPlanDTLSeq" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select PKG_MAKE_CODE.CODE('PPD','pdt_plan_dtl','PLAN_DTL_NO') as planDtlNo from dual
-</select>
-<select id="findPlanSeqOnlyNum" resultType="int">
-	select PKG_MAKE_CODE_SEQ.CODE('PDT_PLAN_DTL','PLAN_DTL_NO') from dual
+<select id="findLineNo" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select prd_cd , prd_nm, able_line_no as lineNo from adm_prd where prd_cd=#{prdCd}
 </select>
 
 </mapper>

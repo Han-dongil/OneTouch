@@ -13,7 +13,6 @@ public class WorkVO extends PlanVO{
 	private String workProt;
 	private String instrDate;
 	private String pdtFinDate;
-	private String instrDtlNo;
 	private String prdCd;
 	private String instrCnt;
 	private String pdtCnt;
