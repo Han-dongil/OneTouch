@@ -26,7 +26,7 @@
 </head>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>자재재고 조회</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>
@@ -44,10 +44,10 @@
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
 				<div>
-					<label>해당일자</label>
-					<input type="radio" id="lotRadio" name="mtrSect" value="MTR_SECT001" checked>
+					<label>구분</label>
+					<input type="radio" id="lotRadio" name="mtrSect" value="lot" checked>
 					<label for="lotRadio">LOT별</label>
-					<input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT002">
+					<input type="radio" id="mtrRadio" name="mtrSect" value="mtr">
 					<label for="mtrRadio">자재별</label>
 				</div>
 			</div>
