@@ -28,14 +28,10 @@ public class PlanController {
 		return "tiles/pdt/pdtPlanList";
 	}
 	@ResponseBody
-	@GetMapping("pdtPlanlist")
-	public Map<String,Object> pdtList() {
-	Map<String,Object> map=new HashMap<>();
-	map.put("contents", service.list());
-	Map<String,Object> maps=new HashMap<>();
-	maps.put("result",true);
-	maps.put("data", map);
-		return maps;
+	@GetMapping("pdtPlanlist/{nowPhs}")
+	public List<PlanVO> pdtList(@PathVariable String nowPhs) {
+		System.out.println(nowPhs);
+		return service.list(nowPhs);
 	}
 	@ResponseBody
 	@PostMapping("pdtPlanDtllist")

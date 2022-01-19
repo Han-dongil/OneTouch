@@ -16,8 +16,8 @@
 	<form>
 		<input type='date' id='inputDate'>
 		<select name="phs" id="phs">
-			<option value="N">미지시</option>
-			<option value="Y">지시완료</option>
+			<option value="N">미계획</option>
+			<option value="Y">계획완료</option>
 		</select>
 		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
 		<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>

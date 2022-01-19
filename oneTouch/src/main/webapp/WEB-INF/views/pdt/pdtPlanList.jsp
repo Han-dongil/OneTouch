@@ -42,22 +42,24 @@
 }
 </style>
 <body>
+	<select name="phs" id="phs">
+		<option value="N">미지시</option>
+		<option value="Y">지시완료</option>
+	</select>
+	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
 	<button id="delBtn">삭제</button>
 	<!-- 	<input id="txtCo"> -->
 	<button id="btnFindCo">주문서조회</button>
 	<div id="dialog-form" title="주문서조회">미확인 주문서 목록</div>
-	<div id="paln-dialog-form" title="생산계획 디테일">생산계획 디테일
+	<div id="paln-dialog-form" title="생산계획 디테일">
+	<div id='planGrid'></div>
+	<div id="lotDiv" style="display:none"></div>
+	<div id='hidden'></div>
+	생산계획 디테일
 	</div>
 	<div id="grid"></div>
-	<div id="abc">
-		<div id="inAbc">
-			<button onclick="xFnc(event)">X</button>
-			<form action=""></form>
-			<div id="inGrid"></div>
-		</div>
-	</div>
 	<form id="planFrm" name="planFrm">
 		<input type="hidden" name="planNo" id="planNo">
 		<input type="hidden" name="prdCd" id="prdCd">
@@ -80,6 +82,29 @@
   	let lotDiv;
   	let resetdataaa;
   	let gridw;
+  	let hiddenGrid;
+  	function dateSelectFnc(){
+		event.preventDefault();
+		fetch('pdtPlanlist/'+document.getElementById('phs').value)
+		.then(response=>response.json())
+		.then(result=>{
+			grid.resetData(result);
+		})
+	}
+  	
+/////////////////////////////////////그리드///////////////////////////////////////  	
+	//그리드 테마적용
+	Grid.applyTheme('striped',{
+		cell:{
+			header:{
+				background:'#eef'
+			},
+			evenRow:{
+				background:'#fee'
+			}
+		}
+	})
+  	//생산계획모달 (주문서x)메인그리드
   	let planColumns = [{
 		header : '제품코드',
 		name : 'prdCd',          
@@ -88,7 +113,6 @@
 		    	 type: 'select',
 		         options: {
 		            listItems: [
-		              
 		            ]
 		          }
 		        },
@@ -100,11 +124,9 @@
 				type: 'select',
 				options: {
 					listItems: [
-					  
 					]
 				}
 			},
-		 		
 		},{
 			header : '필요수량',
 			name : 'needCnt',
@@ -136,30 +158,21 @@
 			name : 'fctCd',
 			hidden:false
 		}];
-	 	//그리드 테마적용
-	Grid.applyTheme('striped',{
-		cell:{
-			header:{
-				background:'#eef'
-			},
-			evenRow:{
-				background:'#fee'
-			}
-		}
-	})
 
 
-    function xFnc(e) {
-    	e.preventDefault();
-    	e.target.parentNode.parentNode.style="display:none";
-    }
 	//생산계획 모달창
 	planDialog = $( "#paln-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
 		height: 500,
 		width: 1000,
-		buttons:{"행추가":function(){
+		buttons:{"자재등록":()=>{
+			hiddenGrid.appendRows(gridw.getModifiedRows().updatedRows);
+			document.getElementById('hidden')
+			
+		},
+			"행추가":function(){
+			document.getElementById('lotDiv').style='display:none';
 			planGrid.appendRow({})
 			fetch('prdCdFind')
 			.then(response=>response.json())
@@ -173,45 +186,41 @@
 				 }
 			})
 		},
-
 		"save":function(){
-				alert("save")
-			  	if(gridSelect=='addLot'){
-					console.log(planFrm)
-		 			lotGrid.blur();//커서 인풋밖으로빼냄
-		 			let planFormData=$("#planFrm").serializeObject()
-		 			console.log(planFormData);
-		 			lotGrid.getModifiedRows()
-		 			let insertData={}
-		 			insertData.plan=[planFormData];
-		 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
-		 			console.log(insertData);
-		 			fetch('planDtlInsert',{
-		 				method:'POST',
-		 				headers:{
-							"Content-Type": "application/json",
-						},
-						body:JSON.stringify(insertData)
-		 			}) 
-			  		
-			  	}
-			  	else if(gridSelect=='addPlan'){
-			  		console.log('plan');
-			  		let insertObject={};
-			  		insertObject.plan=grid.getModifiedRows().createdRows
-			  		insertObject.detail=planGrid.getModifiedRows().createdRows
-			  		fetch('addInsertPlan',{
-		 				method:'POST',
-		 				headers:{
-							"Content-Type": "application/json",
-						},
-						body:JSON.stringify(insertObject)
-		 			})
-			  	}
- 			
- 			//lotGrid.request('modifyData');  
+			alert("save")
+		  	if(gridSelect=='addLot'){
+				console.log(planFrm)
+	 			lotGrid.blur();//커서 인풋밖으로빼냄
+	 			let planFormData=$("#planFrm").serializeObject()
+	 			console.log(planFormData);
+	 			lotGrid.getModifiedRows()
+	 			let insertData={}
+	 			insertData.plan=[planFormData];
+	 			insertData.detail=lotGrid.getModifiedRows().updatedRows;
+	 			console.log(insertData);
+	 			fetch('planDtlInsert',{
+	 				method:'POST',
+	 				headers:{
+						"Content-Type": "application/json",
+					},
+					body:JSON.stringify(insertData)
+	 			}) 
+		  	}
+		  	else if(gridSelect=='addPlan'){
+		  		let insertObject={};
+		  		insertObject.plan=grid.getModifiedRows().createdRows
+		  		insertObject.detail=planGrid.getModifiedRows().createdRows
+		  		insertObject.lot=hiddenGrid.getData()
+		  		fetch('addInsertPlan',{
+	 				method:'POST',
+	 				headers:{
+						"Content-Type": "application/json",
+					},
+					body:JSON.stringify(insertObject)
+	 			})
+		  	}
 		}}
-	});
+	})
 	
     //주문서검색 모달창
 	dialog = $( "#dialog-form" ).dialog({
@@ -219,36 +228,36 @@
 		modal:true,
 		buttons:{"save":function(){alert("save")}}
 	});
-    
 	$("#btnFindCo").on("click",function(){
 		dialog.dialog( "open" );
 		$("#dialog-form").empty();
 		//주문서 불러와서 모달에 띄워주기
 		needOrdCd();
-	})
+	});
+	
     var dataSource = {
-    		  withCredentials: false,  
-    		  initialRequest: true,
-    		  api: {
-    		        readData: { url: './pdtPlanlist',method: 'GET'},
-    		      //createData: { url: '/api/create', method: 'POST' },
-    		      //updateData: { url: '/modifyData', method: 'POST' },
-    		      //deleteData: { url: '/api/delete', method: 'DELETE' },
-    		      modifyData: { url: './modifyData', method: 'POST' }  
-    		  },
-    		  contentType: 'application/json'
-    		}
-    modalDataSource = {
-		  withCredentials: false,  
-		  initialRequest: true,
-		  api: {
-			  	readData: { url: '.',method: 'GET'},
-		     	 modifyData: { url: './planDtlInsert', method: 'POST' }  
-		  },
-		  contentType: 'application/json'
-		}
-    	
-	//그리드 컬럼 설정	
+    		withCredentials: false,  
+    		initialRequest: true,
+    		api: {
+    			readData: { url: '.'+phs,method: 'GET'},
+    			//createData: { url: '/api/create', method: 'POST' },
+    			//updateData: { url: '/modifyData', method: 'POST' },
+    			//deleteData: { url: '/api/delete', method: 'DELETE' },
+    			modifyData: { url: './modifyData', method: 'POST' }  
+    		},
+    		contentType: 'application/json'
+    	}
+    	modalDataSource = {
+    		withCredentials: false,  
+    		initialRequest: true,
+    		api: {
+    			readData: { url: '.',method: 'GET'},
+    			modifyData: { url: './planDtlInsert', method: 'POST' }  
+    		},
+    		contentType: 'application/json'
+    	}
+
+  //그리드 컬럼 설정	
 	const columns = [{
 		header : '계획번호',
 		name : 'planNo'
@@ -270,112 +279,118 @@
 		editor:'datePicker'
 	}];
 
-
 	//그리드 생성
 	grid = new Grid({
 		el: document.getElementById('grid'),
 		data:dataSource,
 		rowHeaders:['checkbox'],
 		columns,
-	});
+	});  
 	
 
+	//자재 hidden grid
+	
+ 	hiddenGrid = new Grid({
+		el: document.getElementById('hidden'),
+		data:null,
+		rowHeaders:['checkbox'],
+		columns:[{
+			header : '자재코드',
+			name : 'mtrCd'
+		},{
+			header : '자재로트',
+			name : 'mtrLot',
+		},{
+			header : '현재재고',
+			name : 'stckCnt',
+			editor : 'text'
+		},{
+			header : '홀딩수량',
+			name : 'hldCnt',
+			editor : 'text'
+		},{
+			header : '사용량',
+			name : 'useAmt',
+		}],
+	});  
 
+	
+	planGrid= new Grid({
+		el: document.getElementById('planGrid'),
+		data:null,
+		rowHeaders:['checkbox'],
+		columns:planColumns
+	});	
+	
+
+	gridw = new Grid({
+		el: document.getElementById('lotDiv'),
+		data:null,
+		rowHeaders:['checkbox'],
+		columns:[{
+			header : '자재코드',
+			name : 'mtrCd'
+		},{
+			header : '자재로트',
+			name : 'mtrLot',
+		},{
+			header : '현재재고',
+			name : 'stckCnt',
+			editor : 'text'
+		},{
+			header : '홀딩수량',
+			name : 'hldCnt',
+			editor : 'text'
+		},{
+			header : '사용량',
+			name : 'useAmt',
+		}],
+	});
+	
+	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
+	 	planGrid.on('editingFinish',ev=>{
+	 		if(ev.columnName=='prcCd'){
+	 			document.getElementById('lotDiv').style="display:block";
+	 			console.log(planGrid.getValue(ev.rowKey,'prcCd'));
+	 			fetch('lotCdFind/'+planGrid.getValue(ev.rowKey,'prcCd')+'/'+planGrid.getValue(ev.rowKey,'prdCd'))
+	 			.then(response=>response.json())
+	 			.then(result=>{
+		     		gridw.resetData(result);
+		     		console.log(gridw.getData())
+		     		//hiddenGrid.resetData(gridw.getModifiedRows().createdRows());
+	 			})
+	 		}
+	 		else if(ev.columnName=='prdCd'){
+		 		fetch('prcCdFind/'+planGrid.getValue(ev.rowKey,'prdCd'))
+		 		.then(response=>response.json())
+		 		.then(result=>{
+		 			console.log(result)
+		 			let i=0
+					for(let obj of result){
+						planColumns[1].editor.options.listItems[i]={text:obj.prcCd,value:obj.prcCd}
+						i++;
+				 	}
+		 		})
+	 		}
+	 	})
 
 	//로우 클릭 이벤트
      grid.on('click', ev => {
-    	 $("#paln-dialog-form").empty();
+    	 //$("#hidden").empty();
     	 if(grid.getValue(ev.rowKey,'planNo')==null && ev.columnName=='planDate'){
 		  	planDialog.dialog( "open" );
 		  	gridSelect='addPlan';
-	 		
-    	     planGrid= new Grid({
-    				el: document.getElementById('paln-dialog-form'),
-    				data:null,
-    				rowHeaders:['checkbox'],
-    				columns:planColumns
-   			});	
-    	     
-   		 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
-   		 	planGrid.on('editingFinish',ev=>{
-   		 		if(ev.columnName=='prcCd'){
-
-   		 			console.log(planGrid.getValue(ev.rowKey,'prcCd'));
-   		 			fetch('lotCdFind/'+planGrid.getValue(ev.rowKey,'prcCd')+'/'+planGrid.getValue(ev.rowKey,'prdCd'))
-   		 			.then(response=>response.json())
-   		 			.then(result=>{
-   		 				console.log(result);
-   		 			if(document.getElementById('lotDiv'))	
-		 			{
-   		 				document.getElementById('lotDiv').remove()
- 		 			}
-   		 			lotDiv=document.createElement('div')
-   		 			lotDiv.id='lotDiv';
-   		 			document.getElementById('paln-dialog-form').appendChild(lotDiv);
-   		 			
-						
-   		 			//////////////////////////////
-	   		     	  	let gridw = new Grid({
-	   		    			el: document.getElementById('lotDiv'),
-	   		    			data:null,
-	   		    			rowHeaders:['checkbox'],
-	   		    			columns:[{
-	   		    				header : '자재코드',
-	   		    				name : 'mtrCd'
-	   		    			},{
-	   		    				header : '자재로트',
-	   		    				name : 'mtrLot',
-	   		    			},{
-	   		    				header : '현재재고',
-	   		    				name : 'stckCnt',
-	   		    				editor : 'text'
-	   		    			},{
-	   		    				header : '홀딩수량',
-	   		    				name : 'hldCnt',
-	   		    				editor : 'text'
-	   		    			},{
-	   		    				header : '사용량',
-	   		    				name : 'useAmt',
-	   		    			}],
-	   		    		}); 
-	   		     		gridw.resetData(result);
-   		 			})
-   		 		}
-   		 		else if(ev.columnName=='prdCd'){
-	   		 		fetch('prcCdFind/'+planGrid.getValue(ev.rowKey,'prdCd'))
-	   		 		.then(response=>response.json())
-	   		 		.then(result=>{
-	   		 			console.log(result)
-	   		 			let i=0
-						for(let obj of result){
-							planColumns[1].editor.options.listItems[i]={text:obj.prcCd,value:obj.prcCd}
-							i++;
-					 	}
-	   		 		})
-   		 		}
-   		 		
-   		 	})     
-    				
-    		 
-    		planGrid.on('dblclick',ev=>{
-
-    		})
     	 }
     	 /////////////////////////////////////////////////
     	 if(ev.columnName=='planDate'&&grid.getValue(ev.rowKey,'planNo')!=null){
    		  	gridSelect='addLot';
   	    	 planDialog.dialog( "open" );
-      	//	planFrm.planNo.value=grid.getValue(ev.rowKey,'planNo');
       		//히든태그에 계획번호 입력
       		document.getElementById("planNo").value=grid.getValue(ev.rowKey,'planNo');
       		let ulDiv=document.createElement("div");
    			ulDiv.id="prdSelect";   	
    			document.getElementById("paln-dialog-form").appendChild(ulDiv);
    			console.log(ulDiv)
-  /*     		let prdCdOrdNo={'prdCd':event.target.value , 'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
-  			needPrcCd(prdCdOrdNo); */
-  			/* document.getElementById("abc").style = 'display:block';
-  			$("#inGrid").empty(); */
   			let a={'ordShtNo':grid.getValue(ev.rowKey,'ordShtNo')}
   			//히든폼에 주문번호저장
   			planFrm.ordShtNo.value=grid.getValue(ev.rowKey,'ordShtNo');

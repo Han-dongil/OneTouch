@@ -30,6 +30,9 @@ public class WorkServiceImpl implements WorkService {
 	}
 	@Override
 	public List<PlanVO> findLotMtrCnt(PlanVO vo) {
+		System.out.println("dddddddd");
+		System.out.println(mapper.findLotMtrCnt(vo));
+		System.out.println(vo);
 		return mapper.findLotMtrCnt(vo);
 	}
 	@Override
