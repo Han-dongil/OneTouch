@@ -1,6 +1,5 @@
 package com.onetouch.web.pdt.plan.web;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
+import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -91,12 +91,31 @@ public class PlanController {
 		System.out.println(map);
 		service.addInsertPlan(map);
 	}
+	
 	@ResponseBody
 	@GetMapping("lotCdFind/{prcCd}/{prdCd}")
 	public List<PlanVO> lotCdFind(@PathVariable String prcCd ,@PathVariable String prdCd){
+		System.out.println(prcCd +","+ prdCd);
 		PlanVO vo=new PlanVO();
 		vo.setPrcCd(prcCd);
 		vo.setPrdCd(prdCd);
 		return service.addPlanLotSelect(vo);
+	}
+	
+	//prd코드로 라인번호 가져와서 / 기준으로 split함
+	@ResponseBody
+	@GetMapping("lineNoFind/{prdCd}")
+	public List<PlanVO> lineNoFind(@PathVariable String prdCd){
+		
+		return service.findLineNo(prdCd);
+	}
+	
+	@ResponseBody
+	@GetMapping("lotLineFind/{lineNo}")
+	public List<InfoVO> prcLineFind(@PathVariable String lineNo,PlanVO vo){
+		vo.setLineNo(lineNo);
+		
+		
+		return service.prcLineFine(vo);
 	}
  }

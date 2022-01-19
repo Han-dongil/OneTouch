@@ -13,8 +13,7 @@ public interface PlanMapper {
 	void planDtlInsert(PlanVO vo);
 	void LotFindInsert(PlanVO vo);
 	PlanVO findPlanSeq();
-	int findPlanSeqOnlyNum();
-	PlanVO findPlanDTLSeq();
 	List<PlanVO> addPlanLotSelect(PlanVO vo);
+	PlanVO findLineNo(String prdCd);
 	
 }

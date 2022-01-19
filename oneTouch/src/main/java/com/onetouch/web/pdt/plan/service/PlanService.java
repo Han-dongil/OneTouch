@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
+import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
@@ -19,4 +20,6 @@ public interface PlanService {
 	List<BomVO> prcCdFind(PlanVO vo);
 	void addInsertPlan (Map<String,List<PlanVO>> map);
 	List<PlanVO> addPlanLotSelect(PlanVO vo);
+	List<PlanVO> findLineNo(String prdCd);
+	List<InfoVO> prcLineFine(PlanVO vo);
 }
