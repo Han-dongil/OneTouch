@@ -81,6 +81,12 @@
             header: {
               background: '#eef'
             }
+            
+          },
+          area:{
+          	body: {
+          		backgound: 'red'
+          	} 
           },
           //고정칼럼 색상 설정
           frozenBorder: {
