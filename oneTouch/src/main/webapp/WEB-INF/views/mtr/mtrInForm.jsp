@@ -83,8 +83,8 @@ Grid.applyTheme('striped', {
        evenRow: {
          background: '#fee'
        }
-     },
-   });
+    }
+});
 
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -113,7 +113,7 @@ var mainGrid = new Grid({
 					language: 'ko',
 					format: 'yyyy-MM-dd'
 					}
-				},
+				 },
 					align: 'center',
 					/* editor: 'text', */
 				   sortable: true
@@ -198,6 +198,7 @@ var mainGrid = new Grid({
 					editor: 'text',
 				   sortable: true,
 				   formatter({value}){
+					   /* unitCost*inAmt */
 					   return format(value);
 				   }
 				 },
@@ -241,16 +242,17 @@ var mainGrid = new Grid({
 			            }
 					}
 				}
-   });
-   
+   		});
 //기존의 데이터는 수정이안되게 하는것
 mainGrid.on('editingStart', (ev) => {
-	
     if(ev.columnName == 'mtrCd') {
        var value = mainGrid.getValue(ev.rowKey, 'mtrCd');
        if(value != '') {
           alert('자재코드는 수정이 불가능합니다');
           ev.stop();
+       }else {
+    	rowk = ev.rowKey;
+		mMtr();
        }
     }else if(ev.columnName == 'ordNo') {
        value = mainGrid.getValue(ev.rowKey, 'ordNo');
@@ -260,7 +262,6 @@ mainGrid.on('editingStart', (ev) => {
        }
     }
 })
-
 
 function format(value){
 	value = value * 1;
@@ -275,12 +276,9 @@ mainGrid.on('response', function(ev) {
    });
  
 
-/* mainGrid.on("dblclick",(ev)=>{
-	if (ev.columnName === 'mtrCd'){
-		rowk = ev.rowKey;
-		mMtr();
-	}
-}); */
+mainGrid.on("dblclick",(ev)=>{
+	
+});
 
 //클릭한 셀의 rowKey와 columnName을 가지고오는 함수
 /* grid.on("click",(ev)=>{

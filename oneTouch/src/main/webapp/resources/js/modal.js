@@ -34,11 +34,12 @@ function mMtr(){
 			{
 				header: '자재코드',
 				name: 'mtrCd',
-				hidden: true
+				align: 'center'
 			},
 			{
 				header: '자재명',
-				name: 'mtrNm'
+				name: 'mtrNm',
+				align: 'center'
 			},
 			{
 				header: '규격',
@@ -57,7 +58,8 @@ function mMtr(){
 			},
 			{
 				header: '단위',
-				name: 'unitNm'
+				name: 'unitNm',
+				align: 'center'
 			},
 			{
 				header: '업체코드',
@@ -66,7 +68,8 @@ function mMtr(){
 			},
 			{
 				header: '업체명',
-				name: 'compNm'
+				name: 'compNm',
+				align: 'center'
 			},
 			{
 				header: '자재구분코드',
@@ -75,7 +78,8 @@ function mMtr(){
 			},
 			{
 				header: '자재구분',
-				name: 'mtrSectNm'
+				name: 'mtrSectNm',
+				align: 'center'
 			},
 			{
 				header: '안전재고',
