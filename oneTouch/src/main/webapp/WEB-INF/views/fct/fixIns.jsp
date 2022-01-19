@@ -110,7 +110,7 @@
 							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
 						</span>&nbsp;&nbsp;
 						
-						<span >
+						<span>
 							<label class="form-check-label">설비구분</label>
 							<select id="fctCd" name="fctCd" class="selectoption"></select>
 						</span>
@@ -118,17 +118,15 @@
 						<span>
 							<button type="button" id='btnFind' class="btn btn-primary mr-2 floatright">조회</button>
 						</span>
-						
 					</form> 
-						
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<span class="floatright">
-		<button type="button" id='btnAdd' class="btn btn-inverse-primary newalign">추가</button>
-		<button	type="button" id='btnDel' class="btn btn-inverse-primary newalign">삭제</button>
+		<button type="button" id='btnAdd' class="btn btn-main newalign">추가</button>
+		<button	type="button" id='btnDel' class="btn btn-main newalign">삭제</button>
 		<button type="button" id='btnSave' class="btn btn-primary newalign">저장</button> 
 	</span>
 	<br><br>
