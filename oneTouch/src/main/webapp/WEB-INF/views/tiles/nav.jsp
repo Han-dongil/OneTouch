@@ -35,7 +35,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="ordList">♡동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="PlanList">♨동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="workList">♬동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="WorkList">♬동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>
