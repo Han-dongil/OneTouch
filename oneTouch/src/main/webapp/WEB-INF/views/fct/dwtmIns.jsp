@@ -13,23 +13,36 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 <body>
+
 <h3>[비가동 관리]</h3>
 <hr>
+<div align="right" style="margin-right: 3%;">
+			<button id="btnSel">조회</button>
+			<button id="btnCle">clear</button>
+			<button id="btnSave">저장</button>
+			<button id="btnDel">삭제</button>
+			<hr>
+		</div>
 <div class="flex row">
 	<div class = "col-4">
 		<span>
-			<label>✔설비</label>
-			<label>공정구분</label>
+			<label style="font-size: 30px; color: mediumblue;">✔설비</label>
+			<label>설비구분</label>
 			<select id="fctCd" name="fctCd"></select>
 		</span>
-		<div id="grid1"></div>
+		<div id="mainGrid"></div>
 		<br>
 	</div>
 	<div class= "col-8">
-		<h4>✔제품상세정보</h4>
-		<div align="right" style="margin-right: 3%;">
-			<button id="btnEdit">수정</button><hr>
-		</div>
+		<span>
+			<label style="font-size: 30px; color: mediumblue;">✔상세코드</label>
+			<label>설비코드</label>
+			<input id='fctCd' name='fctCd'>
+			<label>설비명</label>
+			<input id='fctNm' name='fctNm'>
+			<hr>
+		</span>
+		
 		<form id="flwFrm" name="flwFrm" method="post">
 			<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly><br>
 			<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
@@ -51,57 +64,101 @@
 		<button id="btnSave" type="button">저장</button>
 		</div>
 		<h4>✔공정흐름</h4><br>
-		<div id="grid2"></div>
+		
 		<div id="dialog-form" title="title"></div>
 	</div>
 </div>
 <script>
-Grid.applyTheme('clean', {
-    cell: {
-      header: {
-        background: '#eef'
-      }
-    },
-    //고정칼럼 색상 설정
-    frozenBorder: {
-         border: 'red'
-    }
-  });	
-	//th 영역
-	const columns = [
-		{
-			header: '설비코드',
-			name: 'fctCd',
-			editor: 'text'
-		},
-		{
-			header: '총생산량',
-			name: 'totPdtAmt',
-			editor: 'datePicker'
-		},
-		{
-			header: 'uph생산량',
-			name: 'uphPdtAmt',
-			editor: 'datePicker'
-		},
-		{
-			header: '사번',
-			name: 'empNo',
-			editor: 'datePicker'
-		}
-	]
+
+	let Grid = tui.Grid;
+	let data;
+	let checkPrcCd = 'd';    	//검색 조건을 사용하지 않지만 검색 메소드 매개변수에 vo가 있기 때문에 쓰레기 값을 넣어준다. 
+	let vo={};					//map형식으로 보내주기 위해서 초기화 
+	vo.checkPrcCd=checkPrcCd;   //vo에 키 값을 정해서 밸류 값을 넣어주는 초기화 
+
 	
-	//공정 코드조회 ajax조회
-	 $.ajax({
-	    	url:'selectPrc',
-	    	dataType: 'json',
-	    	async : false
-	    }).done(function(datas){
-	    	$('#fctCd').append("<option value='d'>전체</option>")
-	    	for(let data of datas){
-	    		$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
-	    	}
-	    }) 
+
+	Grid.applyTheme('striped', {	
+        cell: {
+          header: {
+            background: '#eef'
+          },
+          evenRow: {
+            background: '#fee'
+          }
+          
+        },
+        //고정칼럼 색상 설정
+        frozenBorder: {
+             border: 'red'
+        }
+      });
+	
+	
+//  let dataSource; //그리드에 들어갈 데이터변수
+	  
+		//th 영역
+		const mainColumns = [
+			{
+				header: '설비코드',
+				name: 'fctCd',
+				editor: 'text'
+			},
+			{
+				header: '설비명',
+				name: 'fctNm',
+				editor: 'text'
+			},
+			{
+				header: '사용공정',
+				name: 'prcCd',
+				editor: 'text'
+			},
+			{
+				header: '설비상태',
+				name: 'fctPhs',
+				editor: 'text'
+			}
+		]
+		
+		 $.ajax({
+			  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
+			  method: 'POST',
+			  data: JSON.stringify(vo),
+			  contentType: "application/json",
+			  async : false					//동기 = 절차적 
+		  }).done(function(datas){
+			  data = datas;
+		  }) 
+		
+		
+		
+	 //그리드를 id 값안에다가 붙여넣어준다.
+	  let mainGrid = new Grid({
+	         el: document.getElementById('mainGrid'),
+	         data: data,  //이름이 같다면 생격가능
+	         rowHeaders : [ 'checkbox' ],
+	         columns :mainColumns,
+	         bodyHeight: 400,
+	 		 minBodyHeight: 500
+	         });
+		         
+		 // 설비 리스튼ajax 요청
+		  
+		 
+		//공정 코드 조회 ajax 요청
+
+	$.ajax({
+		url:'selectFixPrc',
+		dataType: 'json',
+		async : false
+	}).done(function(datas){
+		$('#fctCd').append("<option value='d'>전체</option>")
+		for(let data of datas){
+			$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
+		}
+	}) 
+
 </script>
 </body>
 </html>
