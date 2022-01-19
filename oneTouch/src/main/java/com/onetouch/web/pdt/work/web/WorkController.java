@@ -63,6 +63,7 @@ public class WorkController {
 	@ResponseBody
 	@PostMapping("planDtlPrc")
 	public List<PlanVO> planDtlPrc(@RequestBody PlanVO vo){
+		System.out.println(planService.findPrcCd(vo.getPrdCd()));
 		return planService.findPrcCd(vo.getPrdCd());
 	}
 	//지시 인서트

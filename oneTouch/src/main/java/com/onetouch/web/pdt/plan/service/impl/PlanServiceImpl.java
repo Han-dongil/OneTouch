@@ -26,8 +26,8 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired FlwMapper flwMapper;
 	@Autowired BomMapper bomMapper;
 	@Override
-	public List<PlanVO> list() {
-		return mapper.list();
+	public List<PlanVO> list(String nowPhs) {
+		return mapper.list(nowPhs);
 	}
 	@Override
 	public List<PlanVO> selectDtl(String no) {
@@ -104,7 +104,10 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void addInsertPlan(Map<String, List<PlanVO>> map) {
 		List<PlanVO> list=map.get("detail");
+		List<PlanVO> lotList=map.get("lot");
 		PlanVO inVo=map.get("plan").get(0);
+		ordMapper.ordCheck(inVo.getOrdShtNo());
+		System.out.println("6666");
 		PlanVO nextSeq=mapper.findPlanSeq();
 		System.out.println("111111");
 		mapper.insertPlan(inVo);
@@ -122,16 +125,17 @@ public class PlanServiceImpl implements PlanService {
 				mapper.planDtlInsert(vo);
 				System.out.println("3333");
 				System.out.println(vo);
-				mapper.LotFindInsert(vo);
-				System.out.println("4444");
-				vo.setHldCnt(vo.getInstrCnt());
-				mtrMapper.prdNeed(vo);
-				System.out.println("5555");
-				ordMapper.ordCheck(inVo.getOrdShtNo());
-				System.out.println("6666");
-				
 				i++;
-				
+			}
+		}
+		int k=0;//이거 나중에 수정해야댐.. 
+		if(lotList!=null) {
+			for(PlanVO vo : lotList) {
+				System.out.println("4444");
+				mapper.LotFindInsert(vo);
+				System.out.println("5555");
+				mtrMapper.prdNeed(vo);
+				k++;
 			}
 		}
 		

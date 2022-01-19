@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PlanMapper {
 	
-	List<PlanVO> list();
+	List<PlanVO> list(String nowPhs);
 	List<PlanVO> selectDtl(String no);
 	List<PlanVO> findPrcCd(String no);
 	void insertPlan(PlanVO vo);

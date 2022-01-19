@@ -22,6 +22,7 @@
 <script src="${path}/resources/template/json.min.js"></script>
 </head>
 <body>
+	
 	<button type="button" id="planModal" name="planModal">생산계획조회</button>
 	<div id="workGrid"></div>
 	<button type="button" id="prcSelectBtn" name="prcSelectBtn">공정조회</button>
@@ -30,8 +31,12 @@
 	<button type="button" id="workAddBtn" name="workAddBtn">지시추가</button>
 	<div id="plan-dialog-form" title="생산계획조회">생산계획 조회</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
-	<div id="hiddenGrid"></div>
+	<div id=hiddenGrid></div>
+	<div id=hiddenMainDiv></div>
 	<button type="button" id="modifyBtn" name="modifyBtn">지시등록</button>
+	<button type="button" id="addRow">행추가</button>
+	<button type="button" id="resetGrid">초기화</button>
+	
 	<script>
 		let Grid = tui.Grid;
 		let planAll ;
@@ -40,7 +45,8 @@
 		let setTimeCheck;
 		let selectInstrDate;
 		let planRowInfo;
-		
+		let hiddenMainGrid;
+		let mainHiddenDiv=document.getElementById('hiddenMainDiv');
 		//메인그리드 설정
 		//생산계획 조회 모달 그리드
 		//그리드 테마적용
@@ -75,10 +81,11 @@
 			name : 'planNo'
 		},{
 			header : '지시번호',
-			name : 'instrNo'
+			name : 'instrNo' 
 		},{
 			header : '납기일자',
-			name : 'dueDate'
+			name : 'dueDate',
+			editor:'datePicker'
 		},{
 			header : '작업우선순위',
 			name : 'workProt',
@@ -86,28 +93,35 @@
 			
 		},{
 			header : '계획일자',
-			name : 'planDate'
+			name : 'planDate',
+			editor:'datePicker'
 		},{
 			header : '계획디테일번호',
-			name : 'planDtlNo'
+			name : 'planDtlNo' 
 		},{
 			header : '제품번호',
-			name : 'prdCd'
+			name : 'prdCd',
+			editor : 'text'
 		},{
 			header : '공정번호',
-			name : 'prcCd'
+			name : 'prcCd',
+			editor : 'text'
 		},{
 			header : '필요수량',
-			name : 'needCnt'
+			name : 'needCnt',
+			editor : 'text'
 		},{
 			header : '지시수량',
-			name : 'instrCnt'
+			name : 'instrCnt',
+			editor : 'text'
 		},{
 			header : '작업지시일',
-			name : 'instrDate'
+			name : 'instrDate',
+			editor:'datePicker'
 		},{
 			header : '지시완료일',
-			name : 'pdtFinDate'
+			name : 'pdtFinDate',
+			editor:'datePicker'
 		}];
 
 		
@@ -263,6 +277,7 @@
 		
 		document.getElementById("planModal").addEventListener("click",()=>{
 			modalDialog.dialog( "open" );
+			modalGrid.refreshLayout();
 			fetch('./modalPlanList')
 			.then(response=>response.json())
 			.then(result=>{
@@ -403,6 +418,7 @@
 		//공정조회버튼 누르면 공정정보 
 		prcSelectBtn.addEventListener('click',ev=>{
 			planRowInfo=mainGrid.getCheckedRows();//plan 정보 담고있는 변수
+			hiddenMainGrid.appendRows(mainGrid.getCheckedRows());
 			instrDate=mainGrid.getValue(mainGrid.getCheckedRowKeys()[0],'instrDate')			
 			selectPlanDtlNo=mainGrid.getValue(mainGrid.getCheckedRowKeys()[0],'planDtlNo')
 			console.log(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
@@ -513,7 +529,80 @@
 				body:JSON.stringify(a)
 			})
 		})
+		//////////////////////////////////////이벤트/////////////////////////////////////////
+		mainGrid.on("click",ev=>{
+			//if(ev.col)
+		})
+		//////////////////////////////////////히든그리드///////////////////////////////////////
 		
+ 		
+		//메인 히든 그리드 생성
+		hiddenMainGrid = new Grid({
+		 el: document.getElementById('hiddenMainDiv'),
+		 data:null,
+		 rowHeaders:['checkbox'],
+		 columns:[{
+				header : '계획번호',
+				name : 'planNo',
+				
+			},{
+				header : '지시번호',
+				name : 'instrNo'
+			},{
+				header : '납기일자',
+				name : 'dueDate'
+			},{
+				header : '작업우선순위',
+				name : 'workProt',
+				editor : 'text',
+			    validation : {
+			    	required : false
+			    },
+			},{
+				header : '계획일자',
+				name : 'planDate'
+			},{
+				header : '계획디테일번호',
+				name : 'planDtlNo'
+			},{
+				header : '제품번호',
+				name : 'prdCd'
+			},{
+				header : '공정번호',
+				name : 'prcCd'
+			},{
+				header : '필요수량',
+				name : 'needCnt'
+			},{
+				header : '지시수량',
+				name : 'instrCnt'
+			},{
+				header : '작업지시일',
+				name : 'instrDate'
+			},{
+				header : '지시완료일',
+				name : 'pdtFinDate'
+			}],
+		 columnOptions: {
+		  frozenCount :11,
+		  frozenBorderWidth:1
+ }
+		});
+		
+		
+		
+		
+		addRow.addEventListener("click",ev=>{
+			mainGrid.appendRow();
+			mainGrid.disableColumn('planDtlNo')
+			mainGrid.enableColumn('planDtlNo')
+		})
+		resetGrid.addEventListener("click",ev=>{
+			
+			for(i=0;i<mainGrid.getData().length;i++){
+				mainGrid.removeRow(i);
+			}
+		})
 	</script>
 	
 </body>

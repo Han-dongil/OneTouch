@@ -9,7 +9,7 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface PlanService {
-	List<PlanVO> list();
+	List<PlanVO> list(String nowPhs);
 	List<PlanVO> selectDtl(String no);
 	List<PlanVO> findPrcCd(String no);
 	void insertPlan(ModifyVO<PlanVO> list);
