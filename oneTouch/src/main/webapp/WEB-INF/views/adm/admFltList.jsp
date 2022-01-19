@@ -28,7 +28,7 @@
 <script type="text/javascript">
 	let Grid = tui.Grid;
 	
-	Grid.applyTheme('striped',{
+	Grid.applyTheme('default',{
 		cell:{
 			header:{
 				background:'#eef'

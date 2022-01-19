@@ -42,7 +42,7 @@
 	
 	<!-- 공정구분 불러오기 -->
 	<select id="selectPrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
-		select dtl_nm as prcSectNm from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
+		select dtl_nm as prcSectNm, dtl_cd as prcSect from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
 	</select>
 	
 	<delete id="deletePrc">
@@ -56,7 +56,7 @@
 		SET 	prc_nm = #{prcNm},
 				mng_unit = #{mngUnit},
 				pdt_day = #{pdtDay},
-				prc_sect = FN_GET_BAS_DTL_NM_TO_CD(#{prcSectNm}),
+				prc_sect = #{prcSect},
 		<if test="cmt != null">cmt = #{cmt},</if>
 				seq = #{seq},
 				use_yn = #{useYn}
@@ -78,9 +78,9 @@
 		 #{prcNm},
 		 #{mngUnit},
 		 #{pdtDay},
-		 FN_GET_BAS_DTL_NM_TO_CD(#{prcSectNm}),
+		 #{prcSect},
 		 <if test="cmt != null">#{cmt},</if>
-		 #{seq},
+		 (SELECT NVL(MAX(seq),0)+1 FROM adm_prc_mng),
 		 #{useYn}
 		 )
 		

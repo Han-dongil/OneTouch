@@ -52,7 +52,7 @@
 		 #{dtlNm},
 		 #{basCd},
 		 <if test="dtlCmt != null">#{dtlCmt},</if>
-		 #{seq},
+		 (SELECT NVL(MAX(seq),0)+1 FROM adm_bas_dtl_cd WHERE bas_cd=#{basCd}),
 		 #{useYn}
 		 )
 	</insert>

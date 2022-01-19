@@ -41,13 +41,10 @@
 	let rowk;
 	let Grid = tui.Grid;
 	
-	Grid.applyTheme('striped',{
+	Grid.applyTheme('default',{
 		cell:{
 			header:{
 				background:'#eef'
-			},
-			evenRow:{
-				background:'#fee'
 			}
 		}
 	}) 
