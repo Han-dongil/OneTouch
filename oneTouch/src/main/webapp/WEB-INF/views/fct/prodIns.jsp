@@ -26,6 +26,12 @@
 <!-- toastr -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<style type="text/css">
+	.red{background-color: red}
+	.blue{background-color: skyblue}
+	.green{background-color: green}
+</style>
 </head>
 <body>
 
@@ -81,16 +87,9 @@
             header: {
               background: '#eef'
             }
-            
           },
-          area:{
-          	body: {
-          		backgound: 'red'
-          	} 
-          },
-          //고정칼럼 색상 설정
-          frozenBorder: {
-               border: 'red'
+          currentRow: {
+          	background: '#fee'
           }
      	}) ; 
 	
@@ -330,8 +329,7 @@
 	  {
 		    header: '남은 점검일수',
 		    name: 'dayDiff',
-		    editor: 'text',
-		    hidden: true
+		    editor: 'text'
 		    
 	  }
     ]
@@ -375,8 +373,19 @@
 	   console.log('점검완료 등록')
 	   dialog.dialog( "open" );
 	   prodCheckGrid.refreshLayout();
-	   
-	   
+	   console.log('모달창 띄울 때 뜨는 값 ')
+	   console.log(dataSourceProdCheck)
+	   for(i=0;i<prodCheckGrid.getRowCount();i++){
+			if(prodCheckGrid.getData()[i].dayDiff<=3){
+				prodCheckGrid.addRowClassName(i,'red')
+			}
+			else if(prodCheckGrid.getData()[i].dayDiff > 3 && prodCheckGrid.getData()[i].dayDiff <= 5){
+				prodCheckGrid.addRowClassName(i,'blue')
+			}
+			else{
+				prodCheckGrid.addRowClassName(i,'green')
+			}
+	   }
 	   
 	   
 	   

@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.fct.dwtm.dao.dwtm-mapper"></mapper>
+<mapper namespace="com.onetouch.web.fct.dwtm.dao.dwtm-mapper">
+	<select id="dwtmSelect" resultType="com.onetouch.web.fct.dwtm.dao.DwtmVO">
+		
+	</select>
+	<insert id="dwtmInsert">
+	
+	</insert>
+	<update id="dwtmUpdate">
+	
+	</update>
+	<delete id="dwtmDelete">
+	
+	</delete>
+	
+</mapper>

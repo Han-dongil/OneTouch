@@ -321,8 +321,6 @@
 	   btnAdd.addEventListener("click", function() {
 			grid.appendRow({})
 	   });	
-	   
-	   
 	  
 	   checkRdo();
 	
