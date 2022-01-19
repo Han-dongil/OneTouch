@@ -14,5 +14,10 @@ public class LotVO {
 	private String mngAmt;
 	private String inAmt;
 	private String seq;
-	
+	private String mtrNm;
+	private String unitNm;
+	private String mtrSectNm;
+	private String mtrStckCnt;
+	private String safeStck;
+	private String useYn;
 }

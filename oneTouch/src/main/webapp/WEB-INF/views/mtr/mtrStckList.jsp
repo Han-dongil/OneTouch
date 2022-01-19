@@ -52,15 +52,37 @@
 				</div>
 			</div>
 		</form>
-		<div align="right">
-			<button type="button" id="btnFind">조회</button>
-		</div>
 		<hr>
 	</div>
-<div id="grid"></div>
+	<div align="right">
+		<button type="button" id="btnFind">조회</button>
+	</div>
+	<div id="tabs">
+		<ul>
+		  <li><a href="#lotTab">Lot별</a></li>
+		  <li><a href="#mtrTab">자재별</a></li>
+		</ul>
+		<div id="lotTab"></div>
+		<div id="mtrTab"></div>
+	</div>
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+//Jquery tabs
+$( function() {
+    $( "#tabs" ).tabs({
+    	activate: function( event, ui ) {
+    		if(ui.newTab.innerText == '자재별'){
+    			mtrGrid.refreshLayout();
+    		} else{
+    			lotGrid.refreshLayout();
+    			
+    		}
+    	}
+    });
+    
+  } );
+
 var Grid = tui.Grid;
 Grid.applyTheme('striped', {
      cell: {
@@ -72,20 +94,70 @@ Grid.applyTheme('striped', {
        }
      },
    });
-const dataSource = {
+const lotDataSource = {
 		  api: {
-		    readData: { url: './mtrInList', method: 'POST' }
+		    readData: { url: './lotStckList', method: 'POST' }
 		  },
 		  contentType: 'application/json'
 		};
 
-var grid = new Grid({
-     el : document.getElementById('grid'),
-     data : dataSource,
+
+const lotColumns = [{
+	   header: '자재코드',
+	   name: 'mtrCd',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '자재명',
+	   name: 'mtrNm',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '단위명',
+	   name: 'unitNm',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '자재구분',
+	   name: 'mtrSectNm',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: 'Lot No',
+	   name: 'mtrLot',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '홀딩수량',
+	   name: 'hldCnt',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '현재고',
+	   name: 'stckCnt',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '비고',
+	   name: 'cmt',
+	   align: 'center',
+	   sortable: true
+	 }
+	]
+	
+var lotGrid = new Grid({
+     el : document.getElementById('lotTab'),
+     data : lotDataSource,
      rowHeaders : [ 'checkbox'],
      columns : lotColumns,
 				summary : {
-					
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
@@ -94,24 +166,13 @@ var grid = new Grid({
 			        			return '합 계';
 			                } 
 			            },	
-			            fltAmt: {
+			            hldCnt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
 			                } 
 			            },
-			            inAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            unitCost: {
-			                template(summary){
-			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
-			                } 
-			            },
-			            totCost: {
+			            stckCnt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
@@ -122,98 +183,99 @@ var grid = new Grid({
    });
    
    
-	const lotColumns = [{
-						   header: '자재코드',
-						   name: 'mtrCd',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '자재명',
-						   name: 'mtrNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '단위명',
-						   name: 'unitNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '자재구분',
-						   name: 'mtrSectNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: 'Lot No',
-						   name: 'mtrLot',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '홀딩수량',
-						   name: 'hldCnt',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '현재고',
-						   name: 'lotStckCnt',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '비고',
-						   name: 'cmt',
-						   align: 'center',
-						   sortable: true
-						 }
-						]
-	const mtrColumns = [{
-						   header: '자재코드',
-						   name: 'mtrCd',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '자재명',
-						   name: 'mtrNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '단위명',
-						   name: 'unitNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '자재구분',
-						   name: 'mtrSectNm',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '홀딩수량',
-						   name: 'hldCnt',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '현재고',
-						   name: 'mtrStckCnt',
-						   align: 'center',
-						   sortable: true
-						 },
-						 {
-						   header: '안전재고',
-						   name: 'safeStck',
-						   align: 'center',
-						   sortable: true
-						 }
-						 ];
+const mtrDataSource = {
+		  api: {
+		    readData: { url: './mtrStckList', method: 'POST' }
+		  },
+		  contentType: 'application/json'
+		};
+		
+const mtrColumns = [{
+					   header: '자재코드',
+					   name: 'mtrCd',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '자재명',
+					   name: 'mtrNm',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '단위명',
+					   name: 'unitNm',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '자재구분',
+					   name: 'mtrSectNm',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '홀딩수량',
+					   name: 'hldCnt',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '현재고',
+					   name: 'mtrStckCnt',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '안전재고',
+					   name: 'safeStck',
+					   align: 'center',
+					   sortable: true
+					 },
+					 {
+					   header: '사용구분',
+					   name: 'useYn',
+					   align: 'center',
+					   sortable: true
+					 },
+					 ];
+					 
+var mtrGrid = new Grid({
+     el : document.getElementById('mtrTab'),
+     data : mtrDataSource,
+     rowHeaders : [ 'checkbox'],
+     columns : mtrColumns,
+				summary : {
+					height: 40,
+				   	position: 'bottom',
+				   	columnContent: {
+				   		ordNo: {
+			                template(summary) {
+			        			return '합 계';
+			                } 
+			            },	
+			            hldCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            mtrStckCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            safeStck: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            }
+					}
+				}
+   });
+   
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -227,31 +289,31 @@ function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
-grid.on('response', function(ev) {
-      grid.resetOriginData();
+
+lotGrid.on('response', function(ev) {
+	console.log("lotev")
+	console.log(ev)
+      //grid.resetOriginData();
    });
+mtrGrid.on('response', function(ev) {
+	console.log("mtrev")
+	console.log(ev)
+      //grid.resetOriginData();
+   });
+   
 btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
-   grid.readData(1,a,true);
+   lotGrid.readData(1,a,true);
+   mtrGrid.readData(1,a,true);
 })
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-			$('#compCd').val(param.dtlCd);
-			$('#compNm').val(param.dtlNm);
-			dialog.dialog("close");
-		};
-		
+
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
 	$('#ditemCode').val(param.mtrCd);
 	$('#ditemCodeNm').val(param.mtrNm);
 };
-//업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
-	$('#ui-id-1').html('업체 검색');
-});
+
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
