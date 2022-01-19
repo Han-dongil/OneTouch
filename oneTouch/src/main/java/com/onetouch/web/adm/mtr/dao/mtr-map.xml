@@ -57,4 +57,23 @@
 		from    adm_mtr
 		where 	mtr_cd = #{mtrCd}
 	</select>
+	
+	<update id="updateMtr">
+		UPDATE 	adm_mtr
+		SET 	mtr_cd = #{mtrCd},
+			 	mtr_nm = #{mtrNm},
+			 	std = #{std},
+			 	unit = #{unit},
+			 	comp_cd = #{compCd},
+			 	mtr_sect = #{mtrSect},
+				safe_stck = #{safeStck},
+				use_yn = 
+				<if test = "useYn == null || useYn == ''" >
+					'N'
+				</if>
+				<if test = "useYn == 'on'">
+					'Y'
+				</if>
+		WHERE	mtr_cd = #{mtrCd}
+	</update>
 </mapper>
