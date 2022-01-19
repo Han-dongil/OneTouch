@@ -58,7 +58,7 @@ public class MtrController {
 	
 	//form 수정
 	@ResponseBody
-	@PostMapping("updatePrd")
+	@PostMapping("updateMtr")
 	public List<MtrVO> updateMtr(MtrVO mtrvo) {
 		mtrservice.updateMtr(mtrvo);
 		System.out.println("upd"+mtrvo);
