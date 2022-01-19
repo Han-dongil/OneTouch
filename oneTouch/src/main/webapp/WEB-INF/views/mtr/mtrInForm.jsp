@@ -122,10 +122,8 @@ var mainGrid = new Grid({
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
-				   sortable: true,
-				   validation: {
-		            	required: true
-		          	}
+				   editor: 'text',
+				   sortable: true
 				 },
 				 {
 				   header: '자재명',
@@ -143,9 +141,9 @@ var mainGrid = new Grid({
 				   header: '업체',
 				   name: 'compNm',
 				   align: 'left',
-				   validation: {
+				   /* validation: {
 		            	required: true
-		          	},
+		          	}, */
 				   sortable: true
 				 },
 				 {
@@ -153,23 +151,30 @@ var mainGrid = new Grid({
 				   name: 'ordNo',
 				   align: 'center',
 				   width: 150,
+				   editor: 'text',
 				   sortable: true
 				 },
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
 				   align: 'right',
-					editor: 'text',
-					validation: {
+				   editor: 'text',
+				   formatter({value}){
+					   return format(value);
+				   },
+					/* validation: {
 						dataType: 'number'
-		          	},
+		          	}, */
 				   sortable: true
 				 },
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
 				   align: 'right',
-					editor: 'text',
+				   editor: 'text',
+				   formatter({value}){
+					   return format(value);
+				   },
 					/* validation: {
 						dataType: 'number',
 		            	required: true
@@ -181,9 +186,9 @@ var mainGrid = new Grid({
 				   name: 'unitCost',
 				   align: 'right',
 					editor: 'text',
-					validation: {
-		            	required: true
-		          	},
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 },
 				 {
@@ -191,7 +196,10 @@ var mainGrid = new Grid({
 				   name: 'totCost',
 				   align: 'right',
 					editor: 'text',
-				   sortable: true
+				   sortable: true,
+				   formatter({value}){
+					   return format(value);
+				   }
 				 },
 				 {
 				   header: '관리수량',
@@ -234,6 +242,24 @@ var mainGrid = new Grid({
 					}
 				}
    });
+   
+//기존의 데이터는 수정이안되게 하는것
+mainGrid.on('editingStart', (ev) => {
+	
+    if(ev.columnName == 'mtrCd') {
+       var value = mainGrid.getValue(ev.rowKey, 'mtrCd');
+       if(value != '') {
+          alert('자재코드는 수정이 불가능합니다');
+          ev.stop();
+       }
+    }else if(ev.columnName == 'ordNo') {
+       value = mainGrid.getValue(ev.rowKey, 'ordNo');
+       if(value != '') {
+          alert('발주번호는 수정이 불가능합니다');
+          ev.stop();
+       }
+    }
+})
 
 
 function format(value){
@@ -249,22 +275,12 @@ mainGrid.on('response', function(ev) {
    });
  
 
-mainGrid.on("dblclick",(ev)=>{
-	console.log(ev);
+/* mainGrid.on("dblclick",(ev)=>{
 	if (ev.columnName === 'mtrCd'){
 		rowk = ev.rowKey;
 		mMtr();
-	} else if(ev.columnName === 'mtrLot'){
-		rowk = ev.rowKey;
-		mainGrid.getValue(rowk,'mtrCd');
-		mainGrid.getValue(rowk,'inAmt');
-		let data = [{'mtrCd':mainGrid.getValue(rowk,'mtrCd'),
-					'inAmt':mainGrid.getValue(rowk,'inAmt')}]
-		mMtrLot();
-		/* lotGrid.readData(1,data,true) */
-		
 	}
-});
+}); */
 
 //클릭한 셀의 rowKey와 columnName을 가지고오는 함수
 /* grid.on("click",(ev)=>{
@@ -426,11 +442,7 @@ function getModalOrd(param){
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
-	mainGrid.appendRow({}, 
-			{
-				extendPrevRowSpan: true,
-				focus: true
-			});
+	mainGrid.appendRow();
 });
 //삭제버튼
 btnDel.addEventListener("click", function(){
