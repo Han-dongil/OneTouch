@@ -43,6 +43,7 @@
 		<input type="hidden" id="prdSect" name="prdSect">
 		<input type="hidden" id="mngUnit" name="mngUnit">
 		<input type="hidden" id="prdStd" name="prdStd">
+		<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
 	<div align="right" style="margin-right: 3%;">
@@ -60,6 +61,7 @@
 	let prdCode1;
 	let prdCode2;
 	let PrdDtl;
+	let lineSplit =[];
 	let Grid = tui.Grid;
 	
 	Grid.applyTheme('default',{
@@ -168,6 +170,8 @@
 		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){
 			prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
 			console.log(prdCode1);
+			$('#ableLineNo').empty();
+			
 			//제품상세정보 받아오기
 			$.ajax({
 				url:'./admPrdDtlList',
@@ -185,13 +189,23 @@
 				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
 				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
 				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
-				console.log($('#flwFrm').serialize());
 				
 				if(PrdDtl.useYn == 'Y') {
 					document.getElementById('useYn').checked = true
 				} else {
 					document.getElementById('useYn').checked = false
 				}
+				
+				
+				lineSplit = PrdDtl.ableLineNo.split('/');
+				for(i=0;i<lineSplit.length;i++) {
+					let option = document.createElement('option');
+					option.value = lineSplit[i];
+					option.innerHTML = lineSplit[i];
+					document.getElementById('ableLineNo').appendChild(option);
+				}
+				console.log($('#flwFrm').serialize());
+
 			})
 		}
 	})
