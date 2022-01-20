@@ -161,13 +161,8 @@ function mPrd(){
 				name: 'mngUnitNm'
 			},
 			{
-				header: '필요부품',
-				name: 'needCpnt',
-				hidden: true
-			},
-			{
-				header: '재고',
-				name: 'stck'
+				header: '가능라인',
+				name: 'ableLineNo'
 			},
 			{
 				header: '제품구분',

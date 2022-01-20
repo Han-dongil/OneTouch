@@ -26,6 +26,7 @@
 	<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm" readonly><br>
 	<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm" readonly><br>
 	<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm" readonly><br>
+	<label>가능라인&nbsp;</label><input id="ableLineNo" name="ableLineNo" readonly><br>
 	<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;" readonly>
 </form>
 <hr>
@@ -48,6 +49,8 @@
 			}
 		}
 	}) 
+	
+	
 	
 	//제품코드옆의 돋보기 누르면
 	btnPrdCd.addEventListener("click", function() {
@@ -153,7 +156,7 @@
 	
 	function getModalPrd(param) {
 		//제품정보 보여주기
-		//console.log(param);
+		console.log(param);
 		document.getElementById('prdCd').value = param.prdCd;
 		document.getElementById('prdNm').value = param.prdNm;
 		document.getElementById('prdStdNm').value = param.prdStdNm;
@@ -164,6 +167,9 @@
 		} else {
 			document.getElementById('useYn').checked = false
 		}
+		
+		
+		
 		dialog.dialog("close");
 		
 		//bom보여주기

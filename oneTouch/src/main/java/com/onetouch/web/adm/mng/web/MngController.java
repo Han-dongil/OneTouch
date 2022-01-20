@@ -37,6 +37,15 @@ public class MngController {
 		prcList = mngservice.selectPrc();
 		return prcList;
 	}
+	
+	//단위구분 리스트 담아주기
+	@ResponseBody
+	@GetMapping("/unitList")
+	public List<MngVO> unitList() {
+		List<MngVO> unitList = new ArrayList<>();
+		unitList = mngservice.selectUnit();
+		return unitList;
+	}
 
 	/*
 	 * 이 형태로 만들어줘야함 { "result": true, 

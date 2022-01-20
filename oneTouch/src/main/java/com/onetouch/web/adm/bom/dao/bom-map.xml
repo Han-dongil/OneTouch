@@ -12,7 +12,8 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        able_line_no
 		from    adm_prd
 	</select>
 	
@@ -26,7 +27,8 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        able_line_no
 		from    adm_prd
 		where   use_yn = 'Y'
 	</select>
@@ -41,7 +43,8 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        able_line_no
 		from    adm_prd
 		where   prd_cd=#{prdCd}
 		and 	use_yn = 'Y'
@@ -57,7 +60,8 @@
 		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
 		        use_yn,
 		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm
+		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		        able_line_no
 		from    adm_prd
 		where   prd_cd=#{prdCd}
 	</select>

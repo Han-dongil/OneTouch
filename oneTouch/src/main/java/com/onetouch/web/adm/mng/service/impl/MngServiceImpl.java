@@ -60,4 +60,10 @@ public class MngServiceImpl implements MngService{
 	}
 
 
+	@Override
+	public List<MngVO> selectUnit() {
+		return mapper.selectUnit();
+	}
+
+
 }
