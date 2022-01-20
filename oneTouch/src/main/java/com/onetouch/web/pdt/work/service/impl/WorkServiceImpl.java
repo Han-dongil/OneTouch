@@ -1,5 +1,6 @@
 package com.onetouch.web.pdt.work.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,27 @@ public class WorkServiceImpl implements WorkService {
 	@Autowired WorkMapper mapper;
 	@Override
 	public List<WorkVO> workList() {
+		WorkVO vo = new WorkVO();
+		
 		return mapper.workList();
 	}
+	
 	@Override
-	public List<PlanVO> planListView(String planNo) {
-		return mapper.planJoinListView(planNo);
+	public List<WorkVO> planListView(String planNo) {
+		System.out.println(planNo);
+		System.out.println("00000");
+		List<WorkVO> list=new ArrayList<>();
+		List<WorkVO> list2=new ArrayList<>();
+		list =mapper.workDetailSelect(planNo);
+		System.out.println(list);
+		for (WorkVO vo : list) {
+			System.out.println("111111111111111");
+			vo.setInstrNo((mapper.findWorkSeq()).getInstrNo());
+			System.out.println("2222222222222222");
+			list2.add(vo);
+		}
+		System.out.println(list2);
+		return list2;
 	}
 	@Override
 	public List<PlanVO> planList() {

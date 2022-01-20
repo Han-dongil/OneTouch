@@ -107,9 +107,6 @@
 			name : 'planDate',
 			editor:'datePicker'
 		},{
-			header : '계획디테일번호',
-			name : 'planDtlNo' 
-		},{
 			header : '공정번호',
 			name : 'prcCd',
 			editor : 'text'
@@ -144,11 +141,6 @@
 			  }
 		});
 		
-		fetch('planDtlList/'+'a')
-		.then(response=>response.json())
-		.then(result=>{
-			console.log(result);
-		})
 		
 		///////////////////공정그리드 메인3//////////////////////
 		let prcDataSource={
@@ -266,6 +258,14 @@
 			width: 1000,
 			buttons:{"save":function(){
 				console.log(modalGrid.getCheckedRows()[0])
+				fetch('planDtlList/'+modalGrid.getCheckedRows()[0].planNo)
+				.then(response=>response.json())
+				.then(result=>{
+					
+					console.log(result);
+				})
+				//modalGrid.getModifiedRows().updatedRows // 모달 지시 마스터 데이터
+				
 				
 				
 				/* fetch('workInsert',{
@@ -549,6 +549,9 @@
 						 mainColumns[0].editor.options.listItems[i]={text:obj.prdCd,value:obj.prdCd}
 						 i++;
 					 }
+					 
+					 mainGrid.refreshLayout();
+					 
 				})
 			}
 			
@@ -613,6 +616,7 @@
 		
 		
 		addRow.addEventListener("click",ev=>{
+			mainColumns[0].editor.options.listItems[i]={text:obj.prdCd,value:obj.prdCd}
 			mainGrid.appendRow();
 			mainGrid.disableColumn('planDtlNo')
 			mainGrid.enableColumn('planDtlNo')

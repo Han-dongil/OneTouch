@@ -45,21 +45,21 @@ public class PlanServiceImpl implements PlanService {
 	}
 	@Override
 	public void insertPlan(ModifyVO<PlanVO> list) {
-		// TODO Auto-generated method stub
-		System.out.println(list);
-		if(list.getCreatedRows()!=null) {
-			for (PlanVO vo : list.getCreatedRows()) {
-				System.out.println(vo);
-				mapper.insertPlan(vo);
-				ordMapper.ordCheck(vo.getOrdShtNo());
-			}
-		}
-		if(list.getDeletedRows()!=null) {
-			for (PlanVO vo : list.getDeletedRows()) {
-				mapper.deletePlan(vo);
-			}
-		}
-		list = new ModifyVO<PlanVO>();
+//		// TODO Auto-generated method stub
+//		System.out.println(list);
+//		if(list.getCreatedRows()!=null) {
+//			for (PlanVO vo : list.getCreatedRows()) {
+//				System.out.println(vo);
+//				mapper.insertPlan(vo);
+//				ordMapper.ordCheck(vo.getOrdShtNo());
+//			}
+//		}
+//		if(list.getDeletedRows()!=null) {
+//			for (PlanVO vo : list.getDeletedRows()) {
+//				mapper.deletePlan(vo);
+//			}
+//		}
+//		list = new ModifyVO<PlanVO>();
 	}
 	@Override
 	public List<PlanVO> lotCntSelect(PlanVO vo) {
@@ -69,20 +69,22 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void insertPlanDtl(Map<String,List<PlanVO>> map) {
 		List<PlanVO> list=map.get("detail");
+		List<PlanVO> lotList=map.get("lot");
+		System.out.println("aaaaaaaaaaaaaaaaaaaaa");
+		System.out.println(map.get("lot").get(0).getMtrLot());
 		PlanVO inVo=map.get("plan").get(0);
-		PlanVO nextSeq=mapper.findPlanSeq();
 		
 		mapper.insertPlan(inVo);
 		if(list!=null) {
 			for(PlanVO vo : list) {
-				vo.setPlanNo(nextSeq.getPlanNo());
 				mapper.planDtlInsert(vo);
-				mapper.LotFindInsert(vo);
-				vo.setHldCnt(vo.getInstrCnt());
-				mtrMapper.prdNeed(vo);
 				ordMapper.ordCheck(inVo.getOrdShtNo());
-				
-				
+			}
+		}
+		if(lotList!=null) {
+			for(PlanVO vo : lotList) {
+				mapper.LotFindInsert(vo);
+				mtrMapper.prdNeed(vo);
 			}
 		}
 	}
@@ -130,7 +132,6 @@ public class PlanServiceImpl implements PlanService {
 	}
 	@Override
 	public List<PlanVO> addPlanLotSelect(PlanVO vo) {
-		
 		return mapper.addPlanLotSelect(vo);
 	}
 	@Override

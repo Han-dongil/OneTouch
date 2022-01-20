@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.fct.info.dao.InfoVO;
+import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.pdt.work.dao.WorkVO;
 import com.onetouch.web.pdt.work.service.WorkService;
-import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Controller
 public class WorkController {
 	@Autowired WorkService service;
 	@Autowired PlanService planService;
+	@Autowired PlanMapper planMapper;
 	@RequestMapping("WorkList")
 	public String pdtListPage() {
 		
@@ -48,8 +50,9 @@ public class WorkController {
 	
 	@ResponseBody
 	@GetMapping("planDtlList/{planNo}")
-	public List<PlanVO> modalPlanList(@PathVariable String planNo){
-		
+	public List<WorkVO> modalPlanList(@PathVariable String planNo){
+		System.out.println("dddddddddddddddddddddd");
+		System.out.println(planNo);
 		return service.planListView(planNo);
 	}
 	//자재 데이터 
@@ -63,8 +66,9 @@ public class WorkController {
 	@ResponseBody
 	@PostMapping("planDtlPrc")
 	public List<PlanVO> planDtlPrc(@RequestBody PlanVO vo){
+		System.out.println("mmmmmm");
 		System.out.println(planService.findPrcCd(vo.getPrdCd()));
-		return planService.findPrcCd(vo.getPrdCd());
+		return planMapper.findPrcCd(vo.getPrdCd());
 	}
 	//지시 인서트
 	@ResponseBody

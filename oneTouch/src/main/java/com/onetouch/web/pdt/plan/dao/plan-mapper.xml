@@ -29,12 +29,13 @@
    ,#{alist.ordShtNo},#{alist.workProt},sysdate
 	)     동적쿼리하다감
 	</foreach> -->
-	insert into pdt_plan (PLAN_NO,DUE_DATE,ORD_SHT_NO,PLAN_DATE,now_phs) 
-	values(
-   (select PKG_MAKE_CODE.CODE('PPL','pdt_plan','PLAN_NO', 'plan_date') from dual)
-   ,to_date(#{dueDate},'yyyy-mm-dd HH24:MI:SS')<!-- dueDate ->sysdate -->
-   ,#{ordShtNo},sysdate,'N'
-	)
+	insert into pdt_plan (WORK_PROT,PLAN_NO,DUE_DATE,ORD_SHT_NO,PLAN_DATE,now_phs) 
+	values
+   (
+   #{workProt}
+   ,#{planNo}
+   ,to_date(#{dueDate},'yyyy-mm-dd HH24:MI:SS')
+   ,#{ordShtNo},sysdate,'N')
 </insert>
 	<delete id="deletePlan">
 		delete from pdt_plan where plan_no=#{planNo}	
@@ -48,12 +49,13 @@
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd}) a join (select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}) b
             on(a.prd_cd= b.prd_cd) 
 </select>	
-<select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select a.prc_cd as prcCd,a.use_amt as use_amt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prd_cd
+ <select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
-            where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd}
-</select>
+            where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 
+
+</select> 
 <insert id="planDtlInsert">
 	insert into pdt_plan_dtl (line_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_plan_time,work_str_date) 
 	values(
@@ -67,8 +69,9 @@
 	to_date(#{workStrDate},'yyyy-MM-dd'))
 </insert>
 <insert id="LotFindInsert">
-	insert into used_mtr_lot (mtr_lot,plan_no ,line_no, dtl_select) 
-	values (#{mtrLot},
+	insert into used_mtr_lot (prc_cd,mtr_lot,instr_no ,line_no, dtl_select) 
+	values (#{prcCd},
+	#{mtrLot},
 	#{planNo},
 	#{lineNo},
 	'PD')
