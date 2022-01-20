@@ -6,7 +6,6 @@
 		SELECT msg_no as msgNo, 
 			   alt_send_dt as altSendDt, 
 			   alt_send_dept as altSendDept, 
-			   alt_send_dept as altSendDept,
 		       FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
 		       alt_recp_dept as altRecpDept,
 		       FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, 
@@ -20,7 +19,6 @@
 		SELECT msg_no as msgNo, 
 		       alt_send_dt as altSendDt, 
 		       alt_send_dept as altSendDept, 
-		       alt_send_dept as altSendDept,
 		       FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
 		       alt_recp_dept as altRecpDept,
 		       FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, 
@@ -31,12 +29,33 @@
 		WHERE to_char(alt_send_dt, 'yyyy-MM-dd') = #{altSendDt}
 	</select>
 	
+	<select id="selectDept" resultType="com.onetouch.web.zzz.dao.MsgAltVO">
+		SELECT * FROM
+		(SELECT msg_no as msgNo, 
+			   alt_send_dt as altSendDt, 
+			   alt_send_dept as altSendDept, 
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_send_dept) as altSendDeptNm,
+		       alt_recp_dept as altRecpDept,
+		       FN_GET_BAS_DTL_CD_TO_NM(alt_recp_dept) as altRecpDeptNm, 
+		       alt_cmt as altCmt, 
+		       alt_chk as altChk, 
+		       alt_chk_dt as altChkDt 
+		FROM msg_alt
+		WHERE alt_chk = 'N'
+		AND alt_recp_dept = #{altRecpDept}
+		ORDER BY alt_send_dt desc)
+		WHERE rownum = 1
+	</select>
+	
 	<insert id="insert">
 		
 	</insert>
 	
-	<update id="update">
-	
+	<update id="updateAltChkY" parameterType="com.onetouch.web.zzz.dao.MsgAltVO" >
+		UPDATE msg_alt
+		SET alt_chk = 'Y',
+			alt_chk_dt = sysdate
+		WHERE msg_no = #{msgNo}
 	</update>
 	
 	<delete id="delete">

@@ -239,7 +239,7 @@
 				dataType : 'json',
 				async : false,
 				success : function(result){
-					console.log(result);
+					//console.log(result);
 					dataSource = result;
 				}
 			});
@@ -341,15 +341,40 @@
 					checked.length=0;
 				}
 			})
-		} 
+		}
 		
+		function poll(){ 
+			$.ajax({ 
+				url: './msgAltDept', 
+				method: 'POST',
+				data : 'altRecpDept=fct',
+				success: function(result){ 
+					console.log(result);
+					if (result.length > 0){
+						console.log(result[0])
+						let msgNo = result[0].msgNo;
+						console.log(msgNo);
+						if (window.confirm('메세지발송일시: ' + result[0].altSendDt + '\n메세지발송부서: ' + result[0].altSendDeptNm + '\n메세지: ' + result[0].altCmt)){
+							$.ajax({
+								url:'./updateAltChkY',
+								method: 'POST',
+								data : 'msgNo=' + msgNo,
+								success:function(result){
+									console.log(result);
+								}
+							})
+						} 
+					}
+					
+				}, 
+				/* dataType: "json",  */
+				/* complete: poll, 
+				timeout: 1000000 */
+			}); 
+		}
 		
-		
-		
-		
-		
-		
-		
+		window.setInterval(poll, 10000)
+
 		
 	</script>
 	
