@@ -61,6 +61,19 @@ public class EtcController {
 		return service.selectAll();
 	}
 	
+	@ResponseBody
+	@PostMapping("msgAltDept")
+	public List<MsgAltVO> selectDept(MsgAltVO vo) {
+		return service.selectDept(vo);
+	}
+	
+	@ResponseBody
+	@PostMapping("updateAltChkY")
+	public void updateAltChkY(MsgAltVO vo) {
+		service.updateAltChkY(vo);
+	}
+
+	
 	
 //	//modal호출 - 발주
 //	@RequestMapping("modalMtr")
