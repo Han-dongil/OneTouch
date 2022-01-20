@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
-import com.onetouch.web.mtr.in.service.MtrInService;
+import com.onetouch.web.mtr.rtn.service.MtrRtnService;
 
 @Controller
 public class MtrRtnListController {
 
-	@Autowired MtrInService service;
+	@Autowired MtrRtnService service;
 	
 	@RequestMapping("RtnList")
 	public String inForm() {
@@ -27,11 +27,11 @@ public class MtrRtnListController {
 	//조건조회 grid
 	@ResponseBody
 	@PostMapping("/mtrRtnList")
-	public Map<String,Object> selectInList(@RequestBody MtrSearchVO searchVO){
+	public Map<String,Object> selectRtnList(@RequestBody MtrSearchVO searchVO){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
-		datas.put("contents", service.selectIn(searchVO));
+		datas.put("contents", service.selectRtn(searchVO));
 		data.put("data", datas);
 		return data;
 	}

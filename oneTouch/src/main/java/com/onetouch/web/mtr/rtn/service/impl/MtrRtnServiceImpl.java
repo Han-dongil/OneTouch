@@ -23,8 +23,8 @@ public class MtrRtnServiceImpl implements MtrRtnService {
 	@Autowired MtrRtnMapper rtnMapper;
 	@Autowired MtrLotMapper lotMapper;
 	@Override
-	public List<MtrRtnVO> selectIn(MtrSearchVO inSearchVO) {
-		return rtnMapper.selectIn(inSearchVO);
+	public List<MtrRtnVO> selectRtn(MtrSearchVO inSearchVO) {
+		return rtnMapper.selectRtn(inSearchVO);
 	}
 	
 	@Transactional
