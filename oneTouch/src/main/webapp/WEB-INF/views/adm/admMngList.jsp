@@ -24,7 +24,9 @@
 <script type="text/javascript">
 	let checked=[];
 	let prcLists=[];
+	let unitLists=[];
 	let value2;
+	let value3;
 	
 	let Grid = tui.Grid;
 	Grid.applyTheme('default',{
@@ -45,6 +47,16 @@
 		prcLists = datas;
 	});
 	
+	//단위구분 상세코드에서 받아오기
+	$.ajax({
+		url: './unitList',
+		dataType:'json',
+		async : false
+	}).done(function(datas){
+		console.log(datas);
+		unitLists = datas;
+	});
+	
 
 	const columns = [{
 			header : '공정코드',
@@ -59,7 +71,14 @@
 		{
 			header : '단위',
 			name : 'mngUnitNm',
-			editor: 'text'
+ 			editor: {
+				type: 'radio',
+				options: {
+					listItems: [
+						
+					]
+				}
+			} 
 		},
 		{
 			header : '생산일수',
@@ -106,6 +125,12 @@
 			name : 'prcSect',
 			hidden : true,
 			
+		},
+		{
+			header : '단위구분코드',
+			name : 'mngUnit',
+			hidden : true,
+			
 		}];
 	
 	for(i=0; i<prcLists.length; i++) {
@@ -116,6 +141,13 @@
 		columns[4].editor.options.listItems.push(a);
 	}
 	
+	for(i=0; i<unitLists.length; i++) {
+		let b = {}
+
+		b.text = unitLists[i].mngUnitNm;
+		b.value = unitLists[i].mngUnitNm;
+		columns[2].editor.options.listItems.push(b);
+	}
 	
 	
 
@@ -152,6 +184,7 @@
 		}
 	})
 	
+	//수정할때 공정구분명 선택하면 공정구분코드도 히든컬럼에 들어가게 하기
 	grid.on("editingFinish", ev => {
 		if(ev.columnName == 'prcSectNm') {
 			for(i=0; i<prcLists.length; i++) {
@@ -163,6 +196,19 @@
 			}
 			console.log(value2);
 			grid.setValue(ev.rowKey, 'prcSect', value2, false );
+		}
+	})
+	
+	//수정할때 단위 선택하면 단위구분코드도 히든컬럼에 들어가게 하기
+	grid.on("editingFinish", ev => {
+		if(ev.columnName == 'mngUnitNm') {
+			for(i=0; i<unitLists.length; i++) {
+				if(unitLists[i].mngUnitNm == grid.getValue(ev.rowKey,'mngUnitNm')) {
+					value3 = unitLists[i].mngUnit
+				}
+			}
+			console.log(value3);
+			grid.setValue(ev.rowKey, 'mngUnit', value3, false );
 		}
 	})
 	

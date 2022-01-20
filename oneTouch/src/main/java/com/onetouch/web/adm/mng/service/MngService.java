@@ -10,5 +10,7 @@ public interface MngService {
 	List<MngVO> selectUsePrc();
 	List<MngVO> selectPrcMng();
 	List<MngVO> selectPrc();
+	List<MngVO> selectUnit();
+	
 	void modify(ModifyVO<MngVO> mvo);
 }

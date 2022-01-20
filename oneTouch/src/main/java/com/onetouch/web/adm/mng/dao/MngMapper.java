@@ -7,6 +7,8 @@ public interface MngMapper {
 	List<MngVO> selectUsePrc();
 	List<MngVO> selectPrcMng();
 	List<MngVO> selectPrc();
+	List<MngVO> selectUnit();
+	
 	void deletePrc(MngVO mngvo);
 	void updatePrc(MngVO mngvo);
 	void insertPrc(MngVO mngvo);

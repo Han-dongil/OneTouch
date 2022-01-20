@@ -42,7 +42,18 @@
 	
 	<!-- 공정구분 불러오기 -->
 	<select id="selectPrc" resultType="com.onetouch.web.adm.mng.dao.MngVO">
-		select dtl_nm as prcSectNm, dtl_cd as prcSect from adm_bas_dtl_cd where bas_cd = 'PDT_PRC'
+		select  dtl_nm as prcSectNm, 
+				dtl_cd as prcSect 
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'PDT_PRC'
+	</select>
+	
+	<!-- 단위구분 불러오기 -->
+	<select id="selectUnit" resultType="com.onetouch.web.adm.mng.dao.MngVO">
+		select  dtl_nm as mngUnitNm,
+				dtl_cd as mngUnit
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'MTR_UNIT'
 	</select>
 	
 	<delete id="deletePrc">
