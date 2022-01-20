@@ -89,7 +89,6 @@ const dataSource = {
 var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
-     rowHeaders : [ 'checkbox'],
      columns : [
 				{
 				   header: '출고번호',

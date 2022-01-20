@@ -82,7 +82,6 @@ const dataSource = {
 var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
-     rowHeaders : [ 'checkbox'],
      columns : [
 				{
 				   header: '입고번호',

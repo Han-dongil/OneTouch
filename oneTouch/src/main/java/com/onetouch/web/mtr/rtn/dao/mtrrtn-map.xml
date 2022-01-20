@@ -4,7 +4,15 @@
 	<!-- 반품내역 조건 조회 -->
 	<select id="selectRtn" resultType="com.onetouch.web.mtr.rtn.dao.MtrRtnVO">
 		SELECT 
-			
+			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE,
+			A.MTR_CD,
+			MTR_NM,
+			UNIT_NM,
+			COMP_NM,
+			ORD_NO,
+			RTN_AMT,
+			UNIT_COST,
+			MTR_LOT
 			
 			A.IN_NO, 
 			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 

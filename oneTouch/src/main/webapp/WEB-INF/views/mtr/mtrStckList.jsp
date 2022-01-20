@@ -92,11 +92,8 @@ fetch('mtrStckRadio')
 $( function() {
     $( "#tabs" ).tabs({
     	activate: function( event, ui ) {
-    		if(ui.newTab.innerText == '자재별'){
-    			mtrGrid.refreshLayout();
-    		} else{
-    			lotGrid.refreshLayout();
-    			
+    		if(ui.newTab[0].innerText == '자재별'){
+    				mtrGrid.refreshLayout();
     		}
     	}
     });
@@ -200,7 +197,7 @@ var lotGrid = new Grid({
 					}
 				}
    });
-   
+window.setTimeout(function(){lotGrid.refreshLayout()}, 100);
    
 const mtrDataSource = {
 		  api: {

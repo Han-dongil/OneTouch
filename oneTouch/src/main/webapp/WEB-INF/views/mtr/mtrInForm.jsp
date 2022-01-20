@@ -18,6 +18,9 @@
 
 <script src="${path}/resources/js/modal.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 <style type="text/css">
 	.tui-grid-cell-summary{
@@ -71,6 +74,50 @@
 <div id="dialog-lot"></div>
 
 <script type="text/javascript">
+/* toastr.options = {
+	    "closeButton": true,
+	    "debug": false,
+	    "positionClass": "toast-bottom-left",
+	    "onclick": null,
+	    "showDuration": "1000",
+	    "hideDuration": "1000",
+	    "timeOut": "5000",
+	    "extendedTimeOut": "1000",
+	    "showEasing": "swing",
+	    "hideEasing": "linear",
+	    "showMethod": "fadeIn",
+	    "hideMethod": "fadeOut"
+	}
+	 */
+             //VO 에서 임의 CRUD 값을 받아와서 이미 입력된 값으면 R 이란느 값이
+                // toastr 옵션 옵션설정이 위에 먼저 와있어야 설정이 먹는다.
+                toastr.options = {
+                       "closeButton": true,  //닫기버튼(X 표시)
+                       "debug": false,       //디버그
+                       "newestOnTop": false,
+                       "progressBar": true,  //진행률 표시
+                       "positionClass": "toast-top-center",
+                       "preventDuplicates": false,    //중복 방지(같은거 여러개 안뜸)
+                       "onclick": null,             //알림창 클릭시 alert 창 활성화 (다른것도 되는지는 연구해봐야함)
+                       "showDuration": "3",
+                       "hideDuration": "100",
+                       "timeOut": "1500",   //사라지는데 걸리는 시간
+                       "extendedTimeOut": "1000",  //마우스 올리고 연장된 시간
+                       "showEasing": "swing",
+                       "hideEasing": "linear",
+                       "showMethod": "fadeIn",
+                       "hideMethod": "fadeOut",
+                       "tapToDismiss": false,
+                       "closeHtml": "확인"
+                     }
+                
+                //success: 성공(초록) , info:정보(하늘색) , warning:경고(주황) , error:에러(빨강)
+                
+                //현재 펑션을 멈춤
+ 
+	 
+	 
+	 
 let rowk = -1;
 let lotGrid;
 
@@ -257,7 +304,9 @@ mainGrid.on('editingStart', (ev) => {
     }else if(ev.columnName == 'ordNo') {
        value = mainGrid.getValue(ev.rowKey, 'ordNo');
        if(value != '') {
-          alert('발주번호는 수정이 불가능합니다');
+          /* alert('발주번호는 수정이 불가능합니다'); */
+          /* toastr.info('hi'); */
+    	   toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
           ev.stop();
        }
     }
