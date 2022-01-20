@@ -26,7 +26,7 @@
 	<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm" readonly><br>
 	<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm" readonly><br>
 	<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm" readonly><br>
-	<label>가능라인&nbsp;</label><input id="ableLineNo" name="ableLineNo" readonly><br>
+	<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
 	<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;" readonly>
 </form>
 <hr>
@@ -168,7 +168,13 @@
 			document.getElementById('useYn').checked = false
 		}
 		
-		
+		lineSplit = param.ableLineNo.split("/")
+		for(i=0;i<lineSplit.length;i++) {
+			let option = document.createElement('option');
+			option.value = lineSplit[i];
+			option.innerHTML = lineSplit[i];
+			document.getElementById('ableLineNo').appendChild(option);
+		}
 		
 		dialog.dialog("close");
 		
