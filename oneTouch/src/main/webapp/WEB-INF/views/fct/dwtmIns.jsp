@@ -24,6 +24,7 @@
 			<hr>
 		</div>
 <div class="flex row">
+	<div class = "col-1"></div>
 	<div class = "col-4">
 		<span>
 			<label style="font-size: 30px; color: mediumblue;">✔설비</label>
@@ -33,39 +34,56 @@
 		<div id="mainGrid"></div>
 		<br>
 	</div>
-	<div class= "col-8">
+	<div class= "col-6">
+	
 		<span>
-			<label style="font-size: 30px; color: mediumblue;">✔상세코드</label>
+			<label style="font-size: 30px; color: mediumblue;">✔상세코드</label><br>
 			<label>설비코드</label>
 			<input id='fctCd' name='fctCd'>
-			<label>설비명</label>
+			<label>&nbsp;&nbsp;설비명</label>
 			<input id='fctNm' name='fctNm'>
 			<hr>
 		</span>
 		
 		<form id="flwFrm" name="flwFrm" method="post">
-			<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly><br>
-			<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
-			<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm">
-				<button type="button" id="btnprdStd">🔍</button><br>
-			<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm">
-				<button type="button" id="btnmngUnit">🔍</button><br>
-			<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm">
-				<button type="button" id="btnprdSect">🔍</button><br>
-			<input type="hidden" id="prdSect" name="prdSect">
-			<input type="hidden" id="mngUnit" name="mngUnit">
-			<input type="hidden" id="prdStd" name="prdStd">
-			<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
+			<label>비가동<br>이력번호&nbsp;</label><input style="width: 172px;" id="dwtmCd" name="dwtmCd" readonly><br>
+			<hr>
+			
+				<label style="margin-right: 10px;">입력일자</label>
+				<input style="margin-right: 20px" type="date" id="dwtmDate" name="dwtmDate"><br>
+				<label style="margin-right: 26px;">작업자</label>
+				<input style="width: 172px;" type="text" id="dwtmEmp" name="dwtmEmp">
+				<button type="button" id="btndwtmEmp"  style="background:#72BE44" width:50px;>🔍</button><br>
+				<hr>
+			
+			<div>
+				<label>비가동시간</label><br>
+			</div>
+			<span>
+				<input style="width: 45px;" id="startDwtmTime" name="startDwtmTime">
+				<label style="margin-right:10px;">시</label>
+				<input style="width: 45px;" id="startDwtmTime" name="startDwtmTime">
+				<label style="margin-right:20px;">분</label>
+				<button type="button" id="startTiemBtn"style="background: #72BE44; width: 100px; height: 90px;margin-right:10px;">시작</button>				
+				<input style="width: 45px;" id="startDwtmTime" name="startDwtmTime">
+				<label style="margin-right:10px;">시</label>
+				<input style="width: 45px;" id="startDwtmTime" name="startDwtmTime">
+				<label style="margin-right:10px;">분</label>
+				<button type="button" id="startTiemBtn"style="background: red; width: 100px; height: 90px;">시작</button><br>
+			</span>
+			<hr>
+			<label >비가동사유</label>
+			<select style="width: 100px;" name="dwtmSelectBtn">
+				<option value="점검">점검</option>
+				<option value="점검">수리</option>
+				<option value="점검">점검</option>
+			</select>
+			<hr>
+			<label>작업내용</label>
+			<input type="textarea" style="width:360px; height:100px;">
 		</form>
-		<div align="right" style="margin-right: 3%;">
-		<hr>
-		<button id="btnFlw" type="button">공정흐름보기</button>
-		<button id="btnDel" type="button">공정흐름지우기</button>
-		<button id="btnSave" type="button">저장</button>
-		</div>
-		<h4>✔공정흐름</h4><br>
 		
-		<div id="dialog-form" title="title"></div>
+	
 	</div>
 </div>
 <script>
@@ -139,8 +157,8 @@
 	         data: data,  //이름이 같다면 생격가능
 	         rowHeaders : [ 'checkbox' ],
 	         columns :mainColumns,
-	         bodyHeight: 400,
-	 		 minBodyHeight: 500
+	         bodyHeight: 600,
+	 		 minBodyHeight: 600
 	         });
 		         
 		 // 설비 리스튼ajax 요청
