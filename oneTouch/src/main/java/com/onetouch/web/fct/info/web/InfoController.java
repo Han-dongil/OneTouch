@@ -25,6 +25,7 @@ public class InfoController {
 	
 	
 	
+	
 //수정
   @ResponseBody
   @PostMapping("Updateinfo")

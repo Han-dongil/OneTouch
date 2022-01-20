@@ -14,10 +14,12 @@ import com.onetouch.web.fct.prod.dao.ProdVO;
 import com.onetouch.web.fct.prod.service.ProdService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
+
 @Controller
 public class PropController {
 
 	@Autowired ProdService prodservice;
+	
 	
 	/*
 	 * //모달창에서 점검대상 조회

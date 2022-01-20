@@ -64,10 +64,14 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="ftcIhfoIns">설비등록</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcIhfoSel">설비조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcFix">수리관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcProd">정기점검관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcIhfoIns">🦾설비등록</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcIhfoSel">🔍설비조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcFix">🛠수리관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcProd">👀점검관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="ftcDwtmIns">⚙비동기관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="UploadFile">업로드 테스트</a></li>
+                <li class="nav-item"> <a class="nav-link" href="UploadAjax">아작스 업로드 테스트</a></li>
+
               </ul>
             </div>
           </li>

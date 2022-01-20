@@ -39,4 +39,11 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotyep.Repository"/>
 	</context:component-scan>
 	
+	<!-- 종현 파일 업로드  -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
+	
+	
+	
 </beans:beans>
