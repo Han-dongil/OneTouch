@@ -2,6 +2,8 @@ package com.onetouch.web.pdt.plan.dao;
 
 import java.util.List;
 
+import com.onetouch.web.mtr.stck.dao.LotVO;
+
 public interface PlanMapper {
 	
 	List<PlanVO> list(String nowPhs);

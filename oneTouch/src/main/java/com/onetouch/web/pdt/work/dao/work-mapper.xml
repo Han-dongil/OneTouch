@@ -12,6 +12,17 @@
 		on(a.plan_no = b.plan_no)
 		where a.plan_no=#{planVo}
 	</select>
+	<select id="workDetailSelect" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
+		a.due_date as dueDate , a.work_prot as workPort,
+		a.plan_date as planDate ,
+		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as needCnt,
+		b.instr_cnt as instrCnt , b.work_str_date as workStrDate,
+		b.work_plan_time as workPlanTime
+		from pdt_plan a join pdt_plan_dtl b
+		on(a.plan_no = b.plan_no)
+		where a.plan_no=#{planVo}
+	</select>
 	<select id="workok">
 		select plan_no from pdt_work_instr
 	</select>
@@ -19,7 +30,7 @@
 		select * from pdt_work_instr
 	</select>
 	<select id="planList" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select plan_no,due_date,ord_sht_no,work_prot,plan_date 
+		select *
 		from pdt_plan
 	
 	</select>
