@@ -234,6 +234,24 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.1</version>
 		</dependency>
+		
+		<!--종현 섬네일 이미지 생성 -->		
+		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+		<dependency>
+		    <groupId>net.coobird</groupId>
+		    <artifactId>thumbnailator</artifactId>
+		    <version>0.4.16</version>
+		</dependency>
+		
+		<!--종현 jackson databind -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-xml</artifactId>
+		    <version>2.13.1</version>
+		</dependency>
+
+
 
 		<!-- Spring Security -->
 		<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-web</artifactId> 
