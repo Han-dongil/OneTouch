@@ -6,7 +6,7 @@ import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.rtn.dao.MtrRtnVO;
 
 public interface MtrRtnService {
-	List<MtrRtnVO> selectIn(MtrSearchVO inSearchVO);
+	List<MtrRtnVO> selectRtn(MtrSearchVO inSearchVO);
 	/* void modifyIn(ModifyVO<MtrInVO> mvo); */
 	
 }

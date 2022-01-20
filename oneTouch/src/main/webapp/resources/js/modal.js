@@ -86,7 +86,7 @@ function mMtr(){
 				name: 'safeStck',
 				hidden: true
 			}
-		];
+		]; 
 		
 		mtrGrid = new Grid({
 			el : document.getElementById('mtr_grid'),
