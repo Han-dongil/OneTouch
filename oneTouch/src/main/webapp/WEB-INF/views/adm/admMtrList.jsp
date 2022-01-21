@@ -20,7 +20,10 @@
 <hr>
 <div class="flex row">
 	<div class = "col-4">
-		<h4>✔자재목록</h4><br><br>
+		<h4>✔자재목록</h4>
+		<div align="right">
+			<button id="btnAdd">등록</button><hr>
+		</div>
 		<div id="grid"></div>
 		<br>
 	</div>
@@ -205,6 +208,15 @@
 		dialog.dialog("close");
 	} 
 
+	//등록버튼
+	btnAdd.addEventListener("click", function() {
+		grid.appendRow({});
+/* 		rowk = mainGrid.getRowCount() - 1;
+		console.log(rowk);
+		prdCdVal = document.getElementById("prdCd").value
+		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
+		console.log(mainGrid.getValue(rowk,'prdCd')); */
+	})	
 	
 </script>
 </body>

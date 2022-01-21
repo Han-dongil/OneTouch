@@ -23,6 +23,9 @@
 <div class="flex row">
 <div class = "col-4">
 	<h4>✔제품목록</h4>
+	<div align="right">
+		<button id="btnAdd">등록</button><hr>
+	</div>
 	<div id="grid1"></div>
 	<br>
 </div>
@@ -43,9 +46,9 @@
 		<input type="hidden" id="prdSect" name="prdSect">
 		<input type="hidden" id="mngUnit" name="mngUnit">
 		<input type="hidden" id="prdStd" name="prdStd">
-		<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
+		<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
 	<div align="right" style="margin-right: 3%;">
 	<hr>
 	<button id="btnFlw" type="button">공정흐름보기</button>
@@ -307,6 +310,15 @@
 		})
 	})	
 	
+	//등록버튼
+	btnAdd.addEventListener("click", function() {
+		grid1.appendRow({});
+/* 		rowk = mainGrid.getRowCount() - 1;
+		console.log(rowk);
+		prdCdVal = document.getElementById("prdCd").value
+		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
+		console.log(mainGrid.getValue(rowk,'prdCd')); */
+	})	
 	
 </script>
 </body>
