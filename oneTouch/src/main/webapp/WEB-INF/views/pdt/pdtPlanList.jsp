@@ -71,6 +71,8 @@
 		<input type="hidden" name="fctCd" id="fctCd">
 	</form>
 	<script>
+	//document.getElementsClassName('tui-select-box-placeholder')
+	
 	let lotGrid;
   	let lotData;
 	let selectTag;
@@ -423,6 +425,7 @@
 	 		//상품코드 공정코드로 자재목록 불러오기
 	 		else if(ev.columnName=="prcCd"){
 	 			lotDiv.style="display:block";
+	 			lotGrid.refreshLayout();
 	 			fetch("lotCdFind/"+planGrid.getValue(ev.rowKey,'prdCd')+'/'+planGrid.getValue(ev.rowKey,'prcCd'))
 	 			.then(response=>response.json())
 	 			.then(result=>{
@@ -446,7 +449,15 @@
 	//로우 클릭 이벤트
      grid.on('click', ev => {
     	 //메인그리드 클릭시 모달창open
+    	 console.log(grid.getValue(ev.rowKey,'ordShtNo'));
     	 if(ev.columnName=='planDate'){
+    		 if(grid.getValue(ev.rowKey,'ordShtNo')!='null'){
+    			 fetch('ordShtSelect/'+grid.getValue(ev.rowKey,'ordShtNo'))
+    			 .then(response=>response.json())
+    			 .then(result=>{
+    				 console.log(result)
+    			 })
+    		 }
 		  	planDialog.dialog( "open" );
 		  	planGrid.refreshLayout();
 	    	lotGrid.refreshLayout();

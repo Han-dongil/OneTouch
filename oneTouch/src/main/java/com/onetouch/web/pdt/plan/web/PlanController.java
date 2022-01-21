@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.fct.info.dao.InfoVO;
+import com.onetouch.web.pdt.ord.dao.OrdMapper;
+import com.onetouch.web.pdt.ord.dao.OrdVO;
 import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
@@ -24,6 +26,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class PlanController {
 	@Autowired PlanService service;
 	@Autowired PlanMapper mapper;
+	@Autowired OrdMapper ordMapper;
 
 	@RequestMapping("PlanList")
 	public String pdtListPage() {
@@ -124,5 +127,11 @@ public class PlanController {
 	public PlanVO planNoFind() {
 		System.out.println(mapper.findPlanSeq());
 		return mapper.findPlanSeq();
+	}
+	@ResponseBody
+	@GetMapping("ordShtSelect/{ordShtNo}")
+	public List<PlanVO> ordShtSelect(@PathVariable String ordShtNo){
+		System.out.println(ordShtNo);
+		return ordMapper.ordShtSelect(ordShtNo);
 	}
  }

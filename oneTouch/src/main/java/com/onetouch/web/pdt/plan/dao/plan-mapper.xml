@@ -15,10 +15,17 @@
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
 </select>
-<select id="findPrcCd" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	select a.fct_cd , a.fct_nm , a.prc_cd
+<select id="findPrcCd" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	<!-- select a.line_no,a.fct_cd , a.fct_nm , a.prc_cd
 	from fct_info a join (select prc_cd from adm_prc_flow where prd_cd=#{prdCd}) b
 	on(a.prc_cd = b.prc_cd)
+	order by 1,3 -->
+	select a.plan_no as planNo , a.line_no as lineNo , a.prc_cd as prcCd , a.prd_cd as prdCd , a.need_cnt as needCnt , a.instr_cnt as instrCnt , b.mtrLot as mtrLot , b.instrNo as instrNo ,b.dtlSelect as dtlSelect, b.mtrCd as mtrCd , b.hldCnt as hldCnt 
+	from pdt_plan_dtl a join (select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc_cd as prcCd , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , b.hld_cnt as hldCnt
+            from used_mtr_lot a join mtr_lot_stck b
+            on (a.mtr_lot = b.mtr_lot)
+            where a.instr_no = #{planNo}) b
+	on (a.plan_no = b.instrNo AND a.line_no=b.lineNo AND a.prc_cd=b.prcCd)
 </select>
 <insert id="insertPlan">
 	<!-- <foreach collection="list" item="alist">
