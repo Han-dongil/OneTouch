@@ -243,13 +243,7 @@
 		    <version>0.4.16</version>
 		</dependency>
 		
-		<!--종현 jackson databind -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.dataformat</groupId>
-		    <artifactId>jackson-dataformat-xml</artifactId>
-		    <version>2.13.1</version>
-		</dependency>
+	
 
 
 

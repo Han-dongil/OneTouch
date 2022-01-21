@@ -73,6 +73,7 @@ public class InfoController {
 		  System.out.println(infoVO.getCheckPrcCd());
 		  List<InfoVO> list = new ArrayList<>();
 		  list = infoservice.selectFctInfoAll(infoVO);
+		  System.out.println(list);
 	  return list; 
 	  }
 	  
