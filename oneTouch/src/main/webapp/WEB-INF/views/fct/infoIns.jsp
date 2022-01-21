@@ -252,6 +252,7 @@
 		  contentType: "application/json",
 		  async : false					//동기 = 절차적 
 	  }).done(function(datas){
+		  console.log(datas)
 		  data = datas;
 	  }) 
    
