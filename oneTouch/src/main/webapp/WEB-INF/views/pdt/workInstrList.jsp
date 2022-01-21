@@ -156,12 +156,8 @@
 		let prcColumns = [
 			
 		{
-			header : '설비종류',
-			name : 'fctNm',
-			
-		},{
-			header : '설비코드',
-			name : 'fctCd',
+			header : '라인번호',
+			name : 'lineNo',
 			
 		},{
 			header : '공정코드',
@@ -348,11 +344,9 @@
 		//그리드 컬럼 설정	
 		let hiddenColumns = [
 			{
-				header : '설비종류',
-				name : 'fctNm',
-			},{
-				header : '설비코드',
-				name : 'fctCd',
+				header : '라인번호',
+				name : 'lineNo',
+				
 			},{
 				header : '공정코드',
 				name : 'prcCd',
@@ -436,11 +430,11 @@
 				headers:{
 					"Content-Type": "application/json",
 				},
-				body:JSON.stringify(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
+				body:JSON.stringify(mainGrid.getCheckedRows())
 			})
 			.then(response=>response.json())
 			.then(result=>{
-				mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
+				console.log("aaaaaaaaaaaaaaaaaaaaaa")
 				console.log(result);
 				prcGrid.hideColumn('mtrLot');
 				prcGrid.hideColumn('hldCnt');
@@ -449,14 +443,17 @@
 				prcGrid.hideColumn('planDtlNo');
 /* 				prcGrid.showColumn('fctNm');
 				prcGrid.showColumn('fctCd'); */
-				prcColumns[3].hidden=true;
+				prcColumns[4].hidden=true;
 				
 				for(let obj of result){
 					obj.instrDate=selectInstrDate;
 				}
-				console.log(result);
-				if(prcGrid.getCheckedRows().length==1){
+				console.log("ddddd")
+				console.log(prcGrid.getCheckedRows().length);
+				if(mainGrid.getCheckedRows().length==1){
+					console.log("aaa")
 					prcGrid.resetData(result);
+					mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
 				}
 				else{
 					prcGrid.appendRows(result);
@@ -478,8 +475,8 @@
 			let prcResult=prcGrid.getValue(ev.rowKey,'prcCd');
 			console.log(prcResult);
 			console.log(prcGrid.getRow(ev.rowKey))
-			if(prcColumns[3].hidden){
-				prcColumns[3].hidden=false;
+			if(prcColumns[4].hidden){
+				prcColumns[4].hidden=false;
 				console.log("들어옴")
 				prcGrid.showColumn('mtrLot');
 				prcGrid.showColumn('hldCnt');

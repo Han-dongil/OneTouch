@@ -65,10 +65,10 @@ public class WorkController {
 	//공정데이터
 	@ResponseBody
 	@PostMapping("planDtlPrc")
-	public List<PlanVO> planDtlPrc(@RequestBody PlanVO vo){
+	public List<PlanVO> planDtlPrc(@RequestBody List<PlanVO> list){
 		System.out.println("mmmmmm");
-		System.out.println(planService.findPrcCd(vo.getPrdCd()));
-		return planMapper.findPrcCd(vo.getPrdCd());
+		System.out.println(planMapper.findPrcCd(list.get(0).getPlanNo()).get(0).getMtrLot());
+		return planMapper.findPrcCd(list.get(0).getPlanNo());
 	}
 	//지시 인서트
 	@ResponseBody
