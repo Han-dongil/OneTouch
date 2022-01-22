@@ -23,6 +23,7 @@ public class PlanVO extends LotVO {
 	//bom 테이블 컬럼
 	private String useAmt;
 	private String mtrLot;
+	private String realCnt;
 	
 	
 }

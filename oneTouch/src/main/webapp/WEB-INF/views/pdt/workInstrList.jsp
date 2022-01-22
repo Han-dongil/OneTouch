@@ -29,22 +29,31 @@
 	<div>ㅁㅁ</div>
 	<div id="prcDtlGrid"></div>
 	<button type="button" id="workAddBtn" name="workAddBtn">지시추가</button>
-	<div id="plan-dialog-form" title="생산계획조회">생산계획 조회</div>
+	<div id="plan-dialog-form" title="생산계획조회">
+		<div>생산계획 조회</div>
+		<select id="planCheck">
+			<option value="N">미지시</option>
+			<option value="Y">지시완료</option>
+		</select>
+		<button id="modalSearchBtn" name="modalSearchBtn">조회</button>
+	</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
-	<div id=hiddenGrid></div>
-	<div id=hiddenMainDiv></div>
+	<div id="hiddenGrid"></div>
+	<div id="hiddenMainDiv"></div>
+	<div id="hiddenModalMain"></div>
 	<button type="button" id="modifyBtn" name="modifyBtn">지시등록</button>
 	<button type="button" id="addRow">행추가</button>
 	<button type="button" id="resetGrid">초기화</button>
 	
+	
 	<script>
+		let main2Grid;
 		let Grid = tui.Grid;
 		let planAll ;
 		let prcResult;
 		let selectPlanDtlNo;
 		let setTimeCheck;
 		let selectInstrDate;
-		let planRowInfo;
 		let hiddenMainGrid;
 		let mainHiddenDiv=document.getElementById('hiddenMainDiv');
 		//메인그리드 설정
@@ -101,11 +110,14 @@
 			header : '작업우선순위',
 			name : 'workProt',
 			editor : 'text'
-			
 		},{
 			header : '계획일자',
 			name : 'planDate',
 			editor:'datePicker'
+		},{
+			header : '라인번호',
+			name : 'lineNo',
+			editor:'text'
 		},{
 			header : '공정번호',
 			name : 'prcCd',
@@ -126,6 +138,10 @@
 			header : '지시완료일',
 			name : 'pdtFinDate',
 			editor:'datePicker'
+		},{
+			header : '지시타임',
+			name : 'workStrTime',
+			hidden : false
 		}];
 
 		
@@ -147,6 +163,7 @@
 				api:{
 					readData:{url:'.',
 						method:'GET'}
+		
 				 /* 	modifyData:{url:'./pdtOrdlist',method:'PUT'},  */
 				},
 				contentType:'application/json'
@@ -180,18 +197,18 @@
 		},{
 			header : '재고수량',
 			name : 'stckCnt',
-			hidden : false
+			hidden : false,
+			editor : 'text'
 		},{
-			header : '계획디테일번호',
-			name : 'planDtlNo',
-			hidden : false
+			header : '사용가능수량',
+			name : 'realCnt',
+			hidden : false,
+		},{
+			header : '지시번호',
+			name : 'instrNo'
 		},{
 			header : '지시일자',
 			name : 'instrDate',
-			hidden : false
-		},{
-			header : '지시타임',
-			name : 'workStrTime',
 			hidden : false
 		}];
  		
@@ -218,8 +235,11 @@
 				contentType:'application/json'
 			} 
  		
-		//그리드 컬럼 설정	
+		//모달 그리드 컬럼 설정	
 		let modalColumns = [{
+			header : '지시번호',
+			name : 'instrNo'
+		},{
 			header : '계획번호',
 			name : 'planNo'
 		},{
@@ -257,7 +277,6 @@
 				fetch('planDtlList/'+modalGrid.getCheckedRows()[0].planNo)
 				.then(response=>response.json())
 				.then(result=>{
-					
 					console.log(result);
 				})
 				//modalGrid.getModifiedRows().updatedRows // 모달 지시 마스터 데이터
@@ -281,27 +300,7 @@
 		document.getElementById("planModal").addEventListener("click",()=>{
 			modalDialog.dialog( "open" );
 			modalGrid.refreshLayout();
-			fetch('./modalPlanList')
-			.then(response=>response.json())
-			.then(result=>{
-				console.log(result);
-				let uniQuePlan=result.map(plan=>{
-					return plan.planNo;
-				})
-				let set=new Set(uniQuePlan)
-				let planNoArr=[...set]
-				Array.isArray(planNoArr)
-			let resultArr=[]
-			for(obj of result){
-				for(arrObj of planNoArr){
-					if(arrObj == obj.planNo){
-						resultArr.push(obj)
-						
-					}
-				}
-			}	
-			modalGrid.resetData(resultArr);
-			})
+			planListSelect();
 		})
 		
 		//일정선택 모달창
@@ -369,16 +368,11 @@
 				name : 'stckCnt',
 				hidden : false
 			},{
-				header : '계획디테일번호',
-				name : 'planDtlNo',
-				hidden : false
+				header : '지시번호',
+				name : 'instrNo'
 			},{
 				header : '지시일자',
 				name : 'instrDate',
-				hidden : false
-			},{
-				header : '지시타임',
-				name : 'workStrTime',
 				hidden : false
 			}];
  		
@@ -394,8 +388,36 @@
 			  }
 		});
 		///////////////////////////////////////////////////////////////
-		//계획 모달그리드 체크선택 확인
+		//계획 모달그리드  체크/클릭 이벤트
+		modalGrid.on('click',ev=>{
+			if(ev.columnName=='instrNo'){
+				let planNo=modalGrid.getValue(ev.rowKey,'planNo')
+				
+				console.log(planNo)
+				fetch('planDtlList/'+planNo)
+				.then(response=>response.json())
+				.then(x=>{
+					console.log(x)
+					modalGrid.setValue(ev.rowKey,'instrNo',x[0].instrNo)
+					for(let obj of x){
+						obj.instrDate=selectInstrDate;
+						obj.pdtFinDate=finDateSave;
+						obj.instrNo=abc+lpad(def,4,"0");
+						console.log(obj.instrNo)
+					}
+					if(modalGrid.getCheckedRows().length==1){
+						mainGrid.resetData(x);
+					}
+					else{
+						mainGrid.appendRows(x);
+					}
+				})
+			}
+		})
 		modalGrid.on('check',ev=>{
+			console.log("aaaaaaaaaaaaaa")
+			console.log(ev.columnName)
+			
 			selectInstrDate=modalGrid.getValue(ev.rowKey,'instrDate')			
 			let finDateSave=modalGrid.getValue(ev.rowKey,'pdtFinDate')	
 			console.log(modalGrid.getValue(ev.rowKey,'planNo'));
@@ -403,28 +425,31 @@
 			fetch('planDtlList/'+planNo)
 			.then(response=>response.json())
 			.then(x=>{
-				
+				let startInstrNo=x[0].instrNo
+				console.log(startInstrNo)
+				let abc=startInstrNo.substr(0,11)
+				let def=startInstrNo.substr(11,15)
 				for(let obj of x){
 					obj.instrDate=selectInstrDate;
 					obj.pdtFinDate=finDateSave;
+					obj.instrNo=abc+lpad(def,4,"0");
+					console.log(obj.instrNo)
 				}
 				if(modalGrid.getCheckedRows().length==1){
 					mainGrid.resetData(x);
+					hiddenModalGrid.resetData(modalGrid.getCheckedRows())
 				}
 				else{
 					mainGrid.appendRows(x);
+					hiddenModalGrid.appendRows(modalGrid.getCheckedRows())
 				}
 			})
 		})
 		//공정조회버튼 누르면 공정정보 
 		prcSelectBtn.addEventListener('click',ev=>{
-			planRowInfo=mainGrid.getCheckedRows();//plan 정보 담고있는 변수
 			hiddenMainGrid.appendRows(mainGrid.getCheckedRows());
-			instrDate=mainGrid.getValue(mainGrid.getCheckedRowKeys()[0],'instrDate')			
-			selectPlanDtlNo=mainGrid.getValue(mainGrid.getCheckedRowKeys()[0],'planDtlNo')
-			console.log(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
-			mainGrid.getValue(mainGrid.getCheckedRowKeys()[0],'prcCd')
-
+			instrDate=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrDate')			
+			let instrNo=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrNo')
 			fetch('planDtlPrc',{
 				method:'POST',
 				headers:{
@@ -434,29 +459,26 @@
 			})
 			.then(response=>response.json())
 			.then(result=>{
-				console.log("aaaaaaaaaaaaaaaaaaaaaa")
-				console.log(result);
+				main2Grid=result;
 				prcGrid.hideColumn('mtrLot');
 				prcGrid.hideColumn('hldCnt');
 				prcGrid.hideColumn('stckCnt');
 				prcGrid.hideColumn('mtrCd');
-				prcGrid.hideColumn('planDtlNo');
 /* 				prcGrid.showColumn('fctNm');
 				prcGrid.showColumn('fctCd'); */
 				prcColumns[4].hidden=true;
-				
+				let datas=[];
 				for(let obj of result){
 					obj.instrDate=selectInstrDate;
+					obj.instrNo=instrNo;
+					datas.push(obj)
 				}
-				console.log("ddddd")
-				console.log(prcGrid.getCheckedRows().length);
 				if(mainGrid.getCheckedRows().length==1){
-					console.log("aaa")
-					prcGrid.resetData(result);
+					prcGrid.resetData(datas);
 					mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
 				}
 				else{
-					prcGrid.appendRows(result);
+					prcGrid.appendRows(datas);
 				}
 				
 			})
@@ -482,14 +504,13 @@
 				prcGrid.showColumn('hldCnt');
 				prcGrid.showColumn('stckCnt');
 				prcGrid.showColumn('mtrCd');
-				prcGrid.showColumn('planDtlNo');
 /* 				prcGrid.hideColumn('fctNm');
 				prcGrid.hideColumn('fctCd'); */
-				
+				prcGrid.resetData(main2Grid);
 				console.log(ev.columnName)
 				console.log(mainGrid.getRow(ev.rowKey))
 				mainGrid.getValue(ev.rowKey,'planDtlNo')
-				fetch('planDtlMtr',{
+				/* fetch('planDtlMtr',{
 					method:'POST',
 					headers:{
 						"Content-Type": "application/json",
@@ -507,7 +528,7 @@
 				 		prcGrid.setValue(i,'planDtlNo',selectPlanDtlNo);
 				 	}
 					//detailGrid.resetData(result);
-				})
+				}) */
 			}
 			console.log(ev.columnName)
 			if(ev.columnName=='workStrTime'){
@@ -523,8 +544,9 @@
 		})
 		modifyBtn.addEventListener('click',ev=>{
 			let a={};
-			a.planData=planRowInfo;
-			a.detailData=hiddenGrid.getData()
+			a.planData=hiddenModalGrid.getData();
+			a.detailData=hiddenMainGrid.getData();
+			a.lotData=hiddenGrid.getData()
 			fetch('workInsertAll',{
 				method:'POST',
 				headers:{
@@ -533,6 +555,7 @@
 				body:JSON.stringify(a)
 			})
 		})
+		
 		//////////////////////////////////////이벤트/////////////////////////////////////////
 		mainGrid.on("click",ev=>{
 			if(ev.columnName=='prdCd'){
@@ -553,8 +576,64 @@
 			}
 			
 		})
+		//모달에 플랜리스트 보여주기
+		function planListSelect(){
+			fetch('./modalPlanList/'+document.getElementById('planCheck').value)
+			.then(response=>response.json())
+			.then(result=>{
+				console.log(result);
+				let uniQuePlan=result.map(plan=>{
+					return plan.planNo;
+				})
+				let set=new Set(uniQuePlan)
+				let planNoArr=[...set]
+				Array.isArray(planNoArr)
+			let resultArr=[]
+			for(obj of result){
+				for(arrObj of planNoArr){
+					if(arrObj == obj.planNo){
+						resultArr.push(obj)
+						
+					}
+				}
+			}	
+			modalGrid.resetData(resultArr);
+			})
+		}
+		modalSearchBtn.addEventListener("click",ev=>{
+			planListSelect();
+		})
 		//////////////////////////////////////히든그리드///////////////////////////////////////
-		
+		//메인 모달 히든그리드 생산지시M
+				//그리드 생성
+		let hiddenModalColumns = [{
+			header : '지시번호',
+			name : 'instrNo'
+		},{
+			header : '계획번호',
+			name : 'planNo'
+		},{
+			header : '작업우선순위',
+			name : 'workProt'
+		},{
+			header : '작업지시일',
+			name : 'instrDate',
+			editor:'datePicker'
+		},{
+			header : '지시완료일',
+			name : 'pdtFinDate',
+			editor:'datePicker'
+		}];
+		let hiddenModalGrid = new Grid({
+			  el: document.getElementById('hiddenModalMain'),
+			  data:null,
+			  rowHeaders:['checkbox'],
+			  columns: hiddenModalColumns,
+			  columnOptions: {
+				  frozenCount :11,
+				  frozenBorderWidth:1
+			  }
+		});
  		
 		//메인 히든 그리드 생성
 		hiddenMainGrid = new Grid({
@@ -582,11 +661,12 @@
 				header : '계획일자',
 				name : 'planDate'
 			},{
-				header : '계획디테일번호',
-				name : 'planDtlNo'
-			},{
 				header : '제품번호',
 				name : 'prdCd'
+			},{
+				header : '라인번호',
+				name : 'lineNo',
+				editor:'text'
 			},{
 				header : '공정번호',
 				name : 'prcCd'
@@ -602,6 +682,10 @@
 			},{
 				header : '지시완료일',
 				name : 'pdtFinDate'
+			},{
+				header : '지시타임',
+				name : 'workStrTime',
+				hidden : false
 			}],
 		 columnOptions: {
 		  frozenCount :11,
@@ -624,6 +708,16 @@
 				mainGrid.removeRow(i);
 			}
 		})
+////////lPad ////////
+function lpad(str,padLen,padStr){
+	str+="";
+	padStr+="";
+	while(str.length<padLen)
+		str=padStr+str;
+	str=str.length>=padLen ? str.substring(0,padLen) : str;
+	return str;
+}
+// lpad("01",5,"0") // 00001		
 	</script>
 	
 </body>

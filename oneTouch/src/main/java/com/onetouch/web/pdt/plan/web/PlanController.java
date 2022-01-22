@@ -59,7 +59,9 @@ public class PlanController {
 	@ResponseBody
 	@GetMapping("prdNameList/{prdCd}")
 	public List<PlanVO> prdList(@PathVariable String prdCd){
-		return service.findPrcCd(prdCd);
+		PlanVO vo=new PlanVO();
+		vo.setPrcCd(prdCd);
+		return service.findPrcCd(vo);
 	}
 	//lot별 재고조회
 	@ResponseBody

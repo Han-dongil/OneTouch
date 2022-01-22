@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.prd.prc.dao.PrcMapper">
+	<select id="lineList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select line_no from fct_line
+	</select>
+	<select id="prcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select *
+		from adm_prd a join adm_prc_flow b
+		on a.prd_cd = b.prd_cd 
+		where a.able_line_no like '%'||#{lineNo}||'%'
+	</select>
+	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select p.instr_no, p.work_str_time, p.pdt_cnt, f.prc_seq
+		from pdt_work_instr_dtl p, 
+		    (select a.prd_cd, a.prd_nm, a.prd_std, a.mng_unit, a.prd_sect, a.able_line_no, a.use_yn,    b.prc_cd, b.prc_seq, b.work_cmt, b.std_load, b.unit_cost, b.lead_time
+		     from adm_prd a join adm_prc_flow b
+		     on a.prd_cd = b.prd_cd 
+		     where a.able_line_no like '%'||#{lineNo}||'%' and b.prc_cd=#{prcCd}) f
+		where p.prd_cd = f.prd_cd
+		AND p.line_no=#{lineNo}
+		and p.prc_cd=#{prcCd}
+		order by p.work_str_time
+	</select>
+	<select id="prcFlowMinMax" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select *
+				from adm_prc_flow
+				where prd_cd=(select prd_cd
+                from pdt_work_instr_dtl
+                where instr_no=#{instrNo} and prc_cd=#{prcCd})
+	</select>
+</mapper>

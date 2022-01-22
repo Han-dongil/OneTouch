@@ -38,14 +38,14 @@ public class WorkController {
 	}
 
 	@ResponseBody
-	@GetMapping("modalPlanList")
-	public List<PlanVO> modalPlanList(){
+	@GetMapping("modalPlanList/{planCheck}")
+	public List<PlanVO> modalPlanCheckList(@PathVariable String planCheck){
 		/*
 		 * System.out.println("dddd"); Map<String,Object> map=new HashMap<>();
 		 * map.put("contents",service.planList()); Map<String,Object> map2=new
 		 * HashMap<>(); map2.put("data", map); map2.put("result",true);
 		 */
-		return service.planList();
+		return service.planList(planCheck);
 	}
 	
 	@ResponseBody
@@ -67,8 +67,8 @@ public class WorkController {
 	@PostMapping("planDtlPrc")
 	public List<PlanVO> planDtlPrc(@RequestBody List<PlanVO> list){
 		System.out.println("mmmmmm");
-		System.out.println(planMapper.findPrcCd(list.get(0).getPlanNo()).get(0).getMtrLot());
-		return planMapper.findPrcCd(list.get(0).getPlanNo());
+		System.out.println(planMapper.findPrcCd(list.get(0)));
+		return planMapper.findPrcCd(list.get(0));
 	}
 	//지시 인서트
 	@ResponseBody

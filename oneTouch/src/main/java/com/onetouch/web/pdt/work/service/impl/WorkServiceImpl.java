@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.work.dao.WorkMapper;
 import com.onetouch.web.pdt.work.dao.WorkVO;
@@ -16,6 +17,7 @@ import com.onetouch.web.pdt.work.service.WorkService;
 public class WorkServiceImpl implements WorkService {
 
 	@Autowired WorkMapper mapper;
+	@Autowired PlanMapper planMapper;
 	@Override
 	public List<WorkVO> workList() {
 		WorkVO vo = new WorkVO();
@@ -41,8 +43,8 @@ public class WorkServiceImpl implements WorkService {
 		return list2;
 	}
 	@Override
-	public List<PlanVO> planList() {
-		List<PlanVO> list=mapper.planList();
+	public List<PlanVO> planList(String planCheck) {
+		List<PlanVO> list=mapper.planList(planCheck);
 		return list;
 	}
 	@Override
@@ -56,13 +58,32 @@ public class WorkServiceImpl implements WorkService {
 	public void workInsert(Map<String,List<WorkVO>> map) {
 		WorkVO seqVo=mapper.findWorkSeq();
 		System.out.println("seq"+seqVo);
-		System.out.println(map.get("planData").get(0).getWorkProt());
-		mapper.workInsert(map.get("planData").get(0));
-		for(WorkVO vo : map.get("detailData")) {
-			vo.setPrdCd(map.get("planData").get(0).getPrdCd());
-			vo.setInstrNo(seqVo.getInstrNo());
-			System.out.println(vo.getInstrNo());
-			mapper.workInsertDtl(vo);
+		if(map.get("planData")!=null) {
+			for(WorkVO vo : map.get("planData") ) {
+				System.out.println("1111111");
+				mapper.workInsert(vo);
+				planMapper.planCheck(vo);
+				
+			}
+		}
+		if(map.get("detailData")!=null) {
+			for(WorkVO vo : map.get("detailData")) {
+				System.out.println("2222222");
+				System.out.println(vo.getInstrNo());
+				vo.setPdtCnt(vo.getNeedCnt());
+				mapper.workInsertDtl(vo);
+			}
+		}
+		if(map.get("lotData")!=null) {
+			for(WorkVO vo : map.get("lotData")) {
+				
+				System.out.println("333333333");
+				System.out.println(vo);
+				mapper.LotFindUpdate(vo);
+				System.out.println(vo);
+				System.out.println("444444444");
+				mapper.prdNeed(vo);
+			}
 		}
 		
 		
