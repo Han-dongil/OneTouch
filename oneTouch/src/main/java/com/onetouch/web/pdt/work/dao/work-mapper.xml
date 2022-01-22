@@ -1,61 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.pdt.work.dao.WorkMapper">
-	<select id="planJoinListView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	<select id="planJoinListView"
+		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
 		a.due_date as dueDate , a.work_prot as workPort,
-		a.plan_date as planDate , b.plan_dtl_no as planDtlNo,
-		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as needCnt,
-		b.instr_cnt as instrCnt , b.work_str_date as workStrDate,
+		a.plan_date as
+		planDate , b.plan_dtl_no as planDtlNo,
+		b.prd_cd as prdCd , b.prc_cd as
+		prcCd , b.need_cnt as needCnt,
+		b.instr_cnt as instrCnt ,
+		b.work_str_date as workStrDate,
 		b.work_plan_time as workPlanTime
-		from pdt_plan a join pdt_plan_dtl b
+		from
+		pdt_plan a join pdt_plan_dtl b
 		on(a.plan_no = b.plan_no)
-		where a.plan_no=#{planVo}
+		where
+		a.plan_no=#{planVo}
 	</select>
-	<select id="workDetailSelect" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+	<select id="workDetailSelect"
+		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
 		a.due_date as dueDate , a.work_prot as workPort,
-		a.plan_date as planDate ,
-		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as needCnt,
+		a.plan_date as
+		planDate ,
+		b.prd_cd as prdCd , b.prc_cd as prcCd , b.need_cnt as
+		needCnt,
 		b.instr_cnt as instrCnt , b.work_str_date as workStrDate,
-		b.work_plan_time as workPlanTime
-		from pdt_plan a join pdt_plan_dtl b
+		b.work_plan_time as workStrTime,b.line_no as lineNo
+		from pdt_plan a
+		join pdt_plan_dtl b
 		on(a.plan_no = b.plan_no)
 		where a.plan_no=#{planVo}
 	</select>
 	<select id="workok">
 		select plan_no from pdt_work_instr
 	</select>
-	<select id="workList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+	<select id="workList"
+		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select * from pdt_work_instr
 	</select>
-	<select id="planList" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	<select id="planList"
+		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 		select *
-		from pdt_plan
-	
+		from pdt_plan where 1=1
+<!-- 		<if test='ordDate!=""'>
+			and to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
+		</if> -->
+		<if test='planCheck =="Y"'>
+			and now_phs ='Y'
+		</if>
+		<if test='planCheck =="N"'>
+			and now_phs ='N'
+		</if>
+
 	</select>
-	<select id="findLotMtrCnt" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select a.mtr_lot as mtrLot , b.in_no as inNo , b.mtr_cd as mtrCd , b.hld_cnt as hldCnt , b.stck_cnt as stckCnt 
+	<select id="findLotMtrCnt"
+		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+		select a.mtr_lot as mtrLot , b.in_no as inNo , b.mtr_cd as
+		mtrCd , b.hld_cnt as hldCnt , b.stck_cnt as stckCnt
 		from used_mtr_lot a join mtr_lot_stck b
 		on a.mtr_lot = b. mtr_lot
-		where a.instr_dtl_no =#{planDtlNo}
+		where
+		a.instr_dtl_no =#{planDtlNo}
 	</select>
 	<insert id="workInsert">
-		insert into pdt_work_instr (instr_no , plan_no , work_prot, instr_date , pdt_fin_date )
-		values (PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no', 'pdt_fin_date'),#{planNo},#{workProt},sysdate,sysdate)
+		insert into pdt_work_instr (instr_no , plan_no ,
+		work_prot, instr_date , pdt_fin_date )
+		values
+		(PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no',
+		'pdt_fin_date'),#{planNo},#{workProt},sysdate,sysdate)
 	</insert>
 	<insert id="workInsertDtl">
-		insert into pdt_work_instr_dtl (instr_dtl_no, instr_no, prd_cd , instr_cnt ,  work_str_date , work_str_time)
-		values (PKG_MAKE_CODE.CODE('PWD','PDT_WORK_INSTR_DTL','INSTR_DTL_NO'),#{instrNo},#{prdCd},#{hldCnt},#{instrDate},#{workStrTime})
-	</insert><!--null 포인트 그만...........멈춰 ..............ㅅㅂ............  -->
-	<select id="findWorkSeq" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
-		select PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no') as instrNo from dual
+		insert into pdt_work_instr_dtl (line_no, instr_no,
+		prd_cd,prc_cd ,pdt_cnt, instr_cnt , work_str_date , work_str_time)
+		values (#{lineNo},#{instrNo},#{prdCd},#{prcCd},#{instrCnt},#{needCnt},
+		to_date(#{workStrDate},'yyyy-mm-dd HH24:MI:SS'),#{workStrTime})
+	</insert><!--null 포인트 그만...........멈춰 ..............ㅅㅂ............ -->
+	<select id="findWorkSeq"
+		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select
+		PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no') as instrNo from
+		dual
 	</select>
 	<select id="findWorkSeqOnlyNum" resultType="int">
-		select PKG_MAKE_CODE_SEQ.CODE('pdt_work_instr','instr_no') from dual
+		select
+		PKG_MAKE_CODE_SEQ.CODE('pdt_work_instr','instr_no') from dual
 	</select>
-	
-	
+
+	<insert id="LotFindUpdate">
+		insert into used_mtr_lot (prc_cd,mtr_lot,instr_no
+		,line_no, dtl_select)
+		values (#{prcCd},
+		#{mtrLot},
+		#{planNo},
+		#{lineNo},
+		'PD')
+	</insert>
+
+	<update id="prdNeed">
+		update MTR_LOT_STCK
+		set
+		HLD_CNT = hld_cnt-#{hldCnt},
+		STCK_CNT = STCK_CNT-#{hldCnt}
+		WHERE
+		MTR_LOT = #{mtrLot}
+	</update>
 
 
 </mapper>

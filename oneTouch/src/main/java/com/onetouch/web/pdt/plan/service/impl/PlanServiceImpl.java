@@ -39,9 +39,9 @@ public class PlanServiceImpl implements PlanService {
 		return mapper.selectDtl(no);
 	}
 	@Override
-	public List<PlanVO> findPrcCd(String no) {
+	public List<PlanVO> findPrcCd(PlanVO vo) {
 		// TODO Auto-generated method stub
-		return mapper.findPrcCd(no);
+		return mapper.findPrcCd(vo);
 	}
 	@Override
 	public void insertPlan(ModifyVO<PlanVO> list) {
@@ -77,13 +77,18 @@ public class PlanServiceImpl implements PlanService {
 		mapper.insertPlan(inVo);
 		if(list!=null) {
 			for(PlanVO vo : list) {
+				System.out.println(vo);
+				System.out.println("111111");
 				mapper.planDtlInsert(vo);
+				System.out.println("222222");
 				ordMapper.ordCheck(inVo.getOrdShtNo());
 			}
 		}
 		if(lotList!=null) {
 			for(PlanVO vo : lotList) {
+				System.out.println("333333");
 				mapper.LotFindInsert(vo);
+				System.out.println("444444");
 				mtrMapper.prdNeed(vo);
 			}
 		}

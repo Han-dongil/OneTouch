@@ -12,7 +12,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public interface PlanService {
 	List<PlanVO> list(String nowPhs);
 	List<PlanVO> selectDtl(String no);
-	List<PlanVO> findPrcCd(String no);
+	List<PlanVO> findPrcCd(PlanVO vo);
 	void insertPlan(ModifyVO<PlanVO> list);
 	List<PlanVO> lotCntSelect(PlanVO vo);
 	void insertPlanDtl(Map<String,List<PlanVO>> map);
