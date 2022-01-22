@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.fct.dwtm.dao.dwtm-mapper">
+<mapper namespace="com.onetouch.web.fct.dwtm.dao.DwtmMapper">
 	<select id="dwtmSelect" resultType="com.onetouch.web.fct.dwtm.dao.DwtmVO">
-		
+		SELECT 
+			d.dwtm_cd,
+			d.fct_cd, 
+			substr(to_char(d.str_dt,'yyyy-mm-dd hh24:mi:ss'),12,2) as dwtmStartTime,
+			substr(to_char(d.str_dt,'yyyy-mm-dd hh24:mi:ss'),15,2) as dwtmStartMinute,
+			substr(to_char(d.fin_dt,'yyyy-mm-dd hh24:mi:ss'),12,2) as dwtmEndTime,  
+			substr(to_char(d.fin_dt,'yyyy-mm-dd hh24:mi:ss'),15,2) as dwtmEndMinute,
+			d.emp_no, 
+			d.msr_mtt,
+			d.msr_cmt,
+			f.fct_nm
+		FROM fct_dwtm d JOIN fct_info f
+		ON d.fct_cd = f.fct_cd
+		WHERE 1=1
+		<if test='checkPrcCd != "d" and checkPrcCd !=""'>
+			AND f.prc_cd = #{checkPrcCd}
+		</if> 
 	</select>
 	<insert id="dwtmInsert">
 	

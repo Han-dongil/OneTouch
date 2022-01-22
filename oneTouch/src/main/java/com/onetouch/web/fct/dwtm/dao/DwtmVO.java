@@ -21,5 +21,12 @@ public class DwtmVO {
 	Date finDt;
 	String empNo;
 	String msrMtt;
-	String mstCmt;
+	String msrCmt;
+	String fctNm;		//설비명
+	String dwtmStartTime;
+	String dwtmStartMinute;
+	String dwtmEndTime;
+	String dwtmEndMinute;
+	String checkPrcCd;
+	
 }

@@ -42,7 +42,7 @@
 	</div>
 	<div
 		style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-		<form id="infoFrm" method="post" >
+		<form id="infoFrm" method="post">
 			<table>
 				<tr>
 					<td>설비코드</td>
