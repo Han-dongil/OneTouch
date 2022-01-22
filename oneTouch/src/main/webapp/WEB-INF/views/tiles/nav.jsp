@@ -50,9 +50,10 @@
                 <li class="nav-item"> <a class="nav-link" href="inForm">입고자재관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="inList">입고자재조회</a></li>
                 <li class="nav-item"> <a class="nav-link" href="outList">출고자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="rtnForm">반품자재관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="rtnList">반품자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="stckList">현재재고조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="">재고조정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="">재고조정조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="stckList">재고조회</a></li>
               </ul>
             </div>
           </li>

@@ -16,6 +16,8 @@ import com.onetouch.web.mtr.in.dao.MtrInVO;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.in.service.MtrInService;
 import com.onetouch.web.mtr.ord.service.MtrOrdService;
+import com.onetouch.web.mtr.rtn.dao.MtrRtnVO;
+import com.onetouch.web.mtr.rtn.service.MtrRtnService;
 import com.onetouch.web.mtr.stck.service.MtrLotService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
@@ -25,13 +27,14 @@ public class MtrInFormController {
 	@Autowired MtrInService mtrInService;
 	@Autowired MtrOrdService mtrOrdService;
 	@Autowired MtrLotService mtrLotService;
+	@Autowired MtrRtnService mtrRtnService;
 	
 	@RequestMapping("inForm")
 	public String inForm() {
 		return "tiles/mtr/mtrInForm";
 	}
 	
-	//grid readData
+	//mainGrid readData
 	@ResponseBody
 	@PostMapping("/mtrInForm")
 	public Map<String,Object> selectInList(@RequestBody MtrSearchVO searchVO){
@@ -43,7 +46,7 @@ public class MtrInFormController {
 		return data;
 	}
 	
-	//grid modify
+	//mainGrid modify
 	@ResponseBody
 	@PostMapping("/mtrModify")
 	public int modify(@RequestBody ModifyVO<MtrInVO> mvo){
@@ -51,7 +54,7 @@ public class MtrInFormController {
 		 return 0;
 	}
 	
-	//mtrOrd modal
+	//mtrOrdGrid readData
 	@ResponseBody
 	@GetMapping("/mtrOrdModal")
 	public Map<String,Object> ordList(){
@@ -62,6 +65,24 @@ public class MtrInFormController {
 		data.put("data", datas);
 		System.out.println(data);
 		return data;
+	}
+	//mtrRtnGrid readData
+	@ResponseBody
+	@PostMapping("/mtrRtnModal")
+	public Map<String,Object> rtnList(@RequestBody MtrSearchVO searchVO){
+		Map<String,Object> datas = new HashMap<>();
+		Map<String,Object> data = new HashMap<>();
+		data.put("result", true);
+		datas.put("contents", mtrRtnService.rtnList(searchVO));
+		data.put("data", datas);
+		return data;
+	}
+	//mtrRtnGrid modifyData
+	@ResponseBody
+	@PostMapping("/mtrRtnModify")
+	public int rtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
+		 mtrRtnService.modifyRtn(mvo);
+		return 0;
 	}
 	
 }

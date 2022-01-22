@@ -16,10 +16,10 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
-<script src="${path}/resources/js/modal.js"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${path}/resources/js/modal.js"></script>
 
 
 <style type="text/css">
@@ -33,7 +33,8 @@
 	<div class="container">
 		<h3>자재입고 관리</h3>
 		<div align="right">
-			<button type="button" id="btnOrdFind" align="right">발주내역 조회</button>
+			<button type="button" id="btnOrdFind" align="right">발주내역조회</button>
+			<button type="button" id="btnRtn" align="right">자재반품처리</button>
 		</div>
 		<hr>
 		<form id="frm" method="post">
@@ -47,7 +48,7 @@
 				<div>
 					<label>업체코드</label>
 					<input type="text" id="compCd" name="compCd">
-					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
+					<button type="button" id="btnInCom" onclick="inComList()">ㅇ</button>&nbsp;
 					<label>입고업체명</label>
 					<input type="text" id="compNm" name="compNm" disabled="disabled">
 				</div>
@@ -72,6 +73,24 @@
 <div id="dialog-form"></div>
 <div id="dialog-ord"></div>
 <div id="dialog-lot"></div>
+<div id="dialog-rtn">
+	<form id="rtnFrm" method="post">
+		<div>
+			<label>발주일자</label>
+			<input type="Date" id="mStartDate" name="startDate">&nbsp;
+			<label> ~ </label>&nbsp;
+			<input type="Date" id="mEndDate" name="endDate">
+		</div>
+		<div>
+			<label>입고업체</label>
+			<input type="text" id="mCompCd" name="compCd">
+			<button type="button" id="InCom" onclick="inComList()">ㅇ</button>&nbsp;
+			<label>업체명</label>
+			<input type="text" id="mCompNm" name="compNm" disabled="disabled">&nbsp;
+			<button type="button" id="rtnSearch">조회</button>
+		</div>
+	</form>
+</div>
 
 <script type="text/javascript">
 /* toastr.options = {
@@ -132,6 +151,26 @@ Grid.applyTheme('striped', {
        }
     }
 });
+Grid.setLanguage('ko');
+/* Grid.setLanguage('ko', {
+  	display: {
+        noData: 'No data.',
+        loadingData: 'Loading data.',
+        resizeHandleGuide: 'You can change the width of the column by mouse drag, ' +
+                            'and initialize the width by double-clicking.'
+    },
+    net: {
+        confirmCreate: 'Are you sure you want to create {{count}} data?',
+        confirmUpdate: 'Are you sure you want to update {{count}} data?',
+        confirmDelete: 'Are you sure you want to delete {{count}} data?',
+        confirmModify: 'Are you sure you want to modify {{count}} data?',
+        noDataToCreate: 'No data to create.',
+        noDataToUpdate: 'No data to update.',
+        noDataToDelete: 'No data to delete.',
+        noDataToModify: '반품처리할 내용을 입력해 주세요.',
+        failResponse: 'An error occurred while requesting data.\nPlease try again.'
+    }
+}); */
 
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -290,6 +329,7 @@ var mainGrid = new Grid({
 					}
 				}
    		});
+   
 //기존의 데이터는 수정이안되게 하는것
 mainGrid.on('editingStart', (ev) => {
     if(ev.columnName == 'mtrCd') {
@@ -345,12 +385,34 @@ let dialog = $( "#dialog-form" ).dialog({
 	width: 500
 });
 //발주내역모달 설정
-let wideDialog = $( "#dialog-ord" ).dialog({
+let ordDialog = $( "#dialog-ord" ).dialog({
 	autoOpen : false,
 	modal : true,
 	resizable: false,
 	height: "auto",
 	width: 800
+});
+//반품처리모달 설정
+let rtnDialog = $( "#dialog-rtn" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 800,
+	buttons:{
+		"반품처리":()=>{
+			rtnGrid.blur();
+			rtnGrid.request('modifyData', {
+				checkedOnly: true
+			});
+			
+			//modify 처리 후 모달 자동으로 꺼주는 기능 **************************모르겠음
+			/* rtnGrid.on('successResponse',function(ev){
+				console.log(ev)
+				rtnDialog.dialog("close");
+			}); */
+		}
+	}
 });
 //lot list 모달 설정
 /* let lotDialog = $( "#dialog-lot" ).dialog({
@@ -367,11 +429,16 @@ let wideDialog = $( "#dialog-ord" ).dialog({
 }); */
 
 //업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
+function getModalBas(param,ev){
+	if(ev.id == "InCom"){
+			$('#mCompCd').val(param.dtlCd);
+			$('#mCompNm').val(param.dtlNm);
+	} else if(ev.id == "btnInCom"){
 			$('#compCd').val(param.dtlCd);
 			$('#compNm').val(param.dtlNm);
+	}
 			dialog.dialog("close");
-		};
+};
 		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
@@ -426,7 +493,7 @@ function getModalMtr(param){
 } */
 /* $('#dialog-ord').empty(); */
 
-//mtrOrd modal
+//발주내역 모달
 let ordDataSource = {
 		  api: {
 			  	readData: { url: './mtrOrdModal',method: 'GET'
@@ -471,21 +538,74 @@ ordGrid.on('dblclick', ev => {
 	getModalOrd(ordGrid.getRow(ev.rowKey));
 });
 
-ordGrid.on('successResponse',function(ev){
-	console.log("성공")
-});
-ordGrid.on('failResponse',function(ev){
-	console.log("실패")
-});
-
-//발주내역모달
 function getModalOrd(param){
 	console.log(param)
 	param.rowKey = mainGrid.getRowCount();
-	mainGrid.appendRow(param);	
+	mainGrid.appendRow(param);
 	
-	wideDialog.dialog("close");
+	ordDialog.dialog("close");
 };
+
+
+//반품 모달
+let rtnDataSource = {
+		  api: {
+			  	readData: { url: './mtrRtnModal',method: 'POST'},
+			  	modifyData: { url: './mtrRtnModify', method: 'POST'}
+		  },
+		  contentType: 'application/json'
+		}
+
+let rtnGrid = new Grid({
+el : document.getElementById('dialog-rtn'),
+data : rtnDataSource,
+rowHeaders : [ 'checkbox'],
+columns : [ 
+			{
+				header: '발주번호',
+				name: 'ordNo',
+				hidden: true
+			},
+			{
+				header: '발주일자',
+				name: 'ordDate'
+			},
+			{
+				header: '입고업체명',
+				name: 'compNm'
+			},
+			{
+				header: '자재명',
+				name: 'mtrNm'
+			},
+			{
+				header: '단위',
+				name: 'unit'
+			},
+			{
+				header: '반품량',
+				name: 'rtnAmt',
+				editor: 'text'
+			},	
+			{
+				header: '반품사유',
+				name: 'cmt',
+				editor: 'text'
+			}
+			]
+});
+rtnGrid.on('dblclick',function(ev){
+	if(ev.columnName == "ordDate" || ev.columnName == "compNm" || ev.columnName == "mtrNm" || ev.columnName == "unit"){
+		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
+	}
+});
+rtnGrid.on('successResponse',function(ev){
+	console.log("성공")
+});
+rtnGrid.on('failResponse',function(ev){
+	console.log("실패")
+});
+
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
@@ -508,15 +628,33 @@ btnFind.addEventListener("click", function(){
 });
 //발주내역버튼
 btnOrdFind.addEventListener("click", function(){
-	wideDialog.dialog("open");
+	ordDialog.dialog("open");
 	ordGrid.readData();
 	$('#ui-id-1').html('발주 내역');
 	ordGrid.refreshLayout();
 });
-//업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
+//반품처리버튼
+btnRtn.addEventListener("click", function(){
+	document.getElementById("mStartDate").value = null;
+	document.getElementById("mEndDate").value = null;
+	document.getElementById("mCompCd").value = null;
+	document.getElementById("mCompNm").value = null;
+	rtnDialog.dialog("open");
+	/* rtnGrid.resetData([{}]); */
+	rtnGrid.readData(1,{},true);
+	
+	/* $('#ui-id-1').html('반품 처리'); */
+	rtnGrid.refreshLayout();
+});
+//업체검색버튼 function
+function inComList(){
+	mBas('MTR_COM',event.target);
 	$('#ui-id-1').html('업체 검색');
+};
+//조회버튼 in 반품모달
+rtnSearch.addEventListener("click", function(){
+   let param= $("#rtnFrm").serializeObject();
+   rtnGrid.readData(1,param,true);
 });
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){
