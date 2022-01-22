@@ -26,7 +26,7 @@
 </head>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>자재반품 조회</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>

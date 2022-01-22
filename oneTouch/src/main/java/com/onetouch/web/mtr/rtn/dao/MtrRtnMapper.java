@@ -7,4 +7,6 @@ import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 public interface MtrRtnMapper {
 
 	List<MtrRtnVO> selectRtn(MtrSearchVO inSearchVO);
+	List<MtrRtnVO> rtnList(MtrSearchVO searchVO);
+	void insertRtn(MtrRtnVO vo);
 }

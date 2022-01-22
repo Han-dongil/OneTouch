@@ -95,7 +95,6 @@ function mMtr(){
 		});
 		
 		mtrGrid.on('dblclick', ev => {
-			console.log(mtrGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
 			getModalMtr(mtrGrid.getRow(ev.rowKey));
 		})
 		
@@ -291,7 +290,7 @@ function mPrc(){
 }
 
 
-//공콩코드
+//공통코드
 function mBas(basCd){
 	let basData;
 		
@@ -300,7 +299,6 @@ function mBas(basCd){
 		method : 'POST',
 		data : 'basCd=' + basCd,
 		success : function(result){
-			console.log(result);
 			basData = result;
 		}
 	});
@@ -390,6 +388,113 @@ function mBas(basCd){
 		basGrid.on('dblclick', ev => {
 			console.log(basGrid.getRow(ev.rowKey)) //ajax result(ev.rowKey)
 			getModalBas(basGrid.getRow(ev.rowKey));
+		})
+		
+		basGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		basGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+	});
+}
+//공통코드
+function mBas(basCd,btn){
+	let basData;
+		
+	$.ajax({
+		url : './modalBasList',
+		method : 'POST',
+		data : 'basCd=' + basCd,
+		success : function(result){
+			basData = result;
+		}
+	});
+	
+	dialog.dialog("open");
+	
+	let title;
+	switch(basCd){
+		case 'FCT_DIV' :
+			title ='설비구분'
+			break;
+		case 'FCT_REP':
+			title ='설비수리사항'
+			break;
+		case 'FCT_NO_USE':
+			title ='비가동사유코드'
+			break;
+		case 'FCT_SIZE':
+			title ='설비규격종류'
+			break;
+		case 'FCT_COM':
+			title ='설비업체코드'
+			break;
+		case 'FCT_ACT':
+			title ='설비점검후조치사항'
+			break;
+		case 'MTR_COM':
+			title ='자재업체'
+			break;
+		case 'MTR_SIZE':
+			title ='자재규격종류'
+			break;
+		case 'MTR_UNIT':
+			title ='단위구분'
+			break;
+		case 'MTR_CAL':
+			title ='정산구분'
+			break;
+		case 'MTR_SECT':
+			title ='자재구분'
+			break;
+		case 'PDT_SECT':
+			title ='제품구분'
+			break;
+		case 'PDT_PRC':
+			title ='공정구분'
+			break;
+		case 'DEPT':
+			title ='부서'
+			break;
+	}
+			
+	$("#dialog-form").attr('title', title);
+	
+	$("#dialog-form").load("modalBas", function(){
+		let basGrid = tui.Grid;
+		
+		basGrid.applyTheme('striped',{
+			cell:{
+				header:{
+					background:'#eef'
+				},
+				evenRow:{
+					background:'#fee'
+				}
+			}
+		})
+		
+		const basColumns = [ 
+			{
+				header: title + '코드',
+				name: 'dtlCd',
+				//hidden: true
+			},
+			{
+				header: title,
+				name: 'dtlNm'
+			}
+		];
+		
+		basGrid = new Grid({
+			el : document.getElementById('bas_grid'),
+			data : basData,
+			columns : basColumns
+		});
+		
+		basGrid.on('dblclick', ev => {
+			getModalBas(basGrid.getRow(ev.rowKey),btn);
 		})
 		
 		basGrid.on('successResponse',function(ev){
