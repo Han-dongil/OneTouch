@@ -12,10 +12,12 @@ select * from fct_info where line_no = #{lineNo}
 
 <!-- 등록 목록조회 -->
 <select id="selectFctInfoAll" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	select * from fct_info 
+	select f.*, a.prc_nm as  prcNm
+	from fct_info f join adm_prc_mng a 
+	    on f.prc_cd = a.prc_cd
 	where 1=1
 		<if test='checkPrcCd != "d" and checkPrcCd != null'>
-			and prc_cd = #{checkPrcCd}
+			and f.prc_cd = #{checkPrcCd}
 		</if>
 </select>
 
