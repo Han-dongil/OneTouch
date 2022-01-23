@@ -18,10 +18,15 @@
 		WHERE 1=1
 		<if test='checkPrcCd != "d" and checkPrcCd !=""'>
 			AND f.prc_cd = #{checkPrcCd}
-		</if> 
+		</if>
+		<if test='proceedCheck == "proceed"'>
+			AND d.fin_dt is null
+			AND d.str_dt is not null 
+		</if>
+		
 	</select>
 	<insert id="dwtmInsert">
-	
+		INSERT  INTO fct_dwtm VALUES(PKG_MAKE_CODE.CODE('DWT','FCT_DWTM','DWTM_CD') , #{fctCd}, #{strDt}, '', #{empNo}, #{msrMtt}, '')
 	</insert>
 	<update id="dwtmUpdate">
 	

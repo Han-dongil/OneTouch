@@ -19,6 +19,14 @@ public class DwtmController {
 
 	@Autowired DwtmService dservice;
 	
+	@ResponseBody
+	@PostMapping("dwtmInsret")
+	public int dwtmInsert(@RequestBody DwtmVO dwtmVO) {
+		log.info("등록 컨트롤러 연결 성공");
+		
+		return dservice.dwtmInsert(dwtmVO);
+	}
+	
 	@RequestMapping("ftcDwtmIns")
 	public String moveDwtmPage() {
 		
@@ -29,9 +37,6 @@ public class DwtmController {
 	@ResponseBody
 	@PostMapping("dwtmSelectAll")
 	public List<DwtmVO> dwtmSelect(@RequestBody DwtmVO dwtmVO){
-		System.out.println("@@@@@@@@@@@@@@@@@@@@");
-		System.out.println(dwtmVO);
-		
 		return dservice.dwtmSelectAll(dwtmVO);
 		
 	}

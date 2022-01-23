@@ -7,4 +7,7 @@ import com.onetouch.web.fct.dwtm.dao.DwtmVO;
 public interface DwtmService {
 
 	List<DwtmVO> dwtmSelectAll(DwtmVO dwtmVO);
+	int dwtmInsert(DwtmVO dwtmVO);
+	int dwtmUpdate(DwtmVO dwtmVO);
+	int dwtmDelte(DwtmVO dwtmVO);
 }
