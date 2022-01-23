@@ -26,13 +26,13 @@
 <div align="right" style="margin-right: 3%;">
 			<button id="btnSel">조회</button>
 			<button id="btnCle" onclick=cleardetail()>clear</button>
-			<button id="btnSave">저장</button>
+			<button id="btnSave" onclick=dwtmSave()>저장</button>
 			<button id="btnDel">삭제</button>
 			<hr>
 		</div>
 <div class="flex row">
 	
-	<div class = "col-5">
+	<div class = "col-6">
 		<form id="dwtmFctSelectFrm" method="POST">
 			<span>
 				<label style="font-size: 30px; color: mediumblue; margin-right: 30px">✔설비</label>
@@ -40,7 +40,10 @@
 				<label for="fctSelectRdo">비동기 등록
 					<input type="radio" id="fctSelectRdo" name="dwtmRao" checked >
 				</label>
-				<label for="dwtmFctSelectRdo">비동기 중인 설비
+				<label for="proceedingDwtm">비동기 중인 설비
+					<input type="radio" id="proceedingDwtm" name="dwtmRao">
+				</label>
+				<label for="dwtmFctSelectRdo">비동기 이력
 					<input type="radio" id="dwtmFctSelectRdo" name="dwtmRao">
 				</label>
 				<hr>
@@ -56,17 +59,15 @@
 		<br>
 	</div>
 	<div class= "col-6">
-	
-		<span>
-			<label style="font-size: 30px; color: mediumblue;">✔상세코드</label><br>
-			<label>설비코드</label>
-			<input id='fctCd' name='fctCd'>
-			<label>&nbsp;&nbsp;설비명</label>
-			<input id='fctNm' name='fctNm'>
-			<hr>
-		</span>
-		
 		<form id="flwFrm" name="flwFrm" method="post">
+			<span>
+				<label style="font-size: 30px; color: mediumblue;">✔상세코드</label><br>
+				<label>설비코드</label>
+				<input id='fctCd' name='fctCd'>
+				<label>&nbsp;&nbsp;설비명</label>
+				<input id='fctNm' name='fctNm'>
+				<hr>
+			</span>
 			<label>비가동<br>이력번호&nbsp;</label><input style="width: 172px;" id="dwtmCd" name="dwtmCd" disabled><br>
 			<hr>
 			
@@ -97,7 +98,7 @@
 			</span>
 			<hr>
 			<label >비가동사유</label>
-			<select style="width: 100px;" id="dwtmSelectBtn" name="dwtmSelectBtn" >
+			<select style="width: 100px;" id="msrMtt" name="msrMtt" >
 				<option value="점검">점검</option>
 				<option value="수리">수리</option>
 				<option value="대기">대기</option>
@@ -121,6 +122,7 @@
 	let dwtmCheckData;
 	let DwtmVO; 
 	let rdostatus =1; //비동기 등록, 비동기 중인 설비 라이도 버튼 값 
+	let dwtmList = [];
 
 	Grid.applyTheme('striped', {	
         cell: {
@@ -147,31 +149,28 @@
 				header: '설비코드',
 				name: 'fctCd',
 				editor: 'text',
-				width:140
 			},
 			{
 				header: '설비명',
 				name: 'fctNm',
 				editor: 'text',
-				width:100
 			},
 			{
 				header: '사용공정',
 				name: 'prcCd',
 				editor: 'text',
-				width:60
 			},
 			{
 				header: '공정이름',
 				name: 'prcNm',
 				editor: 'text',
-				width:100
 			},
 			{
 				header: '설비상태',
 				name: 'fctPhs',
 				editor: 'text',
-				width:50
+				width: 70,
+				align : 'center'
 			}
 		]
 		
@@ -196,31 +195,26 @@
 				header: '비동기이력',
 				name: 'dwtmCd',
 				editor: 'text',
-				width:140
 			},
 			{
 				header: '설비명',
 				name: 'fctNm',
 				editor: 'text',
-				width:100
 			},
 			{
 				header: '시작',
 				name: 'strDt',
 				editor: 'text',
-				width:60
 			},
 			{
 				header: '종료',
 				name: 'finDt',
 				editor: 'text',
-				width:100
 			},
 			{
 				header: '비동기 상태',
 				name: 'msrMtt',
 				editor: 'text',
-				width:50
 			}
 		]
 		
@@ -257,10 +251,11 @@
 	fctGrid.on('click', (ev) =>{
 		
 		fctCheckData = data[ev.rowKey];
-		console.log(fctCheckData.fctNm);
 		
 		document.getElementById('fctCd').value = fctCheckData.fctCd;
 		document.getElementById('fctNm').value =fctCheckData.fctNm;
+		document.getElementById('msrCmt').disabled = true;
+		document.getElementById('dwtmDate').disabled = false;
 	})
 	
 	dwtmGrid.on('click',(ev)=>{
@@ -278,18 +273,13 @@
 		document.getElementById('dwtmStartMinute').value = dwtmCheckData.dwtmStartMinute;
 		document.getElementById('dwtmEndTime').value = dwtmCheckData.dwtmEndTime;
 		document.getElementById('dwtmEndMinute').value = dwtmCheckData.dwtmEndMinute;
-		
-		//아작스로 값 담아서 ev로 rowKey걸어주기 
 	})
-	//refreshLayout();
 	 //라디오 클릭하면 값 가져오기 
   	$("input[name='dwtmRao']:radio").change(function (e) {
   		if(e.target.id == 'fctSelectRdo'){
   			rdostatus = 1;
-  			console.log('비가동 그리드 숨기기')
   			document.getElementById("dwtmFctGridDiv").style = 'display:none';
   			document.getElementById("fctGridDiv").style = 'display:block';
-	  		console.log("설비 그리드에 뿌리기 ")
 	  		fctChekPrcCd();	//페이지 접속후 기본으로 설비를 보여주는 그리드 출력하는 함수
 	  		fctGrid.refreshLayout();
 	  		
@@ -301,14 +291,24 @@
   			document.getElementById('dwtmStartMinute').disabled = false;
   			document.getElementById('dwtmEndTime').disabled = false;
   			document.getElementById('dwtmEndMinute').disabled = false;
-	  		
-	  		
+  		}
+  		else if(e.target.id == 'proceedingDwtm'){
+  			rdostatus = 2;
+  			document.getElementById("dwtmFctGridDiv").style.display = 'block';
+  			document.getElementById("fctGridDiv").style.display = 'none';
+  			dwtmCheckData = $("#dwtmFctSelectFrm").serializeObject();
+			dwtmCheckData.proceedCheck = 'proceed'
+			console.log(dwtmCheckData)
+			dwtmselect();
+			dwtmGrid.refreshLayout();
+  			
   		}
   		else{
   			rdostatus = 0;
   			console.log('232')
   			document.getElementById("dwtmFctGridDiv").style.display = 'block';
   			document.getElementById("fctGridDiv").style.display = 'none';
+  			dwtmCheckData = $("#dwtmFctSelectFrm").serializeObject();
   			dwtmselect();	//비가동 조회
   			dwtmGrid.refreshLayout();
   			
@@ -324,28 +324,35 @@
   		
   	});
 	
-  		
+	 //저장 클릭이벤트에 사용할 함수
+  	function dwtmSave(){
+  		let dwtmInsertData = $("#flwFrm").serializeObject();
+		console.log(dwtmInsertData)
+  		$.ajax({
+			url:"dwtmInsret",
+			method:"post",
+			data:JSON.stringify(dwtmInsertData),
+			contentType:"application/json"
+		}).done(function(datas){
+			console.log(datas)
+			console.log('인서트 성공 ')
+			alert('등록완료');
+		})
+	 }	
   		
   //select 버튼 누르면 조건에 맞게 조회하기
 	function chageLangSelect(event){
 		let langSelect = document.getElementById("prcCd")
-		console.log('셀렉트 이벤트 발생')
-		console.log(event.target)
 	}
   
   	//비동기 테이블 조회 
   	function dwtmselect(){
-  		
-  		dwtmCheckData = $("#dwtmFctSelectFrm").serializeObject();
-  		console.log('7777777777777777777777777777777777777777777777')
-  		console.log(dwtmCheckData)
 			$.ajax({
 				url:'dwtmSelectAll',
 				method:'POST',
 				data: JSON.stringify(dwtmCheckData),
 				contentType:"application/json"
 			}).done(function(datas){
-				console.log(datas)
 				dwtmData = datas;	
 				dwtmGrid.resetData(datas)
 				
@@ -356,10 +363,7 @@
   	
 	//설비구분을 SELECT로 선택해서 조회하기 
 	function fctChekPrcCd(){
-		console.log(rdostatus)
 		if(rdostatus == 1){
-			console.log('111111설비 테이플 ')
-			
 			fctCheckData = $("#dwtmFctSelectFrm").serializeObject();
 			 $.ajax({
 				  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
@@ -373,27 +377,38 @@
 				  console.log(data)
 			  }) 
 		}
-		else{
+		else if(rdostatus == 2){
 			dwtmCheckData = $("#dwtmFctSelectFrm").serializeObject();
-	  		console.log('7777777777777777777777777777777777777777777777')
-	  		console.log(dwtmCheckData)
-				$.ajax({
-					url:'dwtmSelectAll',
-					method:'POST',
-					data: JSON.stringify(dwtmCheckData),
-					contentType:"application/json"
-				}).done(function(datas){
-					console.log(datas)
-					dwtmData = datas;	
-					dwtmGrid.resetData(datas)
-					
-				}) 
+			dwtmCheckData.proceedCheck = 'proceed'
+			console.log('공정구분 조회 ')
+			console.log(checkPrcCd)
+			console.log(dwtmCheckData)
+			
+			dwtmSelect()
+			
 		}
-		
-	
+		else{
+			dwtmSelect()
+		}
 	}	
   		
   		
+	function dwtmSelect(){
+		console.log('공정구분 검색')
+		console.log(dwtmCheckData)
+		
+			$.ajax({
+				url:'dwtmSelectAll',
+				method:'POST',
+				data: JSON.stringify(dwtmCheckData),
+				contentType:"application/json"
+			}).done(function(datas){
+				console.log(datas)
+				dwtmData = datas;	
+				dwtmGrid.resetData(datas)
+				
+			}) 
+	}
 	//상세보기 input 클리어
 	function cleardetail(){
 			 console.log('clear')
@@ -416,25 +431,38 @@
 			 console.log(hours)
 			 console.log(minutes)
 			 
-			 document.getElementById('endDwtmTimeHours').value = hours;
-			 document.getElementById('endDwtmTimeMinutes').value = minutes;
+			 document.getElementById('dwtmEndTime').value = hours;
+			 document.getElementById('dwtmEndMinute').value = minutes;
 			 document.getElementById('finDt').value = today;
 		 }
 	//시작 버튼 현재시간 구하는 함수 
 	function startTiem(){
 			 let today = new Date();
+			 let year =  today.getFullYear();
+			 let month =  today.getMonth()+1;
+			 let day =  today.getDate();
 			 let hours = today.getHours();		//시
 			 let minutes = today.getMinutes();	//분
-			 console.log(hours)
-			 console.log(minutes)
+			 //let dwtmstrDate = year+'-'+month
+			 console.log(today)
+			 console.log('년')
+			 console.log(year)
+			 console.log('월')
+			 console.log(month)
+			 console.log('일')
+			 console.log(day)
 			 
-			 document.getElementById('startDwtmTimeHours').value = hours;
-			 document.getElementById('startDwtmTimeMinutes').value = minutes;
+			 document.getElementById('dwtmStartTime').value = hours;
+			 document.getElementById('dwtmStartMinute').value = minutes;
 			 document.getElementById('strDt').value = today;
+			 document.getElementById('dwtmDate').value = '2022-01-23';
+			 
 		 }
+	
 		 
 	
 	fctChekPrcCd();	//페이지 접속후 기본으로 설비를 보여주는 그리드 출력하는 함수
+	document.getElementById("dwtmFctGridDiv").style = 'display:none';
 </script>
 </body>
 </html>

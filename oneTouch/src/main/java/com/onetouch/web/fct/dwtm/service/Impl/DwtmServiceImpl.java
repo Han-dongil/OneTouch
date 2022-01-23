@@ -19,4 +19,22 @@ public class DwtmServiceImpl implements DwtmService {
 		return dmapper.dwtmSelect(dwtmVO);
 	}
 
+	@Override
+	public int dwtmInsert(DwtmVO dwtmVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int dwtmUpdate(DwtmVO dwtmVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int dwtmDelte(DwtmVO dwtmVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
