@@ -42,8 +42,11 @@ public class PrcController {
 		return service.prdPrcList(vo);
 	}
 	@ResponseBody
-	@GetMapping("prcStart")
-	public List<PrcVO> prcStart(){
-		return null;
+	@PostMapping("prcStart")
+	public PrcVO prcStart(@RequestBody List<PrcVO> list){
+		System.out.println(list);
+		PrcVO vo = new PrcVO();
+		vo=list.get(0);
+		return service.prcFlowMinMax(vo);
 	}
 }

@@ -145,11 +145,12 @@
 			headers:{
 				"Content-Type": "application/json",
 			},
-			body:JSON.stringify()
+			body:JSON.stringify(hiddenGrid.getData())
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			
+			alert(result.msg);
+			console.log(result);
 			
 		})
 	})

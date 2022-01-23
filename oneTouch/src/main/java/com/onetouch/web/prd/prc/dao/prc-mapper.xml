@@ -4,6 +4,9 @@
 	<select id="lineList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select line_no from fct_line
 	</select>
+	<select id="lineStartCheck" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select * from prd_prc_mng where instr_no= #{instrNo}
+	</select>
 	<select id="prcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select *
 		from adm_prd a join adm_prc_flow b
@@ -24,9 +27,42 @@
 	</select>
 	<select id="prcFlowMinMax" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select *
-				from adm_prc_flow
-				where prd_cd=(select prd_cd
-                from pdt_work_instr_dtl
-                where instr_no=#{instrNo} and prc_cd=#{prcCd})
+		from (select * from pdt_work_instr_dtl
+   		where instr_no=#{instrNo} ) a 
+     	join(select *
+		        from adm_prc_flow
+		        where prd_cd=(select prd_cd
+		                        from pdt_work_instr_dtl
+		                        where instr_no=#{instrNo} and prc_cd=#{prcCd})) b
+ 		on(a.prc_Cd=b.prc_cd AND a.prd_cd=b.prd_cd)                        
+	</select>
+	<select id="myPrcFlow" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select *
+		from (select * from pdt_work_instr_dtl
+   		where instr_no=#{instrNo} and prc_cd=#{prcCd} ) a 
+     	join(select *
+		        from adm_prc_flow
+		        where prd_cd=(select prd_cd
+		                        from pdt_work_instr_dtl
+		                        where instr_no=#{instrNo} and prc_cd=#{prcCd})) b
+ 		on(a.prc_Cd=b.prc_cd AND a.prd_cd=b.prd_cd)                        
+	</select>
+	<insert id="defaultInsert">
+		insert into prd_prc_mng (instr_no , line_no ,prc_cd) values (#{instrNo},#{lineNo},#{prcCd})
+	</insert>
+	<update id="startUpdate">
+		update prd_prc_mng set
+		work_str_dt=sysdate ,
+		now_phs='가동중'
+		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</update>
+	<select id="startTimeSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select work_str_dt from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</select>
+	<select id="flowCheck" resultType="Integer">
+		select count(work_str_dt) from prd_prc_mng
+		where work_str_dt is not null
+		group by instr_no
+		having instr_no=#{instrNo}
 	</select>
 </mapper>

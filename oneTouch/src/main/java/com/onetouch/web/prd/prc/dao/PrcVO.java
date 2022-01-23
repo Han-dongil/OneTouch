@@ -22,5 +22,9 @@ public class PrcVO extends WorkVO{
 	private String prdLot;
 	//공정흐름 필드
 	private String prcSeq;
+	private String recSeqSave;
+	//메세지
+	private String msg;
+	
 	
 }
