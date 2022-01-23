@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class LotVO {
-
 	private String mtrLot;
 	private String hldCnt;
 	private String mtrCd;

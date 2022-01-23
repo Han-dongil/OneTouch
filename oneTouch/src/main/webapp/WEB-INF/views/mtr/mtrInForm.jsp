@@ -284,7 +284,7 @@ var mainGrid = new Grid({
 					editor: 'text',
 				   sortable: true,
 				   formatter({value}){
-					   /* unitCost*inAmt */
+					   //unitCost*inAmt 
 					   return format(value);
 				   }
 				 },
@@ -320,7 +320,7 @@ var mainGrid = new Grid({
 			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
 			                } 
 			            },
-			            totCost: {
+			            totPrice: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
@@ -329,7 +329,18 @@ var mainGrid = new Grid({
 					}
 				}
    		});
-   
+
+function totCostCal(){
+	let datas = mainGrid.getData()
+}
+
+mainGrid.on('editingFinish', (ev) => {
+	let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
+	let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
+	if(inAmt != 0){
+		mainGrid.setValue(ev.rowKey,"totCost",inAmt*unitCost)
+	}
+})
 //기존의 데이터는 수정이안되게 하는것
 mainGrid.on('editingStart', (ev) => {
     if(ev.columnName == 'mtrCd') {
@@ -357,11 +368,23 @@ function format(value){
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
   
-mainGrid.on('response', function(ev) {
-      /* console.log(ev.xhr.response); */
+mainGrid.on("response", function(ev) {
+		let data;
+		window.setTimeout(()=>{
+			data = mainGrid.getData()
+			for(i=0; i<data.length; i++){
+				console.log(data)
+				console.log(i)
+				console.log(data[i].inAmt*data[i].unitCost)
+				let val = data[i].inAmt*data[i].unitCost
+				mainGrid.setValue(i,"totCost",val)
+			}
+		},100)
+		//mainGrid.setValue(0,"totCost",125)
+      /* console.log(ev.xhr.response);
       if(ev.xhr.response == 0){
       	mainGrid.readData();
-      }
+      } */ 
    });
  
 
@@ -499,7 +522,8 @@ let ordDataSource = {
 			  	readData: { url: './mtrOrdModal',method: 'GET'
 		     	 }
 		  },
-		  contentType: 'application/json'
+		  contentType: 'application/json',
+		  initialRequest: false
 		}
 
 let ordGrid = new Grid({
@@ -553,7 +577,8 @@ let rtnDataSource = {
 			  	readData: { url: './mtrRtnModal',method: 'POST'},
 			  	modifyData: { url: './mtrRtnModify', method: 'POST'}
 		  },
-		  contentType: 'application/json'
+		  contentType: 'application/json',
+		  initialRequest: false
 		}
 
 let rtnGrid = new Grid({
@@ -592,7 +617,7 @@ columns : [
 				name: 'cmt',
 				editor: 'text'
 			}
-			]
+		]
 });
 rtnGrid.on('dblclick',function(ev){
 	if(ev.columnName == "ordDate" || ev.columnName == "compNm" || ev.columnName == "mtrNm" || ev.columnName == "unit"){
@@ -625,6 +650,7 @@ btnSave.addEventListener("click", function(){
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
    mainGrid.readData(1,param,true);
+   console.log("11111111")
 });
 //발주내역버튼
 btnOrdFind.addEventListener("click", function(){

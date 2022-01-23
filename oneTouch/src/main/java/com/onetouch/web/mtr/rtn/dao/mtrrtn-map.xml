@@ -19,6 +19,8 @@
 			MTR_ORD_DTL A, MTR_ORD B
 		WHERE
 			A.ORD_NO = B.ORD_NO
+		AND
+			NVL(A.ORD_AMT,0) - (NVL(A.IN_AMT,0)+NVL(A.FLT_AMT,0)) > 0
 		<!-- AND
 			A.FLT_AMT > 0 -->
 		<if test="startDate != null and startDate != ''"> 
@@ -80,20 +82,16 @@
 		INSERT INTO MTR_RTN (
 			RTN_NO,
 			ORD_NO,
-			IN_DATE,
 			RTN_REQ_DATE,
 			MTR_CD,
-			UNIT,
 			RTN_AMT,
 			CMT
 			)
 		VALUES(
 			 PKG_MAKE_CODE.CODE('RTN', 'MTR_RTN', 'RTN_NO', 'RTN_REQ_DATE'),
 			#{ordNo},
-			#{inDate},
 			SYSDATE,
 			#{mtrCd},
-			#{unit},
 			#{rtnAmt},
 			#{cmt}
 			)

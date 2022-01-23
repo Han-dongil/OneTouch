@@ -16,8 +16,6 @@ public class MtrOrdServiceImpl implements MtrOrdService {
 	
 	@Override
 	public List<MtrOrdVO> ordMtrList() {
-		System.out.println("************");
-		System.out.println(mapper.ordMtrList());
 		return mapper.ordMtrList();
 	}
 	

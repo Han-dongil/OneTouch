@@ -63,7 +63,6 @@ public class MtrInFormController {
 		data.put("result", true);
 		datas.put("contents", mtrOrdService.ordMtrList());
 		data.put("data", datas);
-		System.out.println(data);
 		return data;
 	}
 	//mtrRtnGrid readData
