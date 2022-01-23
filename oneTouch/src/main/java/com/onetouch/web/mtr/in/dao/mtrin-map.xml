@@ -11,9 +11,9 @@
 			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT,
 			A.ORD_NO, 
 			A.FLT_AMT, 
-			A.IN_AMT, 
-			A.UNIT_COST, 
+			A.IN_AMT,
 			A.TOT_COST,
+			A.UNIT_COST, 
 			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
 		FROM 
 			MTR_IN A, ADM_MTR B
@@ -71,10 +71,20 @@
 	<update id="updateOrd">
 		UPDATE MTR_ORD_DTL
 		SET
-			IN_AMT = (IN_AMT+#{inAmt}),
-			NOTIN_AMT = ((SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt})
+			IN_AMT = (NVL(IN_AMT,0)+#{inAmt}),
+			FLT_AMT = (NVL(FLT_AMT,0)+#{fltAmt}),
+			NOTIN_AMT = ((SELECT 
+								ORD_AMT FROM MTR_ORD_DTL 
+							WHERE 
+								ORD_NO = #{ordNo}
+							AND
+								MTR_CD = #{mtrCd})
+						-(NVL(IN_AMT,0)+#{inAmt})
+						-(NVL(FLT_AMT,0)+#{fltAmt}))
 		WHERE
-			ORD_NO = #{ordNo} AND MTR_CD = #{mtrCd}
+			ORD_NO = #{ordNo} 
+		AND
+			MTR_CD = #{mtrCd}
 	</update>
 	<update id="updateIn">
 		UPDATE MTR_IN
