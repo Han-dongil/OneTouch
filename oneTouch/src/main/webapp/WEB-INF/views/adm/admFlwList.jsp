@@ -69,9 +69,16 @@
 	
 	Grid.applyTheme('default',{
 		cell:{
-			header:{
+			/* header:{
 				background:'#eef'
-			}
+			} */
+			header: {
+	            background: '#4B49AC',
+	            text: '#fff'
+	        },
+	        evenRow: {
+	        	background:'#F5F7FF'
+	        }
 		}
 	})
 	

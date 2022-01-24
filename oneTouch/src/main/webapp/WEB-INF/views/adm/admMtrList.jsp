@@ -13,9 +13,129 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+
+<style>
+hr{
+	margin-top: 0.4rem !important;
+}
+.labeltext{
+	width: 80px !important;
+}
+.bascard1{
+	height: 680px;
+}
+.inline{
+	display: inline-block;
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-botton: 0px !important;
+	margin-bottom: 0px !important;
+}
+.rowdiv{
+	margin-bottom: 15px !important;
+}
+</style>
+
 </head>
 <body>
-<br>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">공정관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="flex row">
+		<div class = "col-4">
+			<h4 class="gridtitle">✔자재목록</h4>
+			<br><br>
+			<hr>
+			<div id="grid"></div>
+		</div>
+		<div class= "col-8">
+			<h4 class="gridtitle">✔자재상세정보</h4>
+			<span class="floatright">
+				<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+				<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+			</span>
+			<br><br>
+			<hr>
+			<div class="card bascard">
+				<div class="card-body bascard1">
+					<h4 class="card-title">기초코드</h4>
+					<form id="mtrFrm" name="mtrFrm" method="post">
+						<div class="rowdiv">
+							<label class="labeltext">자재코드&nbsp;</label>
+							<input id="mtrCd" name="mtrCd" class="inputtext" readonly>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재명&emsp;&nbsp;</label>
+							<input id="mtrNm" name="mtrNm" class="inputtext" readonly>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재규격&nbsp;</label>
+							<input id="stdNm" name="stdNm" class="inputtext">
+							<button type="button" id="btnStd" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">관리단위&nbsp;</label>
+							<input id="unitNm" name="unitNm" class="inputtext">
+							<button type="button" id="btnUnit" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재구분&nbsp;</label>
+							<input id="mtrSectNm" name="mtrSectNm" class="inputtext">
+							<button type="button" id="btnMtrSect" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">업체명&emsp;&nbsp;</label>
+							<input id="compNm" name="compNm" class="inputtext">
+							<button type="button" id="btnCompCd" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">관리수량&nbsp;</label>
+							<input id="mngAmt" name="mngAmt" class="inputtext" readonly>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">안전재고&nbsp;</label>
+							<input id="safeStck" name="safeStck" class="inputtext" readonly>
+							<input type="hidden" id="std" name="std">
+							<input type="hidden" id="unit" name="unit">
+							<input type="hidden" id="mtrSect" name="mtrSect">
+							<input type="hidden" id="compCd" name="compCd">
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext colline2">사용여부</label>&emsp;&nbsp;
+							<span class="form-check form-check-flat form-check-primary inline">
+								<label class="form-check-label chkboxalign">
+									<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+									<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+								</label>
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="dialog-form" title="title"></div>
+</div>
+
+
+<!-- <br>
 <h3>[자재정보관리]</h3>
 <hr>
 <div class="flex row">
@@ -53,15 +173,21 @@
 			</form>
 			<div id="dialog-form" title="title"></div>
 	</div>
-</div>
+</div> -->
+
+
 <script type="text/javascript">
 	let Grid = tui.Grid;
 	
 	Grid.applyTheme('default',{
 		cell:{
-			header:{
+			/* header:{
 				background:'#eef'
-			}
+			} */
+			header: {
+	            background: '#4B49AC',
+	            text: '#fff'
+	        }
 		}
 	})
 	
@@ -91,8 +217,8 @@
 		el: document.getElementById('grid'),
 		data: dataSource,
 		columns,
-		bodyHeight: 650,
-		minBodyHeight: 650
+		bodyHeight: 640,
+		minBodyHeight: 640
 	});
 	
 	grid.on("click", (ev) => {

@@ -13,9 +13,103 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<style>
+.labeltext{
+	width: 80px !important;
+}
+.colline2{
+	margin-left: 100px;
+	width: 120px !important;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+.inline{
+	display: inline-block;
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-botton: 0px !important;
+	margin-bottom: 0px !important;
+}
+hr{
+	margin-top: 0.4rem !important;
+}
+
+</style>
 </head>
 <body>
-<br>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">제품BOM관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">제품정보</h4>
+					<form id="bomFrm" name="bomFrm" method="post">
+						<div class="rowdiv">
+							<label class="labeltext">제품코드</label>&emsp;&nbsp;
+							<input id="prdCd" name="prdCd" class="inputtext" readonly>
+							<button type="button" id="btnPrdCd" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button>
+						</div>
+						<div class="rowdiv">
+							<label class="labeltext">제품명</label>&emsp;&nbsp;
+							<input id="prdNm" name="prdNm" class="inputtext" readonly>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
+							<label class="labeltext colline2">제품규격</label>&emsp;&nbsp;
+							<input id="prdStdNm" name="prdStdNm" class="inputtext" readonly>
+						</div>
+						<div class="rowdiv">
+							<label class="labeltext">제품명</label>&emsp;&nbsp;
+							<input id="prdNm" name="prdNm" class="inputtext" readonly>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
+							<label class="labeltext colline2">제품규격</label>&emsp;&nbsp;
+							<input id="prdStdNm" name="prdStdNm" class="inputtext" readonly>
+						</div>
+						<div class="rowdiv">
+							<label class="labeltext">관리단위</label>&emsp;&nbsp;
+							<input id="mngUnitNm" name="mngUnitNm" class="inputtext" readonly>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
+							<label class="labeltext colline2">제품구분</label>&emsp;&nbsp;
+							<input id="prdSectNm" name="prdSectNm" class="inputtext" readonly>
+						</div>
+						<div>
+							<label class="labeltext">공정라인</label>&emsp;&nbsp;
+							<select id="ableLineNo" name="ableLineNo" class="selectoption"></select>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
+							<label class="labeltext colline2">사용여부</label>&emsp;&nbsp;
+							<span class="form-check form-check-flat form-check-primary inline">
+								<label class="form-check-label chkboxalign">
+									<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+									<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+								</label>
+								
+							</span>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<h4 class="gridtitle">✔제품소요량관리</h4>
+	<span class="floatright">
+		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+	</span>
+	<br><br>
+	<hr>
+	<div id="grid1"></div>
+	<div id="dialog-form" title="title"></div>
+</div>
+
+
+<!-- <br>
 <h3>[제품BOM관리]</h3>
 <hr>
 <h4>✔제품정보</h4>
@@ -37,20 +131,24 @@
 </div>
 <h4>✔제품소요량관리</h4>
 <div id="grid1"></div>
-<div id="dialog-form" title="title"></div>
+<div id="dialog-form" title="title"></div> -->
+
+
 <script>
 	let rowk;
 	let Grid = tui.Grid;
 	
-	Grid.applyTheme('default',{
+	Grid.applyTheme('striped',{
 		cell:{
-			header:{
-				background:'#eef'
-			}
+			header: {
+	            background: '#4B49AC',
+	            text: '#fff'
+	        },
+	        evenRow: {
+	        	background:'#F5F7FF'
+	        }
 		}
 	}) 
-	
-	
 	
 	//제품코드옆의 돋보기 누르면
 	btnPrdCd.addEventListener("click", function() {
@@ -151,7 +249,9 @@
 		el: document.getElementById('grid1'),
 		data: dataSource,
 		rowHeaders : [ 'checkbox' ],
-		columns
+		columns,
+		bodyHeight: 284,
+		minBodyHeight: 284
 	})
 	
 	function getModalPrd(param) {

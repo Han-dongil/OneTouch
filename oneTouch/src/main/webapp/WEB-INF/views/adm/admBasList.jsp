@@ -9,9 +9,71 @@
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<style type="text/css">
+.bascard{
+	margin-bottom: 10px;
+}
+.bascard1{
+	height: 125px;
+}
+.newalign{
+	margin-bottom: 0rem !important;
+}
+
+</style>
+
 </head>
 <body>
-<br><h3>[공통자료관리]</h3><hr>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">공통자료관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class=" flex row">
+		<div class = "col-4">
+			<div class="card bascard">
+				<div class="card-body bascard1">
+					<h4 class="card-title">기초코드</h4>
+					<span style="padding-top: 10px;">
+						<label class="schCondLabel">기초코드명</label>&nbsp;&nbsp;
+						<input id="basNm" name="basNm" class="inputtext">
+					</span>
+					<span>
+						<button type="button" id="btnSrc" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+					</span>
+				</div>
+			</div>
+			<hr>
+			<div id="grid1"></div>
+		</div>
+		
+		<div class= "col-8">
+			<div class="card">
+				<div class="card-body cardtitle">
+					<h4 class="card-title cardtitleh4">상세코드</h4>
+				</div>				
+			</div>
+			<br>
+			<span class="floatright">
+				<button type="button" id="btnAdd" class="btn btn-main newalign">추가</button>
+				<button type="button" id="btnSave" class="btn btn-primary newalign">저장</button>
+			</span>
+			<br><br>
+			<hr>
+			<div id="grid2"></div>
+		</div>
+	</div>
+	
+	
+	
+</div>
+
+<!-- <br><h3>[공통자료관리]</h3><hr>
 <div class="flex row">
 	<div class = "col-4">
 		<h4>✔기초코드</h4>
@@ -31,7 +93,7 @@
 		</div><br>
 		<div id="grid2"></div>
 	</div>
-</div>
+</div> -->
 <script type="text/javascript">
 	let basCodeVal;
 	let basCode;
@@ -42,7 +104,8 @@
  	Grid.applyTheme('default',{
 		cell:{
 			header:{
-				background:'#eef'
+				background: '#4B49AC',
+	            text: '#fff'
 			}
 		}
 	}) 
@@ -129,16 +192,16 @@
 		el: document.getElementById('grid1'),
 		data: dataSource1,
 		columns: columns1,
-		bodyHeight: 500,
-		minBodyHeight: 500
+		bodyHeight: 530,
+		minBodyHeight: 530
 	});
 	
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		bodyHeight: 505,
-		minBodyHeight: 505
+		bodyHeight: 530,
+		minBodyHeight: 530
 	})
 	
 	grid2.on('editingStart', (ev) => {

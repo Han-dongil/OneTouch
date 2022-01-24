@@ -13,48 +13,9 @@
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
-
 <style>
 
-.datepicker:focus,
-.selectoption:focus {
-	box-shadow: none !important;
-	outline: none; 
-}
-
-.datepicker, .selectoption{
-	color: #495057;
-	background-color: #fdfdff;
-	border: 1px solid #ced4da;
-  	border-color: #e4e6fc; 
-  	border-radius: 3px;
-	height: 34px;
-}
-
-.datepicker:focus,
-.selectoption:focus {
-	background-color: #fefeff;
-	border-color: #95a0f4;
-}
-
-.schCondLabel{
-	min-height: 18px;
-    font-size: 0.875rem;
-    line-height: 1.5;
-}
-
-.floatright{
-	float: right;
-}
-
-.newalign{
-	margin-right:0.2rem !important;
-	margin-left:0.2rem !important;
-	margin-bottom: 0.3rem !important;
-}
-
 </style>
-
 </head>
 <body>
 
@@ -79,7 +40,7 @@
 							<div class="form-check" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="request">
 							  		<input type="radio" class="form-check-input" id="requestRio" name="fixPhs" value="수리요청" checked>
-							  		수리요청&nbsp;&nbsp;
+							  		수리요청&nbsp;&nbsp;&nbsp;&nbsp;
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -87,7 +48,7 @@
 							<div class="form-check" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="fixing">
 							  		<input type="radio" class="form-check-input" id="fixingRio" name="fixPhs" value="수리중">
-							  		수리중&nbsp;&nbsp;
+							  		수리중&nbsp;&nbsp;&nbsp;&nbsp;
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -95,7 +56,7 @@
 							<div class="form-check" style="display:inline-block">
 							    <label class="form-check-label schCondLabel" for="completed">
 							  		<input type="radio" class="form-check-input" id="completedRio" name="fixPhs" value="수리완료">
-							  		수리완료&nbsp;&nbsp;
+							  		수리완료&nbsp;&nbsp;&nbsp;&nbsp;
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -116,7 +77,7 @@
 						</span>
 						
 						<span>
-							<button type="button" id='btnFind' class="btn btn-primary mr-2 floatright">조회</button>
+							<button type="button" id='btnFind' class="btn btn-primary mr-2 floatrightbtn">조회</button>
 						</span>
 					</form> 
 				</div>
@@ -159,16 +120,17 @@
 	Grid.applyTheme('striped', {	
         cell: {
           header: {
-            background: '#eef'
+            background: '#4B49AC',
+            text: '#fff'
           },
           evenRow: {
-            background: '#fee'
+        	  background:'#F5F7FF'
           }
           
         },
         //고정칼럼 색상 설정
         frozenBorder: {
-             border: 'red'
+             border: '#7978E9'
         }
       });
 	
@@ -284,7 +246,9 @@
               frozenCount: 2, // 3개의 컬럼을 고정하고
               frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
             } */
-         });
+        bodyHeight: 430,
+ 		minBodyHeight: 430
+    });
     grid.on('response', function(ev) {
 	    if(ev.xhr.response ==0 ){
 		   grid.readData();

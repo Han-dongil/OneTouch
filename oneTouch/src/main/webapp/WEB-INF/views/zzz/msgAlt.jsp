@@ -249,12 +249,13 @@
 		
 		Grid.applyTheme('striped', {
 			cell : {
-				header : {
-					background:'#eef'
-				},
-				evenRow : {
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 		
