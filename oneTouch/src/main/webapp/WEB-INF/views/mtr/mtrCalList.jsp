@@ -28,22 +28,15 @@
 </style>
 <body>
 	<div class="container">
-		<h3>자재입고 조회</h3>
+		<h3>재고정산 조회</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>
 				<div>
-					<label>해당일자</label>
+					<label>정산일자</label>
 					<input type="Date" id="startDate" name="startDate">&nbsp;
 					<label> ~ </label>&nbsp;
 					<input type="Date" id="endDate" name="endDate">
-				</div>
-				<div>
-					<label>업체코드</label>
-					<input type="text" id="compCd" name="compCd">
-					<button type="button" id="btnInCom">ㅇ</button>&nbsp;
-					<label>입고업체명</label>
-					<input type="text" id="compNm" name="compNm" disabled="disabled">
 				</div>
 				<div>
 					<label>자재코드</label>
@@ -51,6 +44,15 @@
 					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
 					<label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
+				</div>
+				<div>
+				  <label>정산구분</label>
+				  <input type="radio" id="adjAllRadio" name="mtrCal" value="" checked>
+				  <label for="mtrRadio">전체</label>
+				  <input type="radio" id="adjInRadio" name="mtrCal" value="MTR_CAL001">
+				  <label for="adjInRadio">정산입고</label>
+				  <input type="radio" id="adjOutRadio" name="mtrCal" value="MTR_CAL002">
+				  <label for="adjOutRadio">정산출고</label>
 				</div>
 			</div>
 		</form>
@@ -95,24 +97,29 @@ Grid.applyTheme('striped', {
    });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrInList', method: 'POST' }
+		    readData: { url: './mtrCalList', method: 'POST' }
 		  },
 		  contentType: 'application/json'
 		};
-
 var grid = new Grid({
      el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     data : dataSource,
      columns : [
 				 {
-				   header: '입고일자',
-				   name: 'inDate',
+				   header: '정산번호',
+				   name: 'calNo',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '입고번호',
-				   name: 'inNo',
+				   header: '정산구분',
+				   name: 'mtrCal',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '정산일자',
+				   name: 'calDate',
 				   align: 'center',
 				   sortable: true
 				 },
@@ -130,12 +137,12 @@ var grid = new Grid({
 				 },
 				 {
 				   header: '단위',
-				   name: 'unit',
+				   name: 'unitNm',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '업체',
+				   header: '정산량',
 				   name: 'compNm',
 				   align: 'left',
 				   sortable: true
