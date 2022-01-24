@@ -10,7 +10,6 @@
 			A.UNIT,
 			A.UNIT_COST,
 			A.ORD_AMT,
-			(A.UNIT_COST * A.ORD_AMT) AS TOT_COST,
 			A.IN_AMT,
 			A.NOTIN_AMT,
 			A.FLT_AMT,

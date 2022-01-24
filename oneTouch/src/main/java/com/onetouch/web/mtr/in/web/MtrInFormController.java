@@ -16,7 +16,6 @@ import com.onetouch.web.mtr.in.dao.MtrInVO;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.in.service.MtrInService;
 import com.onetouch.web.mtr.ord.service.MtrOrdService;
-import com.onetouch.web.mtr.rtn.dao.MtrRtnVO;
 import com.onetouch.web.mtr.rtn.service.MtrRtnService;
 import com.onetouch.web.mtr.stck.service.MtrLotService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -65,23 +64,4 @@ public class MtrInFormController {
 		data.put("data", datas);
 		return data;
 	}
-	//mtrRtnGrid readData
-	@ResponseBody
-	@PostMapping("/mtrRtnModal")
-	public Map<String,Object> rtnList(@RequestBody MtrSearchVO searchVO){
-		Map<String,Object> datas = new HashMap<>();
-		Map<String,Object> data = new HashMap<>();
-		data.put("result", true);
-		datas.put("contents", mtrRtnService.rtnList(searchVO));
-		data.put("data", datas);
-		return data;
-	}
-	//mtrRtnGrid modifyData
-	@ResponseBody
-	@PostMapping("/mtrRtnModify")
-	public int rtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
-		 mtrRtnService.modifyRtn(mvo);
-		return 0;
-	}
-	
 }

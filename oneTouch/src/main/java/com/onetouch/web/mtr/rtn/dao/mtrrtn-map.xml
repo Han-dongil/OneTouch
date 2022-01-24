@@ -5,7 +5,7 @@
 		SELECT
 			A.ORD_NO,
 			A.MTR_CD,
-			<!-- A.FLT_AMT, -->
+			A.FLT_AMT AS RTN_AMT,
 			A.ORD_AMT,
 			A.UNIT_COST,
 			(A.ORD_AMT*A.UNIT_COST) AS TOT_COST,
@@ -20,9 +20,11 @@
 		WHERE
 			A.ORD_NO = B.ORD_NO
 		AND
-			NVL(A.ORD_AMT,0) - (NVL(A.IN_AMT,0)+NVL(A.FLT_AMT,0)) > 0
-		<!-- AND
-			A.FLT_AMT > 0 -->
+			(A.FLT_AMT/A.ORD_AMT*100) > 5
+		<!-- 	
+		
+		AND
+			NVL(A.CMT,'') NOT LIKE '%반품요청완료%' -->
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(B.ORD_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
@@ -32,44 +34,38 @@
 		<if test="compCd != null and compCd != ''">
 			AND B.COMP_CD = #{compCd}
 		</if>
+		<if test="ditemCode != null and ditemCode != ''">
+			AND A.MTR_CD = #{ditemCode}
+		</if>
 		ORDER BY
 			B.ORD_DATE
 	</select>
 	<!-- 반품내역 조건 조회 -->
 	<select id="selectRtn" resultType="com.onetouch.web.mtr.rtn.dao.MtrRtnVO">
 		SELECT 
-			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE,
+			A.RTN_NO,
+			TO_CHAR(A.RTN_REQ_DATE, 'yyyy-MM-dd') AS RTN_REQ_DATE,
 			A.MTR_CD,
-			MTR_NM,
-			UNIT_NM,
-			COMP_NM,
-			ORD_NO,
-			RTN_AMT,
-			UNIT_COST,
-			MTR_LOT
-			
-			A.IN_NO, 
-			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
-			A.MTR_CD, 
-			B.MTR_NM, 
+			B.MTR_NM,
 			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT,
-			B.MNG_AMT,
-			A.ORD_NO, 
-			A.FLT_AMT, 
-			A.IN_AMT, 
-			A.UNIT_COST, 
-			A.TOT_COST,
-			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
+			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM,
+			A.RTN_AMT,
+			A.CMT,
+			C.UNIT_COST,
+			C.TOT_COST
 		FROM 
-			MTR_IN A, ADM_MTR B
-		WHERE 
+			MTR_RTN A, ADM_MTR B, MTR_ORD_DTL C
+		WHERE
 			A.MTR_CD = B.MTR_CD
-		
+		AND
+			A.ORD_NO = C.ORD_NO
+		AND
+			A.MTR_CD = C.MTR_CD
 		<if test="startDate != null and startDate != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
+			<![CDATA[AND TO_CHAR(A.RTN_REQ_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
 		<if test="endDate != null and endDate != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
+			<![CDATA[AND TO_CHAR(A.RTN_REQ_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
 		</if>
 		<if test="compCd != null and compCd != ''">
 			AND B.COMP_CD = #{compCd}
@@ -82,20 +78,32 @@
 		INSERT INTO MTR_RTN (
 			RTN_NO,
 			ORD_NO,
+			IN_DATE,
 			RTN_REQ_DATE,
 			MTR_CD,
+			UNIT,
 			RTN_AMT,
 			CMT
 			)
 		VALUES(
 			 PKG_MAKE_CODE.CODE('RTN', 'MTR_RTN', 'RTN_NO', 'RTN_REQ_DATE'),
 			#{ordNo},
+			#{inDate},
 			SYSDATE,
 			#{mtrCd},
+			#{unit},
 			#{rtnAmt},
 			#{cmt}
 			)
 	</insert>
+	<update id="updateCmt">
+		UPDATE  
+			MTR_ORD_DTL
+		SET
+			CMT = '반품요청완료',
+		WHERE
+			
+	</update>
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
 		ON A.MTR_CD = B.MTR_CD -->

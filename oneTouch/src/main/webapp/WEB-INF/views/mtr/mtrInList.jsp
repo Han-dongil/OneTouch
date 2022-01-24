@@ -16,14 +16,16 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="${path}/resources/js/modal.js"></script>
 
+</head>
 <style type="text/css">
 	.tui-grid-cell-summary{
-		text-align: center;
+		text-align: right;
 	}
 </style>
-</head>
 <body>
 	<div class="container">
 		<h3>자재입고 조회</h3>
@@ -61,6 +63,25 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+toastr.options = {
+	       "closeButton": true,
+	       "debug": false,
+	       "newestOnTop": false,
+	       "progressBar": true,
+	       "positionClass": "toast-top-center",
+	       "preventDuplicates": false,
+	       "onclick": null,
+	       "showDuration": "3",
+	       "hideDuration": "100",
+	       "timeOut": "1500",
+	       "extendedTimeOut": "1000",
+	       "showEasing": "swing",
+	       "hideEasing": "linear",
+	       "showMethod": "fadeIn",
+	       "hideMethod": "fadeOut",
+	       "tapToDismiss": false,
+	       "closeHtml": "확인"
+	     }
 var Grid = tui.Grid;
 Grid.applyTheme('striped', {
      cell: {
@@ -83,25 +104,18 @@ var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
      columns : [
-				{
-				   header: '입고번호',
-				   name: 'inNo',
-				   hidden: true
-				 },
 				 {
 				   header: '입고일자',
 				   name: 'inDate',
-				   /* editor: {
-						type: 'datePicker',
-						options: {
-						language: 'ko',
-						format: 'YYYY-MM-dd'
-						}
-					}, */
-					align: 'center',
+				   align: 'center',
 				   sortable: true
 				 },
-					{
+				 {
+				   header: '입고번호',
+				   name: 'inNo',
+				   align: 'center'
+				 },
+				 {
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
@@ -110,7 +124,7 @@ var grid = new Grid({
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 },
 				 {
@@ -122,7 +136,7 @@ var grid = new Grid({
 				 {
 				   header: '업체',
 				   name: 'compNm',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 },
 				 {
@@ -134,25 +148,37 @@ var grid = new Grid({
 				 {
 				   header: '불량량',
 				   name: 'fltAmt',
-				   align: 'center',
+				   align: 'right',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 },
 				 {
 				   header: '입고량',
 				   name: 'inAmt',
-				   align: 'center',
+				   align: 'right',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 },
 				 {
 				   header: '단가',
 				   name: 'unitCost',
-				   align: 'center',
+				   align: 'right',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 },
 				 {
 				   header: '총금액',
 				   name: 'totCost',
-				   align: 'center',
+				   align: 'right',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 }
 				],
@@ -206,9 +232,11 @@ function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
-grid.on('response', function(ev) {
-      grid.resetOriginData();
-   });
+grid.on('dblclick',(ev)=>{
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
+})
+
+//조회버튼
 btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    grid.readData(1,a,true);
