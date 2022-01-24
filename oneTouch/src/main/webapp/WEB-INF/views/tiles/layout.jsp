@@ -26,6 +26,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/template/css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="${path}/resources/template/css/newstyle.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="${path}/resources/template/images/favicon.png" />
     <!-- plugins:js -->

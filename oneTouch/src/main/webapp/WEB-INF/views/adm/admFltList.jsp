@@ -13,9 +13,42 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+
+<style>
+hr{
+	margin-top: 0.4rem !important;
+}
+</style>
+
 </head>
 <body>
-<br>
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">불량코드관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<h4 class="gridtitle">✔불량코드리스트</h4>
+	<span class="floatright">
+		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+	</span>
+	<br><br>
+	<hr>
+	<div id="grid"></div>
+	<div id="dialog-form" title="title"></div>
+</div>
+
+
+
+<!-- <br>
 <h3>[불량코드관리]</h3><hr>
 <div align="right" style="margin-right: 3%;">
 	<button type="button" id="btnAdd">추가</button>
@@ -24,15 +57,21 @@
 </div>
 <h4 align="left">✔불량코드리스트</h4>
 <div id="grid"></div>
-<div id="dialog-form" title="title"></div>
+<div id="dialog-form" title="title"></div> -->
+
+
 <script type="text/javascript">
 	let Grid = tui.Grid;
 	
 	Grid.applyTheme('default',{
 		cell:{
-			header:{
-				background:'#eef'
-			}
+			header: {
+	            background: '#4B49AC',
+	            text: '#fff'
+	        },
+	        evenRow: {
+	        	background:'#F5F7FF'
+	        }
 		}
 	}) 
 	
@@ -102,10 +141,12 @@
 	
 	//그리드생성
 	let grid = new Grid({
-	  el: document.getElementById('grid'),
-	  data: dataSource, 
-	  rowHeaders : [ 'checkbox' ],
-	  columns
+		el: document.getElementById('grid'),
+		data: dataSource, 
+		rowHeaders : [ 'checkbox' ],
+		columns,
+		bodyHeight: 620,
+		minBodyHeight: 620
 	}); 
 	
 	

@@ -21,12 +21,13 @@ function mMtr(){
 		
 		mtrGrid.applyTheme('striped',{
 			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 		
@@ -131,12 +132,13 @@ function mPrd(){
 		
 		prdGrid.applyTheme('striped',{
 			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 		
@@ -217,12 +219,13 @@ function mPrc(){
 		
 		prcGrid.applyTheme('striped',{
 			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 
@@ -358,12 +361,13 @@ function mBas(basCd){
 		
 		basGrid.applyTheme('striped',{
 			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 		
@@ -466,12 +470,13 @@ function mBas(basCd,btn){
 		
 		basGrid.applyTheme('striped',{
 			cell:{
-				header:{
-					background:'#eef'
-				},
-				evenRow:{
-					background:'#fee'
-				}
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
 			}
 		})
 		
