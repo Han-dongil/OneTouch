@@ -12,7 +12,9 @@
 			d.emp_no, 
 			d.msr_mtt,
 			d.msr_cmt,
-			f.fct_nm
+			f.fct_nm,
+			d.str_dt,
+			d.fin_dt
 		FROM fct_dwtm d JOIN fct_info f
 		ON d.fct_cd = f.fct_cd
 		WHERE 1=1
@@ -26,13 +28,19 @@
 		
 	</select>
 	<insert id="dwtmInsert">
-		INSERT  INTO fct_dwtm VALUES(PKG_MAKE_CODE.CODE('DWT','FCT_DWTM','DWTM_CD') , #{fctCd}, #{strDt}, '', #{empNo}, #{msrMtt}, '')
+		INSERT  INTO fct_dwtm VALUES(PKG_MAKE_CODE.CODE('DWT','FCT_DWTM','DWTM_CD') , #{fctCd}, to_date(#{strDt},'yy-MM-dd HH24:MI:SS'), '', #{empNo}, #{msrMtt}, '')
 	</insert>
-	<update id="dwtmUpdate">
 	
+	<update id="dwtmUpdate">
+		UPDATE fct_dwtm SET emp_no = #{empNo}
+						, fin_dt = to_date(#{finDt},'yy-MM-dd HH24:MI:SS')
+						, msr_mtt = #{msrMtt}
+						, msr_cmt = #{msrCmt}
+		WHERE dwtm_cd = #{dwtmCd}
 	</update>
 	<delete id="dwtmDelete">
-	
+		DELETE fct_dwtm   
+		WHERE dwtm_cd = #{dwtmCd} 
 	</delete>
 	
 </mapper>
