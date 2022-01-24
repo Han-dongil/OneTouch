@@ -21,20 +21,21 @@ public class DwtmServiceImpl implements DwtmService {
 
 	@Override
 	public int dwtmInsert(DwtmVO dwtmVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+		int n = dmapper.dwtmInsert(dwtmVO);
+		System.out.println(n);
+		return n;
 	}
 
 	@Override
 	public int dwtmUpdate(DwtmVO dwtmVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return dmapper.dwtmUpdate(dwtmVO);
 	}
 
 	@Override
 	public int dwtmDelte(DwtmVO dwtmVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dmapper.dwtmDelete(dwtmVO);
 	}
 
 }

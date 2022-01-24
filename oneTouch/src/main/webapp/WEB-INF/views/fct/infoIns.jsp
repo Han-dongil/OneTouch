@@ -26,67 +26,77 @@
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
-	
+<style>
+	/* input {
+	  width:100px;
+	  height:25px;
+	  font-size:1px;
+	} */
+	td{
+		font-size:3px;
+	}
+</style>
 
 </head>
 <body>
-
-
-
-	<div>
-		<button type="button" id='btnFind'>조회</button>
-		<button type="button" id='btnAdd'>추가</button>
-		<button type="button" id='btnDel'>삭제</button>
-		<button type="button" id='btnSave'>저장</button>
-		<button type="button" id='btnEdit'>수정</button>
-	</div>
-	<div
-		style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-		<form id="infoFrm" method="post">
-			<table>
-				<tr>
-					<td>설비코드</td>
-					<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
-					<td>사용여부</td>
-					<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
-					<td>공정</td>
-					<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
-					<td rowspan="3"><img src="resources/img/아이유.jpg" id="fctImg" style="width: 300px; height: 90px;"></td>
-				</tr>
-				<tr>
-					<td>설비규격</td>
-					<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
-					<td>모델명</td>
-					<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
-					<td>회사코드</td>
-					<td><input type="text" id="compCd" name="compCd" value="" /></td>
-				</tr>
-				<tr>
-					<td>입고일</td>
-					<td><input type="date" id="inDate" name="inDate" value="" /></td>
-					<td>구매금액</td>
-					<td><input type="text" id="purchCost" name="purchCost" value="" /></td>
-					<td>점검주기</td>
-					<td><input type="text" id="chkProd" name="chkProd" value="" /></td>
-				</tr>
-				<tr>
-					<td>이미지</td>
-					<td><input type="text" id="FctImg" name="FctImg" value="" /></td>
-					<td>시간당 생산량</td>
-					<td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
-						value="" /></td>
-					<td>담당자</td>
-					<td><input type="text" id="empNo" name="empNo" value="" /></td>
-					<td><input type="file" id="fctFile" name="fctFile" value="" onchange="setThumbnail(event)"/></td>
-				</tr>
-
-			</table>
-		</form>
-
-	</div>
-	<div id="dialog-form" title="모달테스트"></div>
-	<div id="grid" style=""></div>
-
+	<div class="row" >
+		<div class="col-4"></div>
+		<div class="col-8">
+			<div>
+				<button type="button" id='btnFind'>조회</button>
+				<button type="button" id='btnAdd'>추가</button>
+				<button type="button" id='btnDel'>삭제</button>
+				<button type="button" id='btnSave'>저장</button>
+				<button type="button" id='btnEdit'>수정</button>
+			</div>
+			<div
+				style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
+				<form id="infoFrm" method="post">
+					<table>
+						<tr>
+							<td>설비코드</td>
+							<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
+							<td>사용여부</td>
+							<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
+							<td>공정</td>
+							<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
+							<td rowspan="3"><img src="resources/img/아이유.jpg" id="fctImg" style="width: 300px; height: 90px;"></td>
+						</tr>
+						<tr>
+							<td>설비규격</td>
+							<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
+							<td>모델명</td>
+							<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
+							<td>회사코드</td>
+							<td><input type="text" id="compCd" name="compCd" value="" /></td>
+						</tr>
+						<tr>
+							<td>입고일</td>
+							<td><input type="date" id="inDate" name="inDate" value="" /></td>
+							<td>구매금액</td>
+							<td><input type="text" id="purchCost" name="purchCost" value="" /></td>
+							<td>점검주기</td>
+							<td><input type="text" id="chkProd" name="chkProd" value="" /></td>
+						</tr>
+						<tr>
+							<td>이미지</td>
+							<td><input type="text" id="FctImg" name="FctImg" value="" /></td>
+							<td>시간당 생산량</td>
+							<td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
+								value="" /></td>
+							<td>담당자</td>
+							<td><input type="text" id="empNo" name="empNo" value="" /></td>
+							<td><input type="file" id="fctFile" name="fctFile" value="" onchange="setThumbnail(event)"/></td>
+						</tr>
+		
+					</table>
+				</form>
+		
+			</div>
+			<div id="dialog-form" title="모달테스트"></div>
+			<div id="grid" style=""></div>
+		</div>
+	</div> <!-- row -->
 
 	<script>
 	let dialog; 
@@ -208,13 +218,13 @@
      headet: '입고일',
      name: 'inDate',
      editor: 'datePicker'
-  },
+  }/* ,
   {
     header: '구매금액',
     name: 'purchCost',
     editor: 'text'
-  },
-  {
+  } */
+  /* {
     header: '점검주기',
     name: 'chkProd',
     editor: 'text'
@@ -233,7 +243,7 @@
     header: '사번',
     name: 'empNo',
     editor: 'text'
-  }
+  } */
     ]
    
 	
@@ -271,7 +281,12 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          rowHeaders : [ 'checkbox' ],
-         columns
+         columns,
+         bodyHeight: 600,
+ 		 minBodyHeight: 600,
+ 		/* columnOptions: {
+ 			minWidth
+ 			 } */
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {
               frozenCount: 2, // 3개의 컬럼을 고정하고
@@ -296,7 +311,7 @@
 		document.getElementById('FctImg').value = dataVO.FctImg;
 		document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
 		document.getElementById('empNo').value = dataVO.empNo;
-		document.getElementById('fctNm').value = dataVO.fctNm;
+		//document.getElementById('fctNm').value = dataVO.fctNm;
 		
 	})
     

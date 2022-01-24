@@ -19,17 +19,31 @@ public class DwtmController {
 
 	@Autowired DwtmService dservice;
 	
+	//비동기 삭제
+	@ResponseBody
+	@PostMapping("dwtmDelete")
+	public int dwtmDelete(@RequestBody DwtmVO dwtmVO) {
+		log.info("삭제 컨트롤러 연결했슴");
+		System.out.println(dwtmVO);
+		return dservice.dwtmDelte(dwtmVO);
+	}
+	
+	//비동기 수정
+	@ResponseBody
+	@PostMapping("dwtmUpdate")
+	public int dwtmUpdate(@RequestBody DwtmVO dwtmVO) {
+		return dservice.dwtmUpdate(dwtmVO);
+	}
+	
+	//비동기 등록
 	@ResponseBody
 	@PostMapping("dwtmInsret")
 	public int dwtmInsert(@RequestBody DwtmVO dwtmVO) {
-		log.info("등록 컨트롤러 연결 성공");
-		
 		return dservice.dwtmInsert(dwtmVO);
 	}
 	
 	@RequestMapping("ftcDwtmIns")
 	public String moveDwtmPage() {
-		
 		return "tiles/fct/dwtmIns";
 	}
 	
