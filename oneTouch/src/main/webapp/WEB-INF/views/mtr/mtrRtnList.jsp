@@ -227,7 +227,6 @@ function totCal(){
 	},100)
 }
 mainGrid.on("response", function(ev){
-	console.log("여기다")
 	totCal()
 });
 function format(value){
