@@ -12,5 +12,13 @@ public interface PrcMapper {
 	PrcVO startTimeSelect(PrcVO vo);
 	PrcVO myPrcFlow(PrcVO vo);
 	int flowCheck(PrcVO vo);
-	PrcVO lineStartCheck(PrcVO vo);
+	List<PrcVO> lineStartCheck(PrcVO vo);
+	void endUpdate(PrcVO vo);
+	PrcVO endTimeSelect(PrcVO vo);
+	int endFlowCheck(PrcVO vo);
+	List<PrcVO> lineEndCheck(PrcVO vo);
+	String sectSelect(PrcVO vo);
+	void PrdInsert(PrcVO vo);
+	void updateFlt(PrcVO vo);
+	PrcVO realFlt(PrcVO vo);
 }

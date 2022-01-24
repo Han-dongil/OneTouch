@@ -9,4 +9,6 @@ public interface PrcService {
 	List<PrcVO> prcList(String lineNo);
 	List<PrcVO> prdPrcList(PrcVO vo);
 	PrcVO prcFlowMinMax(PrcVO vo);
+	PrcVO prcEnd(PrcVO vo);
+	PrcVO selectCheck(PrcVO vo);
 }
