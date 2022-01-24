@@ -49,4 +49,17 @@ public class PrcController {
 		vo=list.get(0);
 		return service.prcFlowMinMax(vo);
 	}
+	@ResponseBody
+	@PostMapping("prcEnd")
+	public PrcVO prcEnd(@RequestBody List<PrcVO> list) {
+		
+		return service.prcEnd(list.get(0));
+	}
+	@ResponseBody
+	@PostMapping("fltCheck")
+	public PrcVO fltCheck(@RequestBody List<PrcVO> list) {
+		
+		return service.selectCheck(list.get(0));
+	}
+	
 }

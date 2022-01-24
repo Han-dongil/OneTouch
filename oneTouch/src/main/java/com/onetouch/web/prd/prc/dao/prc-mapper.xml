@@ -5,7 +5,10 @@
 		select line_no from fct_line
 	</select>
 	<select id="lineStartCheck" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select * from prd_prc_mng where instr_no= #{instrNo}
+		select instr_no from prd_prc_mng where instr_no= #{instrNo}
+	</select>
+	<select id="lineEndCheck" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select sum(nvl2(work_fin_dt,1,0)) as prcEndNull from prd_prc_mng where instr_no= #{instrNo}
 	</select>
 	<select id="prcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select *
@@ -64,5 +67,43 @@
 		where work_str_dt is not null
 		group by instr_no
 		having instr_no=#{instrNo}
+	</select>
+	
+	<update id="endUpdate">
+		update prd_prc_mng set
+		work_fin_dt=sysdate ,
+		now_phs='가동종료'
+		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</update>
+	<select id="endTimeSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select work_fin_dt from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</select>
+	<select id="endFlowCheck" resultType="Integer">
+		select count(work_fin_dt) from prd_prc_mng
+		where work_fin_dt is not null
+		group by instr_no
+		having instr_no=#{instrNo}
+	</select>
+	<select id="sectSelect">
+		select prd_sect 
+		from adm_prd 
+		where prd_cd=(select prd_Cd from pdt_work_instr_dtl
+					 WHERE instr_no=#{instrNo}   and line_no=#{lineNo}  and prc_cd=#{prcCd})	
+	</select>
+	<insert id="PrdInsert">
+		insert into PRD_LOT,PRD_CD,STCK_CNT values {PKG_MAKE_CODE.CODE('PRD','PDT_CMPT_PRD_STCK','PRD_CD'),#{prdCd},#{stckCnt}
+	</insert>
+	<insert id="HrdInsert">
+		
+	</insert>
+	<update id="updateFlt"><!--생산량 , 불량량  -->
+		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</update>
+	<select id="realFlt" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select instr_no,flt_cnt,prc_cd ,nvl((select sum(flt_cnt) 
+                                    from prd_prc_mng
+                                    group by instr_no),0) as sumFlt
+		from prd_prc_mng
+		where prc_cd=#{prcCd} AND instr_no=#{instrNo}
 	</select>
 </mapper>

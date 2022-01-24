@@ -126,6 +126,9 @@
 				header : '불량량',
 				name : 'fltCnt'
 			},{
+				header : '라인불량량',
+				name : 'sumFlt'
+			},{
 				header : '현재상태',
 				name : 'nowPhs'
 			},{
@@ -138,6 +141,27 @@
 		  }
 	});
 ///////////////////////////////////////////이벤트리스너///////////////////////////////////////
+	//라인불량 동기화
+	function fltCheck(){
+		fetch('fltCheck',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(hiddenGrid.getData())
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			if(result.sumFlt==result.goalCnt){
+				console.log("불량률 100퍼 !!!!!!!!! 공장망하겟누")
+			}else{
+				hiddenGrid.setValue(0,'sumFlt',result.sumFlt*1);
+				fltCheck();
+					
+				
+			}
+		})
+	}
 	//시작버튼
 	prcStart.addEventListener('click',ev=>{
 		fetch('prcStart',{
@@ -149,9 +173,28 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
+			hiddenGrid.setValue(0,'fltCnt',0);
 			alert(result.msg);
-			console.log(result);
+			console.log(result);  // result.workStrDt  << 시작시간 화면에띄워줘야댐
 			
+		})
+	})
+	//종료버튼
+	prcEnd.addEventListener('click',ev=>{
+		hiddenGrid.setValue(0,'pdtCnt',hiddenGrid.getValue(0,'goalCnt')*1-hiddenGrid.getValue(0,'fltCnt')*1)
+		fetch('prcEnd',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(hiddenGrid.getData())
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			console.log(result);
+			hiddenGrid.setValue(0,'workFinDt',result.workFinDt)
+			//hiddenGrid.setValue(0,'pdtCnt',hiddenGrid.getValue(0,'goalCnt')*1-hiddenGrid.getValue(0,'fltCnt')*1);
+			alert(result.msg)
 		})
 	})
 	//select option 에 prc코드 뿌려주기
@@ -172,9 +215,21 @@
 	})
 	mainGrid.on("click",ev=>{
 		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
+		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'pdtCnt'))
+		
 		mainGrid.getRow(ev.rowKey)
 	})
-	
+	//불량+버튼
+	fltAdd.addEventListener('click',ev=>{
+		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1+1);
+		fltCheck();
+	})
+	//불량-버튼
+	fltMinus.addEventListener('click',ev=>{
+		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1-1);
+		//fltCheck();
+	})
+
 	//lineNo prcCd 선택시 해당 조건에맞는 작업지시 데이터 불러와서 그리드에 표시
 	prcCdTag.addEventListener('change',ev=>{
 		console.log(ev.target.value)

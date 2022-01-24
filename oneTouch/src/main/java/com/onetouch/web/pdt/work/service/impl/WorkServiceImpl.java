@@ -57,6 +57,8 @@ public class WorkServiceImpl implements WorkService {
 	@Override
 	public void workInsert(Map<String,List<WorkVO>> map) {
 		WorkVO seqVo=mapper.findWorkSeq();
+
+		
 		System.out.println("seq"+seqVo);
 		if(map.get("planData")!=null) {
 			for(WorkVO vo : map.get("planData") ) {
