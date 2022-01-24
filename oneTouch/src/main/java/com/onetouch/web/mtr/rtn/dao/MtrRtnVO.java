@@ -11,5 +11,6 @@ public class MtrRtnVO extends MtrOrdVO{
 	private String rtnNo;
 	private String rtnReqDate;
 	private String rtnAmt;
+	private String totCost;
 	private String cmt;
 }

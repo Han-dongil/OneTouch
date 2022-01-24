@@ -10,7 +10,6 @@ public class MtrOrdVO {
 	private String unit;
 	private String unitCost;
 	private String ordCnt;
-	private String totCost;
 	private String ordAmt;
 	private String inAmt;
 	private String notinAmt;

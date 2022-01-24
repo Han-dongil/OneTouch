@@ -18,12 +18,12 @@
 
 <script src="${path}/resources/js/modal.js"></script>
 
+</head>
 <style type="text/css">
 	.tui-grid-cell-summary{
 		text-align: center;
 	}
 </style>
-</head>
 <body>
 	<div class="container">
 		<h3>자재재고 조회</h3>

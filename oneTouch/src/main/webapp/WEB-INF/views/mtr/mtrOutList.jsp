@@ -9,21 +9,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-<script src="${path}/resources/js/modal.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${path}/resources/js/modal.js"></script>
+</head>
 <style type="text/css">
 	.tui-grid-cell-summary{
-		text-align: center;
+		text-align: right;
 	}
 </style>
-</head>
 <body>
 	<div class="container">
 		<h3>자재출고 조회</h3>
@@ -51,7 +52,10 @@
 					<input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
 				<div>
-				  <input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT001" checked>
+				  <label>자재구분</label>
+				  <input type="radio" id="mtrRadio" name="mtrSect" value="" checked>
+				  <label for="mtrRadio">전체</label>
+				  <input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT001">
 				  <label for="mtrRadio">원자재</label>
 				  <input type="radio" id="semiRadio" name="mtrSect" value="MTR_SECT002">
 				  <label for="semiRadio">반제품</label>
@@ -67,6 +71,25 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+toastr.options = {
+	       "closeButton": true,
+	       "debug": false,
+	       "newestOnTop": false,
+	       "progressBar": true,
+	       "positionClass": "toast-top-center",
+	       "preventDuplicates": false,
+	       "onclick": null,
+	       "showDuration": "3",
+	       "hideDuration": "100",
+	       "timeOut": "1500",
+	       "extendedTimeOut": "1000",
+	       "showEasing": "swing",
+	       "hideEasing": "linear",
+	       "showMethod": "fadeIn",
+	       "hideMethod": "fadeOut",
+	       "tapToDismiss": false,
+	       "closeHtml": "확인"
+	     }
 var Grid = tui.Grid;
 Grid.applyTheme('striped', {
      cell: {
@@ -98,14 +121,7 @@ var grid = new Grid({
 				 {
 				   header: '출고일자',
 				   name: 'outDt',
-				   /* editor: {
-						type: 'datePicker',
-						options: {
-						language: 'ko',
-						format: 'YYYY-MM-dd'
-						}
-					}, */
-					align: 'center',
+				   align: 'center',
 				   sortable: true
 				 },
 					{
@@ -117,7 +133,7 @@ var grid = new Grid({
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 },
 				 {
@@ -133,7 +149,7 @@ var grid = new Grid({
 				   sortable: true
 				 },
 				 {
-				   header: '자재LOT NO.',
+				   header: 'Lot No',
 				   name: 'mtrLot',
 				   align: 'center',
 				   sortable: true
@@ -147,13 +163,16 @@ var grid = new Grid({
 				 {
 				   header: '출고량',
 				   name: 'outAmt',
-				   align: 'center',
+				   align: 'right',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   sortable: true
 				 },
 				 {
 				   header: '비고',
 				   name: 'cmt',
-				   align: 'center',
+				   align: 'left',
 				   sortable: true
 				 }
 				],
@@ -190,12 +209,10 @@ function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+grid.on('dblclick',(ev)=>{
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
+})
 
-/* grid.on('response', function(ev) {
-      grid.resetOriginData();
-      grid.readData();
-   }); */
-   
 //조회 버튼
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
