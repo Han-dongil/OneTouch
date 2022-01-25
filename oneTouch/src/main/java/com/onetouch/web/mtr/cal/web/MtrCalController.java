@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.cal.service.MtrCalService;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 @RequestMapping("/mtr")
@@ -19,6 +20,7 @@ public class MtrCalController {
 
 	@Autowired MtrCalService mtrCalService;
 	
+	//calList url
 	@RequestMapping("/calList")
 	public String calList() {
 		return "tiles/mtr/mtrCalList";
@@ -31,18 +33,49 @@ public class MtrCalController {
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
-		System.out.println("searchVO");
-		System.out.println(searchVO);
 		datas.put("contents", mtrCalService.selectCal(searchVO));
 		data.put("data", datas);
 		return data;
 	}
+	//lotGrid readData
+	@ResponseBody
+	@PostMapping("/mtrLotModal")
+	public Map<String,Object> mtrLotModal(@RequestBody MtrCalVO mtrCalVO){
+		Map<String,Object> datas = new HashMap<>();
+		Map<String,Object> data = new HashMap<>();
+		data.put("result", true);
+		datas.put("contents", mtrCalService.selectLot(mtrCalVO));
+		data.put("data", datas);
+		return data;
+	}
 	
-//	@RequestMapping("/calForm")
-//	public String calForm() {
-//		return "tiles/mtr/mtrCalForm";
-//	}
-//	
+	//calForm url
+	@RequestMapping("/calForm")
+	public String calForm() {
+		return "tiles/mtr/mtrCalForm";
+	}
+	//mainGrid readData
+	@ResponseBody
+	@PostMapping("/mtrCalForm")
+	public Map<String,Object> seletCalList(@RequestBody MtrSearchVO searchVO){
+		Map<String,Object> datas = new HashMap<>();
+		Map<String,Object> data = new HashMap<>();
+		data.put("result", true);
+		datas.put("contents", mtrCalService.selectCal(searchVO));
+		data.put("data", datas);
+		return data;
+	}
+	//mainGrid modifyData
+	@ResponseBody
+	@PostMapping("/mtrCalModify")
+	public Map<String,Object> mtrCalModify(@RequestBody MtrSearchVO searchVO){
+		Map<String,Object> datas = new HashMap<>();
+		Map<String,Object> data = new HashMap<>();
+		data.put("result", true);
+		datas.put("contents", mtrCalService.selectCal(searchVO));
+		data.put("data", datas);
+		return data;
+	}
 	/*
 	 * //mainGrid readData
 	 * 

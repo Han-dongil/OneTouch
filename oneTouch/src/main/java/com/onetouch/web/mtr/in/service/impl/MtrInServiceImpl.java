@@ -72,18 +72,6 @@ public class MtrInServiceImpl implements MtrInService {
 					}
 			}
 		}
-		//입고테이블 modify
-		
-				
-//				System.out.println(Integer.parseInt(vo.getInAmt())/Integer.parseInt(vo.getMngAmt()));
-//				System.out.println(Integer.parseInt(vo.getInAmt()));
-//				System.out.println(Integer.parseInt(vo.getMngAmt()));
-//				System.out.println(((int)vo.getInAmt())/Integer.parseInt(vo.getMngAmt()));
-//				if(vo.getInAmt()/vo.getMngAmt() > 0) {
-//					
-//				}
-				//lotMapper.insertLot(null);
-		
 		if(mvo.getUpdatedRows() != null) {
 		    for(MtrInVO data : mvo.getUpdatedRows()){
 		    	inMapper.updateIn(data);

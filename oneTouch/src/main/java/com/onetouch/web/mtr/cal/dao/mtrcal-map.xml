@@ -35,102 +35,22 @@
 		</if>
 	</select>
 	
-	<select id="selectInNo" resultType="int">
-		SELECT 
-			PKG_MAKE_CODE_SEQ.CODE('MTR_IN', 'IN_NO', 'IN_DATE')
+	<!-- lot 모달 select -->
+	<select id="selectLot" resultType="com.onetouch.web.mtr.stck.dao.LotVO">
+		SELECT
+			A.MTR_LOT,
+			A.MTR_CD,
+			A.IN_NO,
+			A.HLD_CNT,
+			A.STCK_CNT,
+			B.MTR_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT_NM
 		FROM
-			DUAL
-	</select>
-	<!-- 입고 테이블에 등록 -->
-	<insert id="insertIn">
-		INSERT INTO MTR_IN (
-			IN_NO,
-			MTR_CD,
-			IN_DATE,
-			ORD_NO,
-			UNIT,
-			IN_AMT,
-			FLT_AMT,
-			UNIT_COST,
-			TOT_COST
-			)
-		VALUES(
-			#{inNo},
-			#{mtrCd},
-			SYSDATE,
-			#{ordNo},
-			#{unit},
-			#{inAmt},
-			#{fltAmt},
-			#{unitCost},
-			(#{unitCost}*#{inAmt})
-			)
-	</insert>
-	<!-- 입고등록후 발주디테일에 수량업데이트 -->
-	<update id="updateOrd">
-		UPDATE MTR_ORD_DTL
-		SET
-			IN_AMT = (NVL(IN_AMT,0)+#{inAmt}),
-			FLT_AMT = (NVL(FLT_AMT,0)+#{fltAmt}),
-			NOTIN_AMT = ((SELECT 
-								ORD_AMT FROM MTR_ORD_DTL 
-							WHERE 
-								ORD_NO = #{ordNo}
-							AND
-								MTR_CD = #{mtrCd})
-						-(NVL(IN_AMT,0)+#{inAmt})
-						-(NVL(FLT_AMT,0)+#{fltAmt}))
+			MTR_LOT_STCK A, ADM_MTR B
 		WHERE
-			ORD_NO = #{ordNo} 
+			A.MTR_CD = B.MTR_CD
 		AND
-			MTR_CD = #{mtrCd}
-	</update>
-	<update id="updateIn">
-		UPDATE MTR_IN
-		SET
-			MTR_CD = #{mtrCd},
-			UNIT = #{unit},
-			IN_AMT = #{inAmt},
-			FLT_AMT = #{fltAmt},
-			UNIT_COST = #{unitCost},
-			TOT_COST = (#{unitCost}*#{inAmt})
-		WHERE
-			IN_NO = #{inNo}
-	</update>
-	<!-- 하나씩 삭제 -->
-	<delete id="deleteIn">
-		DELETE 
-		FROM MTR_IN
-		WHERE IN_NO = #{inNo}
-	</delete>
-	<update id="prdNeed">
-		update MTR_LOT_STCK
-		set 
-		HLD_CNT = #{hldCnt},
-		STCK_CNT = STCK_CNT-#{hldCnt}
-		WHERE 
-		MTR_LOT = #{mtrLot}
-	</update>
-	<!-- 자재출고테이블 지시때 출고처리해야댐 -->
-	<!-- 지시때 lot재고에도 반영해야댐 -->
-	<insert id="prdOut">
-		<!-- hldCnt: "3"
-instrCnt: "3"
-mtrCd: "MF001"
-mtrLot: "MLT2022010061"
-needCnt: "100"
-planNo: "PPL202201110001"
-prdCd: "prd_001"
-stckCnt: "1" -->
-	</insert>
+			B.MTR_CD = #{mtrCd}
+	</select>
 
-	<!-- 리스트로받아서 for문으로 다 삭제하는쿼리 -->
-	<!-- <delete id="delete">
-		DELETE 
-		FROM MTR_IN
-		WHERE IN_NO IN
-		<foreach collection="list" item="vo" open="(" close=")" separator=",">
-		#{vo.inNo}
-	</foreach>
-	</delete> -->
 </mapper>

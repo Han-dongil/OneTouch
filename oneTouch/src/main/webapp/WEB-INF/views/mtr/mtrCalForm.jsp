@@ -58,14 +58,26 @@
 		<div align="right">
 			<button type="button" id="btnFind">조회</button>
 			<button type="button" id="btnSave">저장</button>
+			<button type="button" id="btnAdd">추가</button>
+			<button type="button" id="btnDel">삭제</button>
 		</div>
 		<hr>
 	</div>
 	<div id="grid"></div>
 	<div id="dialog-form"></div>
+	<div id="dialog-lot">
+		<label>자재코드</label>
+		<input type="text" id="mDitemCode" name="ditemCode" disabled="disabled">
+		<br>
+		<label>자재명</label>&nbsp;&nbsp;&nbsp;
+		<input type="text" id="mDitemCodeNm" name="ditemCodeNm" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>단위</label>
+		<input type="text" id="mUnitNm" name="unitNm" disabled="disabled">
+	</div>
 
 <script type="text/javascript">
 let rowk = -1;
+let dt = new Date();
 
 toastr.options = {
 	       "closeButton": true,
@@ -100,10 +112,11 @@ Grid.applyTheme('striped', {
 });
 const dataSource = {
 		  api: {
-		    readData: { url: './mtrRtnForm', method: 'POST' },
-		  	modifyData: { url: './mtrRtnModify', method: 'POST'}
+		    readData: { url: './mtrCalForm', method: 'POST' },
+		  	modifyData: { url: './mtrCalModify', method: 'POST'}
 		  },
-		  contentType: 'application/json'
+		  contentType: 'application/json',
+		  initialRequest: false
 		};
 
 var mainGrid = new Grid({
@@ -111,118 +124,102 @@ var mainGrid = new Grid({
      data : dataSource,
      rowHeaders : [ 'checkbox'],
      columns : [
-				{
-				header: '발주번호',
-				name: 'ordNo',
-				hidden: true
-				},
-				{
-				header: '발주일자',
-				name: 'ordDate',
-				align: 'center',
-				sortable: true
-				},
-				{
-				header: '자재코드',
-				name: 'mtrCd',
-				align: 'center',
-				sortable: true
-				},
-				{
-				header: '자재명',
-				name: 'mtrNm',
-				align: 'left',
-				sortable: true
-				},
-				{
-				header: '단위',
-				name: 'unit',
-				align: 'center',
-				sortable: true
-				},
-				{
-				header: '업체',
-				name: 'compNm',
-				align: 'left',
-				sortable: true
-				},
-				{
-				header: '발주량',
-				name: 'ordAmt',
-				align: 'right',
-				sortable: true
-				},
-				{
-				header: '입고량',
-				name: 'inAmt',
-				align: 'right',
-				sortable: true
-				},
-				{
-				header: '반품량',
-				name: 'rtnAmt',
-				align: 'right',
-				editor: 'text',
-				sortable: true
-				},	
-				{
-				header: '반품사유',
-				name: 'cmt',
-				align: 'left',
-				editor: 'text'
-				}
+				 {
+				   header: '정산구분',
+				   name: 'calSectNm',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '정산일자',
+				   name: 'calDate',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '자재코드',
+				   name: 'mtrCd',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '자재명',
+				   name: 'mtrNm',
+				   align: 'left',
+				   sortable: true
+				 },
+				 {
+				   header: '단위',
+				   name: 'unitNm',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '정산량',
+				   name: 'calAmt',
+				   formatter({value}){
+					   return format(value);
+				   },
+				   align: 'right',
+				   sortable: true
+				 },
+				 {
+				   header: 'Lot No',
+				   name: 'mtrLot',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
+				   header: '비고',
+				   name: 'cmt',
+				   align: 'left',
+				   sortable: true
+				 }
+				 
 				],
 				summary : {
 					height: 40,
 					position: 'bottom',
 					columnContent: {
-						compNm: {
-								template(summary) {
-									return '합 계';
-								} 
-						},
-						ordAmt: {
-							template(summary) {
-								var sumResult = (summary.sum);
-								return format(sumResult);
-							}
-						},
-						inAmt: {
-							template(summary) {
-								var sumResult = (summary.sum);
-								return format(sumResult);
-							}
-						},
-						rtnAmt: {
-								template(summary) {
-									var sumResult = (summary.sum);
-									return format(sumResult);
-								}
-						}
+						unitNm: {
+			                template(summary) {
+			        			return '합 계';
+			                } 
+			            },	
+			            calAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            }
 					}
 				}
-});
+	});
 mainGrid.on('response', function(ev) {
    });
 mainGrid.on('dblclick',function(ev){
-	if(ev.columnName == "ordDate" ||
-		ev.columnName == "compNm" || 
-		ev.columnName == "mtrNm" || 
-		ev.columnName == "unit" ||
-		ev.columnName == "mtrCd" ||
-		ev.columnName == "ordAmt" ||
-		ev.columnName == "inAmt"
-		){
-		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
+	if(ev.columnName == "mtrLot"){
+		 let row = mainGrid.getRow(ev.rowKey);
+		 lotDialog.dialog("open");
+		 document.getElementById('mDitemCode').value = row.mtrCd
+		 document.getElementById('mDitemCodeNm').value = row.mtrNm
+		 document.getElementById('mUnitNm').value = row.unitNm
+		 lotGrid.readData(1,row,true);
+		 lotGrid.refreshLayout();
+	}
+	if(ev.columnName == "mtrCd"){
+		mMtr();
+		$('#ui-id-1').html('자재 검색');
 	}
 });
 mainGrid.on('editingFinish',(ev)=>{
-	if(ev.columnName == 'rtnAmt' 
+	/* if(ev.columnName == 'rtnAmt' 
 		&& mainGrid.getValue(ev.rowKey,'rtnAmt') > (mainGrid.getValue(ev.rowKey,'ordAmt') - mainGrid.getValue(ev.rowKey,'inAmt'))){
 		ev.stop();
 		toastr["warning"]("반품량이 너무 많습니다.")
-	}
+	} */
 })
+
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -237,13 +234,6 @@ function format(value){
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-	$('#compCd').val(param.dtlCd);
-	$('#compNm').val(param.dtlNm);
-	dialog.dialog("close");
-};
-		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
@@ -251,9 +241,9 @@ function getModalMtr(param){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
-		mainGrid.setValue(rowk, "unit", param.unit, false);
-		mainGrid.setValue(rowk, "compNm", param.compNm, false);
-		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false);
+		mainGrid.setValue(rowk, "unitNm", param.unit, false);
+		/* mainGrid.setValue(rowk, "compNm", param.compNm, false);
+		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false); */
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
@@ -261,39 +251,118 @@ function getModalMtr(param){
 	}
 };
 
+//셀에 오늘날짜 넣는 function
+function today(ev) {
+	let year = dt.getFullYear()
+	let month = ('0' + (dt.getMonth()+1)).slice(-2)
+	let day = ('0' + (dt.getDate())).slice(-2)
+	let str = year + '-' + month + '-' + day
+	mainGrid.setValue(ev, 'calDate', str)
+}
+
 //조회버튼
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
+   console.log(param)
    mainGrid.readData(1,param,true);
 })
 //저장버튼
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
 	mainGrid.request('modifyData');
+})
+//추가버튼
+btnAdd.addEventListener("click", function(){
+	mainGrid.appendRow();
+	console.log(mainGrid.getRowCount()-1)
+	today(mainGrid.getRowCount()-1)
+	
 });
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-	$('#compCd').val(param.dtlCd);
-	$('#compNm').val(param.dtlNm);
-	dialog.dialog("close");
-};
-		
-//자재검색모달 row더블클릭 이벤트
-function getModalMtr(param){
-	dialog.dialog("close");
-	$('#ditemCode').val(param.mtrCd);
-	$('#ditemCodeNm').val(param.mtrNm);
-};
-//업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
-	$('#ui-id-1').html('업체 검색');
+//삭제버튼
+btnDel.addEventListener("click", function(){
+	mainGrid.removeCheckedRows(true);
 });
+
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+
+//lot선택모달 설정
+let lotDialog = $( "#dialog-lot" ).dialog({
+	autoOpen : false,
+	modal : true,
+	resizable: false,
+	height: "auto",
+	width: 800,
+	buttons:{
+		"확인":()=>{
+			let rows = lotGrid.getCheckedRows();
+			mainGrid.appendRows(rows);
+		}
+	}
+});
+
+//lot 모달
+let lotDataSource = {
+		  api: {
+			  	readData: { url: './mtrLotModal',method: 'POST'}
+		  },
+		  contentType: 'application/json',
+		  initialRequest: false
+		}
+
+let lotGrid = new Grid({
+el : document.getElementById('dialog-lot'),
+data : lotDataSource,
+rowHeaders : [ 'checkbox'],
+columns : [ 
+			{
+				header: '입고번호',
+				name: 'inNo'
+			},
+			{
+				header: 'Lot No',
+				name: 'mtrLot'
+			},
+			{
+				header: '홀딩수량',
+				name: 'hldCnt'
+			},
+			{
+				header: '재고수량',
+				name: 'stckCnt'
+			},
+			{
+				header: '자재코드',
+				name: 'mtrCd',
+				hidden: true
+			},
+			{
+				header: '자재명',
+				name: 'mtrNm',
+				hidden: true
+			},
+			{
+				header: '단위',
+				name: 'unitNm',
+				hidden: true
+			}
+			]
+});
+lotGrid.on('dblclick',function(ev){
+	if(ev.columnName == "inNo" || ev.columnName == "mtrLot" || ev.columnName == "hldCnt" || ev.columnName == "stckCnt"){
+		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
+	}
+});
+/*
+//조회버튼 in 반품모달
+rtnSearch.addEventListener("click", function(){
+   let param= $("#rtnFrm").serializeObject();
+   rtnGrid.readData(1,param,true);
+});
+ */
 </script>
 </body>
 </html>
