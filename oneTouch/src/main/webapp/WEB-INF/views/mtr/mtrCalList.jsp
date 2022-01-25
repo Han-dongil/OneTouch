@@ -28,7 +28,7 @@
 </style>
 <body>
 	<div class="container">
-		<h3>재고정산 조회</h3>
+		<h3>재고조정 조회</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>
@@ -99,7 +99,8 @@ const dataSource = {
 		  api: {
 		    readData: { url: './mtrCalList', method: 'POST' }
 		  },
-		  contentType: 'application/json'
+		  contentType: 'application/json',
+		  initialRequest: false
 		};
 var grid = new Grid({
      el : document.getElementById('grid'),
@@ -147,7 +148,7 @@ var grid = new Grid({
 				   formatter({value}){
 					   return format(value);
 				   },
-				   align: 'left',
+				   align: 'right',
 				   sortable: true
 				 },
 				 {
@@ -160,9 +161,6 @@ var grid = new Grid({
 				   header: '비고',
 				   name: 'cmt',
 				   align: 'left',
-				   formatter({value}){
-					   return format(value);
-				   },
 				   sortable: true
 				 }
 				 
@@ -209,24 +207,12 @@ btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    grid.readData(1,a,true);
 })
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-			$('#compCd').val(param.dtlCd);
-			$('#compNm').val(param.dtlNm);
-			dialog.dialog("close");
-		};
-		
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
 	$('#ditemCode').val(param.mtrCd);
 	$('#ditemCodeNm').val(param.mtrNm);
 };
-//업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
-	$('#ui-id-1').html('업체 검색');
-});
 //자재검색버튼
 btnMtrCd.addEventListener("click", function(){
 	mMtr();

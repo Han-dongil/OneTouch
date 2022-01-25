@@ -7,7 +7,6 @@ function mMtr(){
 		dataType : 'json',
 		async : false,
 		success : function(result){
-			console.log(result);
 			mtrData = result;
 		}
 	});

@@ -15,6 +15,9 @@ public class MtrCalServiceImpl implements MtrCalService {
 	@Autowired MtrCalMapper calMapper;
 	@Override
 	public List<MtrCalVO> selectCal(MtrSearchVO inSearchVO) {
+		System.out.println("insearchVO");
+		System.out.println(inSearchVO);
+		System.out.println(calMapper.selectCal(inSearchVO));
 		return calMapper.selectCal(inSearchVO);
 	}
 	

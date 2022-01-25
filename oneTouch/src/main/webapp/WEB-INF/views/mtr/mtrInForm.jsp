@@ -30,7 +30,7 @@
 	<div class="container">
 		<h3>자재입고 관리</h3>
 		<div align="right">
-			<button type="button" id="btnOrdFind" align="right">발주내역조회</button>
+			<button type="button" id="btnOrdFind">발주내역조회</button>
 		</div>
 		<hr>
 		<form id="frm" method="post">
