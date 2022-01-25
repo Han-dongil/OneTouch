@@ -36,7 +36,9 @@ public class PlanController {
 	@GetMapping("pdtPlanlist/{nowPhs}")
 	public List<PlanVO> pdtList(@PathVariable String nowPhs) {
 		System.out.println(nowPhs);
-		return service.list(nowPhs);
+		PlanVO vo =new PlanVO();
+		vo.setNowPhs(nowPhs);
+		return service.list(vo);
 	}
 	@ResponseBody
 	@PostMapping("pdtPlanDtllist")

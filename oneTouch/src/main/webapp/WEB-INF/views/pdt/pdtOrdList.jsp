@@ -32,7 +32,7 @@
     listAll();
     function listAll(){
 		$.ajax({
-		  url:"./pdtOrdlist",
+		  url:"pdtOrdlist",
 		  dataType:'json',
 		  async:false,
 		  success:function(result){

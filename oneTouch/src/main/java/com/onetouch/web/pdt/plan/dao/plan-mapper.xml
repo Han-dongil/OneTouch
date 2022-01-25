@@ -10,6 +10,12 @@
 	<if test='nowPhs =="N"'>
 		and now_phs ='N'
 	</if>
+	<if test='startDate!="" and startDate!="null"'>
+		and due_date>#{startDate}
+	</if>
+	<if test='endDate!="" and endDate!="null"'>
+		and #{startDate}>due_date
+	</if>
 	
 </select>
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">

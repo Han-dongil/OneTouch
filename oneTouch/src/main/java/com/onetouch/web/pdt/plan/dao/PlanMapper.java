@@ -6,7 +6,7 @@ import com.onetouch.web.pdt.work.dao.WorkVO;
 
 public interface PlanMapper {
 	
-	List<PlanVO> list(String nowPhs);
+	List<PlanVO> list(PlanVO nowPhs);
 	List<PlanVO> selectDtl(String no);
 	List<PlanVO> findPrcCd(PlanVO vo);
 	void insertPlan(PlanVO vo);
