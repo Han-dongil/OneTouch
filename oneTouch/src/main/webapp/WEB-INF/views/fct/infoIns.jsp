@@ -27,13 +27,13 @@
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 <style>
-	/* input {
+	 td>input {
 	  width:100px;
 	  height:25px;
 	  font-size:1px;
-	} */
+	} 
 	td{
-		font-size:3px;
+		font-size:1px;
 	}
 </style>
 
@@ -49,55 +49,72 @@
 				<button type="button" id='btnSave'>저장</button>
 				<button type="button" id='btnEdit'>수정</button>
 			</div>
-			<div
-				style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-				<form id="infoFrm" method="post">
+			<div class="row" style="/* margin-top: 10px; */ border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
+				<div class="col-7" style="margin-top: 30px;">
+				<form id="infoFrm" method="post" enctype="multipart/form-data">
 					<table>
 						<tr>
 							<td>설비코드</td>
 							<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
+							<td>모델명</td>
+							<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
 							<td>사용여부</td>
 							<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
-							<td>공정</td>
-							<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
-							<td rowspan="3"><img src="resources/img/아이유.jpg" id="fctImg" style="width: 300px; height: 90px;"></td>
 						</tr>
 						<tr>
 							<td>설비규격</td>
 							<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
-							<td>모델명</td>
-							<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
-							<td>회사코드</td>
-							<td><input type="text" id="compCd" name="compCd" value="" /></td>
+							<td>라인번호</td>
+							<td><input type="text" id="lineNo" name="lineNo" value="" /></td>
+							<td>공정</td>
+							<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
+							
 						</tr>
 						<tr>
 							<td>입고일</td>
 							<td><input type="date" id="inDate" name="inDate" value="" /></td>
 							<td>구매금액</td>
-							<td><input type="text" id="purchCost" name="purchCost" value="" /></td>
-							<td>점검주기</td>
-							<td><input type="text" id="chkProd" name="chkProd" value="" /></td>
+							<td>
+								<input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" />원
+							</td>
+							<td>회사코드</td>
+							<td><input type="text" id="compCd" name="compCd" value="" /></td>
 						</tr>
 						<tr>
-							<td>이미지</td>
-							<td><input type="text" id="FctImg" name="FctImg" value="" /></td>
+							<!-- <td>이미지</td>
+							<td><input type="text" id="FctImg" name="FctImg" value="" /></td> -->
 							<td>시간당 생산량</td>
 							<td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
 								value="" /></td>
 							<td>담당자</td>
 							<td><input type="text" id="empNo" name="empNo" value="" /></td>
-							<td><input type="file" id="fctFile" name="fctFile" value="" onchange="setThumbnail(event)"/></td>
+							<td>점검주기</td>
+							<td><input type="number" id="chkProd" name="chkProd" value="" /></td>
+							<td>
+								<select id="chkProdUnit" name="chkProdUnit">
+									<option value="Y">년</option>
+									<option value="M">달</option>
+									<option value="W">주</option>
+									<option value="D">일</option>
+								</select>
+							</td>
 						</tr>
-		
 					</table>
+					<div class="col-5">
+				<img src="resources/img/아이유.jpg" id="fctImges" style="width: 252px; height: 150px;">
+				<div class ='uploadDiv'>
+					<td><input style=" margin-bottom: 20px;" type="file" id="fctImg" name="uploadFile" value="" multiple onchange="setThumbnail(event)"/></td>
+					<!-- <button id='uploadBtn'>Upload</button> -->
+				</div>
 				</form>
-		
 			</div>
-			<div id="dialog-form" title="모달테스트"></div>
-			<div id="grid" style=""></div>
+			
+			</div>
 		</div>
+		<div id="dialog-form" title="모달테스트"></div>
+			<div id="grid" style=""></div>
 	</div> <!-- row -->
-
+	<div id="fctGubundialog-form" title="설비구분"></div>
 	<script>
 	let dialog; 
 	
@@ -108,56 +125,29 @@
 	});
 
 	$("#compCd").on("click", function(){
-		mBas('FCT_COM');
-	})
-
-	function getModalBas(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
-		//선택한 값 parameter받아서 각자 처리
-		
-		console.log(param.dtlCd.indexOf("FCT_DIV"))
-		if(param.dtlCd.indexOf("FCT_DIV") != -1){
-			console.log('설비업체업체업체')
-			console.log(param);	
-			$("#prcCd").val(param.dtlCd)
-		}else if(param.dtlCd.indexOf("FCT_COM") != -1){
-			console.log('회사회사회사회사회사')
-			console.log(param);	
-			$("#compCd").val(param.dtlCd)
+		mBas('FCT_COM',event.target);
+	});	
+	function getModalBas(param, btn){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
+		console.log('getModalBas 메서드 출력')
+		console.log(btn.id)
+			if(btn.id == 'fctCd'){
+				console.log('공정코드 메소드')
+				$("#fctCd").val(param.dtlCd);
+				$("#fctNm").val(param.dtlNm);
+				console.log(param.dtlCd);
+				dialog.dialog('close');
+			}
+			else if(btn.id == 'compCd'){
+				console.log('회사코드 클릭하면 이쪽으로 옴 ')
+				$("#compCd").val(param.dtlCd);
+				dialog.dialog('close');
+			}
 		} 
-		
-		dialog.dialog("close");
-	} 
+
+	
 	//설비업체 Modal end=========================================================================================
 	
-	
-	
-	
-	
-	//설비구분 Modal start=========================================================================================
-	
-	
-	dialog = $( "#dialog-form" ).dialog({ /* //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨      */
-		autoOpen : false,
-		modal : true
-	});
-	
 
-	
-/* 	 function getModalBas(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
-			//선택한 값 parameter받아서 각자 처리
-			$("#prcCd").val(param.dtlCd);
-			console.log('설비코드')
-			console.log(param);
-			dialog.dialog("close");
-		} */ 
-		//자재구분 Modal end=========================================================================================
-			
-		$("#prcCd").on("click", function(){
-			mPrc(	)
-	})
-	
-	
-	
 	let targetId = [];
 	let s = 'd';
    var Grid = tui.Grid;
@@ -257,7 +247,7 @@
    //ajax 요청
 	  
 	  $.ajax({
-		  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
+		  url:'./list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
 		  method: 'POST',
 		  data: JSON.stringify(vo),
 		  contentType: "application/json",
@@ -301,6 +291,7 @@
 		console.log(dataVO.useYn)
 		
 		document.getElementById('fctCd').value = dataVO.fctCd;
+		document.getElementById('fctNm').value = dataVO.fctNm;
 		document.getElementById('useYn').value = (dataVO.useYn=='Y')?'true':'false';
 		document.getElementById('prcCd').value = dataVO.prcCd;
 		document.getElementById('fctStd').value = dataVO.fctStd;
@@ -309,7 +300,7 @@
 		document.getElementById('inDate').value = dataVO.inDate;
 		document.getElementById('purchCost').value = dataVO.purchCost;
 		document.getElementById('chkProd').value = dataVO.chkProd;
-		document.getElementById('FctImg').value = dataVO.FctImg;
+		document.getElementById('fctImg').value = dataVO.fctImg;
 		document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
 		document.getElementById('empNo').value = dataVO.empNo;
 		//document.getElementById('fctNm').value = dataVO.fctNm;
@@ -344,7 +335,7 @@
     	   		
     	      $.ajax({
     	    	  
-    	    	  url: "deleteInfo",
+    	    	  url: "./deleteInfo",
     	    	  method: "POST",
     	    	  data: JSON.stringify(targetId),			//json을 string으로 바꿔줘야함 
     	    	  contentType:"application/json",			//넘겨주는 데이터가 json이라는 걸 알려주는 것 
@@ -356,17 +347,25 @@
     	   
        		})
        })
+       
         btnSave.addEventListener("click", function(){
         	console.log('11111111111111')
-        	console.log($('#infoFrm').serialize())
+        	//console.log($('#infoFrm').serialize())
+        	
+        	let infoForm = document.getElementById('infoFrm')
+        	var formData = new FormData(infoForm);
+        	console.log(formData)
+			
+			
     	   //등록아작스 
     	    $.ajax({
     	    	  
-    	    	  url: "infoInsert",
+    	    	  url: "./infoInsert",
+    	    	  processData: false,
+  				  contentType: false,
     	    	  method: "POST",
-    	    	  data:$('#infoFrm').serialize(),
+    	    	  data:formData,
     	    	  dataType:'Json',
-    	    	  			
     	    	  success:function(result){
     	    		  console.log('성공')
     	    		  grid.resetData(result)
@@ -376,6 +375,45 @@
     	   //grid.request('modifyData');
        })//add버튼 
        
+   	
+		//설비구분 Modal start=========================================================================================
+		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
+		
+		$("#fctCd").on("click", function(){
+			console.log('설비코드 버튼 클릭')
+			mBas('FCT_DIV',event.target);
+		})
+		$("#fctNm").on("click", function(){
+			console.log('설비이름 버튼 클릭')
+			mBas('FCT_DIV',event.target);
+		})
+	
+		//설비구분 Modal end=========================================================================================
+		
+       //공정 Modal start=========================================================================================
+		//let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
+		//dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
+		//	autoOpen : false,
+		//	modal : true,
+		//});
+		
+		$("#prcCd").on("click", function(){
+			mPrc();
+		})
+		//라인 input 클릭 이벤트 
+		$("#lineNo").on("click", function(){
+			mLine();
+		})
+		
+		function getModalPrc(param){//모달에서 값을 선택했을 때 호출
+			//선택한 값 parameter받아서 각자 처리
+			$("#prcCd").val(param.prcCd);
+			console.log(param);
+			dialog.dialog("close");
+		}
+		//공정 Modal end=========================================================================================
+       
+       
        btnFind.addEventListener("click", function(){
     	   //grid.;
     	   
@@ -384,7 +422,7 @@
        btnEdit.addEventListener("click", function(){
     	   console.log('수수수수수수수저엊어ㅓ저어저어정')
     	   $.ajax({
- 	    	  url: "Updateinfo",
+ 	    	  url: "./Updateinfo",
  	    	  method: "POST",
  	    	  data:$('#infoFrm').serialize(),
  	    	  dataType:'Json',
@@ -396,6 +434,21 @@
  	   
     		})
        })
+       //금액 천단위 구분 기호 함수
+       function inputNumberFormat(obj) {
+			obj.value = comma(uncomma(obj.value));
+		}
+       function comma(str) {
+    	     str = String(str);
+    	     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    	 }
+
+    	 function uncomma(str) {
+    	     str = String(str);
+    	     return str.replace(/[^\d]+/g, '');
+    	 }
+    	 //천단위 구분 기호 끝
+
 
        
 	function setThumbnail(event) { 
@@ -403,11 +456,71 @@
 		var reader = new FileReader(); 
 		reader.onload = function(event) { 
 			
-			document.getElementById('fctImg').setAttribute("src", event.target.result); 
+			document.getElementById('fctImges').setAttribute("src", event.target.result); 
 			
 		}; 
 		reader.readAsDataURL(event.target.files[0]); 
 	}
+    	 
+	var regex = new RegExp("(/*?)\.(exe|sh|zip|alz)$");
+	var maxSize = 5242880;	//5MB
+	
+	var uploadResult = $(".uploadResult ul");
+	
+	//이미지파일 보여주기 
+	function showUploadedFile(uploadResultArr){
+		var str = "";
+		
+		$(uploadResultArr).each(function(i, obj){
+			console.log(obj);
+			if(!obj.image){
+				str +="<li><img src='/resources/img/images.jpg'>"+obj.fileName+"</li>";
+			}else{
+				//str +="<li>"+ obj.fileName+"</li>";
+				
+				var fileCallPath = encodeURIComponent( obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
+				
+				str += "<li><img src='display?fileName="+fileCallPath+"'></li>";
+			}
+		});
+		uploadResult.append(str)
+	}
+	
+/* 	//파일 이름을 목록으로 보여주는 부분 함수
+	function showUploadedFile(uploadResultArr){
+		var str = "";
+		console.log('show')
+		console.log(uploadResultArr)
+		
+		$(uploadResultArr).each(function(i, obj){
+			str += "<li>" + obj.fileName + "</li>"; 
+		});
+		uploadResult.append(str);
+	}// end showUploadeFile
+	 */
+	console.log('uploadResult'+uploadResult)
+	
+	function checkExtension(fileName, fileSize){
+		
+		if(fileSize >= maxSize){
+			alert("파일 사이즈 초과");
+			return false;
+		}
+		
+		if(regex.test(fileName)){
+			alert("해당 종류의 파일은 업로드 할수 없습니다.");
+			return false;
+		}
+		return true;
+	}
+	
+	
+			
+			
+			
+			
+	
+	
 
 </script>
 

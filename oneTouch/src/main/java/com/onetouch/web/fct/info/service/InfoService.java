@@ -4,10 +4,14 @@ import java.util.List;
 
 
 import com.onetouch.web.fct.info.dao.InfoVO;
+import com.onetouch.web.fct.info.dao.LineVO;
 
 public interface InfoService {
 	
-	//공정코드와 공정 이름 가져오기 위해서 adm_bas_dtl_cd 테이블 조회
+	
+	
+	//라인조회
+	List<LineVO> LineSelect();
 	//수정 
 	int InfoUpdate(InfoVO infoVO);
 

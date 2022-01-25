@@ -3,6 +3,10 @@
 <mapper namespace="com.onetouch.web.fct.info.dao.InfoMapper">
 <!-- 작성자 : 박종현 -->
 
+<!-- 라인 조회 하는 쿼리  -->
+<select id="LineSelect" resultType="com.onetouch.web.fct.info.dao.LineVO">
+	SELECT * from fct_line
+</select>
 
 
 <!-- 공정관리VO를 상속받는 설비VO를 리절트 타입으로  -->
@@ -29,7 +33,9 @@ select * from fct_info where line_no = #{lineNo}
 </select>
 <!-- 등록 -->
 <insert id="insertFctInfo">
-	Insert into FCT_INFO (    FCT_CD
+	Insert into FCT_INFO (   FCT_CD
+                             ,FCT_NM
+                             ,LINE_NO
 							 ,PRC_CD
 							 ,FCT_STD
 							 ,FCT_MODEL
@@ -37,11 +43,10 @@ select * from fct_info where line_no = #{lineNo}
 							 ,IN_DATE
 							 ,PURCH_COST
 							 ,CHK_PROD
+                             ,CHK_PROD_UNIT
 							 ,FCT_IMG
-							 ,UPH_PDT_AMT
-							 ,USE_YN
-							 ,EMP_NO) 
-	values (#{fctCd},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{FctImg},#{uphPdtAmt},
+							 ) 
+	values ('FCT_DIV_GUI005',#{fctNm},#{lineNo},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{chkProdUnit},#{fctImg},
 	<if test = "useYn ==null">
 		'N'
 	</if>
