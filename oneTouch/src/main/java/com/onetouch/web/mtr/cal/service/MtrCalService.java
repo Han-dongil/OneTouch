@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.stck.dao.LotVO;
 
 public interface MtrCalService {
 	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
+	List<LotVO> selectLot(MtrCalVO mtrCalVO);
 
 	/* void modify(ModifyVO mvo); */
 	/*

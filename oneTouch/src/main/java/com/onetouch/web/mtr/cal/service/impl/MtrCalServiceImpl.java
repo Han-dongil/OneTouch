@@ -9,16 +9,18 @@ import com.onetouch.web.mtr.cal.dao.MtrCalMapper;
 import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.cal.service.MtrCalService;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.stck.dao.LotVO;
 
 @Service
 public class MtrCalServiceImpl implements MtrCalService {
 	@Autowired MtrCalMapper calMapper;
 	@Override
 	public List<MtrCalVO> selectCal(MtrSearchVO inSearchVO) {
-		System.out.println("insearchVO");
-		System.out.println(inSearchVO);
-		System.out.println(calMapper.selectCal(inSearchVO));
 		return calMapper.selectCal(inSearchVO);
+	}
+	@Override
+	public List<LotVO> selectLot(MtrCalVO mtrCalVO) {
+		return calMapper.selectLot(mtrCalVO);
 	}
 	
 //	@Transactional
@@ -67,18 +69,6 @@ public class MtrCalServiceImpl implements MtrCalService {
 //					}
 //			}
 //		}
-//		//입고테이블 modify
-//		
-//				
-////				System.out.println(Integer.parseInt(vo.getInAmt())/Integer.parseInt(vo.getMngAmt()));
-////				System.out.println(Integer.parseInt(vo.getInAmt()));
-////				System.out.println(Integer.parseInt(vo.getMngAmt()));
-////				System.out.println(((int)vo.getInAmt())/Integer.parseInt(vo.getMngAmt()));
-////				if(vo.getInAmt()/vo.getMngAmt() > 0) {
-////					
-////				}
-//				//lotMapper.insertLot(null);
-//		
 //		if(mvo.getUpdatedRows() != null) {
 //		    for(MtrInVO data : mvo.getUpdatedRows()){
 //		    	inMapper.updateIn(data);
