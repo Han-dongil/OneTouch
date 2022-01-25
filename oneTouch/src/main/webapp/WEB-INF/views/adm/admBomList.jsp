@@ -157,7 +157,8 @@ hr{
 		modal : true,
 		resizable: false,
 		height: "auto",
-		width: 800
+		width: 800,
+		height: 400
 	});
 	
 	const columns = [{

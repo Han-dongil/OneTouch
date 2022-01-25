@@ -92,12 +92,19 @@ public class FlwController {
 	@ResponseBody
 	@PostMapping("/updatePrd")
 	public List<PrdVO> updatePrd(PrdVO prdvo) {
-		flwservice.updatePrd(prdvo);
-		System.out.println("upd"+prdvo);
+		bomservice.updatePrd(prdvo);
 		return bomservice.selectPrd(prdvo);
 	}
 	
-	//삭제수정등록 처리
+	//form 등록
+	@ResponseBody
+	@PostMapping("/insertPrd")
+	public List<PrdVO> insertPrd(PrdVO prdvo) {
+		bomservice.insertPrd(prdvo);
+		return bomservice.selectPrd(prdvo);
+	}
+	
+	//제품 삭제
 	@ResponseBody
 	@PostMapping("/prdModifyData")
 	public void modifyPrd(@RequestBody ModifyVO<PrdVO> mvo) {

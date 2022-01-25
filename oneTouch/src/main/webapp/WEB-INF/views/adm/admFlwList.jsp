@@ -24,9 +24,7 @@
 <div class = "col-4">
 	<h4>✔제품목록</h4>
 	<div align="right">
-		<button id="btnAddPrd">추가</button>
-		<button id="btnDelPrd">삭제</button>
-		<button id="btnSavePrd">저장</button><hr>
+		<button id="btnDelPrd" type="button">삭제</button><hr>
 	</div>
 	<div id="grid1"></div>
 	<br>
@@ -34,11 +32,13 @@
 <div class= "col-8">
 	<h4>✔제품상세정보</h4>
 	<div align="right" style="margin-right: 3%;">
-		<button id="btnEdit">수정</button><hr>
+		<button type="button" id="btnReset">초기화</button>
+		<button type="button" id="btnAddPrd">등록</button>
+		<button type="button" id="btnEditPrd">수정</button><hr>
 	</div>
 	<form id="flwFrm" name="flwFrm" method="post">
-		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly><br>
-		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
+		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd"><br>
+		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm"><br>
 		<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm">
 			<button type="button" id="btnprdStd">🔍</button><br>
 		<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm">
@@ -48,13 +48,14 @@
 		<input type="hidden" id="prdSect" name="prdSect">
 		<input type="hidden" id="mngUnit" name="mngUnit">
 		<input type="hidden" id="prdStd" name="prdStd">
+		<label>공정라인&nbsp;</label><input id="ableLineNo" name="ableLineNo" style="width: 500px;"><br>
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
-		<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
 	<div align="right" style="margin-right: 3%;">
 	<hr>
-	<button id="btnFlw" type="button">공정흐름보기</button>
-	<button id="btnDel" type="button">공정흐름지우기</button>
+	<button id="btnFlw" type="button">조회</button>
+	<button id="btnAdd" type="button">추가</button>
+	<button id="btnDel" type="button">삭제</button>
 	<button id="btnSave" type="button">저장</button>
 	</div>
 	<h4>✔공정흐름</h4><br>
@@ -102,11 +103,13 @@
 		
 		header : '공정순서',
 		name : 'prcSeq',
-		sortable : true
+		sortable : true,
+		editor : 'text'
 	},
 	{
 		header : '공정명',
-		name : 'prcNm'
+		name : 'prcNm',
+		editor : 'text'
 	},
 	{
 		header : '작업설명',
@@ -180,7 +183,8 @@
 		data: dataSource2,
 		columns: columns2,
 		bodyHeight: 280,
-		minBodyHeight: 280
+		minBodyHeight: 280,
+		rowHeaders : [ 'checkbox' ]
 	})
 
 	//제품명 클릭하면 제품상세정보 받아옴
@@ -210,6 +214,7 @@
 					document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
 					document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
 					document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
+					document.getElementById('ableLineNo').setAttribute('value',PrdDtl.ableLineNo);
 					
 					if(PrdDtl.useYn == 'Y') {
 						document.getElementById('useYn').checked = true
@@ -218,43 +223,46 @@
 					}
 					
 					
-					lineSplit = PrdDtl.ableLineNo.split('/');
+/* 					lineSplit = PrdDtl.ableLineNo.split('/');
 					for(i=0;i<lineSplit.length;i++) {
 						let option = document.createElement('option');
 						option.value = lineSplit[i];
 						option.innerHTML = lineSplit[i];
 						document.getElementById('ableLineNo').appendChild(option);
 					}
-					console.log($('#flwFrm').serialize());
+					console.log($('#flwFrm').serialize()); */
 	
 					})
 			}
 		}
 	})
 
-	//공정흐름보기 버튼
-	btnFlw.addEventListener("click", function() {
-		prdCode2 = {'prdCd' : $('#prdCd').val()};
-		console.log(prdCode2);
-		grid2.readData(1,prdCode2,true);
-	})
-	
-	//공정흐름지우기 버튼
-	btnDel.addEventListener("click", function(){
-		/* grid2.checkAll();	
-		grid2.removeCheckedRows(true); */
-		cnt = grid2.getRowCount();
-		for(i=0; i<cnt; i++) {
-			grid2.removeRow(i);
-		}
-	})
-	
-	//저장버튼
-	btnSave.addEventListener("click", function() {
-		grid2.blur();
-		grid2.request('modifyData');
-	})
-	
+	/*공정흐름*/
+		//공정흐름보기 버튼
+		btnFlw.addEventListener("click", function() {
+			prdCode2 = {'prdCd' : $('#prdCd').val()};
+			console.log(prdCode2);
+			grid2.readData(1,prdCode2,true);
+		})
+		
+			
+		//추가버튼
+		btnAdd.addEventListener("click", function() {
+			grid2.appendRow({});
+		})	
+		
+		//삭제버튼
+		btnDel.addEventListener("click", function(){
+			grid2.removeCheckedRows(true);
+		})
+		
+		//저장버튼
+		btnSave.addEventListener("click", function() {
+			grid2.blur();
+			grid2.request('modifyData');
+		})
+	/*공정흐름끝*/
+		
 	//제품규격검색버튼
 	btnprdStd.addEventListener("click", function() {
 		mBas('PDT_SIZE');
@@ -308,43 +316,60 @@
 
 	
 	
-	//수정버튼
-	btnEdit.addEventListener("click", function() {
-		//console.log($('#useYn').is(':checked'));
-		//console.log($('#flwFrm'));
-		//console.log(document.getElementById('useYn').getAttribute('value'));
-		if(!confirm("수정하시겠습니까?")){
-			return false;
-		}
-		$.ajax({
-			url: "./updatePrd",
-			method: "POST",
-			data: $('#flwFrm').serializeObject(),
-			dataType: 'json',
-			//contentType: 'application/json',
-			success: function(result) {
-				console.log("수정완료!!!!!!!!!!!")
-				console.log(result)
+	/*제품*/
+		//수정버튼
+		btnEditPrd.addEventListener("click", function() {
+			//console.log($('#useYn').is(':checked'));
+			//console.log($('#flwFrm'));
+			//console.log(document.getElementById('useYn').getAttribute('value'));
+			if(!confirm("수정하시겠습니까?")){
+				return false;
 			}
+			$.ajax({
+				url: "./updatePrd",
+				method: "POST",
+				data: $('#flwFrm').serializeObject(),
+				dataType: 'json',
+				//contentType: 'application/json',
+				success: function(result) {
+					console.log("수정완료!!!!!!!!!!!")
+					console.log(result)
+				}
+			})
+		})	
+		
+		//등록버튼
+		btnAddPrd.addEventListener("click", function() {
+			if(!confirm("등록하시겠습니까?")){
+				return false;
+			}
+			$.ajax({
+				url: "./insertPrd",
+				method: "POST",
+				data: $('#flwFrm').serializeObject(),
+				dataType: 'json',
+				success: function(result) {
+					console.log("등록완료!!!!!!!!!!!")
+					console.log(result)
+				}
+			})
 		})
-	})	
-	
-	//등록버튼
-	btnAddPrd.addEventListener("click", function() {
-		grid1.appendRow({});
-	})	
-	
-	//삭제버튼
-	btnDelPrd.addEventListener("click", function() {
-		grid1.removeCheckedRows(true);
-	})
-	
-	//저장버튼
-	btnSavePrd.addEventListener("click", function() {
-		grid1.blur();
-		grid1.request('modifyData');
-	})
-	
+		
+		//초기화버튼
+		btnReset.addEventListener("click", function() {
+			if(!confirm("초기화하시겠습니까?")){
+				return false;
+			}
+			$('#flwFrm')[0].submit();
+		})
+		
+		//삭제버튼
+		btnDelPrd.addEventListener("click", function() {
+			grid1.removeCheckedRows(true);
+			grid1.request('modifyData');
+		})
+		/*제품 끝*/
+
 </script>
 </body>
 </html>

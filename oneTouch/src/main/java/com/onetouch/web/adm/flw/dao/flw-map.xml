@@ -17,7 +17,7 @@
 		order by prc_seq
 	</select>
 	
-	<!-- 공정전개 지우기 -->
+	<!-- flw modify -->
 	<delete id="deleteFlw">
 		delete 
 		from 	adm_prc_flow
@@ -26,27 +26,33 @@
 	
 	<update id="updateFlw">
 		UPDATE 	adm_prc_flow
-		SET 	work_cmt = #{workCmt},
+		SET 	prc_seq = #{prcSeq},
+				work_cmt = #{workCmt},
 				std_load = #{stdLoad},
 				unit_cost = #{unitCost},
-				lead_time = #{leadTime}
-		WHERE	prc_cd = #{prcCd}
+				lead_time = #{leadTime},
+				prc_cd = #{prcCd}
+		WHERE	prd_cd = #{prdCd}
 	</update>
 	
-	<update id="updatePrd">
-		UPDATE 	adm_prd
-		SET 	prd_std = #{prdStd},
-				mng_unit = #{mngUnit},
-				prd_sect = #{prdSect},
-				use_yn = 
-				<if test = "useYn == null || useYn == ''" >
-					'N'
-				</if>
-				<if test = "useYn == 'on'">
-					'Y'
-				</if>
-		WHERE	prd_cd = #{prdCd}		
-	</update>
+	<insert id="insertFlw">
+		INSERT INTO adm_prc_flow
+		(prc_seq,
+		 work_cmt,
+		 std_load,
+		 unit_cost,
+		 lead_time,
+		 prc_cd,
+		 prd_cd)
+		VALUES
+		(#{prcSeq},
+		 #{workCmt},
+		 #{stdLoad},
+		 #{unitCost},
+		 #{leadTime},
+		 #{prcCd},
+		 #{prdCd})
+	</insert>
 	
 	<!-- 공정흐름 // 공정관리 // 공통bom join -->
 	<select id="selectFlwPrcBom" resultType="com.onetouch.web.adm.bom.dao.BomVO">
