@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav"> 
           <li class="nav-item">
@@ -16,12 +18,12 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="BasList">공통코드관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="BomList">제품Bom관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="mngList">공정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="FlwList">공정흐름관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="FltList">불량코드관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="mtrList">자재정보관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BasList">공통코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BomList">제품Bom관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mngList">공정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FlwList">공정흐름관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FltList">불량코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mtrList">자재정보관리</a></li>
               </ul>
             </div>
           </li>
@@ -33,10 +35,10 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="ordList">♡동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="PlanList">♨동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="WorkList">♬동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="prdPrcList">♠동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/ordList">♡동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/PlanList">♨동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkList">♬동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/prdPrcList">♠동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>
@@ -48,14 +50,14 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="inForm">입고자재관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="inList">입고자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="outList">출고자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="rtnForm">반품자재관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="rtnList">반품자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="adjForm">재고조정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="adjList">재고조정조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="stckList">재고조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inForm">입고자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inList">입고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/outList">출고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnForm">반품자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnList">반품자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/adjForm">재고조정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/adjList">재고조정조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/stckList">재고조회</a></li>
               </ul>
             </div>
           </li>
@@ -67,26 +69,26 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="ftcIhfoIns">🦾설비등록</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcIhfoSel">🔍설비조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcFix">🛠수리관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcProd">👀점검관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="ftcDwtmIns">⚙비동기관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="UploadFile">업로드 테스트</a></li>
-                <li class="nav-item"> <a class="nav-link" href="UploadAjax">아작스 업로드 테스트</a></li>
-
+            	<li class="nav-item"> <a class="nav-link" href="${path}/fct/fctInfoIns">🦾설비등록</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctInfoSel">🔍설비조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctFix">🛠수리관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctProd">👀점검관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctDwtmIns">⚙비동기관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/UploadFile">업로드 테스트</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/UploadAjax">아작스 업로드 테스트</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
               <i class="icon-contract menu-icon"></i>
-              <span class="menu-title">Icons</span>
+              <span class="menu-title">egov</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="icons">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/uat/uia/egovLoginUsr.do">로그인</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/sec/ram/EgovAuthorList.do">권한관리</a></li>
               </ul>
             </div>
           </li>

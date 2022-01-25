@@ -19,7 +19,7 @@ import com.onetouch.web.mtr.ord.service.MtrOrdService;
 import com.onetouch.web.mtr.rtn.service.MtrRtnService;
 import com.onetouch.web.mtr.stck.service.MtrLotService;
 import com.onetouch.web.zzz.dao.ModifyVO;
-
+@RequestMapping("/mtr")
 @Controller
 public class MtrInFormController {
 
@@ -28,7 +28,7 @@ public class MtrInFormController {
 	@Autowired MtrLotService mtrLotService;
 	@Autowired MtrRtnService mtrRtnService;
 	
-	@RequestMapping("inForm")
+	@RequestMapping("/inForm")
 	public String inForm() {
 		return "tiles/mtr/mtrInForm";
 	}

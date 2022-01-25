@@ -16,13 +16,14 @@ import com.onetouch.web.adm.bas.dao.BasDtlVO;
 import com.onetouch.web.adm.bas.service.BasService;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.stck.service.MtrLotService;
+@RequestMapping("/mtr")
 @Controller
 public class MtrStckController {
 
 	@Autowired MtrLotService service;
 	@Autowired BasService basService;
 	
-	@RequestMapping("stckList")
+	@RequestMapping("/stckList")
 	public String stckList() {
 		return "tiles/mtr/mtrStckList";
 	}
@@ -51,7 +52,7 @@ public class MtrStckController {
 	}
 	//radio
 	@ResponseBody
-	@GetMapping("mtrStckRadio")
+	@GetMapping("/mtrStckRadio")
 	public List<BasDtlVO> mtrStckRadio(){
 		BasDtlVO vo=new BasDtlVO();
 		vo.setBasCd("MTR_SECT");

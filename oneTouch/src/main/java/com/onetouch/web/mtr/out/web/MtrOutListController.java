@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.out.service.MtrOutService;
-
+@RequestMapping("/mtr")
 @Controller
 public class MtrOutListController {
 
 	@Autowired MtrOutService outService;
 	
-	@RequestMapping("outList")
+	@RequestMapping("/outList")
 	public String outForm() {
 		return "tiles/mtr/mtrOutList";
 	}

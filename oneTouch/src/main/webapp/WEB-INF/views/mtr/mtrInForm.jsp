@@ -195,7 +195,7 @@ var mainGrid = new Grid({
 				 },
 				 {
 				   header: '단위',
-				   name: 'unit',
+				   name: 'unitNm',
 				   align: 'center',
 				   sortable: true
 				 },

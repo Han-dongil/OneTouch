@@ -15,6 +15,7 @@ public class MtrInVO extends LotVO{
 	private String mtrNm;
 	private String ordNo;
 	private String unit;
+	private String unitNm;
 	private String inAmt;
 	private String fltAmt;
 	private String unitCost;

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.rtn.service.MtrRtnService;
-
+@RequestMapping("/mtr")
 @Controller
 public class MtrRtnController {
 
 	@Autowired MtrRtnService service;
 	
-	@RequestMapping("rtnForm")
+	@RequestMapping("/rtnForm")
 	public String rtnForm() {
 		return "tiles/mtr/mtrRtnForm";
 	}
@@ -35,7 +35,7 @@ public class MtrRtnController {
 		return data;
 	}
 	
-	@RequestMapping("rtnList")
+	@RequestMapping("/rtnList")
 	public String rtnList() {
 		return "tiles/mtr/mtrRtnList";
 	}
