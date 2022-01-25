@@ -152,16 +152,34 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			if(result.sumFlt==result.goalCnt){
-				console.log("불량률 100퍼 !!!!!!!!! 공장망하겟누")
-			}else{
+			if(result.sumFlt!=result.goalCnt){
 				hiddenGrid.setValue(0,'sumFlt',result.sumFlt*1);
 				fltCheck();
-					
+				
+			}else{
+				
+				
+				console.log("불량률 100퍼 !!!!!!!!! 공장망하겟누")
 				
 			}
 		})
 	}
+	//긴급중단버튼
+	fastStop.addEventListener('click',ev=>{
+		fetch('fastStop',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(hiddenGrid.getData())
+		})
+		.then(response=>response.json)
+		.then(result=>{
+			alert('관리부서에 알림을 보냇습니다');
+			hiddenGrid.setValue(0,'nowPhs','긴급중단');
+		})
+	})
+
 	//시작버튼
 	prcStart.addEventListener('click',ev=>{
 		fetch('prcStart',{
@@ -175,13 +193,16 @@
 		.then(result=>{
 			hiddenGrid.setValue(0,'fltCnt',0);
 			alert(result.msg);
-			console.log(result);  // result.workStrDt  << 시작시간 화면에띄워줘야댐
 			
+			console.log(result);  // result.workStrDt  << 시작시간 화면에띄워줘야댐
+			hiddenGrid.setValue(0,'workStrDt',result.workStrDt);
+			hiddenGrid.setValue(0,'nowPhs',result.nowPhs);
+			fltCheck();
 		})
 	})
 	//종료버튼
 	prcEnd.addEventListener('click',ev=>{
-		hiddenGrid.setValue(0,'pdtCnt',hiddenGrid.getValue(0,'goalCnt')*1-hiddenGrid.getValue(0,'fltCnt')*1)
+		hiddenGrid.setValue(0,'pdtCnt',hiddenGrid.getValue(0,'goalCnt')*1-hiddenGrid.getValue(0,'sumFlt')*1)
 		fetch('prcEnd',{
 			method:'POST',
 			headers:{
@@ -192,7 +213,9 @@
 		.then(response=>response.json())
 		.then(result=>{
 			console.log(result);
-			hiddenGrid.setValue(0,'workFinDt',result.workFinDt)
+			hiddenGrid.setValue(0,'workFinDt',result.workFinDt);
+			hiddenGrid.setValue(0,'nowPhs',result.nowPhs);
+			hiddenGrid.setValue(0,'prdLot',result.prdLot);
 			//hiddenGrid.setValue(0,'pdtCnt',hiddenGrid.getValue(0,'goalCnt')*1-hiddenGrid.getValue(0,'fltCnt')*1);
 			alert(result.msg)
 		})
@@ -222,13 +245,26 @@
 	//불량+버튼
 	fltAdd.addEventListener('click',ev=>{
 		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1+1);
-		fltCheck();
+		updateFlt();
 	})
 	//불량-버튼
 	fltMinus.addEventListener('click',ev=>{
 		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1-1);
-		//fltCheck();
+		updateFlt();
 	})
+	function updateFlt(){
+		fetch('fltUpdate',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(hiddenGrid.getData())
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			console.log(result);  // 
+		})
+	}
 
 	//lineNo prcCd 선택시 해당 조건에맞는 작업지시 데이터 불러와서 그리드에 표시
 	prcCdTag.addEventListener('change',ev=>{

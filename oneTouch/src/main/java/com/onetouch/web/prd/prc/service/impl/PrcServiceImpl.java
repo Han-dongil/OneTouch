@@ -30,6 +30,7 @@ public class PrcServiceImpl implements PrcService{
 
 	@Override
 	public PrcVO prcFlowMinMax(PrcVO vo) {
+
 		List<PrcVO> list=mapper.prcFlowMinMax(vo);
 		int flowMax=0;
 		int flowMin=100;
@@ -77,6 +78,8 @@ public class PrcServiceImpl implements PrcService{
 		List<PrcVO> list=mapper.prcFlowMinMax(vo);
 		int flowMax=0;
 		int flowMin=100;
+		PrcVO vo100 = new PrcVO();
+		vo100=vo;
 		// flow min max 구하는 for문
 		for(PrcVO resultVo: list) {
 			System.out.println(resultVo);
@@ -89,12 +92,6 @@ public class PrcServiceImpl implements PrcService{
 			}
 		}
 		String a=(mapper.myPrcFlow(vo)).getPrcSeq().substring(0,1);//내공정흐름번호
-		System.out.println(a);
-		System.out.println("ㅇㅇㅇㅇ");
-		System.out.println(flowMax);
-		System.out.println("aaaaa");
-		System.out.println(mapper.lineEndCheck(vo).get(0).getPrcEndNull());
-		
 		if(flowMin==Integer.parseInt(a)) { //공정흐름 1번이 들어온경우
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);  //입력된시간불러와서 리턴
@@ -112,18 +109,25 @@ public class PrcServiceImpl implements PrcService{
 			return vo;
 		}
 		else if(Integer.parseInt(a)-1==mapper.endFlowCheck(vo) &&  Integer.parseInt(a)==flowMax) {
-			mapper.endUpdate(vo); //시간업데이트
-			vo=mapper.endTimeSelect(vo);
+			mapper.endUpdate(vo100); //시간업데이트
+			vo=mapper.endTimeSelect(vo100);
 			//lot 번호 부여
-			String sect=mapper.sectSelect(vo);
-			if(sect=="PDT_SECT001") {
-				mapper.PrdInsert(vo);
+			System.out.println(vo100);
+			String sect=mapper.sectSelect(vo100);
+			System.out.println(sect);
+			if(sect.equals("PDT_SECT001")) {
+				String lot=(mapper.insertHrdLotSelect(vo100)).getPrdLot();
+				vo100.setPrdLot(lot);
+				vo.setPrdLot(lot);
+				mapper.hrdInsert(vo100);
 			}
-			else if(sect=="PDT_SECT002") {
-				
+			else if(sect.equals("PDT_SECT002")) {
+				String lot=(mapper.insertLotSelect(vo100)).getPrdLot();
+				vo100.setPrdLot(lot);
+				vo.setPrdLot(lot);
+				System.out.println(vo100);
+				mapper.prdInsert(vo100);
 			}
-				
-			
 			vo.setMsg("라인가동 종료!!.");
 			return vo;
 		}
@@ -140,18 +144,34 @@ public class PrcServiceImpl implements PrcService{
 	
 	@Override
 	public PrcVO selectCheck(PrcVO vo) {
-		mapper.updateFlt(vo); //1
+
 		PrcVO vo2=new PrcVO();
 		vo2=vo;
 		String fltSave=mapper.realFlt(vo).getSumFlt();
 		while(true){
 			String flt=mapper.realFlt(vo2).getSumFlt();
 			if(!fltSave.equals(flt)||fltSave==vo.getGoalCnt()) {
-				System.out.println("dddd");
 				return mapper.realFlt(vo);
 			}
 		}
 	}
+
+	
+	@Override
+	public void updateFlt(PrcVO vo) {
+		mapper.updateFlt(vo); //1
+	}
+
+	@Override
+	public void fastStop(PrcVO vo) {
+		//긴급중단 좀더생각해보자.
+		mapper.fastStopUpdate(vo);
+		mapper.fastStop(vo);
+		
+	}
+	
+	
+	
 	
 
 }

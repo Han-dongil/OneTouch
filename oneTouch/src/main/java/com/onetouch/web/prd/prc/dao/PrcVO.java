@@ -23,6 +23,7 @@ public class PrcVO extends WorkVO{
 	//공정흐름 필드
 	private String prcSeq;
 	private int prcEndNull;
+	private String prdSect; 
 	//메세지
 	private String msg;
 	//동기화

@@ -11,4 +11,6 @@ public interface PrcService {
 	PrcVO prcFlowMinMax(PrcVO vo);
 	PrcVO prcEnd(PrcVO vo);
 	PrcVO selectCheck(PrcVO vo);
+	void updateFlt(PrcVO vo);
+	void fastStop(PrcVO vo);
 }

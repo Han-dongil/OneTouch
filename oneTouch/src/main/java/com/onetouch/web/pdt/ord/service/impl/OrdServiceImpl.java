@@ -28,5 +28,10 @@ public class OrdServiceImpl implements OrdService {
 		mapper.delete(list);
 		
 	}
+	@Override
+	public OrdVO orderSeq() {
+		return mapper.orderSeq();
+		
+	}
 
 }

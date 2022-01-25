@@ -11,4 +11,5 @@ public interface OrdMapper {
 	void ordCheck(String ordShtNo);
 	void ordCheck();
 	List<PlanVO> ordShtSelect(String ordShtNo);
+	OrdVO orderSeq();
 }
