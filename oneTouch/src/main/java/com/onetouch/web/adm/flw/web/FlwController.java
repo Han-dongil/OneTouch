@@ -96,4 +96,12 @@ public class FlwController {
 		return bomservice.selectPrd(prdvo);
 	}
 	
+	//삭제수정등록 처리
+	@ResponseBody
+	@PostMapping("/prdModifyData")
+	public void modifyPrd(@RequestBody ModifyVO<PrdVO> mvo) {
+		System.out.println("modify" + mvo);
+		bomservice.modifyPrd(mvo);
+	}
+	
 }

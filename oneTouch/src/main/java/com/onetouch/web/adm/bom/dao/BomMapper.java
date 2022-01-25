@@ -8,6 +8,10 @@ public interface BomMapper {
 	List<PrdVO> selectPrdAll();
 	List<PrdVO> selectUsePrdAll();
 	List<PrdVO> selectUsePrd();
+	
+	void insertPrd(PrdVO prdvo);
+	void deletePrd(PrdVO prdvo);
+	void updatePrd(PrdVO prdvo);
 	 
 	void deleteBom(BomVO bomvo);
 	void updateBom(BomVO bomvo);

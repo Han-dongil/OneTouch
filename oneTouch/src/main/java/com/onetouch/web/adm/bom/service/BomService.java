@@ -14,4 +14,5 @@ public interface BomService {
 	List<PrdVO> selectUsePrd();
 	
 	void modify(ModifyVO<BomVO> mvo);
+	void modifyPrd(ModifyVO<PrdVO> mvo);
 } 

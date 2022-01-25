@@ -58,12 +58,20 @@ public class BasController {
 		return maps;
 	}
 	
-	//삭제수정등록 처리
+	//삭제수정등록 처리 (basDtl)
 	@ResponseBody
-	@PostMapping("/basModifyData")
+	@PostMapping("/basDtlModifyData")
 	public void modify(@RequestBody ModifyVO<BasDtlVO> mvo) {
 		System.out.println("modify" + mvo);
 		basservice.modify(mvo);
+	}
+	
+	//삭제수정등록 처리 (basAll)
+	@ResponseBody
+	@PostMapping("/basAllModifyData")
+	public void modifyBas(@RequestBody ModifyVO<BasVO> mvo) {
+		System.out.println("modify" + mvo);
+		basservice.modifyBas(mvo);
 	}
 	
 }

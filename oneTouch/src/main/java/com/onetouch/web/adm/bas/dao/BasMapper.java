@@ -10,4 +10,9 @@ public interface BasMapper {
 	
 	void insertBas(BasDtlVO basDtlvo);
 	void updateBas(BasDtlVO basDtlvo);
+	void deleteBas(BasDtlVO basDtlvo);
+	
+	void insertBasAll(BasVO basvo);
+	void updateBasAll(BasVO basvo);
+	void deleteBasAll(BasVO basvo);
 }

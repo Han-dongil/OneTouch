@@ -66,12 +66,6 @@ hr{
 							<input id="prdStdNm" name="prdStdNm" class="inputtext" readonly>
 						</div>
 						<div class="rowdiv">
-							<label class="labeltext">제품명</label>&emsp;&nbsp;
-							<input id="prdNm" name="prdNm" class="inputtext" readonly>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
-							<label class="labeltext colline2">제품규격</label>&emsp;&nbsp;
-							<input id="prdStdNm" name="prdStdNm" class="inputtext" readonly>
-						</div>
-						<div class="rowdiv">
 							<label class="labeltext">관리단위</label>&emsp;&nbsp;
 							<input id="mngUnitNm" name="mngUnitNm" class="inputtext" readonly>&emsp;&nbsp;&emsp;&nbsp;&emsp;&nbsp;
 							<label class="labeltext colline2">제품구분</label>&emsp;&nbsp;
@@ -286,6 +280,9 @@ hr{
 	
 	//자재명 더블클릭 모달띄우기
 	mainGrid.on("dblclick", (ev)=> {
+		if(ev.columnName === 'mtrCd') {
+			alert('자재명을 더블클릭하세요');
+		}
 		console.log(ev);
 		if (ev.columnName === 'mtrNm') {
 			rowk = ev.rowKey;

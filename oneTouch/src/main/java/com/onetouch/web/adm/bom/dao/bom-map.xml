@@ -81,44 +81,67 @@
 		from 	adm_bom
 		where 	prd_cd = #{prdCd}
 	</select>
+	
+	<!-- prd 쿼리 -->
+		<insert id="insertPrd">
+			insert	into adm_prd
+			(prd_cd,
+			 prd_nm)
+			values 
+			(prdCd,
+			 prdNm)
+		</insert>
+		
+		<delete id="deletePrd">
+			delete
+			from	adm_prd
+			where	prd_cd = #{prdCd}
+		</delete>
+		
+		<update id="updatePrd">
+			update 	adm_prd
+			set		prd_cd = #{prdCd},
+					prd_nm = #{prdNm}
+		</update>
 
-	<delete id="deleteBom">
-		delete 
-		from 	adm_bom
-		where	bom_cd=#{bomCd}
-	</delete>
-	
-	<update id="updateBom">
-		update 	adm_bom
-		set		mtr_cd = #{mtrCd},
-				use_amt = #{useAmt},
-				ord_chk = #{ordChk},
-				pdt_chk = #{pdtChk},
-		<if test="cmt != null">cmt = #{cmt},</if>
-				prc_cd = #{prcCd}
-		where	bom_cd=#{bomCd}
-	</update>
-	
-	<insert id="insertBom">
-		INSERT INTO adm_bom
-		(mtr_cd,
-		 prd_cd,
-		 use_amt,
-		 ord_chk,
-		 pdt_chk,
-		 prc_cd,
-		 bom_cd
-		 <if test="cmt != null">,cmt</if>
-		 )
-		 VALUES(
-		 #{mtrCd},
-		 #{prdCd},
-		 #{useAmt},
-		 #{ordChk},
-		 #{pdtChk},
-		 #{prcCd},
-		 FN_MAKE_BOMCD()
-		 <if test="cmt != null">,#{cmt}</if>
-		 )
-	</insert>
+	<!-- bom 쿼리 -->
+		<delete id="deleteBom">
+			delete 
+			from 	adm_bom
+			where	bom_cd=#{bomCd}
+		</delete>
+		
+		<update id="updateBom">
+			update 	adm_bom
+			set		mtr_cd = #{mtrCd},
+					use_amt = #{useAmt},
+					ord_chk = #{ordChk},
+					pdt_chk = #{pdtChk},
+			<if test="cmt != null">cmt = #{cmt},</if>
+					prc_cd = #{prcCd}
+			where	bom_cd=#{bomCd}
+		</update>
+		
+		<insert id="insertBom">
+			INSERT INTO adm_bom
+			(mtr_cd,
+			 prd_cd,
+			 use_amt,
+			 ord_chk,
+			 pdt_chk,
+			 prc_cd,
+			 bom_cd
+			 <if test="cmt != null">,cmt</if>
+			 )
+			 VALUES(
+			 #{mtrCd},
+			 #{prdCd},
+			 #{useAmt},
+			 #{ordChk},
+			 #{pdtChk},
+			 #{prcCd},
+			 FN_MAKE_BOMCD()
+			 <if test="cmt != null">,#{cmt}</if>
+			 )
+		</insert>
 </mapper>

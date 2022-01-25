@@ -510,3 +510,77 @@ function mBas(basCd,btn){
 		})
 	});
 }
+
+//공통코드2
+function mBas2(){
+	let bas2Data;
+
+		
+	$.ajax({
+		url : './modalBas2List',
+		dataType : 'json',
+		async : false,
+		success : function(result){
+			console.log(result);
+			bas2Data = result;
+		}
+	});
+		
+	dialog.dialog("open");
+			
+	$("#dialog-form").attr('title', '공통');
+	
+	$("#dialog-form").load("modalBas2", function(){
+		let bas2Grid = tui.Grid;
+		
+		bas2Grid.applyTheme('striped',{
+			cell:{
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
+			}
+		})
+		
+		const bas2Columns = [ 
+			{
+				header: '제품코드',
+				name: 'basCd',
+				align: 'center'
+			},
+			{
+				header: '제품명',
+				name: 'basNm',
+				align: 'center'
+			},
+			{
+				header: '제품설명',
+				name: 'basCmt',
+				align: 'center'
+			}
+		]; 
+
+		
+		bas2Grid = new Grid({
+			el : document.getElementById('bas_grid2'),
+			data : bas2Data,
+			columns : bas2Columns
+		});
+		
+		bas2Grid.on('dblclick', ev => {
+			getModalBas2(bas2Grid.getRow(ev.rowKey));
+		})
+		
+		bas2Grid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		bas2Grid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+		
+
+	});
+}

@@ -13,6 +13,33 @@
 		order by bas_nm
 	</select>
 	
+	<!-- 기초코드 등록 -->
+	<insert id="insertBasAll">
+		insert  into adm_bas_cd
+		(bas_cd,
+		 bas_nm,
+		 bas_cmt)
+		 values 
+		(#{basCd},
+		 #{basNm},
+		 #{basCmt})
+	</insert>
+	
+	<!-- 기초코드 수정 -->
+	<update id="updateBasAll">
+		update 	adm_bas_cd
+		set	 	bas_cd = #{basCd},
+				bas_nm = #{basNm},
+				bas_cmt = #{basCmt}
+	</update>
+	
+	<!-- 기초코드 삭제 -->
+	<delete id="deleteBasAll">
+		delete 
+		from 	adm_bas_cd
+		where 	bas_cd = #{basCd}
+	</delete>
+	
 	<!-- 상세코드 전체조회 -->
 	<select id="selectBasDtlAll" resultType="com.onetouch.web.adm.bas.dao.BasDtlVO">
 		select *
@@ -65,4 +92,10 @@
 				use_yn = #{useYn}
 		WHERE	dtl_cd = #{dtlCd}
 	</update>
+	
+	<delete id="deleteBas">
+		delete
+		from	adm_bas_dtl_cd
+		where	dtl_cd = #{dtlCd}
+	</delete>
 </mapper>

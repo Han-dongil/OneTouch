@@ -60,5 +60,25 @@ public class BomServiceImpl implements BomService {
 		
 	}
 
+	@Override
+	public void modifyPrd(ModifyVO<PrdVO> mvo) {
+		if(mvo.getCreatedRows() != null) {
+			for(PrdVO prdvo : mvo.getCreatedRows()) {
+				mapper.insertPrd(prdvo);
+			};
+		}
+		if(mvo.getDeletedRows() != null) {
+			for(PrdVO prdvo : mvo.getDeletedRows()) {
+				mapper.deletePrd(prdvo);
+			};
+		}
+		if(mvo.getUpdatedRows() != null) {
+			for(PrdVO prdvo : mvo.getUpdatedRows()) {
+				mapper.updatePrd(prdvo);
+			};
+		}
+		
+	}
+
 
 }

@@ -13,4 +13,5 @@ public interface BasService {
 	List<BasDtlVO> selectBasDtl(BasDtlVO basDtlvo);
 	
 	void modify(ModifyVO<BasDtlVO> mvo);
+	void modifyBas(ModifyVO<BasVO> mvo);
 }
