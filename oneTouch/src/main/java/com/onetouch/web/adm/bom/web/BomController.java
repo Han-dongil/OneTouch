@@ -15,13 +15,14 @@ import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.service.BomService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
+@RequestMapping("/adm")
 @Controller
 public class BomController { 
 
 	@Autowired BomService bomservice;
 	
 	//제품Bom관리 보여주는 페이지로 이동
-	@RequestMapping("BomList")
+	@RequestMapping("/BomList")
 	public String bomList() {
 		return "tiles/adm/admBomList";
 	}

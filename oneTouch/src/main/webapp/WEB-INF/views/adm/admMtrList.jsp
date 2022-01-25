@@ -51,6 +51,9 @@ hr{
 	<div class="flex row">
 		<div class = "col-4">
 			<h4 class="gridtitle">✔자재목록</h4>
+			<span class="floatright">
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+			</span>
 			<br><br>
 			<hr>
 			<div id="grid"></div>
@@ -58,9 +61,9 @@ hr{
 		<div class= "col-8">
 			<h4 class="gridtitle">✔자재상세정보</h4>
 			<span class="floatright">
-				<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
-				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
-				<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+				<button type="button" id="btnReset" class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="btnAdd" class="btn btn-main newalign2">등록</button>
+				<button type="button" id="btnEdit" class="btn btn-primary newalign2">수정</button>
 			</span>
 			<br><br>
 			<hr>
@@ -70,12 +73,12 @@ hr{
 					<form id="mtrFrm" name="mtrFrm" method="post">
 						<div class="rowdiv">
 							<label class="labeltext">자재코드&nbsp;</label>
-							<input id="mtrCd" name="mtrCd" class="inputtext" readonly>
+							<input id="mtrCd" name="mtrCd" class="inputtext">
 						</div>
 						
 						<div class="rowdiv">
 							<label class="labeltext">자재명&emsp;&nbsp;</label>
-							<input id="mtrNm" name="mtrNm" class="inputtext" readonly>
+							<input id="mtrNm" name="mtrNm" class="inputtext">
 						</div>
 						
 						<div class="rowdiv">
@@ -104,12 +107,12 @@ hr{
 						
 						<div class="rowdiv">
 							<label class="labeltext">관리수량&nbsp;</label>
-							<input id="mngAmt" name="mngAmt" class="inputtext" readonly>
+							<input id="mngAmt" name="mngAmt" class="inputtext">
 						</div>
 						
 						<div class="rowdiv">
 							<label class="labeltext">안전재고&nbsp;</label>
-							<input id="safeStck" name="safeStck" class="inputtext" readonly>
+							<input id="safeStck" name="safeStck" class="inputtext">
 							<input type="hidden" id="std" name="std">
 							<input type="hidden" id="unit" name="unit">
 							<input type="hidden" id="mtrSect" name="mtrSect">
@@ -121,7 +124,7 @@ hr{
 							<span class="form-check form-check-flat form-check-primary inline">
 								<label class="form-check-label chkboxalign">
 									<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-									<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+									<input id="useYn" name="useYn" type="checkbox" class="form-check-input">
 								</label>
 							</span>
 						</div>
@@ -195,12 +198,14 @@ hr{
 		
 			header : '자재코드',
 			name : 'mtrCd',
-			sortable : true //정렬
+			sortable : true, //정렬
+			editor : 'text'
 		},
 		{
 			header : '자재명',
 			name : 'mtrNm',
-			sortable : true
+			sortable : true,
+			editor : 'text'
 		}];
 	
 	const dataSource = {
@@ -218,11 +223,13 @@ hr{
 		data: dataSource,
 		columns,
 		bodyHeight: 640,
-		minBodyHeight: 640
+		minBodyHeight: 640,
+		rowHeaders : [ 'checkbox' ]
 	});
 	
 	grid.on("click", (ev) => {
 		if(ev.columnName === 'mtrCd' || ev.columnName === 'mtrNm') {
+			
 			mtrCode = {'mtrCd': grid.getValue(ev.rowKey,'mtrCd')};
 			console.log(mtrCode);
 			
@@ -258,16 +265,13 @@ hr{
 		}
 	})
 	
-	//저장버튼
-	btnSave.addEventListener("click", function() {
-		//console.log($('#useYn').is(':checked'));
-		//console.log($('#flwFrm'));
-		//console.log(document.getElementById('useYn').getAttribute('value'));
+	//수정버튼
+	btnEdit.addEventListener("click", function() {
 		if(!confirm("수정하시겠습니까?")){
 			return false;
 		}
 		$.ajax({
-			url: "updateMtr",
+			url: "./updateMtr",
 			method: "POST",
 			data: $('#mtrFrm').serializeObject(),
 			dataType: 'json',
@@ -336,13 +340,34 @@ hr{
 
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		grid.appendRow({});
-/* 		rowk = mainGrid.getRowCount() - 1;
-		console.log(rowk);
-		prdCdVal = document.getElementById("prdCd").value
-		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
-		console.log(mainGrid.getValue(rowk,'prdCd')); */
+		if(!confirm("등록하시겠습니까?")){
+			return false;
+		}
+		$.ajax({
+			url: "./insertMtr",
+			method: "POST",
+			data: $('#mtrFrm').serializeObject(),
+			dataType: 'json',
+			success: function(result) {
+				console.log("등록완료!!!!!!!!!!!")
+				console.log(result)
+			}
+		})
 	})	
+	
+	//초기화버튼
+	btnReset.addEventListener("click", function() {
+		if(!confirm("초기화하시겠습니까?")){
+			return false;
+		}
+		$('#mtrFrm')[0].submit();
+	})
+	
+	//삭제버튼
+	btnDel.addEventListener("click", function() {
+		grid.removeCheckedRows(true);
+	})
+	
 	
 </script>
 </body>

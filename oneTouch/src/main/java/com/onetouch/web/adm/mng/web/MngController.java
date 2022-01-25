@@ -17,6 +17,7 @@ import com.onetouch.web.adm.mng.dao.MngVO;
 import com.onetouch.web.adm.mng.service.MngService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
+@RequestMapping("/adm")
 @Controller
 public class MngController {
 
@@ -24,7 +25,7 @@ public class MngController {
 	MngService mngservice;
 
 	// 공정리스트 보여주는 페이지로 이동
-	@RequestMapping("mngList")
+	@RequestMapping("/mngList")
 	public String mngList() {
 		return "tiles/adm/admMngList";
 	}

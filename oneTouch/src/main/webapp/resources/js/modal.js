@@ -517,7 +517,7 @@ function mBas2(){
 
 		
 	$.ajax({
-		url : './modalBas2List',
+		url : '../modalBas2List',
 		dataType : 'json',
 		async : false,
 		success : function(result){
@@ -530,7 +530,7 @@ function mBas2(){
 			
 	$("#dialog-form").attr('title', '공통');
 	
-	$("#dialog-form").load("modalBas2", function(){
+	$("#dialog-form").load("../modalBas2", function(){
 		let bas2Grid = tui.Grid;
 		
 		bas2Grid.applyTheme('striped',{

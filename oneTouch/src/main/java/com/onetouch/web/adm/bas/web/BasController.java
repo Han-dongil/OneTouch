@@ -16,13 +16,14 @@ import com.onetouch.web.adm.bas.dao.BasVO;
 import com.onetouch.web.adm.bas.service.BasService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
+@RequestMapping("/adm")
 @Controller
 public class BasController {
 
 	@Autowired BasService basservice;
 	
 	//공통관리 보여주는 페이지로 이동
-	@RequestMapping("BasList")
+	@RequestMapping("/BasList")
 	public String basList() {
 		return "tiles/adm/admBasList";
 	}
