@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -190,7 +190,7 @@
 			name : 'mtrLot',
 			hidden : false
 		},{
-			header : '홀딩수량',
+			header : '사용수량',
 			name : 'hldCnt',
 			hidden : false,
 	  		editor : 'text'

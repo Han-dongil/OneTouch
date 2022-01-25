@@ -34,4 +34,9 @@
 			AND C.MTR_SECT = #{mtrSect}
 		</if>
 	</select>
+	<insert id="mtrOutInsert">
+		insert into MTR_OUT (OUT_NO,OUT_DT,MTR_LOT,PRC_CD,OUT_AMT) values(PKG_MAKE_CODE.CODE('MOU','MTR_OUT','OUT_NO'),to_date(sysdate,'yyyy-mm-dd HH24:MI:SS'),#{mtrLot},#{prcCd},#{hldCnt})
+		
+	</insert>
+	
 </mapper>

@@ -48,6 +48,11 @@ public class OrdController {
 		return service.list();
 		
 	}
+	@ResponseBody
+	@GetMapping("orderSeq")
+	public OrdVO orderSeq() {
+		return service.orderSeq();
+	}
 	
 
 }

@@ -11,9 +11,9 @@
 		select sum(nvl2(work_fin_dt,1,0)) as prcEndNull from prd_prc_mng where instr_no= #{instrNo}
 	</select>
 	<select id="prcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select *
+			select distinct prc_cd,prc_seq
 		from adm_prd a join adm_prc_flow b
-		on a.prd_cd = b.prd_cd 
+		on a.prd_cd = b.prd_cd
 		where a.able_line_no like '%'||#{lineNo}||'%'
 	</select>
 	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
@@ -60,7 +60,7 @@
 		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="startTimeSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select work_str_dt from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+		select work_str_dt ,now_phs from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</select>
 	<select id="flowCheck" resultType="Integer">
 		select count(work_str_dt) from prd_prc_mng
@@ -76,7 +76,7 @@
 		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="endTimeSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select work_fin_dt from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+		select work_fin_dt ,now_phs from prd_prc_mng where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</select>
 	<select id="endFlowCheck" resultType="Integer">
 		select count(work_fin_dt) from prd_prc_mng
@@ -84,17 +84,19 @@
 		group by instr_no
 		having instr_no=#{instrNo}
 	</select>
-	<select id="sectSelect">
+	<select id="sectSelect" resultType="string">
 		select prd_sect 
 		from adm_prd 
 		where prd_cd=(select prd_Cd from pdt_work_instr_dtl
 					 WHERE instr_no=#{instrNo}   and line_no=#{lineNo}  and prc_cd=#{prcCd})	
 	</select>
-	<insert id="PrdInsert">
-		insert into PRD_LOT,PRD_CD,STCK_CNT values {PKG_MAKE_CODE.CODE('PRD','PDT_CMPT_PRD_STCK','PRD_CD'),#{prdCd},#{stckCnt}
+	<insert id="prdInsert">
+		insert into pdt_cmpt_prd_stck (PRD_LOT,PRD_CD,STCK_CNT) values (PKG_MAKE_CODE.CODE('PRD','PDT_CMPT_PRD_STCK','PRD_LOT'),
+					(select prd_Cd from pdt_work_instr_dtl
+					 WHERE instr_no=#{instrNo}   and line_no=#{lineNo}  and prc_cd=#{prcCd}),#{pdtCnt})
 	</insert>
-	<insert id="HrdInsert">
-		
+	<insert id="hrdInsert">
+		insert into mtr_lot_stck (MTR_LOT,MTR_CD,STCK_CNT) values(PKG_MAKE_CODE.CODE('HRD','MTR_LOT_STCK','MTR_LOT'),#{prdCd},#{pdtCnt})
 	</insert>
 	<update id="updateFlt"><!--생산량 , 불량량  -->
 		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
@@ -106,4 +108,20 @@
 		from prd_prc_mng
 		where prc_cd=#{prcCd} AND instr_no=#{instrNo}
 	</select>
+	<select id="insertLotSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select PKG_MAKE_CODE.CODE('PRD','PDT_CMPT_PRD_STCK','PRD_LOT') as prdLot from dual
+	</select>
+	<select id="insertHrdLotSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select PKG_MAKE_CODE.CODE('HRD','MTR_LOT_STCK','MTR_LOT') as prdLot from dual
+	</select>
+	<insert id='fastStop'>
+		insert into msg_alt (msg_no , alt_send_dt, alt_send_dept , alt_recp_dept , alt_cmt)
+		values ( PKG_MAKE_CODE.CODE('MSG','MTR_LOT_STCK','MTR_LOT') , sysdate , '수리부서' , 'PDT'||','||#{lineNo}||','||#{prcCd} , '공정설비 고장낫어요 빨리와주세요.')
+	</insert>
+	<update id="fastStopUpdate">
+		update prd_prc_mng set
+		work_str_dt=sysdate ,
+		now_phs='긴급중단'
+		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
+	</update>
 </mapper>

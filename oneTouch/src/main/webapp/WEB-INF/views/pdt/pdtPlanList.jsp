@@ -463,7 +463,7 @@
     		 if(grid.getValue(ev.rowKey,'ordShtNo')!='null'){
     			 fetch('ordShtSelect/'+grid.getValue(ev.rowKey,'ordShtNo'))
     			 .then(response=>response.json())
-    			 .then(result=>{
+    			 .then(result=>{1
     				 console.log(result)
     			 })
     		 }

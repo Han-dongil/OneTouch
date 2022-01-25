@@ -18,7 +18,12 @@ public interface PrcMapper {
 	int endFlowCheck(PrcVO vo);
 	List<PrcVO> lineEndCheck(PrcVO vo);
 	String sectSelect(PrcVO vo);
-	void PrdInsert(PrcVO vo);
+	void prdInsert(PrcVO vo);
 	void updateFlt(PrcVO vo);
 	PrcVO realFlt(PrcVO vo);
+	PrcVO insertLotSelect(PrcVO vo);
+	void hrdInsert(PrcVO vo);
+	PrcVO insertHrdLotSelect(PrcVO vo);
+	void fastStop(PrcVO vo);
+	void fastStopUpdate(PrcVO vo);
 }

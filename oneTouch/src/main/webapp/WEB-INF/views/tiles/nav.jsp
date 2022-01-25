@@ -36,6 +36,7 @@
                 <li class="nav-item"><a class="nav-link" href="ordList">♡동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="PlanList">♨동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="WorkList">♬동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="prdPrcList">♠동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>

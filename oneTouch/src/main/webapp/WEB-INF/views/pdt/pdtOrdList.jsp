@@ -20,7 +20,8 @@
 			<option value="Y">계획완료</option>
 		</select>
 		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
-		<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
+		<button type="button" action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
+		<button type="button" id="addBtn" name="addBtn">주문서추가</button>
 	</form>
 	<div id="grid"></div>
 	<script>
@@ -69,19 +70,23 @@
 		name : 'ordShtNo'
 	},{
 		header : '납기일자',
-		name : 'dueDate'		
+		name : 'dueDate',
+ 		editor : 'text'		
 	},{
 		header : '주문날짜',
-		name : 'ordDate'
+		name : 'ordDate',
+ 		editor : 'text'
 	},{
 		header : '업체번호',
-		name : 'compCd'
+		name : 'compCd',
+ 		editor : 'text'
 	},{
 		header : '현재상태',
-		name : 'nowPhs'
+		name : 'nowPhs',
+ 		editor : 'text'
 	},{
 		header : '비고',
-		name : 'cmt'
+		name : 'cmt',
 	}];
 	//그리드 생성
 	grid = new Grid({
@@ -124,7 +129,7 @@
 		//console.log(checked[e.rowKey]._attributes.check);
 		
 	})
-		grid.on('uncheck',ev=>{
+	grid.on('uncheck',ev=>{
 			//console.log(grid.getValue(ev.rowKey,'_checked'))
 			console.log(checked[ev.rowKey]._attributes);
 	}) 
@@ -143,30 +148,20 @@
 			}
 		})
 	}
-/* 	grid.on('check',function(ev){
-		console.log(grid[ev.rowkey]);
-		console.log(ev.c)
+	addBtn.addEventListener('click',ev=>{
+		grid.appendRow([{}]);
 	})
-	grid.on('uncheck',function(ev){
-		console.log(ev);
-		console.log(grid[ev.rowkey]);
-	}) */
-/* 	const dataSource={
-		api:{
-			readData:{url:'./pdtOrdlist',
-				method:'GET',
-				initParams:{param:'param'}},
-		},
-		contentType:'application/json'
-	}	 */
-	/*
-	grid.on('click',(ev)=>{
-		console.log(ev)
-		console.log("클릭됨 ㅎ ")
+	
+	grid.on('click',ev=>{
+		fetch('orderSeq')
+		.then(response=>response.json)
+		.then(result=>{
+			console.log("dddd");
+			grid.setValue(ev.rowKey,'ordShtNo', result.ordShtNo);
+		})
 	})
-	grid.on('response',function(ev){
-		console.log(ev);
-	}) */
-  </script>
+	
+	
+	</script>
 </body>
 </html>

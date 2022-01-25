@@ -107,8 +107,7 @@
 	<update id="prdNeed">
 		update MTR_LOT_STCK
 		set 
-		HLD_CNT = #{hldCnt},
-		STCK_CNT = STCK_CNT-#{hldCnt}
+		HLD_CNT = #{hldCnt}
 		WHERE 
 		MTR_LOT = #{mtrLot}
 	</update>

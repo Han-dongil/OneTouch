@@ -21,11 +21,8 @@ public class PrcController {
 	
 	@RequestMapping("prdPrcList")
 	public String pdtListPage() {
-		
 		return "tiles/pdt/pdtPrcMng";
-		
 	}
-	
 	@ResponseBody
 	@GetMapping("lineList")
 	public List<PrcVO> lineList(){
@@ -58,8 +55,18 @@ public class PrcController {
 	@ResponseBody
 	@PostMapping("fltCheck")
 	public PrcVO fltCheck(@RequestBody List<PrcVO> list) {
-		
 		return service.selectCheck(list.get(0));
+	}
+	@ResponseBody
+	@PostMapping("fltUpdate")
+	public void fltUpdate(@RequestBody List<PrcVO> list){
+		service.updateFlt(list.get(0));
+	}
+	@ResponseBody
+	@PostMapping("fastStop")
+	public void fastStop(@RequestBody List<PrcVO> list) {
+		
+		service.fastStop(list.get(0));
 	}
 	
 }
