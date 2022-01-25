@@ -1,8 +1,12 @@
 package com.onetouch.web.mtr.cal.dao;
 
+import java.util.List;
+
+import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+
 public interface MtrCalMapper {
 
-//	List<MtrInVO> selectIn(MtrSearchVO inSearchVO);
+	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
 //	int selectInNo();
 //	void insertIn(MtrInVO vo);
 //	void deleteIn(MtrInVO vo);

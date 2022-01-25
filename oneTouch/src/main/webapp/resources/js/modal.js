@@ -3,7 +3,7 @@ function mMtr(){
 	let mtrData;
 		
 	$.ajax({
-		url : './modalMtrList',
+		url : '../modalMtrList',
 		dataType : 'json',
 		async : false,
 		success : function(result){
@@ -16,7 +16,7 @@ function mMtr(){
 			
 	$("#dialog-form").attr('title', '자재');
 	
-	$("#dialog-form").load("modalMtr", function(){
+	$("#dialog-form").load("../modalMtr", function(){
 		let mtrGrid = tui.Grid;
 		
 		mtrGrid.applyTheme('striped',{
@@ -114,7 +114,7 @@ function mPrd(){
 	let prdData;
 		
 	$.ajax({
-		url : './modalPrdList',
+		url : '../modalPrdList',
 		dataType : 'json',
 		async : false,
 		success : function(result){
@@ -127,7 +127,7 @@ function mPrd(){
 			
 	$("#dialog-form").attr('title', '제품');
 	
-	$("#dialog-form").load("modalPrd", function(){
+	$("#dialog-form").load("../modalPrd", function(){
 		let prdGrid = tui.Grid;
 		
 		prdGrid.applyTheme('striped',{
@@ -201,7 +201,7 @@ function mPrc(){
 	let prcData;
 		
 	$.ajax({
-		url : './modalPrcList',
+		url : '../modalPrcList',
 		dataType : 'json',
 		async : false,
 		success : function(result){
@@ -214,7 +214,7 @@ function mPrc(){
 			
 	$("#dialog-form").attr('title', '공정');
 	
-	$("#dialog-form").load("modalPrc", function(){
+	$("#dialog-form").load("../modalPrc", function(){
 		let prcGrid = tui.Grid;
 		
 		prcGrid.applyTheme('striped',{
@@ -298,7 +298,7 @@ function mBas(basCd){
 	let basData;
 		
 	$.ajax({
-		url : './modalBasList',
+		url : '../modalBasList',
 		method : 'POST',
 		data : 'basCd=' + basCd,
 		success : function(result){
@@ -356,7 +356,7 @@ function mBas(basCd){
 			
 	$("#dialog-form").attr('title', title);
 	
-	$("#dialog-form").load("modalBas", function(){
+	$("#dialog-form").load("../modalBas", function(){
 		let basGrid = tui.Grid;
 		
 		basGrid.applyTheme('striped',{
@@ -407,7 +407,7 @@ function mBas(basCd,btn){
 	let basData;
 		
 	$.ajax({
-		url : './modalBasList',
+		url : '../modalBasList',
 		method : 'POST',
 		data : 'basCd=' + basCd,
 		success : function(result){
@@ -465,7 +465,7 @@ function mBas(basCd,btn){
 			
 	$("#dialog-form").attr('title', title);
 	
-	$("#dialog-form").load("modalBas", function(){
+	$("#dialog-form").load("../modalBas", function(){
 		let basGrid = tui.Grid;
 		
 		basGrid.applyTheme('striped',{

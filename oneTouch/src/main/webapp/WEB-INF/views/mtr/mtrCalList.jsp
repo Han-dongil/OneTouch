@@ -47,11 +47,11 @@
 				</div>
 				<div>
 				  <label>정산구분</label>
-				  <input type="radio" id="adjAllRadio" name="mtrCal" value="" checked>
+				  <input type="radio" id="adjAllRadio" name="calSect" value="" checked>
 				  <label for="mtrRadio">전체</label>
-				  <input type="radio" id="adjInRadio" name="mtrCal" value="MTR_CAL001">
+				  <input type="radio" id="adjInRadio" name="calSect" value="MTR_CAL001">
 				  <label for="adjInRadio">정산입고</label>
-				  <input type="radio" id="adjOutRadio" name="mtrCal" value="MTR_CAL002">
+				  <input type="radio" id="adjOutRadio" name="calSect" value="MTR_CAL002">
 				  <label for="adjOutRadio">정산출고</label>
 				</div>
 			</div>

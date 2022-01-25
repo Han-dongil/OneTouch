@@ -1,20 +1,23 @@
 package com.onetouch.web.mtr.cal.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.onetouch.web.mtr.cal.dao.MtrCalMapper;
+import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.cal.service.MtrCalService;
+import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 
 @Service
 public class MtrCalServiceImpl implements MtrCalService {
-//	SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
-//	Date time = new Date();
-//	@Autowired MtrInMapper inMapper;
-//	@Autowired MtrLotMapper lotMapper;
-//	@Override
-//	public List<MtrInVO> selectIn(MtrSearchVO inSearchVO) {
-//		return inMapper.selectIn(inSearchVO);
-//	}
-//	
+	@Autowired MtrCalMapper calMapper;
+	@Override
+	public List<MtrCalVO> selectCal(MtrSearchVO inSearchVO) {
+		return calMapper.selectCal(inSearchVO);
+	}
+	
 //	@Transactional
 //	public void modifyIn(ModifyVO<MtrInVO> mvo) {
 //		int no=0;

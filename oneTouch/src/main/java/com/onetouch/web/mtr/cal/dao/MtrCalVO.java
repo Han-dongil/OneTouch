@@ -4,9 +4,14 @@ import lombok.Data;
 
 @Data
 public class MtrCalVO{
-	private String rtnNo;
-	private String rtnReqDate;
-	private String rtnAmt;
-	private String totCost;
+	private String calNo;
+	private String mtrLot;
+	private String mtrCd;
+	private String mtrNm;
+	private String calDate;
+	private String calSect;
+	private String unit;
+	private String unitNm;
+	private String calAmt;
 	private String cmt;
 }
