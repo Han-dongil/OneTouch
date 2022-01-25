@@ -31,6 +31,8 @@ public class MtrCalController {
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
+		System.out.println("searchVO");
+		System.out.println(searchVO);
 		datas.put("contents", mtrCalService.selectCal(searchVO));
 		data.put("data", datas);
 		return data;

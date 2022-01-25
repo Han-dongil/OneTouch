@@ -28,12 +28,12 @@
 </style>
 <body>
 	<div class="container">
-		<h3>재고조정관리</h3>
+		<h3>재고조정 관리</h3>
 		<hr>
 		<form id="frm" method="post">
 			<div>
 				<div>
-					<label>해당일자</label>
+					<label>정산일자</label>
 					<input type="Date" id="startDate" name="startDate">&nbsp;
 					<label> ~ </label>&nbsp;
 					<input type="Date" id="endDate" name="endDate">
