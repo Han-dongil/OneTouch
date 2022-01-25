@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.prd.prc.dao.PrcVO;
 import com.onetouch.web.prd.prc.service.PrcService;
-
+@RequestMapping("pdt/")
 @Controller
 public class PrcController {
 	

@@ -28,9 +28,9 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired MtrInMapper mtrMapper;
 	@Autowired FlwMapper flwMapper;
 	@Autowired BomMapper bomMapper;
-	@Autowired InfoMapper infoMapper;
+	@Autowired InfoMapper infoMapper;	
 	@Override
-	public List<PlanVO> list(String nowPhs) {
+	public Map<String,String> list(Map<String,String> nowPhs) {
 		return mapper.list(nowPhs);
 	}
 	@Override

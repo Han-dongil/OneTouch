@@ -1,5 +1,6 @@
 package com.onetouch.web.pdt.plan.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,11 @@ import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.pdt.ord.dao.OrdMapper;
-import com.onetouch.web.pdt.ord.dao.OrdVO;
 import com.onetouch.web.pdt.plan.dao.PlanMapper;
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.zzz.dao.ModifyVO;
-
+@RequestMapping("pdt/")
 @Controller
 public class PlanController {
 	@Autowired PlanService service;
@@ -34,9 +34,11 @@ public class PlanController {
 	}
 	@ResponseBody
 	@GetMapping("pdtPlanlist/{nowPhs}")
-	public List<PlanVO> pdtList(@PathVariable String nowPhs) {
+	public Map<String,String> pdtList(@PathVariable String nowPhs) {
 		System.out.println(nowPhs);
-		return service.list(nowPhs);
+		Map<String,String> vo =new HashMap<String,String>();
+		vo.put("nowPhs", nowPhs);
+		return service.list(vo);
 	}
 	@ResponseBody
 	@PostMapping("pdtPlanDtllist")
