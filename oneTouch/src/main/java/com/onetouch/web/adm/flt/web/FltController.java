@@ -15,13 +15,14 @@ import com.onetouch.web.adm.flt.dao.FltVO;
 import com.onetouch.web.adm.flt.service.FltService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
+@RequestMapping("/adm")
 @Controller
 public class FltController {
 
 	@Autowired FltService fltservice;
 	
 	//불량코드 리스트 보여주는 페이지로 이동
-	@RequestMapping("FltList")
+	@RequestMapping("/FltList")
 	public String fltList() {
 		return "tiles/adm/admFltList";
 	}

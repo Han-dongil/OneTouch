@@ -67,6 +67,7 @@
 			 	comp_cd = #{compCd},
 			 	mtr_sect = #{mtrSect},
 				safe_stck = #{safeStck},
+				mng_amt = #{mngAmt},
 				use_yn = 
 				<if test = "useYn == null || useYn == ''" >
 					'N'
@@ -76,4 +77,33 @@
 				</if>
 		WHERE	mtr_cd = #{mtrCd}
 	</update>
+	
+	<insert id="insertMtr">
+		insert into	adm_mtr
+		(mtr_cd,
+		 mtr_nm,
+		 std,
+		 mng_amt,
+		 unit,
+		 comp_cd,
+		 mtr_sect,
+		 safe_stck,
+		 use_yn)
+		values
+		(#{mtrCd},
+		 #{mtrNm},
+		 #{std},
+		 #{mngAmt},
+		 #{unit},
+		 #{compCd},
+		 #{mtrSect},
+		 #{safeStck},
+ 		<if test = "useYn == null || useYn == ''" >
+			'N'
+		</if>
+		<if test = "useYn == 'on'">
+			'Y'
+		</if>
+		 )
+	</insert>
 </mapper>

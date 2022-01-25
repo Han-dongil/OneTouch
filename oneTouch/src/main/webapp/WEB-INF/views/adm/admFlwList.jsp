@@ -171,7 +171,8 @@
 		data: dataSource1,
 		columns: columns1,
 		bodyHeight: 650,
-		minBodyHeight: 650
+		minBodyHeight: 650,
+		rowHeaders : [ 'checkbox' ]
 	});
 	
 	const grid2 = new Grid({
@@ -316,7 +317,7 @@
 			return false;
 		}
 		$.ajax({
-			url: "updatePrd",
+			url: "./updatePrd",
 			method: "POST",
 			data: $('#flwFrm').serializeObject(),
 			dataType: 'json',

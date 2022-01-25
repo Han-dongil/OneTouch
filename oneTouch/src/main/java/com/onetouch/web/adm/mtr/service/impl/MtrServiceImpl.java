@@ -33,6 +33,11 @@ public class MtrServiceImpl implements MtrService{
 		mapper.updateMtr(mtrvo);
 	}
 
+	@Override
+	public void insertMtr(MtrVO mtrvo) {
+		mapper.insertMtr(mtrvo);
+	}
+
 
 
 }

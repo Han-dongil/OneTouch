@@ -10,4 +10,5 @@ public interface MtrService {
 	List<MtrVO> selectAdmMtrDtl(MtrVO mtrvo);
 	
 	void updateMtr(MtrVO mtrvo);
+	void insertMtr(MtrVO mtrvo);
 }

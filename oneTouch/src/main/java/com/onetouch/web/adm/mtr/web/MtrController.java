@@ -1,6 +1,7 @@
 package com.onetouch.web.adm.mtr.web;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
 
+@RequestMapping("/adm")
 @Controller
 public class MtrController {
 	
 	@Autowired MtrService mtrservice;
 	
 	//자재정보관리 보여주는 페이지로 이동
-	@RequestMapping("mtrList")
+	@RequestMapping("/mtrList")
 	public String mtrList() {
 		return "tiles/adm/admMtrList";
 	}
@@ -58,9 +60,18 @@ public class MtrController {
 	
 	//form 수정
 	@ResponseBody
-	@PostMapping("updateMtr")
+	@PostMapping("/updateMtr")
 	public List<MtrVO> updateMtr(MtrVO mtrvo) {
 		mtrservice.updateMtr(mtrvo);
+		System.out.println("upd"+mtrvo);
+		return mtrservice.selectAdmMtrDtl(mtrvo);
+	}
+	
+	//form 등록
+	@ResponseBody
+	@PostMapping("/insertMtr")
+	public List<MtrVO> insertMtr(MtrVO mtrvo) {
+		mtrservice.insertMtr(mtrvo);
 		System.out.println("upd"+mtrvo);
 		return mtrservice.selectAdmMtrDtl(mtrvo);
 	}
