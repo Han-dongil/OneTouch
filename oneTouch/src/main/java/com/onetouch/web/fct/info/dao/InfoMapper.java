@@ -7,7 +7,10 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InfoMapper {
 
+	//라인 조회 
+	List<LineVO> LineSelect();
 	
+	//List<InfoVO> selectFctGubun(InfoVO infoVO);
 	//공정관리테이블 join
 	List<InfoVO> selectprcCd(PlanVO vo);
 	
