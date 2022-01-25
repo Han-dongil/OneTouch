@@ -18,7 +18,7 @@ import com.onetouch.web.fct.fix.dao.FixMapper;
 import com.onetouch.web.fct.fix.dao.FixVO;
 import com.onetouch.web.fct.fix.service.FixService;
 import com.onetouch.web.zzz.dao.ModifyVO;
-
+@RequestMapping("/fct")
 @Controller
 public class FixController {
 
@@ -30,7 +30,7 @@ public class FixController {
 	
 	
 	//수리관리 페이지 이동 
-	@RequestMapping("ftcFix")
+	@RequestMapping("fctFix")
 	public String moveFic() {
 		return "tiles/fct/fixIns";
 	}
@@ -41,7 +41,7 @@ public class FixController {
 	 */
 	
     @ResponseBody
-    @PostMapping("fctFixList")
+    @PostMapping("/fctFixList")
     public Map<String,Object> selectFixList(@RequestBody FixVO fixVO){
     	Map<String, Object> datas = new HashMap<>();
     	Map<String, Object> data = new HashMap<>();
@@ -55,7 +55,7 @@ public class FixController {
     
     //삭제,수정,등록 처리
     @ResponseBody
-    @PostMapping("fctModifyData")
+    @PostMapping("/fctModifyData")
     public int modify(@RequestBody ModifyVO<FixVO> mvo) {
     	System.out.println("컨트롤러 값 보여주기 ^^^^^^^^^^^^^^^^^^^^^^^");
     	System.out.println(mvo.getUpdatedRows().get(0).getFixCd());
@@ -67,7 +67,7 @@ public class FixController {
     
 	//공정코드 조회 
 	@ResponseBody
-	@GetMapping("selectFixPrc")
+	@GetMapping("/selectFixPrc")
 	public List<BasDtlVO> showPrc() {
 		BasDtlVO basdtlVO = new BasDtlVO();
 		basdtlVO.setBasCd("FCT_DIV");

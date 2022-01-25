@@ -14,7 +14,7 @@ import com.onetouch.web.fct.prod.dao.ProdVO;
 import com.onetouch.web.fct.prod.service.ProdService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
-
+@RequestMapping("/fct")
 @Controller
 public class PropController {
 
@@ -36,7 +36,7 @@ public class PropController {
 	
 	//삭제, 수정, 등록처리 
 	@ResponseBody
-	@PostMapping("prodModifyData")
+	@PostMapping("/prodModifyData")
 	public int modify(@RequestBody ModifyVO<ProdVO> mvo) {
 		System.out.println("컨트롤값 보여주기");
 		System.out.println("업데이트"+mvo.getUpdatedRows());
@@ -49,7 +49,7 @@ public class PropController {
 			
 			
 	@ResponseBody
-    @PostMapping("prodChekList")
+    @PostMapping("/prodChekList")
     public Map<String,Object> selectFixList(@RequestBody ProdVO prodVO){
     	Map<String, Object> datas = new HashMap<>();
     	Map<String, Object> data = new HashMap<>();
@@ -63,7 +63,7 @@ public class PropController {
 	
 	//정기점검 조회 
 	@ResponseBody
-	@PostMapping("prodSelect")
+	@PostMapping("/prodSelect")
 	public Map<String, Object> selectProd(@RequestBody ProdVO prodVO){
 		Map<String, Object> datas = new HashMap<>();
 		Map<String, Object> data = new HashMap<>();
@@ -79,7 +79,7 @@ public class PropController {
 	
 	
 	//정기점검페이지 이동 
-	@RequestMapping("ftcProd")
+	@RequestMapping("/fctProd")
 	public String moveList() {
 		return"tiles/fct/prodIns";
 	}

@@ -13,6 +13,7 @@ import com.onetouch.web.fct.dwtm.dao.DwtmVO;
 import com.onetouch.web.fct.dwtm.service.DwtmService;
 
 import lombok.extern.java.Log;
+@RequestMapping("/fct")
 @Log
 @Controller
 public class DwtmController {
@@ -21,7 +22,7 @@ public class DwtmController {
 	
 	//비동기 삭제
 	@ResponseBody
-	@PostMapping("dwtmDelete")
+	@PostMapping("/dwtmDelete")
 	public int dwtmDelete(@RequestBody DwtmVO dwtmVO) {
 		log.info("삭제 컨트롤러 연결했슴");
 		System.out.println(dwtmVO);
@@ -30,26 +31,26 @@ public class DwtmController {
 	
 	//비동기 수정
 	@ResponseBody
-	@PostMapping("dwtmUpdate")
+	@PostMapping("/dwtmUpdate")
 	public int dwtmUpdate(@RequestBody DwtmVO dwtmVO) {
 		return dservice.dwtmUpdate(dwtmVO);
 	}
 	
 	//비동기 등록
 	@ResponseBody
-	@PostMapping("dwtmInsret")
+	@PostMapping("/dwtmInsret")
 	public int dwtmInsert(@RequestBody DwtmVO dwtmVO) {
 		return dservice.dwtmInsert(dwtmVO);
 	}
 	
-	@RequestMapping("ftcDwtmIns")
+	@RequestMapping("/fctDwtmIns")
 	public String moveDwtmPage() {
 		return "tiles/fct/dwtmIns";
 	}
 	
 	/* 비동기 테이블 목록 조회 */
 	@ResponseBody
-	@PostMapping("dwtmSelectAll")
+	@PostMapping("/dwtmSelectAll")
 	public List<DwtmVO> dwtmSelect(@RequestBody DwtmVO dwtmVO){
 		return dservice.dwtmSelectAll(dwtmVO);
 		
