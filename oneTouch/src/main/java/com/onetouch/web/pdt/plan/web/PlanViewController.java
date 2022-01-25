@@ -26,9 +26,8 @@ public class PlanViewController {
 	
 	@ResponseBody
 	@RequestMapping("planSearchList")
-	public List<PlanVO> planSearchList(@RequestBody Map<String,String> map){
+	public Map<String,String> planSearchList(@RequestBody Map<String,String> map){
 		System.out.println(map);
-		mapper.list((PlanVO)map);
-		return null;
+		return mapper.list(null);
 	}
 }

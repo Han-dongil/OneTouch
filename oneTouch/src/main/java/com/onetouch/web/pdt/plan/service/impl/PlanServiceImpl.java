@@ -30,7 +30,7 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired BomMapper bomMapper;
 	@Autowired InfoMapper infoMapper;	
 	@Override
-	public List<PlanVO> list(PlanVO nowPhs) {
+	public Map<String,String> list(Map<String,String> nowPhs) {
 		return mapper.list(nowPhs);
 	}
 	@Override

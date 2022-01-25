@@ -18,7 +18,7 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 import com.onetouch.web.pdt.plan.service.PlanService;
 import com.onetouch.web.pdt.work.dao.WorkVO;
 import com.onetouch.web.pdt.work.service.WorkService;
-
+@RequestMapping("pdt/")
 @Controller
 public class WorkController {
 	@Autowired WorkService service;
