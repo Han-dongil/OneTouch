@@ -265,7 +265,6 @@ hr{
 	
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		console.log();
 		grid.appendRow({});
 	})	
 

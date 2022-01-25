@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.bas.dao.BasDtlVO;
+import com.onetouch.web.adm.bas.dao.BasVO;
 import com.onetouch.web.adm.bas.service.BasService;
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.bom.service.BomService;
@@ -156,8 +157,24 @@ public class EtcController {
 		
 		return list;
 	}
+	
+
 	//-----------------------------
 	
+	//modal호출 - 공통2
+	@RequestMapping("modalBas2")
+	public String modalBas2() {
+		return "zzz/modalBas2";
+	}
 	
+	
+	@ResponseBody
+	@GetMapping("modalBas2List")
+	public List<BasVO> modalBasList2(){
+		List<BasVO> list = basService.selectBasAll(null);
+		System.out.println(list);
+		
+		return list;
+	}
 	
 }

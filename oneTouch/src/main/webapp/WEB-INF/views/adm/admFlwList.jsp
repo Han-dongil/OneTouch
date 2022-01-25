@@ -24,7 +24,9 @@
 <div class = "col-4">
 	<h4>✔제품목록</h4>
 	<div align="right">
-		<button id="btnAdd">등록</button><hr>
+		<button id="btnAddPrd">추가</button>
+		<button id="btnDelPrd">삭제</button>
+		<button id="btnSavePrd">저장</button><hr>
 	</div>
 	<div id="grid1"></div>
 	<br>
@@ -86,12 +88,14 @@
 		
 			header : '제품코드',
 			name : 'prdCd',
-			sortable : true //정렬
+			sortable : true, //정렬
+			editor : 'text'
 		},
 		{
 			header : '제품명',
 			name : 'prdNm',
-			sortable : true
+			sortable : true,
+			editor : 'text'
 		}];
 	
 	const columns2 = [{
@@ -140,7 +144,10 @@
 				readData: {
 					url:'./admPrdList',
 					method: 'GET'
-				}
+				},
+				modifyData: { 
+					url: './prdModifyData', 
+					method: 'POST'}
 			},
 			contentType: 'application/json'
 	};
@@ -178,45 +185,49 @@
 	//제품명 클릭하면 제품상세정보 받아옴
 	grid1.on("click", (ev) =>{
 		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){
-			prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
-			console.log(prdCode1);
-			$('#ableLineNo').empty();
-			
-			//제품상세정보 받아오기
-			$.ajax({
-				url:'./admPrdDtlList',
-				dataType:'json',
-				data : prdCode1,
-				async : false
-			}).done(function(datas) {
-				PrdDtl = datas.data.contents[0];
-				console.log(PrdDtl);
-				document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
-				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
-				document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
-				document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
-				document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
-				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
-				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
-				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
+			if(grid1.getValue(ev.rowKey,'prdCd') != null ||
+					grid1.getValue(ev.rowKey,'prdNm') != null) {
 				
-				if(PrdDtl.useYn == 'Y') {
-					document.getElementById('useYn').checked = true
-				} else {
-					document.getElementById('useYn').checked = false
-				}
+				prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
+				console.log(prdCode1);
+				$('#ableLineNo').empty();
 				
-				
-				lineSplit = PrdDtl.ableLineNo.split('/');
-				for(i=0;i<lineSplit.length;i++) {
-					let option = document.createElement('option');
-					option.value = lineSplit[i];
-					option.innerHTML = lineSplit[i];
-					document.getElementById('ableLineNo').appendChild(option);
-				}
-				console.log($('#flwFrm').serialize());
-
-			})
+				//제품상세정보 받아오기
+				$.ajax({
+					url:'./admPrdDtlList',
+					dataType:'json',
+					data : prdCode1,
+					async : false
+				}).done(function(datas) {
+					PrdDtl = datas.data.contents[0];
+					console.log(PrdDtl);
+					document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
+					document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
+					document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
+					document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
+					document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
+					document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
+					document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
+					document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
+					
+					if(PrdDtl.useYn == 'Y') {
+						document.getElementById('useYn').checked = true
+					} else {
+						document.getElementById('useYn').checked = false
+					}
+					
+					
+					lineSplit = PrdDtl.ableLineNo.split('/');
+					for(i=0;i<lineSplit.length;i++) {
+						let option = document.createElement('option');
+						option.value = lineSplit[i];
+						option.innerHTML = lineSplit[i];
+						document.getElementById('ableLineNo').appendChild(option);
+					}
+					console.log($('#flwFrm').serialize());
+	
+					})
+			}
 		}
 	})
 
@@ -318,14 +329,20 @@
 	})	
 	
 	//등록버튼
-	btnAdd.addEventListener("click", function() {
+	btnAddPrd.addEventListener("click", function() {
 		grid1.appendRow({});
-/* 		rowk = mainGrid.getRowCount() - 1;
-		console.log(rowk);
-		prdCdVal = document.getElementById("prdCd").value
-		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
-		console.log(mainGrid.getValue(rowk,'prdCd')); */
 	})	
+	
+	//삭제버튼
+	btnDelPrd.addEventListener("click", function() {
+		grid1.removeCheckedRows(true);
+	})
+	
+	//저장버튼
+	btnSavePrd.addEventListener("click", function() {
+		grid1.blur();
+		grid1.request('modifyData');
+	})
 	
 </script>
 </body>

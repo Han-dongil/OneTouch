@@ -44,6 +44,31 @@ public class BasServiceImpl implements BasService{
 				mapper.updateBas(basDtlvo);
 			};
 		}
+		if(mvo.getDeletedRows() != null) {
+			for(BasDtlVO basDtlvo : mvo.getDeletedRows()) {
+				mapper.deleteBas(basDtlvo);
+			};
+		}
+	}
+	
+	@Override
+	public void modifyBas(ModifyVO<BasVO> mvo) {
+		if(mvo.getCreatedRows() != null) {
+			for(BasVO basvo : mvo.getCreatedRows()) {
+				mapper.insertBasAll(basvo);
+			};
+		}
+		if(mvo.getUpdatedRows() != null) {
+			for(BasVO basvo : mvo.getUpdatedRows()) {
+				mapper.updateBasAll(basvo);
+			};
+		}
+		if(mvo.getDeletedRows() != null) {
+			for(BasVO basvo : mvo.getDeletedRows()) {
+				mapper.deleteBasAll(basvo);
+			};
+		}
+		
 	}
 
 

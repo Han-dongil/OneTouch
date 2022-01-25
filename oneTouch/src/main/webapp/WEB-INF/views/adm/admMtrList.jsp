@@ -43,7 +43,7 @@ hr{
 		<div class="col-md-12 grid-margin">
 			<div class="row">
 				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
-					<h3 class="font-weight-bold page-title">공정관리</h3>
+					<h3 class="font-weight-bold page-title">자재정보관리</h3>
 				</div>
 			</div>
 		</div>
@@ -258,8 +258,8 @@ hr{
 		}
 	})
 	
-		//수정버튼
-	btnEdit.addEventListener("click", function() {
+	//저장버튼
+	btnSave.addEventListener("click", function() {
 		//console.log($('#useYn').is(':checked'));
 		//console.log($('#flwFrm'));
 		//console.log(document.getElementById('useYn').getAttribute('value'));
