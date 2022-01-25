@@ -21,7 +21,7 @@ public class MtrCalController {
 	
 	@RequestMapping("/calList")
 	public String calList() {
-		return "tiles/mtr/mtrCalForm";
+		return "tiles/mtr/mtrCalList";
 	}
 	
 	//mainGrid readData
@@ -36,11 +36,11 @@ public class MtrCalController {
 		return data;
 	}
 	
-	@RequestMapping("/calForm")
-	public String calForm() {
-		return "tiles/mtr/mtrCalForm";
-	}
-	
+//	@RequestMapping("/calForm")
+//	public String calForm() {
+//		return "tiles/mtr/mtrCalForm";
+//	}
+//	
 	/*
 	 * //mainGrid readData
 	 * 
