@@ -106,4 +106,10 @@
 		</if>
 		 )
 	</insert>
+	
+	<delete id="deleteMtr">
+		delete 
+		from  adm_mtr
+		where mtr_cd = #{mtrCd}
+	</delete>
 </mapper>

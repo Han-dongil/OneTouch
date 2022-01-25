@@ -1,7 +1,6 @@
 package com.onetouch.web.adm.mtr.web;
 
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @RequestMapping("/adm")
 @Controller
@@ -74,6 +75,14 @@ public class MtrController {
 		mtrservice.insertMtr(mtrvo);
 		System.out.println("upd"+mtrvo);
 		return mtrservice.selectAdmMtrDtl(mtrvo);
+	}
+	
+	//mtr 삭제
+	@ResponseBody
+	@PostMapping("/mtrModifyData")
+	public void modify(@RequestBody ModifyVO<MtrVO> mvo) {
+		System.out.println("modify" + mvo);
+		mtrservice.modify(mvo);
 	}
 	
 }

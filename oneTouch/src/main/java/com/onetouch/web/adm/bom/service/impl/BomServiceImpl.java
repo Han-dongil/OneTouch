@@ -80,5 +80,15 @@ public class BomServiceImpl implements BomService {
 		
 	}
 
+	@Override
+	public void insertPrd(PrdVO prdvo) {
+		mapper.insertPrd(prdvo);
+	}
+
+	@Override
+	public void updatePrd(PrdVO prdvo) {
+		mapper.updatePrd(prdvo);
+	}
+
 
 }

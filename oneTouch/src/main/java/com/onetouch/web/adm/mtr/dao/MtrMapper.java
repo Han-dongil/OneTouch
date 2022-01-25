@@ -9,4 +9,5 @@ public interface MtrMapper {
 	
 	void updateMtr(MtrVO mtrvo);
 	void insertMtr(MtrVO mtrvo);
+	void deleteMtr(MtrVO mtrvo);
 }

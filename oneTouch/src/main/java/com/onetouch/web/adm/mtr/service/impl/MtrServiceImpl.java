@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.onetouch.web.adm.mtr.dao.MtrMapper;
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
 public class MtrServiceImpl implements MtrService{
@@ -36,6 +37,15 @@ public class MtrServiceImpl implements MtrService{
 	@Override
 	public void insertMtr(MtrVO mtrvo) {
 		mapper.insertMtr(mtrvo);
+	}
+
+	@Override
+	public void modify(ModifyVO<MtrVO> mvo) {
+		if(mvo.getDeletedRows() != null) {
+			for(MtrVO mtrvo : mvo.getDeletedRows()) {
+				mapper.deleteMtr(mtrvo);
+			};
+		}
 	}
 
 

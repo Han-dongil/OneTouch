@@ -198,14 +198,12 @@ hr{
 		
 			header : '자재코드',
 			name : 'mtrCd',
-			sortable : true, //정렬
-			editor : 'text'
+			sortable : true //정렬
 		},
 		{
 			header : '자재명',
 			name : 'mtrNm',
-			sortable : true,
-			editor : 'text'
+			sortable : true
 		}];
 	
 	const dataSource = {
@@ -213,6 +211,10 @@ hr{
 				readData: {
 					url:'./admMtrList',
 					method: 'GET'
+				},
+				modifyData: {
+					url: './mtrModifyData',
+					method: 'POST'
 				}
 			},
 			contentType: 'application/json'
@@ -314,7 +316,8 @@ hr{
 		modal : true,
 		resizable: false,
 		height: "auto",
-		width: 400
+		width: 400,
+		height: 300
 	});
 	
 	//모달창내에서 더블클릭
@@ -366,6 +369,7 @@ hr{
 	//삭제버튼
 	btnDel.addEventListener("click", function() {
 		grid.removeCheckedRows(true);
+		grid.request('modifyData');
 	})
 	
 	

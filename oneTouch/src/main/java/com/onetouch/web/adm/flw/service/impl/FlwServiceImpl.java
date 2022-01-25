@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.flw.dao.FlwMapper;
 import com.onetouch.web.adm.flw.dao.FlwVO;
 import com.onetouch.web.adm.flw.service.FlwService;
@@ -35,12 +34,14 @@ public class FlwServiceImpl implements FlwService{
 				mapper.deleteFlw(flwvo);
 			};
 		}
+		if(mvo.getCreatedRows() != null) {
+			for(FlwVO flwvo : mvo.getCreatedRows()) {
+				mapper.insertFlw(flwvo);
+			};
+		}
 	}
 
-	@Override
-	public void updatePrd(PrdVO prdvo) {
-		mapper.updatePrd(prdvo);
-	}
+
 	
 	
 

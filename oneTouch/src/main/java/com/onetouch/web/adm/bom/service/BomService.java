@@ -13,6 +13,9 @@ public interface BomService {
 	List<PrdVO> selectUsePrdAll();
 	List<PrdVO> selectUsePrd();
 	
+	void insertPrd(PrdVO prdvo);
+	void updatePrd(PrdVO prdvo);
+	
 	void modify(ModifyVO<BomVO> mvo);
 	void modifyPrd(ModifyVO<PrdVO> mvo);
 } 

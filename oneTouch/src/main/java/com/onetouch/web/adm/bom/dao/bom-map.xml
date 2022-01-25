@@ -86,10 +86,25 @@
 		<insert id="insertPrd">
 			insert	into adm_prd
 			(prd_cd,
-			 prd_nm)
+			 prd_nm,
+			 prd_std,
+			 mng_unit,
+			 prd_sect,
+			 able_line_no,
+			 use_yn)
 			values 
-			(prdCd,
-			 prdNm)
+			(#{prdCd},
+			 #{prdNm},
+			 #{prdStd},
+			 #{mngUnit},
+			 #{prdSect},
+			 #{ableLineNo},
+			 <if test = "useYn == null || useYn == ''" >
+				'N'
+			</if>
+			<if test = "useYn == 'on'">
+				'Y'
+			</if>)
 		</insert>
 		
 		<delete id="deletePrd">
@@ -99,10 +114,19 @@
 		</delete>
 		
 		<update id="updatePrd">
-			update 	adm_prd
-			set		prd_cd = #{prdCd},
-					prd_nm = #{prdNm}
-		</update>
+		UPDATE 	adm_prd
+		SET 	prd_std = #{prdStd},
+				mng_unit = #{mngUnit},
+				prd_sect = #{prdSect},
+				use_yn = 
+				<if test = "useYn == null || useYn == ''" >
+					'N'
+				</if>
+				<if test = "useYn == 'on'">
+					'Y'
+				</if>
+		WHERE	prd_cd = #{prdCd}		
+	</update>
 
 	<!-- bom 쿼리 -->
 		<delete id="deleteBom">
