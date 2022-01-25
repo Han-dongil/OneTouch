@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.in.service.MtrInService;
-
+@RequestMapping("/mtr")
 @Controller
 public class MtrInListController {
 
 	@Autowired MtrInService service;
 	
-	@RequestMapping("inList")
+	@RequestMapping("/inList")
 	public String inForm() {
 		return "tiles/mtr/mtrInList";
 	}
