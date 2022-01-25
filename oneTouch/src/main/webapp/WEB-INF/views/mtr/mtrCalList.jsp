@@ -109,11 +109,11 @@ var grid = new Grid({
 				   header: '정산번호',
 				   name: 'calNo',
 				   align: 'center',
-				   sortable: true
+				   hidden: true
 				 },
 				 {
 				   header: '정산구분',
-				   name: 'mtrCal',
+				   name: 'calSectNm',
 				   align: 'center',
 				   sortable: true
 				 },
@@ -143,81 +143,41 @@ var grid = new Grid({
 				 },
 				 {
 				   header: '정산량',
-				   name: 'compNm',
+				   name: 'calAmt',
+				   formatter({value}){
+					   return format(value);
+				   },
 				   align: 'left',
 				   sortable: true
 				 },
 				 {
-				   header: '발주번호',
-				   name: 'ordNo',
+				   header: 'Lot No',
+				   name: 'mtrLot',
 				   align: 'center',
 				   sortable: true
 				 },
 				 {
-				   header: '불량량',
-				   name: 'fltAmt',
-				   align: 'right',
-				   formatter({value}){
-					   return format(value);
-				   },
-				   sortable: true
-				 },
-				 {
-				   header: '입고량',
-				   name: 'inAmt',
-				   align: 'right',
-				   formatter({value}){
-					   return format(value);
-				   },
-				   sortable: true
-				 },
-				 {
-				   header: '단가',
-				   name: 'unitCost',
-				   align: 'right',
-				   formatter({value}){
-					   return format(value);
-				   },
-				   sortable: true
-				 },
-				 {
-				   header: '총금액',
-				   name: 'totCost',
-				   align: 'right',
+				   header: '비고',
+				   name: 'cmt',
+				   align: 'left',
 				   formatter({value}){
 					   return format(value);
 				   },
 				   sortable: true
 				 }
+				 
 				],
 				summary : {
 					
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
-				   		ordNo: {
+				   		unitNm: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
 			            },	
-			            fltAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            inAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            unitCost: {
-			                template(summary){
-			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
-			                } 
-			            },
-			            totCost: {
+			            calAmt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);

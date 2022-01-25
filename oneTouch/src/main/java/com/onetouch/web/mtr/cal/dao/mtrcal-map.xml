@@ -4,30 +4,31 @@
 	<!-- 자재입고 조건 조회 -->
 	<select id="selectCal" resultType="com.onetouch.web.mtr.cal.dao.MtrCalVO">
 		SELECT 
-			A.IN_NO,
-			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
-			A.MTR_CD, 
-			B.MTR_NM, 
-			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT,
-			A.ORD_NO, 
-			A.FLT_AMT, 
-			A.IN_AMT,
-			A.TOT_COST,
-			A.UNIT_COST, 
-			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
-		FROM 
-			MTR_IN A, ADM_MTR B
-		WHERE 
-			A.MTR_CD = B.MTR_CD
-		
+			A.CAL_NO,
+			A.MTR_LOT,
+			TO_CHAR(A.CAL_DATE, 'yyyy-MM-dd') AS CAL_DATE,
+			A.CAL_SECT
+			FN_GET_BAS_DTL_CD_TO_NM(A.CAL_SECT) AS CAL_SECT_NM,
+			C.UNIT,
+			FN_GET_BAS_DTL_CD_TO_NM(C.UNIT) AS UNIT_NM,
+			A.CAL_AMT,
+			A.CMT,
+			B.MTR_CD,
+			FN_GET_MTR_CD_TO_NM(B.MTR_CD) AS MTR_NM
+		FROM
+			MTR_STCK_CAL A, MTR_LOT_STCK B, ADM_MTR C
+		WEHRE
+			A.MTR_LOT = B.MTR_LOT
+		AND
+			B.MTR_CD = C.MTR_CD
 		<if test="startDate != null and startDate != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
+			<![CDATA[AND TO_CHAR(A.CAL_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
 		<if test="endDate != null and endDate != ''"> 
-			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
+			<![CDATA[AND TO_CHAR(A.CAL_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
 		</if>
 		<if test="calSect != null and calSect != ''">
-			AND B.COMP_CD = #{compCd}
+			AND A.CAL_SECT = #{compCd}
 		</if>
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}

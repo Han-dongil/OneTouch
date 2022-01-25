@@ -10,6 +10,7 @@ public class MtrCalVO{
 	private String mtrNm;
 	private String calDate;
 	private String calSect;
+	private String calSectNm;
 	private String unit;
 	private String unitNm;
 	private String calAmt;

@@ -55,8 +55,8 @@
                 <li class="nav-item"> <a class="nav-link" href="${path}/mtr/outList">출고자재조회</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnForm">반품자재관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnList">반품자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/adjForm">재고조정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/adjList">재고조정조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calForm">재고조정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calList">재고조정조회</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/mtr/stckList">재고조회</a></li>
               </ul>
             </div>
