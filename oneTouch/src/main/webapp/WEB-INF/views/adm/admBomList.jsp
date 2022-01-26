@@ -92,6 +92,7 @@ hr{
 	
 	<h4 class="gridtitle">✔제품소요량관리</h4>
 	<span class="floatright">
+		<button type="button" id="btnReset" class="btn btn-main newalign2">초기화</button>
 		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
 		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
@@ -338,6 +339,14 @@ hr{
 		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
 		console.log(mainGrid.getValue(rowk,'prdCd'));
 	})	
+	
+	//초기화버튼
+	btnReset.addEventListener("click", function() {
+		if(!confirm("초기화하시겠습니까?")){
+			return false;
+		}
+		$('#bomFrm')[0].submit();
+	})
 </script>
 </body>
 </html>

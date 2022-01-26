@@ -66,6 +66,8 @@
 <script type="text/javascript">
 	let prdCode1;
 	let prdCode2;
+	let prdCodeVal;
+	let rowk;
 	let PrdDtl;
 	let lineSplit =[];
 	let Grid = tui.Grid;
@@ -103,13 +105,11 @@
 		
 		header : '공정순서',
 		name : 'prcSeq',
-		sortable : true,
-		editor : 'text'
+		sortable : true
 	},
 	{
 		header : '공정명',
-		name : 'prcNm',
-		editor : 'text'
+		name : 'prcNm'
 	},
 	{
 		header : '작업설명',
@@ -238,10 +238,11 @@
 	})
 
 	/*공정흐름*/
-		//공정흐름보기 버튼
+		//조회 버튼
 		btnFlw.addEventListener("click", function() {
-			prdCode2 = {'prdCd' : $('#prdCd').val()};
-			console.log(prdCode2);
+			prdCodeVal = $('#prdCd').val();
+			prdCode2 = {'prdCd' : prdCodeVal};
+			console.log(prdCodeVal);
 			grid2.readData(1,prdCode2,true);
 		})
 		
@@ -249,6 +250,9 @@
 		//추가버튼
 		btnAdd.addEventListener("click", function() {
 			grid2.appendRow({});
+			rowk = grid2.getRowCount() - 1;
+			console.log(prdCodeVal);
+			grid2.setValue(rowk, "prdCd", prdCodeVal, false);
 		})	
 		
 		//삭제버튼
@@ -314,6 +318,31 @@
 		dialog.dialog("close");
 	} 
 
+	//사용공정명 더블클릭 모달띄우기
+	grid2.on("dblclick", (ev)=> {
+		if (ev.columnName === 'prcNm') {
+			rowk = ev.rowKey;
+			mPrc();
+			$('#ui-id-1').html('사용공정명');
+		}
+	})
+	
+	//사용공정명 더블클릭한 모달창 안에서 더블클릭
+	function getModalPrc(param) {
+		console.log("더블클릭공정");
+		grid2.setValue(rowk, "prcCd", param.prcCd, false);
+		grid2.setValue(rowk, "prcNm", param.prcNm, false);
+		dialog.dialog("close");	
+	}
+	
+	dialog = $( "#dialog-form" ).dialog({
+		autoOpen : false,
+		modal : true,
+		resizable: false,
+		height: "auto",
+		width: 500,
+		height: 400
+	});
 	
 	
 	/*제품*/
