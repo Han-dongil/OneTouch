@@ -4,19 +4,31 @@
 <select id="list" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE from pdt_plan
 	where 1=1
-	<if test='nowPhs !=""'>
-		and now_phs =#{nowPhs}
+	<if test='nowPhs =="Y"'>
+		and now_phs ='Y'
 	</if>
-	<if test='nowPhs !=""'>
-		and now_phs =#{nowPhs}
+	<if test='nowPhs =="N"'>
+		and now_phs ='N'
 	</if>
-	<!-- <if test='startDate!="" and startDate!="null"'>
+ 	<if test='startDate!="" and startDate!="null"'>
 		and due_date>#{startDate}
 	</if>
-	<if test='endDate!="" and endDate!="null"'>
-		and #{startDate}>due_date
-	</if> -->
+ 	<if test='endDate!="" and endDate!="null"'>
+		and #{endDate}>due_date
+	</if>  
 	
+</select>
+<select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+		select plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time  
+		from pdt_plan_dtl 
+		group by plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time
+		having 1=1
+		<if test='planNo!="" and planNo!=null'>
+			and plan_no=#{planNo}
+		</if>
+		<if test='prdCd!="" and prdCd!=null' >
+			and prd_cd like '%'||#{prdCd}||'%'
+		</if>
 </select>
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}

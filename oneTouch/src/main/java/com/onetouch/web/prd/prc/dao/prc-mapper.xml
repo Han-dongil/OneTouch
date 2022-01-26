@@ -124,4 +124,10 @@
 		now_phs='긴급중단'
 		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
+	
+	<update id="planPhsUpdate">
+		update pdt_work_instr set
+		now_phs='Y'
+		where instr_no=#{instrNo}
+	</update>
 </mapper>

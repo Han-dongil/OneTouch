@@ -34,7 +34,7 @@ public class PlanController {
 	}
 	@ResponseBody
 	@GetMapping("pdtPlanlist/{nowPhs}")
-	public Map<String,String> pdtList(@PathVariable String nowPhs) {
+	public List<PlanVO> pdtList(@PathVariable String nowPhs) {
 		System.out.println(nowPhs);
 		Map<String,String> vo =new HashMap<String,String>();
 		vo.put("nowPhs", nowPhs);

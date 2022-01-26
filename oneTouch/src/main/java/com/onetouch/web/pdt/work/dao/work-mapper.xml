@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.pdt.work.dao.WorkMapper">
-	<select id="planJoinListView"
-		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
-		a.due_date as dueDate , a.work_prot as workPort,
-		a.plan_date as
-		planDate , b.plan_dtl_no as planDtlNo,
-		b.prd_cd as prdCd , b.prc_cd as
-		prcCd , b.need_cnt as needCnt,
-		b.instr_cnt as instrCnt ,
-		b.work_str_date as workStrDate,
-		b.work_plan_time as workPlanTime
-		from
-		pdt_plan a join pdt_plan_dtl b
-		on(a.plan_no = b.plan_no)
-		where
-		a.plan_no=#{planVo}
-	</select>
+	
 	<select id="workDetailSelect"
 		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select a.plan_no as planNo, a.ord_sht_no as ordShtNo,
@@ -39,6 +23,47 @@
 	<select id="workList"
 		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select * from pdt_work_instr
+		where 1=1
+		<if test='nowPhs =="Y"'>
+			and now_phs ='Y'
+		</if>
+		<if test='nowPhs =="N"'>
+			and now_phs ='N'
+		</if>
+	 	<if test='startDate!="" and startDate!="null"'>
+			and instr_date>#{startDate}
+		</if>
+	 	<if test='endDate!="" and endDate!="null"'>
+			and #{endDate}>instr_date
+		</if>  
+	</select>
+	<select id="workListDetail" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd from pdt_work_instr_dtl
+		group by instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd
+		having 1=1
+		<if test='instrNo!="" and planNo!=null'>
+			and instr_no=#{instrNo}
+		</if>
+		<if test='prdCd!="" and prdCd!=null' >
+			and prd_cd like '%'||#{prdCd}||'%'
+		</if>
+	 	<if test='startDate!="" and startDate!=null'>
+			and work_str_date>#{startDate}
+		</if>
+	 	<if test='endDate!="" and endDate!=null'>
+			and #{endDate}>work_str_date
+		</if> 
+	</select>
+		<select id="prcMovingList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd ,prc_cd from pdt_work_instr_dtl
+		group by instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd ,prc_cd
+		having 1=1
+	 	<if test='startDate!="" and startDate!=null'>
+			and work_str_date>#{startDate}
+		</if>
+	 	<if test='endDate!="" and endDate!=null'>
+			and #{endDate}>work_str_date
+		</if> 
 	</select>
 	<select id="planList"
 		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
@@ -66,10 +91,10 @@
 	</select>
 	<insert id="workInsert">
 		insert into pdt_work_instr (instr_no , plan_no ,
-		work_prot, instr_date , pdt_fin_date )
+		work_prot, instr_date , pdt_fin_date ,now_phs)
 		values
 		(PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no',
-		'pdt_fin_date'),#{planNo},#{workProt},sysdate,sysdate)
+		'pdt_fin_date'),#{planNo},#{workProt},${instrDate},#{pdtFinDate} ,'N')
 	</insert>
 	<insert id="workInsertDtl">
 		insert into pdt_work_instr_dtl (line_no, instr_no,
@@ -95,7 +120,7 @@
 		#{mtrLot},
 		#{planNo},
 		#{lineNo},
-		'PD')
+		'WD')
 	</insert>
 
 	<update id="prdNeed">

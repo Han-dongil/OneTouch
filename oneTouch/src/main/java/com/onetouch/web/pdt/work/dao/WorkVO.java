@@ -20,4 +20,9 @@ public class WorkVO extends PlanVO{
 	private String workStrDate;
 	private String workStrTime;
 	private String bomCd;
+	
+	//////////////////////////////////
+	private String startDate;
+	private String endDate;
+	
 }

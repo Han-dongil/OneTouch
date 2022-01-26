@@ -7,7 +7,7 @@ import com.onetouch.web.pdt.work.dao.WorkVO;
 
 public interface PlanMapper {
 	
-	Map<String,String> list(Map<String,String> nowPhs);
+	List<PlanVO> list(Map<String,String> map);
 	List<PlanVO> selectDtl(String no);
 	List<PlanVO> findPrcCd(PlanVO vo);
 	void insertPlan(PlanVO vo);
@@ -19,5 +19,6 @@ public interface PlanMapper {
 	List<PlanVO> addPlanLotSelect(PlanVO vo);
 	PlanVO findLineNo(String prdCd);
 	void planCheck(WorkVO vo);
+	List<PlanVO> pdtPlanDtllist(PlanVO vo);
 	
 }

@@ -37,8 +37,11 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="${path}/pdt/ordList">♡동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="${path}/pdt/PlanList">♨동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/planListView">★동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkList">♬동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkListView">♣동일쓰ㅋㅋ</a></li>
                 <li class="nav-item"><a class="nav-link" href="${path}/pdt/prdPrcList">♠동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/movingPrc">♀동일쓰ㅋㅋ</a></li>
               </ul>
             </div>
           </li>

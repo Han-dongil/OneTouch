@@ -26,8 +26,16 @@ public class PlanViewController {
 	
 	@ResponseBody
 	@RequestMapping("planSearchList")
-	public Map<String,String> planSearchList(@RequestBody Map<String,String> map){
-		System.out.println(map);
-		return mapper.list(null);
+	public List<PlanVO> planSearchList(@RequestBody Map<String,String> map){
+		System.out.println("11111");
+		return mapper.list(map);
 	}
+	@ResponseBody
+	@RequestMapping("planDtlList")
+	public List<PlanVO> planDtlList(@RequestBody PlanVO vo){
+		System.out.println("11111");
+		//vo.setPrdCd("");
+		return mapper.pdtPlanDtllist(vo);
+	}
+	
 }
