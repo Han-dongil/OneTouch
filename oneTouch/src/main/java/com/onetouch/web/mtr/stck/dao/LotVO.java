@@ -8,6 +8,7 @@ public class LotVO {
 	private String hldCnt;
 	private String mtrCd;
 	private String stckCnt;
+	private String calAmt = "0";
 	private String cmt;
 	private String inNo;
 	private String inDate;

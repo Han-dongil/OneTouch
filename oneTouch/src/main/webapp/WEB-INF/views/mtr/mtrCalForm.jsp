@@ -127,7 +127,15 @@ var mainGrid = new Grid({
 				 {
 				   header: '정산구분',
 				   name: 'calSectNm',
-				   align: 'center',
+				   editor: {
+						type: 'radio',
+						options: {
+					        listItems: [
+					          { text: '입고정산', value: '입고정산' },
+					          { text: '출고정산', value: '출고정산' }
+					        ]
+					     }
+					},
 				   sortable: true
 				 },
 				 {
@@ -158,9 +166,14 @@ var mainGrid = new Grid({
 				   header: '정산량',
 				   name: 'calAmt',
 				   formatter({value}){
-					   return format(value);
+					   if(value != null){
+					   	return format(value);
+					   } else{
+					   	return 0;
+					   }
 				   },
 				   align: 'right',
+				   editor: 'text',
 				   sortable: true
 				 },
 				 {
@@ -244,7 +257,7 @@ function getModalMtr(param){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
-		mainGrid.setValue(rowk, "unitNm", param.unit, false);
+		mainGrid.setValue(rowk, "unitNm", param.unitNm, false);
 		/* mainGrid.setValue(rowk, "compNm", param.compNm, false);
 		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false); */
 		rowk = -1;
@@ -301,7 +314,9 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 	buttons:{
 		"확인":()=>{
 			let rows = lotGrid.getCheckedRows();
+			console.log(rows);
 			mainGrid.appendRows(rows);
+			lotDialog.dialog("close");
 		}
 	}
 });
@@ -349,6 +364,11 @@ columns : [
 			{
 				header: '단위',
 				name: 'unitNm',
+				hidden: true
+			},
+			{
+				header: '정산량',
+				name: 'calAmt',
 				hidden: true
 			}
 			]
