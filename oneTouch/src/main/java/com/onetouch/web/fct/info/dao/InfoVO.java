@@ -28,7 +28,7 @@ public class InfoVO extends MngVO  {
 	String chkProd;		//점검주기
 	String fctImg;		//파일이미지
 	int totPdtAmt;		//총생산량
-	int uphPdtAmt;		//uph생산량
+	//int uphPdtAmt;		//uph생산량
 	String fctPhs;		//설비상태
 	String useYn;		//사용여부
 	String empNo;		//사번
@@ -37,10 +37,10 @@ public class InfoVO extends MngVO  {
 	String lineNo;
 	String prcNm;		//공정이름
 	String chkProdUnit;	//점검 주기 날짜 단윈
+	String uploadPath;		//업로드 경로
 	
 	
 	private String fileName;		//원본파일의 이름
-	private String uploadPath;		//업로드 경로
 	private String uuid;			//uuid값
 	private boolean image;			//이미지여부정보
 	

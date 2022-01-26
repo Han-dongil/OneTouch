@@ -238,7 +238,7 @@
 		 
 	//공정 코드 조회 ajax 요청 select 부분에 담아서 보여주기 
 	$.ajax({
-		url:'admMngList',
+		url:'./admMngList',
 		dataType: 'json',
 		async : false
 	}).done(function(datas){
@@ -354,7 +354,7 @@
 		console.log('삭제 버튼 이벤트 성공')
 		let dwtmInsertData = $("#flwFrm").serializeObject();
 		$.ajax({
-			url:"dwtmDelete",
+			url:"./dwtmDelete",
 			method:"post",
 			data:JSON.stringify(dwtmInsertData),
 			contentType:"application/json"
@@ -383,7 +383,7 @@
 			if(raoBtnValue.trim() == '비동기 등록'){
 		  		let dwtmInsertData = $("#flwFrm").serializeObject();
 		  		$.ajax({
-					url:"dwtmInsret",
+					url:"./dwtmInsret",
 					method:"post",
 					data:JSON.stringify(dwtmInsertData),
 					contentType:"application/json"
@@ -398,7 +398,7 @@
 				let dwtmInsertData = $("#flwFrm").serializeObject();
 				console.log(dwtmInsertData)
 				$.ajax({
-					url:"dwtmUpdate",
+					url:"./dwtmUpdate",
 					method:"post",
 					data:JSON.stringify(dwtmInsertData),
 					contentType:"application/json"
@@ -418,7 +418,7 @@
   	//비동기 테이블 조회 
   	function dwtmselect(){
 			$.ajax({
-				url:'dwtmSelectAll',
+				url:'./dwtmSelectAll',
 				method:'POST',
 				data: JSON.stringify(dwtmCheckData),
 				contentType:"application/json"
@@ -438,7 +438,7 @@
 		if(rdostatus == 1){
 			fctCheckData = $("#dwtmFctSelectFrm").serializeObject();
 			 $.ajax({
-				  url:'list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
+				  url:'./list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
 				  method: 'POST',
 				  data: JSON.stringify(fctCheckData),
 				  contentType: "application/json",
@@ -470,7 +470,7 @@
 		console.log(dwtmCheckData)
 		
 			$.ajax({
-				url:'dwtmSelectAll',
+				url:'./dwtmSelectAll',
 				method:'POST',
 				data: JSON.stringify(dwtmCheckData),
 				contentType:"application/json"
