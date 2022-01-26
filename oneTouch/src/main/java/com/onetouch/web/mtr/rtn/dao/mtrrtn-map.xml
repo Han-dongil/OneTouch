@@ -5,7 +5,7 @@
 		SELECT
 			A.ORD_NO,
 			A.MTR_CD,
-			A.FLT_AMT AS RTN_AMT,
+			A.FLT_AMT,
 			A.ORD_AMT,
 			A.UNIT_COST,
 			(A.FLT_AMT*A.UNIT_COST) AS TOT_COST,
@@ -21,10 +21,6 @@
 			A.ORD_NO = B.ORD_NO
 		AND
 			(A.FLT_AMT/A.ORD_AMT*100) > 5
-		<!-- 	
-		
-		AND
-			NVL(A.CMT,'') NOT LIKE '%반품요청완료%' -->
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(B.ORD_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
 		</if>
@@ -40,6 +36,10 @@
 		ORDER BY
 			B.ORD_DATE
 	</select>
+		<!-- 	
+		
+		AND
+			NVL(A.CMT,'') NOT LIKE '%반품요청완료%' -->
 	<!-- 반품내역 조건 조회 -->
 	<select id="selectRtn" resultType="com.onetouch.web.mtr.rtn.dao.MtrRtnVO">
 		SELECT 
@@ -81,7 +81,6 @@
 			IN_DATE,
 			RTN_REQ_DATE,
 			MTR_CD,
-			UNIT,
 			RTN_AMT,
 			CMT
 			)
@@ -91,7 +90,6 @@
 			#{inDate},
 			SYSDATE,
 			#{mtrCd},
-			#{unit},
 			#{rtnAmt},
 			#{cmt}
 			)

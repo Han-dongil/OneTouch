@@ -29,7 +29,6 @@ public class MtrRtnServiceImpl implements MtrRtnService {
 		//반품처리 등록
 		if(mvo.getUpdatedRows() != null) {
 		    for(MtrRtnVO data : mvo.getUpdatedRows()){
-		    	System.out.println(data);
 		    	rtnMapper.insertRtn(data);
 //		    	rtnMapper.updateCmt(data);
 		    	};
