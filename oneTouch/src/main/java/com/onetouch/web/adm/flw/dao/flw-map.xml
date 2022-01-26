@@ -21,18 +21,17 @@
 	<delete id="deleteFlw">
 		delete 
 		from 	adm_prc_flow
-		where 	prd_cd = #{prdCd}
+		where 	prd_cd = #{prdCd} and prc_seq = #{prcSeq}
 	</delete>
 	
 	<update id="updateFlw">
 		UPDATE 	adm_prc_flow
-		SET 	prc_seq = #{prcSeq},
-				work_cmt = #{workCmt},
+		SET 	work_cmt = #{workCmt},
 				std_load = #{stdLoad},
 				unit_cost = #{unitCost},
 				lead_time = #{leadTime},
 				prc_cd = #{prcCd}
-		WHERE	prd_cd = #{prdCd}
+		WHERE	prd_cd = #{prdCd} and prc_seq = #{prcSeq}
 	</update>
 	
 	<insert id="insertFlw">
@@ -45,7 +44,7 @@
 		 prc_cd,
 		 prd_cd)
 		VALUES
-		(#{prcSeq},
+		((SELECT NVL(MAX(prc_seq),0)+1 FROM adm_prc_flow WHERE prd_cd=#{prdCd}),
 		 #{workCmt},
 		 #{stdLoad},
 		 #{unitCost},
