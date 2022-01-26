@@ -22,7 +22,7 @@ hr{
 	width: 80px !important;
 }
 .bascard1{
-	height: 680px;
+	height: 555px;
 }
 .inline{
 	display: inline-block;
@@ -182,6 +182,8 @@ hr{
 <script type="text/javascript">
 	let Grid = tui.Grid;
 	
+	document.getElementById('btnEdit').setAttribute('disabled', true);
+	
 	Grid.applyTheme('default',{
 		cell:{
 			/* header:{
@@ -224,8 +226,8 @@ hr{
 		el: document.getElementById('grid'),
 		data: dataSource,
 		columns,
-		bodyHeight: 640,
-		minBodyHeight: 640,
+		bodyHeight: 520,
+		minBodyHeight: 520,
 		rowHeaders : [ 'checkbox' ]
 	});
 	
@@ -263,28 +265,16 @@ hr{
 				} else {
 					document.getElementById('useYn').checked = false
 				}
+				
+				//자재코드는 수정 안되게 막아주기
+				document.getElementById('mtrCd').setAttribute('readonly',true);
+				document.getElementById('btnAdd').setAttribute('disabled', true);
+				document.getElementById('btnEdit').disabled = undefined;	
 			})
 		}
 	})
 	
-	//수정버튼
-	btnEdit.addEventListener("click", function() {
-		if(!confirm("수정하시겠습니까?")){
-			return false;
-		}
-		$.ajax({
-			url: "./updateMtr",
-			method: "POST",
-			data: $('#mtrFrm').serializeObject(),
-			dataType: 'json',
-			//contentType: 'application/json',
-			success: function(result) {
-				console.log("수정완료!!!!!!!!!!!")
-				console.log(result)
-			}
-		})
-	})
-	
+
 	//자재규격검색버튼
 	btnStd.addEventListener("click", function() {
 		mBas('MTR_SIZE');
@@ -324,6 +314,7 @@ hr{
 	function getModalBas(param){
 		//선택한 값 parameter받아서 각자 처리
 		//각각의 인풋에 값 넣어주기 위해서 if문 쓰기
+		//console.log(param);
 		if(param.dtlCd.includes('SIZE')) {
 			$("#stdNm").val(param.dtlNm);
 			$("#std").val(param.dtlCd);
@@ -340,6 +331,26 @@ hr{
 		//console.log(param.dtlNm);
 		dialog.dialog("close");
 	} 
+	
+	//수정버튼
+	btnEdit.addEventListener("click", function() {
+		if(!confirm("수정하시겠습니까?")){
+			return false;
+		}
+		$.ajax({
+			url: "./updateMtr",
+			method: "POST",
+			data: $('#mtrFrm').serializeObject(),
+			dataType: 'json',
+			//contentType: 'application/json',
+			success: function(result) {
+				console.log("수정완료!!!!!!!!!!!")
+				console.log(result)
+			}
+		})
+		$('#mtrFrm')[0].submit();
+	})
+	
 
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
@@ -356,6 +367,7 @@ hr{
 				console.log(result)
 			}
 		})
+		$('#mtrFrm')[0].submit();
 	})	
 	
 	//초기화버튼

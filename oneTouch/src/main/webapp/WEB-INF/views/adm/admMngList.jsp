@@ -209,8 +209,8 @@ hr{
 		data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 620,
-		minBodyHeight: 620
+		bodyHeight: 500,
+		minBodyHeight: 500
 	}); 
 		
 	grid.on('editingStart', (ev) => {
