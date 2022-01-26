@@ -145,8 +145,8 @@ hr{
 		data: dataSource, 
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 620,
-		minBodyHeight: 620
+		bodyHeight: 500,
+		minBodyHeight: 500
 	}); 
 	
 	

@@ -72,6 +72,8 @@
 	let lineSplit =[];
 	let Grid = tui.Grid;
 	
+	document.getElementById('btnEditPrd').setAttribute('disabled', true);
+	
 	Grid.applyTheme('default',{
 		cell:{
 			/* header:{
@@ -173,8 +175,8 @@
 		el: document.getElementById('grid1'),
 		data: dataSource1,
 		columns: columns1,
-		bodyHeight: 650,
-		minBodyHeight: 650,
+		bodyHeight: 520,
+		minBodyHeight: 520,
 		rowHeaders : [ 'checkbox' ]
 	});
 	
@@ -182,20 +184,19 @@
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		bodyHeight: 280,
-		minBodyHeight: 280,
+		bodyHeight: 180,
+		minBodyHeight: 180,
 		rowHeaders : [ 'checkbox' ]
 	})
 
+	
+	
 	//제품명 클릭하면 제품상세정보 받아옴
 	grid1.on("click", (ev) =>{
-		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){
-			if(grid1.getValue(ev.rowKey,'prdCd') != null ||
-					grid1.getValue(ev.rowKey,'prdNm') != null) {
-				
+		
+		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){	
 				prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
 				console.log(prdCode1);
-				$('#ableLineNo').empty();
 				
 				//제품상세정보 받아오기
 				$.ajax({
@@ -222,18 +223,13 @@
 						document.getElementById('useYn').checked = false
 					}
 					
-					
-/* 					lineSplit = PrdDtl.ableLineNo.split('/');
-					for(i=0;i<lineSplit.length;i++) {
-						let option = document.createElement('option');
-						option.value = lineSplit[i];
-						option.innerHTML = lineSplit[i];
-						document.getElementById('ableLineNo').appendChild(option);
-					}
-					console.log($('#flwFrm').serialize()); */
+					//제품코드는 수정 안되게 막아주기
+					document.getElementById('prdCd').setAttribute('readonly',true);
+					document.getElementById('btnAddPrd').setAttribute('disabled', true);
+					document.getElementById('btnEditPrd').disabled = undefined;	
 	
 					})
-			}
+			
 		}
 	})
 
@@ -365,6 +361,7 @@
 					console.log(result)
 				}
 			})
+			$('#flwFrm')[0].submit();
 		})	
 		
 		//등록버튼
@@ -382,6 +379,7 @@
 					console.log(result)
 				}
 			})
+			$('#flwFrm')[0].submit();
 		})
 		
 		//초기화버튼
@@ -390,6 +388,7 @@
 				return false;
 			}
 			$('#flwFrm')[0].submit();
+			
 		})
 		
 		//삭제버튼
@@ -397,7 +396,7 @@
 			grid1.removeCheckedRows(true);
 			grid1.request('modifyData');
 		})
-		/*제품 끝*/
+	/*제품 끝*/
 
 </script>
 </body>

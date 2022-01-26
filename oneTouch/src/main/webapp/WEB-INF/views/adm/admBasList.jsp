@@ -217,8 +217,8 @@
 		data: dataSource1,
 		rowHeaders : [ 'checkbox' ],
 		columns: columns1,
-		bodyHeight: 530,
-		minBodyHeight: 530
+		bodyHeight: 400,
+		minBodyHeight: 400
 	});
 	
 	const grid2 = new Grid({
@@ -226,8 +226,8 @@
 		data: dataSource2,
 		rowHeaders : [ 'checkbox' ],
 		columns: columns2,
-		bodyHeight: 530,
-		minBodyHeight: 530
+		bodyHeight: 460,
+		minBodyHeight: 460
 	})
 	
 	grid2.on('editingStart', (ev) => {
