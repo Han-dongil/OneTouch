@@ -208,23 +208,26 @@ var mainGrid = new Grid({
 					}
 				}
 	});
-mainGrid.on('response', function(ev) {
+mainGrid.on('editingFinish', function(ev) {
+	mainGrid.refreshLayout();
    });
 mainGrid.on('dblclick',function(ev){
 	rowk = ev.rowKey
 	if(ev.columnName == "mtrLot"){
 		if(mainGrid.getValue(ev.rowKey, 'mtrCd') == null || mainGrid.getValue(ev.rowKey, 'mtrCd') == ''){
 			toastr["warning"]("자재코드를 입력해주세요.")
+		}else if(mainGrid.getValue(ev.rowKey, 'calSectNm') == null || mainGrid.getValue(ev.rowKey, 'calSectNm') == ''){
+			toastr["warning"]("정산구분을 입력해주세요.")
 		}else{
-			let row = mainGrid.getRow(ev.rowKey);
+			 let row = mainGrid.getRow(ev.rowKey);
 			 lotDialog.dialog("open");
 			 document.getElementById('mDitemCode').value = row.mtrCd
 			 document.getElementById('mDitemCodeNm').value = row.mtrNm
 			 document.getElementById('mUnitNm').value = row.unitNm
 			 lotGrid.readData(1,row,true);
-			 lotGrid.refreshLayout();	
+			 lotGrid.refreshLayout();
 		}
-	}
+	} 
 	if(ev.columnName == "mtrCd"){
 		mMtr();
 		$('#ui-id-1').html('자재 검색');
@@ -323,13 +326,18 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 			let month = ('0' + (dt.getMonth()+1)).slice(-2)
 			let day = ('0' + (dt.getDate())).slice(-2)
 			let str = year + '-' + month + '-' + day
+			let calSectNm = mainGrid.getValue(rowk, 'calSectNm')
 			for(row of rows){
 				row.calDate = str
+				row.calSectNm = calSectNm
 				console.log(row);
 			}
 			mainGrid.setValue(rowk, 'mtrLot', rows[0].mtrLot)
 			rows.splice(0,1);
+			console.log("rows")
+			console.log(rows)
 			mainGrid.appendRows(rows);
+			mainGrid.uncheckAll();
 			lotDialog.dialog("close");
 		}
 	}
@@ -388,6 +396,11 @@ columns : [
 			{
 				header: '정산량',
 				name: 'calAmt',
+				hidden: true
+			},
+			{
+				header: '정산구분',
+				name: 'calSectNm',
 				hidden: true
 			}
 			]

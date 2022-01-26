@@ -156,10 +156,24 @@ var mainGrid = new Grid({
 				sortable: true
 				},
 				{
+				header: '불량량',
+				name: 'fltAmt',
+				align: 'right',
+				editor: 'text',
+				sortable: true
+				},
+				{
 				header: '반품량',
 				name: 'rtnAmt',
 				align: 'right',
 				editor: 'text',
+				formatter({value}){
+					   if(value != null){
+					   	return format(value);
+					   } else{
+					   	return 0;
+					   }
+			   	},
 				sortable: true
 				},	
 				{

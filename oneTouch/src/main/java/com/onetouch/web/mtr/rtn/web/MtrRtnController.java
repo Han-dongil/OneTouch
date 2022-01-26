@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.mtr.rtn.dao.MtrRtnVO;
 import com.onetouch.web.mtr.rtn.service.MtrRtnService;
+import com.onetouch.web.zzz.dao.ModifyVO;
 @RequestMapping("/mtr")
 @Controller
 public class MtrRtnController {
@@ -34,6 +36,14 @@ public class MtrRtnController {
 		data.put("data", datas);
 		return data;
 	}
+	
+	//mainGrid modify
+		@ResponseBody
+		@PostMapping("/mtrRtnModify")
+		public int mtrRtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
+			service.modifyRtn(mvo);
+			 return 0;
+		}
 	
 	@RequestMapping("/rtnList")
 	public String rtnList() {
