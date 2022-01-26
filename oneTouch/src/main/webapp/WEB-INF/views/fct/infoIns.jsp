@@ -40,8 +40,40 @@
 </head>
 <body>
 	<div class="row" >
-		<div class="col-4"></div>
-		<div class="col-8">
+		<div class="col-5">
+			<button type="button" id='LinebtnFind'>라인조회</button>
+			<button type="button" id='LinebtnAdd'>라인추가</button>
+			<button type="button" id='LinebtnDel'>라인삭제</button>
+			<button type="button" id='LinebtnSave'>라인저장</button>
+			<button type="button" id='LinebtnEdit'>라인수정</button>
+			<form id="lineForm">
+				<div class="row" style=" margin-top: 10px; border-top: 2px solid black;  padding: 5px;">
+					<div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
+						<table>
+								<tr>
+									<td>라인</td>
+									<td><input type="text" id="lineNo" name="lineNo" value="" /></td>
+									<td>총생산량</td>
+									<td><input type="text" id="totPdtAmt" name="totPdtAmt" value="" /></td>
+								</tr>
+								<tr>
+									<td>UPH생산량</td>
+									<td><input type="text" id="uphPdtAmt" name="uphPdtAmt" value="" /></td>
+									<td>사용여부</td>
+									<td><input type="text" id="useYn" name="useYn" value="" /></td>
+								</tr>
+								<tr>
+									<td>사원</td>
+									<td><input type="text" id="empNo" name="empNo" value="" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+			
+			</form>
+			<div id="lineGrid"></div>
+		</div>
+		<div class="col-6">
 			<div>
 				<button type="button" id='btnFind'>조회</button>
 				<button type="button" id='btnAdd'>추가</button>
@@ -51,62 +83,68 @@
 			</div>
 			<div class="row" style="/* margin-top: 10px; */ border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
 				<div class="col-7" style="margin-top: 30px;">
-				<form id="infoFrm" method="post" enctype="multipart/form-data">
-					<table>
-						<tr>
-							<td>설비코드</td>
-							<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
-							<td>모델명</td>
-							<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
-							<td>사용여부</td>
-							<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
-						</tr>
-						<tr>
-							<td>설비규격</td>
-							<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
-							<td>라인번호</td>
-							<td><input type="text" id="lineNo" name="lineNo" value="" /></td>
-							<td>공정</td>
-							<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
-							
-						</tr>
-						<tr>
-							<td>입고일</td>
-							<td><input type="date" id="inDate" name="inDate" value="" /></td>
-							<td>구매금액</td>
-							<td>
-								<input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" />원
-							</td>
-							<td>회사코드</td>
-							<td><input type="text" id="compCd" name="compCd" value="" /></td>
-						</tr>
-						<tr>
-							<!-- <td>이미지</td>
-							<td><input type="text" id="FctImg" name="FctImg" value="" /></td> -->
-							<td>시간당 생산량</td>
-							<td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
-								value="" /></td>
-							<td>담당자</td>
-							<td><input type="text" id="empNo" name="empNo" value="" /></td>
-							<td>점검주기</td>
-							<td><input type="number" id="chkProd" name="chkProd" value="" /></td>
-							<td>
-								<select id="chkProdUnit" name="chkProdUnit">
-									<option value="Y">년</option>
-									<option value="M">달</option>
-									<option value="W">주</option>
-									<option value="D">일</option>
-								</select>
-							</td>
-						</tr>
-					</table>
-					<div class="col-5">
-				<img src="resources/img/아이유.jpg" id="fctImges" style="width: 252px; height: 150px;">
-				<div class ='uploadDiv'>
-					<td><input style=" margin-bottom: 20px;" type="file" id="fctImg" name="uploadFile" value="" multiple onchange="setThumbnail(event)"/></td>
-					<!-- <button id='uploadBtn'>Upload</button> -->
-				</div>
+					<form id="infoFrm" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td>설비코드</td>
+								<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
+								<td><input type="hidden" id="fctNm" name="fctNm" value="" /></td>
+								<td>모델명</td>
+								<td><input type="text" id="fctModel" name="fctModel" value="" /></td>
+								<!-- <td>사용여부</td>
+								<td><input type="checkbox" id="useYn" name="useYn" checked="" /></td> -->
+							</tr>
+							<tr>
+								<td>설비규격</td>
+								<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
+								<td>라인번호</td>
+								<td><input type="text" id="lineNo" name="lineNo" value="" /></td>
+								<td>공정</td>
+								<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
+								
+							</tr>
+							<tr>
+								<td>입고일</td>
+								<td><input type="date" id="inDate" name="inDate" value="" /></td>
+								<td>구매금액</td>
+								<td>
+									<input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" />원
+								</td>
+								<td>회사코드</td>
+								<td><input type="text" id="compCd" name="compCd" value="" /></td>
+							</tr>
+							<tr>
+								<!-- <td>이미지</td>
+								<td><input type="text" id="FctImg" name="FctImg" value="" /></td> -->
+								<!-- <td>시간당 생산량</td>
+								<td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
+									value="" /></td> -->
+								<td>담당자</td>
+								<td><input type="text" id="empNo" name="empNo" value="" /></td>
+								<td>점검주기</td>
+								<td><input type="number" id="chkProd" name="chkProd" value="" /></td>
+								<td>
+									<select id="chkProdUnit" name="chkProdUnit">
+										<option value="Y">년</option>
+										<option value="M">달</option>
+										<option value="W">주</option>
+										<option value="D">일</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<div class="col-5">
+					
+					
+					<div class ='uploadDiv'>
+						<td><input style=" margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)"/></td>
+						<!-- <button id='uploadBtn'>Upload</button> -->
+					</div>
 				</form>
+			</div>
+			<div class=col-4>
+				<img src="../resources/img/아이유.jpg" id="fctImges" style="width: 252px; height: 150px;">
+				<input type = hidden id="fctImg" value="">
 			</div>
 			
 			</div>
@@ -142,7 +180,15 @@
 				$("#compCd").val(param.dtlCd);
 				dialog.dialog('close');
 			}
-		} 
+		}
+	//라인
+	function getModalLine(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
+		console.log('getModalLine 메서드 출력')
+		console.log(param.lineNo)
+				$("#lineNo").val(param.lineNo);
+				dialog.dialog('close');
+	}
+	 
 
 	
 	//설비업체 Modal end=========================================================================================
@@ -170,7 +216,7 @@
       });
    
    //th 영역
-    const columns = [
+    let fctColumns = [
     {
     header: '설비코드',
     name: 'fctCd',
@@ -243,52 +289,83 @@
     let checkPrcCd = 'd';    	//검색 조건을 사용하지 않지만 검색 메소드 매개변수에 vo가 있기 때문에 쓰레기 값을 넣어준다. 
     let vo={};					//map형식으로 보내주기 위해서 초기화 
     vo.checkPrcCd=checkPrcCd;   //vo에 키 값을 정해서 밸류 값을 넣어주는 초기화 
+    let grid;
+    let lineData;
     
-   //ajax 요청
-	  
-	  $.ajax({
-		  url:'./list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
-		  method: 'POST',
-		  data: JSON.stringify(vo),
-		  contentType: "application/json",
-		  async : false					//동기 = 절차적 
-	  }).done(function(datas){
-		  console.log(datas)
-		  data = datas;
-	  }) 
-   
-  
-/*    const dataSource = {
-		  api: {
-		    readData: { url: 'list',
-		    	method: 'GET',
-		    	initParams: { param: 'param' } },				//data = initParams
-		  modifyData: { url: '${pageContext.request.contextPath}/modifyData', method: 'PUT' },
-		  },
-		  contentType:'application/json'
-		};  */
+    //그리드를 id 값안에다가 붙여넣어준다.
+ 	 fctGrid = new Grid({
+        el: document.getElementById('grid'),
+        data:data,  //이름이 같다면 생격가능
+        rowHeaders : [ 'checkbox' ],
+        columns:fctColumns,
+        bodyHeight: 600,
+		 minBodyHeight: 600,
+    });
+    
+    
+  //th 영역
+    let lineColumns = [
+    {
+    header: '라인',
+    name: 'lineNo',
+    editor: 'text'
+  },
+  {
+    header: '총생산량',
+    name: 'totPdtAmt',
+    editor: 'text'
+  },
+  {
+    header: 'UPH생산량',
+    name: 'uphPdtAmt',
+    editor: 'text'
+  },
+  {
+    header: '사용여부',
+    name: 'useYn',
+    editor: 'text'
+  },
+  {
+    header: '사원',
+    name: 'empNo',
+    editor: 'text'
+  }
+    ]
+ 
   //그리드를 id 값안에다가 붙여넣어준다.
-  const grid = new Grid({
-         el: document.getElementById('grid'),
-         data:data,  //이름이 같다면 생격가능
-         rowHeaders : [ 'checkbox' ],
-         columns,
-         bodyHeight: 600,
- 		 minBodyHeight: 600,
- 		/* columnOptions: {
- 			minWidth
- 			 } */
-         //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
-         /* columnOptions: {
-              frozenCount: 2, // 3개의 컬럼을 고정하고
-              frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
-            } */
-         });
-    
-	grid.on('click',(ev) =>{
+ 	 LineGrid = new Grid({
+        el: document.getElementById('lineGrid'),
+        data:lineData,  //이름이 같다면 생격가능
+        rowHeaders : [ 'checkbox' ],
+        columns:lineColumns,
+        bodyHeight: 600,
+		 minBodyHeight: 600,
+    });
+		
+		
+		
+		
+		 //ajax 요청
+		  
+		  $.ajax({
+			  url:'./list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
+			  method: 'POST',
+			  data: JSON.stringify(vo),
+			  contentType: "application/json",
+			  async : false					//동기 = 절차적 
+		  }).done(function(datas){
+			 	console.log('조회 테스트')
+				console.log(datas)
+				data = datas;
+			 	fctGrid.resetData(data);
+			 	fctGrid.refreshLayout();
+			 
+		  }) 
+	   
+		
+	fctGrid.on('click',(ev) =>{
 		
 		dataVO = data[ev.rowKey];
-		console.log(dataVO.useYn)
 		
 		document.getElementById('fctCd').value = dataVO.fctCd;
 		document.getElementById('fctNm').value = dataVO.fctNm;
@@ -301,14 +378,33 @@
 		document.getElementById('purchCost').value = dataVO.purchCost;
 		document.getElementById('chkProd').value = dataVO.chkProd;
 		document.getElementById('fctImg').value = dataVO.fctImg;
-		document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
-		document.getElementById('empNo').value = dataVO.empNo;
-		//document.getElementById('fctNm').value = dataVO.fctNm;
 		
+		//document.getElementById('fctImg').value = dataVO.fctImg;
+		var fileCallPath = encodeURIComponent(dataVO.uploadPath+"/s_"+dataVO.fctImg);
+		console.log('이미지 테스트')
+		console.log(fileCallPath);
+		document.getElementById('fctImges').setAttribute("src", 'display?fileName='+fileCallPath);
+		//document.getElementById('fctImges').src = fileCallPath;
+		console.log('사진 경로 띄우기')
+		console.log(dataVO.fctImg+dataVO.uploadPath)
+		//line 테이블 join해서 사용하기 
+		//document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
+		//document.getElementById('empNo').value = dataVO.empNo;
 	})
     
+	//라인 찾는 아작스 
+	$.ajax({
+		url : '../fct/LineSelect',
+		success : function(result){
+			lineData = result;
+			LineGrid.resetData(result);
+			console.log('line출력')
+			console.log(result)
+		}
+	});
+	
     //클릭 이벤트 그리드
-    grid.on('check', (ev) => {
+    fctGrid.on('check', (ev) => {
     	
     	let vo = {fctCd:""};
        vo.fctCd = data[ev.rowKey].fctCd;
@@ -321,18 +417,17 @@
       
          	
        
-    grid.on('response', function(ev) {
+    fctGrid.on('response', function(ev) {
     	   console.log(ev);
-    	   grid.resetOriginData()	//현재 데이터를 변경된 데이터로 확장한다. 
+    	   fctGrid.resetOriginData()	//현재 데이터를 변경된 데이터로 확장한다. 
        })
        
        btnAdd.addEventListener("click", function(){
-    	   grid.appendRow({})
+    	   fctGrid.appendRow({})
        })
+       
        btnDel.addEventListener("click", function(){
     	   //삭제 아작스 처리
-    	      	
-    	   		
     	      $.ajax({
     	    	  
     	    	  url: "./deleteInfo",
@@ -341,7 +436,7 @@
     	    	  contentType:"application/json",			//넘겨주는 데이터가 json이라는 걸 알려주는 것 
     	    	  success:function(result){
     	    		  console.log('성공')
-    	    		  grid.resetData(result)
+    	    		  fctGrid.resetData(result)
     	    		  targetId.length = 0;
     	    	  }
     	   
@@ -368,7 +463,7 @@
     	    	  dataType:'Json',
     	    	  success:function(result){
     	    		  console.log('성공')
-    	    		  grid.resetData(result)
+    	    		  fctGrid.resetData(result)
     	    	  }
     	   
        		})
@@ -420,16 +515,21 @@
        }) 
        //수정 아작스 
        btnEdit.addEventListener("click", function(){
-    	   console.log('수수수수수수수저엊어ㅓ저어저어정')
+    	   
+			let infoForm = document.getElementById('infoFrm');
+			let formData = new FormData(infoForm);
+			console.log(formData)
     	   $.ajax({
- 	    	  url: "./Updateinfo",
- 	    	  method: "POST",
- 	    	  data:$('#infoFrm').serialize(),
- 	    	  dataType:'Json',
+				url: "./Updateinfo",
+				processData: false,
+				contentType: false,
+				method: "POST",
+				data:formData,
+				dataType:'Json',
  	    	  			
  	    	  success:function(result){
  	    		  console.log('성공')
- 	    		  grid.resetData(result)
+ 	    		  fctGrid.resetData(result)
  	    	  }
  	   
     		})
@@ -460,11 +560,10 @@
 			
 		}; 
 		reader.readAsDataURL(event.target.files[0]); 
-	}
+	}	// end setThumbnail
     	 
 	var regex = new RegExp("(/*?)\.(exe|sh|zip|alz)$");
 	var maxSize = 5242880;	//5MB
-	
 	var uploadResult = $(".uploadResult ul");
 	
 	//이미지파일 보여주기 
@@ -486,18 +585,6 @@
 		uploadResult.append(str)
 	}
 	
-/* 	//파일 이름을 목록으로 보여주는 부분 함수
-	function showUploadedFile(uploadResultArr){
-		var str = "";
-		console.log('show')
-		console.log(uploadResultArr)
-		
-		$(uploadResultArr).each(function(i, obj){
-			str += "<li>" + obj.fileName + "</li>"; 
-		});
-		uploadResult.append(str);
-	}// end showUploadeFile
-	 */
 	console.log('uploadResult'+uploadResult)
 	
 	function checkExtension(fileName, fileSize){

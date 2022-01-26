@@ -101,7 +101,7 @@
 //공정 코드 조회 ajax 요청
 
 	$.ajax({
-		url:'selectFixPrc',
+		url:'./selectFixPrc',
 		dataType: 'json',
 		async : false
 	}).done(function(datas){
