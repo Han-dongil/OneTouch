@@ -1,7 +1,6 @@
 package com.onetouch.web.prd.prc.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.pdt.work.dao.WorkMapper;
 import com.onetouch.web.pdt.work.dao.WorkVO;
+import com.onetouch.web.prd.prc.dao.PrcMapper;
 import com.onetouch.web.prd.prc.dao.PrcVO;
 import com.onetouch.web.prd.prc.service.PrcService;
 
@@ -20,6 +20,7 @@ public class PrcMovingController {
 	
 	@Autowired PrcService service;
 	@Autowired WorkMapper workMapper;
+	@Autowired PrcMapper mapper;
 	
 	@RequestMapping("movingPrc")
 	public String pdtListPage() {
@@ -28,10 +29,32 @@ public class PrcMovingController {
 	
 	@ResponseBody
 	@RequestMapping("prcMovingList")
-	public List<WorkVO> prcMove(@RequestBody Map<String,String> map){
+	public List<WorkVO> prcMove(@RequestBody WorkVO vo){
 		
 		
 		//
-		return workMapper.prcMovingList(map);
+		return workMapper.workListDetail(vo);
+	}
+	
+	@ResponseBody
+	@RequestMapping("workListDetail")
+	public List<WorkVO> workListDetail(@RequestBody WorkVO vo){
+		return workMapper.prcMovingList(vo);
+	}
+	@ResponseBody
+	@RequestMapping("PrcMovingLot")
+	public List<PrcVO> PrcMovingLot(@RequestBody PrcVO vo){
+		return mapper.usedlotFind(vo);
+	}
+	@ResponseBody
+	@RequestMapping("prcMovingShow")
+	public List<PrcVO> prcMovingShow(@RequestBody PrcVO vo){
+		return service.prcMovingView(vo);
+	}
+	@ResponseBody
+	@RequestMapping("prcMovingNonRoop")
+	public List<PrcVO> prcMovingNonRoop(@RequestBody PrcVO vo){
+		System.out.println(mapper.prcMovingView(vo));
+		return mapper.prcMovingView(vo);
 	}
 }

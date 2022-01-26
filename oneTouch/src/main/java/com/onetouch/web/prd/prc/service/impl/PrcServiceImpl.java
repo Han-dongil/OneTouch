@@ -93,6 +93,8 @@ public class PrcServiceImpl implements PrcService{
 		}
 		String a=(mapper.myPrcFlow(vo)).getPrcSeq().substring(0,1);//내공정흐름번호
 		if(flowMin==Integer.parseInt(a)) { //공정흐름 1번이 들어온경우
+			System.out.println("qqqqqqqqqqqq");
+			System.out.println(vo);
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);  //입력된시간불러와서 리턴
 			vo.setMsg("공정종료.");
@@ -103,6 +105,8 @@ public class PrcServiceImpl implements PrcService{
 			return vo; 
 		}
 		else if(Integer.parseInt(a)!=flowMax &&  Integer.parseInt(a)-1==mapper.endFlowCheck(vo)) { //1번흐름이 아니고 엔드시간찍힌애들의 합이 내플로우 -1과같을떄(앞공정종료o)
+			System.out.println("qqqqqqqqqqqq");
+			System.out.println(vo);
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);
 			vo.setMsg("공정종료!!.");
@@ -171,6 +175,16 @@ public class PrcServiceImpl implements PrcService{
 		mapper.fastStopUpdate(vo);
 		mapper.fastStop(vo);
 		
+	}
+
+	@Override
+	public List<PrcVO> prcMovingView(PrcVO vo) {
+		int upCheck=mapper.updateCheck();
+		while(true) {
+			if(upCheck!=mapper.updateCheck()) {
+				return mapper.prcMovingView(vo);
+			}
+		}
 	}
 	
 	

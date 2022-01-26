@@ -28,5 +28,6 @@ public class PrcVO extends WorkVO{
 	private String msg;
 	//동기화
 	private String sumFlt;
+	private int upCheck;
 	
 }

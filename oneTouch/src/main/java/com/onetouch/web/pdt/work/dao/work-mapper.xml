@@ -56,14 +56,7 @@
 	</select>
 		<select id="prcMovingList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
 		select instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd ,prc_cd from pdt_work_instr_dtl
-		group by instr_no, line_no ,  prd_cd , instr_cnt , pdt_cnt , work_str_date , work_str_time , bom_cd ,prc_cd
-		having 1=1
-	 	<if test='startDate!="" and startDate!=null'>
-			and work_str_date>#{startDate}
-		</if>
-	 	<if test='endDate!="" and endDate!=null'>
-			and #{endDate}>work_str_date
-		</if> 
+		where line_no=#{lineNo} AND instr_no=#{instrNo}
 	</select>
 	<select id="planList"
 		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
@@ -94,7 +87,7 @@
 		work_prot, instr_date , pdt_fin_date ,now_phs)
 		values
 		(PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no',
-		'pdt_fin_date'),#{planNo},#{workProt},${instrDate},#{pdtFinDate} ,'N')
+		'pdt_fin_date'),#{planNo},#{workProt},to_date(#{instrDate},'yyyy-mm-dd HH24:MI:SS'),to_date(#{pdtFinDate},'yyyy-mm-dd HH24:MI:SS') ,'N')
 	</insert>
 	<insert id="workInsertDtl">
 		insert into pdt_work_instr_dtl (line_no, instr_no,
@@ -118,7 +111,7 @@
 		,line_no, dtl_select)
 		values (#{prcCd},
 		#{mtrLot},
-		#{planNo},
+		#{instrNo},
 		#{lineNo},
 		'WD')
 	</insert>

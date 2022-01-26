@@ -19,6 +19,6 @@ public interface WorkMapper{
 	void workInsertDtl(WorkVO vo);
 	void LotFindUpdate(WorkVO vo);
 	void prdNeed(WorkVO vo);
-	List<WorkVO> prcMovingList(Map<String,String> map);
+	List<WorkVO> prcMovingList(WorkVO vo);
 
 }

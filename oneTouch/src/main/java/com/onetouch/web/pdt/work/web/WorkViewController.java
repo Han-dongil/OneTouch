@@ -34,4 +34,5 @@ public class WorkViewController {
 	public List<WorkVO> workList(@RequestBody Map<String,String> vo){
 		return mapper.workList(vo);
 	}
+
 }

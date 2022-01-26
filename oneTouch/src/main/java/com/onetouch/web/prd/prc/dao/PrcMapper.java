@@ -29,4 +29,7 @@ public interface PrcMapper {
 	void fastStop(PrcVO vo);
 	void fastStopUpdate(PrcVO vo);
 	void planPhsUpdate(PrcVO vo);
+	List<PrcVO> usedlotFind(PrcVO vo); 
+	List<PrcVO> prcMovingView(PrcVO vo);
+	int updateCheck();
 }
