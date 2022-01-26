@@ -620,7 +620,7 @@
    
    //라인 등록
    function LineAdd(){
-	   
+		$
    }
    //라인 input 초기화 
 	function LineClear(){
