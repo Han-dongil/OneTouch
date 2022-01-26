@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.cal.service.MtrCalService;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
+import com.onetouch.web.zzz.dao.ModifyVO;
 @RequestMapping("/mtr")
 @Controller
 public class MtrCalController {
@@ -68,14 +69,12 @@ public class MtrCalController {
 	//mainGrid modifyData
 	@ResponseBody
 	@PostMapping("/mtrCalModify")
-	public Map<String,Object> mtrCalModify(@RequestBody MtrSearchVO searchVO){
-		Map<String,Object> datas = new HashMap<>();
-		Map<String,Object> data = new HashMap<>();
-		data.put("result", true);
-		datas.put("contents", mtrCalService.selectCal(searchVO));
-		data.put("data", datas);
-		return data;
+	public int mtrCalModify(@RequestBody ModifyVO<MtrCalVO> mtrCalVO){
+		mtrCalService.modifyCal(mtrCalVO);
+		return 0;
 	}
+	
+
 	/*
 	 * //mainGrid readData
 	 * 

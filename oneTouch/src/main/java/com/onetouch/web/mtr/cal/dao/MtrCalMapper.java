@@ -9,7 +9,8 @@ public interface MtrCalMapper {
 
 	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
 	List<LotVO> selectLot(MtrCalVO mtrCalVO);
-//	int selectInNo();
+	void insertCal(MtrCalVO mtrCalVO);
+	void updateCal(MtrCalVO mtrCalVO);
 //	void insertIn(MtrInVO vo);
 //	void deleteIn(MtrInVO vo);
 //	void updateIn(MtrInVO vo);

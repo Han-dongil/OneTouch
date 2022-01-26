@@ -187,7 +187,23 @@ var mainGrid = new Grid({
 				   name: 'cmt',
 				   align: 'left',
 				   sortable: true
+				 },
+				 {
+				   header: '정산구분',
+				   name: 'calSect',
+				   hidden: true
+				 },
+				 {
+				   header: '단위',
+				   name: 'unit',
+				   hidden: true
+				 },
+				 {
+				   header: '재고수량',
+				   name: 'stckCnt',
+				   hidden: true
 				 }
+				 
 				 
 				],
 				summary : {
@@ -209,6 +225,21 @@ var mainGrid = new Grid({
 				}
 	});
 mainGrid.on('editingFinish', function(ev) {
+	if(ev.columnName == 'calSectNm'){
+		if(mainGrid.getValue(ev.rowKey,'calSectNm') == '입고정산'){
+			mainGrid.setValue(ev.rowKey,'calSect','MTR_CAL001')
+		}else if(mainGrid.getValue(ev.rowKey,'calSectNm') == '출고정산'){
+			mainGrid.setValue(ev.rowKey,'calSect','MTR_CAL002')
+		}
+	}
+	if(ev.columnName == 'calAmt'){
+		if(mainGrid.getValue(ev.rowKey,'calSectNm') == '출고정산'){
+			if(mainGrid.getValue(ev.rowKey,'calAmt') > mainGrid.getValue(ev.rowKey,'stckCnt')){
+				toastr["warning"]("출고정산량이 현재고보다 많습니다.")
+				ev.stop();
+			}
+		}
+	}
 	mainGrid.refreshLayout();
    });
 mainGrid.on('dblclick',function(ev){
@@ -258,13 +289,12 @@ function format(value){
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
-	console.log(rowk)
-	console.log(param)
 	if(rowk >= 0){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
 		mainGrid.setValue(rowk, "unitNm", param.unitNm, false);
+		mainGrid.setValue(rowk, "unit", param.unit, false);
 		/* mainGrid.setValue(rowk, "compNm", param.compNm, false);
 		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false); */
 		rowk = -1;
@@ -286,7 +316,6 @@ function today(ev) {
 //조회버튼
 btnFind.addEventListener("click", function(){
    let param= $("#frm").serializeObject();
-   console.log(param)
    mainGrid.readData(1,param,true);
 })
 //저장버튼
@@ -326,17 +355,23 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 			let month = ('0' + (dt.getMonth()+1)).slice(-2)
 			let day = ('0' + (dt.getDate())).slice(-2)
 			let str = year + '-' + month + '-' + day
+			let calSect = mainGrid.getValue(rowk, 'calSect')
 			let calSectNm = mainGrid.getValue(rowk, 'calSectNm')
 			for(row of rows){
 				row.calDate = str
+				row.calSect = calSect
 				row.calSectNm = calSectNm
-				console.log(row);
 			}
 			mainGrid.setValue(rowk, 'mtrLot', rows[0].mtrLot)
 			rows.splice(0,1);
 			console.log("rows")
 			console.log(rows)
-			mainGrid.appendRows(rows);
+			
+			for(let i=0; i<rows.length; i++){
+				mainGrid.appendRow();
+				mainGrid.setRow(mainGrid.getRowCount()-1,rows[i]);
+				//mainGrid.setRow(rowk+i,rows[i]);
+			}
 			mainGrid.uncheckAll();
 			lotDialog.dialog("close");
 		}
@@ -391,6 +426,11 @@ columns : [
 			{
 				header: '단위',
 				name: 'unitNm',
+				hidden: true
+			},
+			{
+				header: '단위코드',
+				name: 'unit',
 				hidden: true
 			},
 			{

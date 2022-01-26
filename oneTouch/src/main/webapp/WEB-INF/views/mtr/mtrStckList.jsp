@@ -152,19 +152,25 @@ const lotColumns = [{
 	 {
 	   header: '홀딩수량',
 	   name: 'hldCnt',
-	   align: 'center',
+	   align: 'right',
 	   sortable: true
 	 },
 	 {
 	   header: '현재고',
 	   name: 'stckCnt',
-	   align: 'center',
+	   align: 'right',
+	   sortable: true
+	 },
+	 {
+	   header: '사용가능수량',
+	   name: 'stckUse',
+	   align: 'right',
 	   sortable: true
 	 },
 	 {
 	   header: '비고',
 	   name: 'cmt',
-	   align: 'center',
+	   align: 'left',
 	   sortable: true
 	 }
 	]
@@ -233,19 +239,25 @@ const mtrColumns = [{
 					 {
 					   header: '홀딩수량',
 					   name: 'hldCnt',
-					   align: 'center',
+					   align: 'right',
 					   sortable: true
 					 },
 					 {
 					   header: '현재고',
 					   name: 'mtrStckCnt',
-					   align: 'center',
+					   align: 'right',
+					   sortable: true
+					 },
+					 {
+					   header: '사용가능수량',
+					   name: 'stckUse',
+					   align: 'right',
 					   sortable: true
 					 },
 					 {
 					   header: '안전재고',
 					   name: 'safeStck',
-					   align: 'center',
+					   align: 'right',
 					   sortable: true
 					 },
 					 {
