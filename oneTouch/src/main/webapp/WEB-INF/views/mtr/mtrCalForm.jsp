@@ -198,6 +198,7 @@ var mainGrid = new Grid({
 mainGrid.on('response', function(ev) {
    });
 mainGrid.on('dblclick',function(ev){
+	rowk = ev.rowKey
 	if(ev.columnName == "mtrLot"){
 		 let row = mainGrid.getRow(ev.rowKey);
 		 lotDialog.dialog("open");
@@ -237,6 +238,8 @@ function format(value){
 //자재검색모달 row더블클릭 이벤트
 function getModalMtr(param){
 	dialog.dialog("close");
+	console.log(rowk)
+	console.log(param)
 	if(rowk >= 0){
 		mainGrid.blur();
 		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
@@ -274,7 +277,6 @@ btnSave.addEventListener("click", function(){
 //추가버튼
 btnAdd.addEventListener("click", function(){
 	mainGrid.appendRow();
-	console.log(mainGrid.getRowCount()-1)
 	today(mainGrid.getRowCount()-1)
 	
 });
