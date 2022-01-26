@@ -12,4 +12,6 @@ public interface WorkService {
 	List<PlanVO> planList(String planCheck);
 	List<PlanVO> findLotMtrCnt(PlanVO vo);
 	void workInsert(Map<String,List<WorkVO>> map);
+	List<WorkVO> workListDetail(WorkVO vo);
+	List<WorkVO> workList(Map<String,String> map);
 }

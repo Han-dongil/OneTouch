@@ -556,7 +556,7 @@
   		 */
   		
   			$.ajax({
-  				url:'./pdtPlanDtllist/',
+  				url:'./pdtPlanDtllist',
   				method:'POST',
   				data:a,
   				success:function(result){

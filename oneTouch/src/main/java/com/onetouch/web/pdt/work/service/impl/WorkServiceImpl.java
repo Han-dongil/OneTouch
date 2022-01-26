@@ -22,9 +22,15 @@ public class WorkServiceImpl implements WorkService {
 	@Autowired MtrOutMapper mtrMapper;
 	@Override
 	public List<WorkVO> workList() {
-		WorkVO vo = new WorkVO();
-		
 		return mapper.workList();
+	}
+	@Override
+	public List<WorkVO> workList(Map<String,String> map) {
+		return mapper.workList(map);
+	}
+	@Override
+	public List<WorkVO> workListDetail(WorkVO vo) {
+		return  mapper.workListDetail(vo);
 	}
 	
 	@Override
@@ -80,6 +86,8 @@ public class WorkServiceImpl implements WorkService {
 		
 		
 	}
+
+
 
 	
 }

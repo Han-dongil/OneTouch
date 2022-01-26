@@ -21,19 +21,19 @@
 
 </head>
 <body>
-	<form id="planSearchFrm" name="planSearchFrm">
+	<form id="workSearchFrm" name="planSearchFrm">
 		계획일자<input type="date" id="startDate" name="startDate"> ~
 		<input type="date" id="endDate" name="endDate"> 
 		<select name="nowPhs" id="nowPhs">
-			<option value="N">미지시</option>
-			<option value="Y">지시완료</option>
+			<option value="N">지시완료</option>
+			<option value="Y">공정시작</option>
 		</select>
-		<button type="button" id="findPlan" name="findPlan">계획서 조회</button>
+		<button type="button" id="findWork" name="findWork">생산지시 조회</button>
 		<br>
 		제품코드<input type="text" id="prdCd" name="prdCd">
-		<button type="button" id="prdPlan" name="prdPlan">제품별 조회</button>
+		<button type="button" id="prdWork" name="prdWork">제품별 조회</button>
 	</form>
-	<div id="plan-dialog-form" title="계획서 조회">계획서 조회
+	<div id="work-dialog-form" title="생산지시 조회">생산지시 조회
 		<div id="modalGrid"></div>
 	</div>
 	<div id="mainGrid"></div>
@@ -52,19 +52,19 @@
 	})
 	///////////////////////////////////////////그리드//////////////////////////////////////////
 	const modalColumns = [{
-		header : '계획서번호',
-		name : 'planNo'
+		header : '지시번호',
+		name : 'instrNo'
 	},{
-		header : '주문번호',
-		name : 'ordShtNo',
+		header : '계획번호',
+		name : 'planNo',
  		editor : 'text'		
 	},{
-		header : '납기일자',
-		name : 'dueDate',
+		header : '지시일자',
+		name : 'instrDate',
  		editor : 'text'
 	},{
-		header : '계획일자',
-		name : 'planDate',
+		header : '생산완료일자',
+		name : 'pdtFinDate',
  		editor : 'text'
 	},{
 		header : '작업우선순위',
@@ -87,8 +87,8 @@
 		  }
 		});
 	const mainColumns = [{
-		header : '계획서번호',
-		name : 'planNo'
+		header : '지시번호',
+		name : 'instrNo'
 	},{
 		header : '라인번호',
 		name : 'lineNo',
@@ -98,12 +98,12 @@
 		name : 'prdCd',
  		editor : 'text'
 	},{
-		header : '필요수량',
-		name : 'needCnt',
- 		editor : 'text'
-	},{
 		header : '지시수량',
 		name : 'instrCnt',
+ 		editor : 'text'
+	},{
+		header : '생산수량',
+		name : 'pdtCnt',
  		editor : 'text'
 	},{
 		header : '작업시작일',
@@ -111,7 +111,11 @@
  		editor : 'text'
 	},{
 		header : '가동시간',
-		name : 'workPlanTime',
+		name : 'workStrTime',
+ 		editor : 'text'
+	},{
+		header : 'bom코드',
+		name : 'bomCd',
  		editor : 'text'
 	}];
 	//메인그리드 생성
@@ -127,7 +131,7 @@
 		});	
 	/////////////////////////////////모달///////////////////////////////////////
     //계획서검색 모달창
-	planDialog = $( "#plan-dialog-form" ).dialog({
+	workDialog = $( "#work-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
 		height: 500,
@@ -136,12 +140,12 @@
 	});
 	
 	//////////////////////////////이벤트리스너/////////////////////////////////
-	findPlan.addEventListener("click",ev=>{
-		planDialog.dialog("open");
+	findWork.addEventListener("click",ev=>{
+		workDialog.dialog("open");
 		modalGrid.refreshLayout();
 		//계획서 조회
-		let searchData=$('#planSearchFrm').serializeObject();
-		fetch('planSearchList',{
+		let searchData=$('#workSearchFrm').serializeObject();
+		fetch('workList',{
 				method:'POST',
 				headers:{
 				"Content-Type": "application/json",
@@ -154,10 +158,10 @@
 		})
 	})
 	//제품별 디테일조회
-	prdPlan.addEventListener('click',ev=>{
-		let searchData=$('#planSearchFrm').serializeObject();
-		searchData.planNo='';
-		fetch('planDtlList',{
+	prdWork.addEventListener('click',ev=>{
+		let searchData=$('#workSearchFrm').serializeObject();
+		searchData.workNo='';
+		fetch('workSearchList',{
 				method:'POST',
 				headers:{
 				"Content-Type": "application/json",
@@ -171,7 +175,7 @@
 	})
 	//모달 계획서 클릭시 디테일 메인에띄움
 	modalGrid.on('click',ev=>{
-		fetch('./planDtlList',{
+		fetch('workSearchList',{
 				method:'POST',
 				headers:{
 				"Content-Type": "application/json",
@@ -181,7 +185,7 @@
 		.then(response=>response.json())
 		.then(result=>{
 			mainGrid.resetData(result);
-			planDialog.dialog("close");
+			workDialog.dialog("close");
 		})		
 	})
 	

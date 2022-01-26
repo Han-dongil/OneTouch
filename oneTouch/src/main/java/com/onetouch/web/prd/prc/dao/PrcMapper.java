@@ -2,6 +2,8 @@ package com.onetouch.web.prd.prc.dao;
 
 import java.util.List;
 
+import com.onetouch.web.pdt.work.dao.WorkVO;
+
 public interface PrcMapper {
 	List<PrcVO> lineList();
 	List<PrcVO> prcList(String lineNo);
@@ -26,4 +28,5 @@ public interface PrcMapper {
 	PrcVO insertHrdLotSelect(PrcVO vo);
 	void fastStop(PrcVO vo);
 	void fastStopUpdate(PrcVO vo);
+	void planPhsUpdate(PrcVO vo);
 }

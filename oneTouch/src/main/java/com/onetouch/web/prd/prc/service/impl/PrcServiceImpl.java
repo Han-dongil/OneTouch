@@ -128,6 +128,9 @@ public class PrcServiceImpl implements PrcService{
 				System.out.println(vo100);
 				mapper.prdInsert(vo100);
 			}
+			System.out.println("kkkkkkkkkkkkkkkkkkkkkkk");
+			System.out.println(vo100);
+			mapper.planPhsUpdate(vo100);
 			vo.setMsg("라인가동 종료!!.");
 			return vo;
 		}
