@@ -14,5 +14,6 @@ public class MtrCalVO{
 	private String unit;
 	private String unitNm;
 	private String calAmt;
+	private String stckCnt;
 	private String cmt;
 }

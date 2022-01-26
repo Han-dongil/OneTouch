@@ -5,6 +5,7 @@ import java.util.List;
 import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.stck.dao.LotVO;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface MtrCalService {
 	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
@@ -16,6 +17,6 @@ public interface MtrCalService {
 	 * void update(InVO vo); 
 	 * void delete(InVO vo);
 	 */
-	//void modifyIn(ModifyVO<MtrInVO> mvo);
+	void modifyCal(ModifyVO<MtrCalVO> mtrCalVO);
 	
 }

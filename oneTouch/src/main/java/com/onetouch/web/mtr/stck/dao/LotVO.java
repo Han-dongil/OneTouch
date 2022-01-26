@@ -21,4 +21,6 @@ public class LotVO {
 	private String mtrStckCnt;
 	private String safeStck;
 	private String useYn;
+	private String unit;
+	private String stckUse;
 }

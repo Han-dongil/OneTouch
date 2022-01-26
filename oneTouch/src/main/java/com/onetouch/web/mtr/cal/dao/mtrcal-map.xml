@@ -8,6 +8,7 @@
 			A.MTR_LOT,
 			TO_CHAR(A.CAL_DATE, 'yyyy-MM-dd') AS CAL_DATE,
             A.CAL_SECT,
+            B.STCK_CNT,
 			FN_GET_BAS_DTL_CD_TO_NM(A.CAL_SECT) AS CAL_SECT_NM,
 			C.UNIT,
 			FN_GET_BAS_DTL_CD_TO_NM(C.UNIT) AS UNIT_NM,
@@ -44,6 +45,7 @@
 			A.HLD_CNT,
 			A.STCK_CNT,
 			B.MTR_NM,
+			B.UNIT,
 			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT_NM
 		FROM
 			MTR_LOT_STCK A, ADM_MTR B
@@ -52,5 +54,37 @@
 		AND
 			B.MTR_CD = #{mtrCd}
 	</select>
-
+	
+	<insert id="insertCal">
+		INSERT INTO MTR_STCK_CAL (
+			CAL_NO,
+			MTR_LOT,
+			CAL_DATE,
+			CAL_SECT,
+			CAL_AMT,
+			<if test='cmt != null and cmt != ""'>CMT,</if>
+			UNIT
+			)
+		VALUES(
+			PKG_MAKE_CODE.CODE('CAL', 'MTR_STCK_CAL', 'CAL_NO', 'CAL_DATE'),
+			#{mtrLot},
+			#{calDate},
+			#{calSect},
+			#{calAmt},
+			<if test='cmt != null and cmt != ""'>#{cmt},</if>
+			#{unit}
+			)
+	</insert>
+	<update id="updateCal">
+		UPDATE MTR_LOT_STCK
+		SET
+			<if test='calSect == "MTR_CAL001"'> 
+				STCK_CNT = STCK_CNT+#{calAmt}				
+			</if>
+			<if test='calSect == "MTR_CAL002"'> 
+				STCK_CNT = STCK_CNT-#{calAmt}				
+			</if>
+		WHERE
+			MTR_LOT = #{mtrLot} 
+	</update>
 </mapper>

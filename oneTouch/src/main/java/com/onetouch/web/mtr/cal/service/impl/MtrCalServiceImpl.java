@@ -10,6 +10,7 @@ import com.onetouch.web.mtr.cal.dao.MtrCalVO;
 import com.onetouch.web.mtr.cal.service.MtrCalService;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.stck.dao.LotVO;
+import com.onetouch.web.zzz.dao.ModifyVO;
 
 @Service
 public class MtrCalServiceImpl implements MtrCalService {
@@ -21,6 +22,14 @@ public class MtrCalServiceImpl implements MtrCalService {
 	@Override
 	public List<LotVO> selectLot(MtrCalVO mtrCalVO) {
 		return calMapper.selectLot(mtrCalVO);
+	}
+	@Override
+	public void modifyCal(ModifyVO<MtrCalVO> mvo) {
+		for(int i=0; i<mvo.getCreatedRows().size(); i++) {
+			System.out.println(mvo.getCreatedRows().get(i));
+			calMapper.insertCal(mvo.getCreatedRows().get(i));
+			calMapper.updateCal(mvo.getCreatedRows().get(i));
+		}
 	}
 	
 //	@Transactional
