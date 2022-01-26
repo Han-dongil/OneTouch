@@ -213,12 +213,26 @@ hr{
 		minBodyHeight: 500
 	}); 
 		
+	//공정코드 수정불가알림
 	grid.on('editingStart', (ev) => {
 		if(ev.columnName == 'prcCd') {
 			var value = grid.getValue(ev.rowKey, 'prcCd');
 				console.log(value);
 			if(value != null) {
 				alert('공정코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
+	})
+	
+		
+	//표시순서 자동추가알림
+	grid.on('editingStart', (ev) => {
+		if(ev.columnName == 'seq') {
+			var value = grid.getValue(ev.rowKey, 'seq');
+				console.log(value);
+			if(value == null) {
+				alert('표시순서는 자동추가됩니다');
 				ev.stop();
 			}
 		}

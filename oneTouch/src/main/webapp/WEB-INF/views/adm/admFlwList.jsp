@@ -107,7 +107,8 @@
 		
 		header : '공정순서',
 		name : 'prcSeq',
-		sortable : true
+		sortable : true,
+		editor : 'text'
 	},
 	{
 		header : '공정명',
@@ -234,6 +235,29 @@
 	})
 
 	/*공정흐름*/
+		//공정순서 자동추가알림
+		grid2.on('editingStart', (ev) => {
+			if(ev.columnName == 'prcSeq') {
+				var value = grid2.getValue(ev.rowKey, 'prcSeq');
+					console.log(value);
+				if(value == null) {
+					alert('표시순서는 자동추가됩니다');
+					ev.stop();
+				}
+			}
+		})
+		
+		//공정순서 수정막기
+		grid2.on('editingStart', (ev) => {
+			if(ev.columnName == 'prcSeq') {
+				var value = grid2.getValue(ev.rowKey, 'prcSeq');
+				if(value != null) {
+					ev.stop();
+				}
+			}
+		})
+	
+			
 		//조회 버튼
 		btnFlw.addEventListener("click", function() {
 			prdCodeVal = $('#prdCd').val();

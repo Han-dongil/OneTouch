@@ -79,7 +79,8 @@ hr{
 	const columns = [{
 		header : '불량코드',
 		name : 'fltCd',
-		sortable : true
+		sortable : true,
+		editor: 'text'
 	},
 	{
 		header : '불량명',
@@ -145,10 +146,21 @@ hr{
 		data: dataSource, 
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 500,
-		minBodyHeight: 500
+		bodyHeight: 450,
+		minBodyHeight: 450
 	}); 
 	
+	//표시순서 자동추가알림
+	grid.on('editingStart', (ev) => {
+		if(ev.columnName == 'seq') {
+			var value = grid.getValue(ev.rowKey, 'seq');
+				console.log(value);
+			if(value == null) {
+				alert('표시순서는 자동추가됩니다');
+				ev.stop();
+			}
+		}
+	})
 	
 	let dialog;
 	dialog = $( "#dialog-form" ).dialog({
@@ -156,8 +168,33 @@ hr{
 		modal : true,
 		resizable: false,
 		height: "auto",
-		width: 800
+		width: 700,
+		height: 400
 	});
+	
+	//불량코드 수정불가알림
+	grid.on('editingStart', (ev) => {
+		if(ev.columnName == 'fltCd') {
+			var value = grid.getValue(ev.rowKey, 'fltCd');
+			if(value != null) {
+				console.log(value);
+				alert('불량코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
+	})
+	
+	//불량코드 자동추가알림
+	grid.on('editingStart', (ev) => {
+		if(ev.columnName == 'fltCd') {
+			var value = grid.getValue(ev.rowKey, 'fltCd');
+				console.log(value);
+			if(value == null) {
+				alert('불량코드는 자동추가됩니다');
+				ev.stop();
+			}
+		}
+	})
 	
 	//사용공정명 더블클릭 모달띄우기
 	grid.on("dblclick", (ev)=> {
@@ -166,6 +203,15 @@ hr{
 			rowk = ev.rowKey;
 			mPrc();
 			$('#ui-id-1').html('발생공정명');
+		}
+		if(ev.columnName === 'prcNm' && fltSectVal == '자재불량') {
+			alert("자재불량은 발생공정이 없습니다.")
+			ev.stop();
+		}
+		if((ev.columnName === 'prcNm' && fltSectVal == null) ||
+				(ev.columnName === 'prcNm' && fltSectVal == '')) {
+			alert("불량구분을 먼저 선택해주세요")
+			ev.stop();
 		}
 	})
 	

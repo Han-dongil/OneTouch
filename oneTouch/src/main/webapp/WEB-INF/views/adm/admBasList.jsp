@@ -230,16 +230,7 @@
 		minBodyHeight: 460
 	})
 	
-	grid2.on('editingStart', (ev) => {
-		if(ev.columnName == 'dtlCd') {
-			var value = grid2.getValue(ev.rowKey, 'dtlCd');
-			if(value != null) {
-				console.log(value);
-				alert('상세코드는 수정이 불가능합니다');
-				ev.stop();
-			}
-		}
-	})
+
 
 	//검색버튼
 	btnSrc.addEventListener("click", function() {
@@ -257,22 +248,6 @@
 			grid2.readData(1,basCode,true);
 		}
 	})
-	
-/* 	grid1.on('dblclick', (ev) => {
-		mBas2();
-		$('#ui-id-1').html('공통기초코드');
-	})
-	
-	//모달설정
-	let dialog;
-	dialog = $( "#dialog-form" ).dialog({
-		autoOpen : false,
-		modal : true,
-		resizable: false,
-		height: "auto",
-		width: 700,
-		height: 400
-	}); */
 	
 	/* 상세코드 기능 */	
 	//저장버튼
@@ -293,6 +268,30 @@
 	//삭제버튼
 	btnDelDtl.addEventListener("click", function() {
 		grid2.removeCheckedRows(true);
+	})
+	
+	//상세코드 수정불가알림
+	grid2.on('editingStart', (ev) => {
+		if(ev.columnName == 'dtlCd') {
+			var value = grid2.getValue(ev.rowKey, 'dtlCd');
+			if(value != null) {
+				console.log(value);
+				alert('상세코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
+	})
+	
+	//표시순서 자동추가알림
+	grid2.on('editingStart', (ev) => {
+		if(ev.columnName == 'seq') {
+			var value = grid2.getValue(ev.rowKey, 'seq');
+				console.log(value);
+			if(value == null) {
+				alert('표시순서는 자동추가됩니다');
+				ev.stop();
+			}
+		}
 	})
 	
 	/* 기초코드 기능 */
