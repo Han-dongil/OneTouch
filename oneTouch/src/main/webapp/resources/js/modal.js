@@ -583,3 +583,64 @@ function mBas2(){
 
 	});
 }
+	
+	
+	//라인 모달 
+	function mLine(){
+	console.log('테스트 하는 중입니다.')
+	let basData;
+		
+	$.ajax({
+		url : '../fct/LineSelect',
+		success : function(result){
+			basData = result;
+		}
+	});
+	
+	dialog.dialog("open");
+	
+	let title='라인'
+	$("#dialog-form").attr('title', title);
+	
+	$("#dialog-form").load("../modalBas", function(){
+		let basGrid = tui.Grid;
+		
+		basGrid.applyTheme('striped',{
+			cell:{
+				header: {
+		            background: '#4B49AC',
+		            text: '#fff'
+		        },
+		        evenRow: {
+		        	background:'#F5F7FF'
+		        }
+			}
+		})
+		
+		const basColumns = [ 
+			{
+				header: title + '코드',
+				name: 'lineNo',
+				//hidden: true
+			}
+		];
+		
+		basGrid = new Grid({
+			el : document.getElementById('bas_grid'),
+			data : basData,
+			columns : basColumns
+		});
+		
+		basGrid.on('dblclick', ev => {
+			console.log('회사코드 그리드 더블 클릭하기')
+			getModalLine(basGrid.getRow(ev.rowKey));
+		})
+		
+		basGrid.on('successResponse',function(ev){
+			console.log("성공")
+		})
+		basGrid.on('failResponse',function(ev){
+			console.log("실패")
+		})
+	});
+}

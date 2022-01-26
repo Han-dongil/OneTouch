@@ -4,10 +4,20 @@
 <!-- 작성자 : 박종현 -->
 
 
-<!-- 라인 조회 하는 쿼리  -->
+<!-- 라인 조회-->
 <select id="LineSelect" resultType="com.onetouch.web.fct.info.dao.LineVO">
 	SELECT * from fct_line
 </select>
+<!-- 라인 등록 -->
+<insert id="LineInsert">
+	insert into fct_line values(#{lineNO},#{totPdtAmt},#{uphPdtAmt},#{useYn},#{empNo})
+</insert>
+<update id="LineUpdate">
+	UPDATE fct_line SET TOT_PDT_AMT = #{totPdtAmt}, UPH_PDT_AMT = #{uphPdtAmt}, USE_YN = #{useYn}, EMP_NO = #{empNo} WHERE LINE_NO = #{lineNO}
+</update>
+<delete id="LineDelete">
+	
+</delete>
 
 
 <!-- 공정관리VO를 상속받는 설비VO를 리절트 타입으로  -->
