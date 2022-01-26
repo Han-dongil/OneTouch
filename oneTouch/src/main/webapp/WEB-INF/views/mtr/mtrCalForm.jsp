@@ -213,13 +213,17 @@ mainGrid.on('response', function(ev) {
 mainGrid.on('dblclick',function(ev){
 	rowk = ev.rowKey
 	if(ev.columnName == "mtrLot"){
-		 let row = mainGrid.getRow(ev.rowKey);
-		 lotDialog.dialog("open");
-		 document.getElementById('mDitemCode').value = row.mtrCd
-		 document.getElementById('mDitemCodeNm').value = row.mtrNm
-		 document.getElementById('mUnitNm').value = row.unitNm
-		 lotGrid.readData(1,row,true);
-		 lotGrid.refreshLayout();
+		if(mainGrid.getValue(ev.rowKey, 'mtrCd') == null || mainGrid.getValue(ev.rowKey, 'mtrCd') == ''){
+			toastr["warning"]("자재코드를 입력해주세요.")
+		}else{
+			let row = mainGrid.getRow(ev.rowKey);
+			 lotDialog.dialog("open");
+			 document.getElementById('mDitemCode').value = row.mtrCd
+			 document.getElementById('mDitemCodeNm').value = row.mtrNm
+			 document.getElementById('mUnitNm').value = row.unitNm
+			 lotGrid.readData(1,row,true);
+			 lotGrid.refreshLayout();	
+		}
 	}
 	if(ev.columnName == "mtrCd"){
 		mMtr();
@@ -315,6 +319,16 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 		"확인":()=>{
 			let rows = lotGrid.getCheckedRows();
 			console.log(rows);
+			let year = dt.getFullYear()
+			let month = ('0' + (dt.getMonth()+1)).slice(-2)
+			let day = ('0' + (dt.getDate())).slice(-2)
+			let str = year + '-' + month + '-' + day
+			for(row of rows){
+				row.calDate = str
+				console.log(row);
+			}
+			mainGrid.setValue(rowk, 'mtrLot', rows[0].mtrLot)
+			rows.splice(0,1);
 			mainGrid.appendRows(rows);
 			lotDialog.dialog("close");
 		}
@@ -350,6 +364,11 @@ columns : [
 			{
 				header: '재고수량',
 				name: 'stckCnt'
+			},
+			{
+				header: '정산일자',
+				name: 'calDate',
+				hidden: true
 			},
 			{
 				header: '자재코드',
