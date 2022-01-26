@@ -29,6 +29,7 @@
 <div class="row">
 	<div id="grid" class="col-11"></div>
 	<div id="movingGrid" class="col-4"></div>
+	<div id="movingPrcGrid" class="col-7"></div>
 </div>
 
 	<script>
@@ -47,9 +48,6 @@
 	})
 	//그리드 컬럼 설정	
 	const columns = [{
-		header : '공정코드',
-		name : 'prcCd'
-	},{
 		header : '라인번호',
 		name : 'lineNo',
 	},{
@@ -59,17 +57,11 @@
 		header : '작업시작일시',
 		name : 'workStrDate',
 	},{
-		header : '작업종료일시',
-		name : 'workFinDate',
-	},{
 		header : '지시수량',
 		name : 'instrCnt',
 	},{
 		header : '생산량',
 		name : 'pdtCnt',
-	},{
-		header : '현재상태',
-		name : 'nowPhs',
 	}];
 	//그리드 생성
 	grid = new Grid({
@@ -85,29 +77,14 @@
 ///////////////////////////그리드생성/////////////////////////////
 	//그리드 컬럼 설정	
 	const movingColumns = [{
-		header : '공정코드',
-		name : 'prcCd'
-	},{
-		header : '라인번호',
-		name : 'lineNo',
+		header : 'LOT번호',
+		name : 'mtrLot'
 	},{
 		header : '지시번호',
 		name : 'instrNo',
 	},{
-		header : '작업시작일시',
-		name : 'workStrDate',
-	},{
-		header : '작업종료일시',
-		name : 'workFinDate',
-	},{
-		header : '지시수량',
-		name : 'instrCnt',
-	},{
-		header : '생산량',
-		name : 'pdtCnt',
-	},{
-		header : '현재상태',
-		name : 'nowPhs',
+		header : '라인번호',
+		name : 'lineNo',
 	}];
 	//그리드 생성
 	movingGrid = new Grid({
@@ -120,11 +97,52 @@
 			  frozenBorderWidth:2
 	 	 }  
 	});
+	//prc moving 그리드
+		//그리드 컬럼 설정	
+	const movingPrcColumns = [{
+		header : '지시번호',
+		name : 'instrNo',
+	},{
+		header : '라인번호',
+		name : 'lineNo',
+	},{
+		header : '공정코드',
+		name : 'prcCd',
+	},{
+		header : '작업시작일',
+		name : 'workStrDt',
+	},{
+		header : '작업종료일',
+		name : 'workFinDt',
+	},{
+		header : '목표수량',
+		name : 'goalCnt',
+	},{
+		header : '생산수량',
+		name : 'pdtCnt',
+	},{
+		header : '불량률',
+		name : 'fltCnt',
+	},{
+		header : '현재상태',
+		name : 'nowPhs',
+	}];
+	//그리드 생성
+	movingPrcGrid = new Grid({
+		  el: document.getElementById('movingPrcGrid'),
+		  data:null,
+		  rowHeaders:['checkbox'],
+		  columns:movingPrcColumns,
+		  columnOptions: {
+			  frozenCount :6,
+			  frozenBorderWidth:2
+	 	 }  
+	});
 
 /////////////////////////////이벤트리스너//////////////////////////////
 	searchBtn.addEventListener('click',ev=>{
 		let searchData=$('#prcMove').serializeObject();
-		fetch('prcMovingList',{
+		fetch('workSearchList',{
 				method:'POST',
 				headers:{
 				"Content-Type": "application/json",
@@ -136,6 +154,74 @@
 			grid.resetData(result);
 		})
 	})
+	//메인그리드 클릭
+	grid.on('click',ev=>{
+		let searchData=grid.getRow(ev.rowKey);
+			fetch('PrcMovingLot',{
+				method:'POST',
+				headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(searchData)
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			movingGrid.resetData(result);
+		})
+	})
+	let v=[]; 
+	//무빙그리드 클릭
+	movingGrid.on('click',ev=>{
+		console.log("dddddddddddddd")
+		v.push(ev.rowKey);
+	
+
+		
+		let searchData=movingGrid.getRow(ev);		
+		 fetch('prcMovingNonRoop',{
+			method:'POST',
+			headers:{
+			"Content-Type": "application/json",
+		},
+		body:JSON.stringify(searchData)
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			movingPrcGrid.resetData(result);
+		}) 
+		movingShowFnc(ev.rowKey)
+		
+		
+	})
+	
+	function movingShowFnc(ev){
+		let searchData=movingGrid.getRow(ev);
+		fetch('prcMovingShow',{
+			method:'POST',
+			headers:{
+			"Content-Type": "application/json",
+		},
+		body:JSON.stringify(searchData)
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			movingPrcGrid.resetData(result);
+			
+			if(v[0]==ev){
+				console.log("aaaaaaaaaaaaaaaaa")
+				console.log(v[0])
+				movingShowFnc(ev);
+			}
+			else{
+				console.log("a22222222222222")
+				console.log(v[0])
+				v.length=0;	
+			}
+			
+			
+		})
+	}
+	
 	</script>
 </body>
 </html>

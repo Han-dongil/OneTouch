@@ -51,7 +51,7 @@
  		on(a.prc_Cd=b.prc_cd AND a.prd_cd=b.prd_cd)                        
 	</select>
 	<insert id="defaultInsert">
-		insert into prd_prc_mng (instr_no , line_no ,prc_cd) values (#{instrNo},#{lineNo},#{prcCd})
+		insert into prd_prc_mng (instr_no , line_no ,prc_cd , goal_cnt) values (#{instrNo},#{lineNo},#{prcCd},#{instrCnt})
 	</insert>
 	<update id="startUpdate">
 		update prd_prc_mng set
@@ -72,7 +72,10 @@
 	<update id="endUpdate">
 		update prd_prc_mng set
 		work_fin_dt=sysdate ,
-		now_phs='가동종료'
+		now_phs='가동종료',
+		goal_cnt=#{goalCnt},
+		pdt_cnt=#{pdtCnt},
+		flt_cnt=#{fltCnt}
 		where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="endTimeSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
@@ -130,4 +133,21 @@
 		now_phs='Y'
 		where instr_no=#{instrNo}
 	</update>
+	<select id="usedlotFind" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select * from used_mtr_lot where 1=1
+	 	<if test='endDate!="" and endDate!=null'>
+			and instr_no=#{instrNo}
+		</if> 
+	 	<if test='endDate!="" and endDate!=null'>
+			and mtr_lot=#{mtrLot}
+		</if> 
+		  
+	</select>
+	<select id="prcMovingView" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select instr_No , line_No , prc_Cd , work_Str_Dt , work_Fin_Dt , goal_Cnt ,pdt_cnt , flt_cnt ,now_phs , prd_lot
+		from prd_prc_mng where instr_no=#{instrNo} AND line_no = #{lineNo}	
+	</select>
+	<select id="updateCheck" resultType="_int">
+		select (to_number(sum(nvl2(work_fin_dt,1,0)))+to_number(sum(nvl2(work_str_dt,1,0)))+to_number(sum(nvl(flt_cnt,0)))+to_number(sum(nvl2(now_phs,1,0)))) as upCheck from prd_prc_mng
+	</select>
 </mapper>
