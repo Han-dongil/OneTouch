@@ -41,6 +41,8 @@ public class MtrRtnController {
 		@ResponseBody
 		@PostMapping("/mtrRtnModify")
 		public int mtrRtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
+			System.out.println("컨트롤러");
+			System.out.println(mvo);
 			service.modifyRtn(mvo);
 			 return 0;
 		}
