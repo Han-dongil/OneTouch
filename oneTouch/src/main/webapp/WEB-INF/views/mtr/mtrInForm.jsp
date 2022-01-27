@@ -18,7 +18,9 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/toastr-options.js"></script>
 
 </head>
 <style type="text/css">
@@ -71,84 +73,10 @@
 <div id="dialog-lot"></div>
 
 <script type="text/javascript">
-
 let dt = new Date();
-/* toastr.options = {
-	    "closeButton": true,
-	    "debug": false,
-	    "positionClass": "toast-bottom-left",
-	    "onclick": null,
-	    "showDuration": "1000",
-	    "hideDuration": "1000",
-	    "timeOut": "5000",
-	    "extendedTimeOut": "1000",
-	    "showEasing": "swing",
-	    "hideEasing": "linear",
-	    "showMethod": "fadeIn",
-	    "hideMethod": "fadeOut"
-	}
-	 */
-//VO 에서 임의 CRUD 값을 받아와서 이미 입력된 값으면 R 이란느 값이
-// toastr 옵션 옵션설정이 위에 먼저 와있어야 설정이 먹는다.
-toastr.options = {
-       "closeButton": true,  //닫기버튼(X 표시)
-       "debug": false,       //디버그
-       "newestOnTop": false,
-       "progressBar": true,  //진행률 표시
-       "positionClass": "toast-top-center",
-       "preventDuplicates": false,    //중복 방지(같은거 여러개 안뜸)
-       "onclick": null,             //알림창 클릭시 alert 창 활성화 (다른것도 되는지는 연구해봐야함)
-       "showDuration": "3",
-       "hideDuration": "100",
-       "timeOut": "1500",   //사라지는데 걸리는 시간
-       "extendedTimeOut": "1000",  //마우스 올리고 연장된 시간
-       "showEasing": "swing",
-       "hideEasing": "linear",
-       "showMethod": "fadeIn",
-       "hideMethod": "fadeOut",
-       "tapToDismiss": false,
-       "closeHtml": "확인"
-     }
-   
-//success: 성공(초록) , info:정보(하늘색) , warning:경고(주황) , error:에러(빨강)
-
-//현재 펑션을 멈춤
 let rowk = -1;
-let lotGrid;
 
-var Grid = tui.Grid;
-Grid.applyTheme('striped', {
-     cell: {
-       header: {
-         background: '#eef'
-       },
-       evenRow: {
-         background: '#fee'
-       }
-    }
-});
-Grid.setLanguage('ko');
-/* Grid.setLanguage('ko', {
-  	display: {
-        noData: 'No data.',
-        loadingData: 'Loading data.',
-        resizeHandleGuide: 'You can change the width of the column by mouse drag, ' +
-                            'and initialize the width by double-clicking.'
-    },
-    net: {
-        confirmCreate: 'Are you sure you want to create {{count}} data?',
-        confirmUpdate: 'Are you sure you want to update {{count}} data?',
-        confirmDelete: 'Are you sure you want to delete {{count}} data?',
-        confirmModify: 'Are you sure you want to modify {{count}} data?',
-        noDataToCreate: 'No data to create.',
-        noDataToUpdate: 'No data to update.',
-        noDataToDelete: 'No data to delete.',
-        noDataToModify: '반품처리할 내용을 입력해 주세요.',
-        failResponse: 'An error occurred while requesting data.\nPlease try again.'
-    }
-}); */
-
-var mainGrid = new Grid({
+let mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : {
 		  api: {
@@ -171,7 +99,6 @@ var mainGrid = new Grid({
 				 {
 				   header: '입고일자',
 				   name: 'inDate',
-				   /* editor: 'datePicker', */
 				   editor: {
 					type: 'datePicker',
 					options: {
@@ -180,20 +107,19 @@ var mainGrid = new Grid({
 					}
 				 },
 					align: 'center',
-					/* editor: 'text', */
 				   sortable: true
 				 },
 				 {
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
-				   editor: 'text',
-				   sortable: true
+				   hidden: true
 				 },
 				 {
 				   header: '자재명',
 				   name: 'mtrNm',
 				   align: 'left',
+				   editor: 'text',
 				   sortable: true
 				 },
 				 {
@@ -218,6 +144,16 @@ var mainGrid = new Grid({
 				   width: 150,
 				   editor: 'text',
 				   sortable: true
+				 },
+				 {
+					header: '발주량',
+					name: 'ordAmt',
+					align: 'right',
+					editor: 'text',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
 				 },
 				 {
 				   header: '불량량',
@@ -316,7 +252,7 @@ mainGrid.on('editingFinish', (ev) => {
 }) 
 //기존의 데이터는 수정이안되게 하는것
 mainGrid.on('editingStart', (ev) => {
-    if(ev.columnName == 'mtrCd') {
+    if(ev.columnName == 'mtrNm') {
        var value = mainGrid.getValue(ev.rowKey, 'mtrCd');
     	rowk = ev.rowKey;
 		mMtr();
@@ -331,8 +267,8 @@ mainGrid.on('editingStart', (ev) => {
     }
 })
 mainGrid.on('dblclick', (ev) => {
-	if(ev.columnName == 'mtrNm' || ev.columnName == 'unitNm' || ev.columnName == 'compNm') {
-	       toastr["warning"]("자재코드를 수정해 주세요.")
+	if(ev.columnName == 'unitNm' || ev.columnName == 'compNm') {
+	       toastr["info"]("자재명 수정해 주세요.")
 	    }
 })
 //셀에 오늘날짜 넣는 function
@@ -360,14 +296,6 @@ function totCal(){
 		}
 	},100)
 }
-mainGrid.on("response", function(ev) {
-	//totCal()
-		//mainGrid.setValue(0,"totCost",125)
-      /* console.log(ev.xhr.response);
-      if(ev.xhr.response == 0){
-      	mainGrid.readData();
-      } */ 
-   });
 
 //클릭한 셀의 rowKey와 columnName을 가지고오는 함수
 /* grid.on("click",(ev)=>{
@@ -421,42 +349,6 @@ function getModalMtr(param){
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
-//mtrLot modal
-/* function mMtrLot(){
-
-	lotGrid = new Grid({
-	el : document.getElementById('dialog-lot'),
-	data : {
-		  api: {
-			  	readData: { url: './mtrLotModal',method: 'Post'
-		     	 }
-		  },
-		  contentType: 'application/json'
-		},
-	columns : [ 
-				{
-					header: '순서',
-					name: 'seq'
-				},
-				{
-					header: '자재LOTNO',
-					name: 'mtrLot'
-				},
-				{
-					header: '입고량',
-					name: 'stckCnt'
-				},
-				{
-					header: '비고',
-					name: 'cmt'
-				}
-				]
-	});
-	lotGrid.on('dblclick', ev => {
-		getModalOrd(ordGrid.getRow(ev.rowKey));
-	});
-} */
-/* $('#dialog-ord').empty(); */
 
 //발주내역 모달
 let ordDataSource = {
@@ -476,19 +368,38 @@ bodyHeight: 400,
 columns : [ 
 			{
 				header: '발주일자',
-				name: 'ordDate'
+				name: 'ordDate',
+				align: 'center'
 			},
 			{
 				header: '입고업체명',
-				name: 'compNm'
+				name: 'compNm',
+				align: 'left'
 			},
 			{
 				header: '자재명',
-				name: 'mtrNm'
+				name: 'mtrNm',
+				align: 'left'
 			},
 			{
 				header: '단위',
-				name: 'unit'
+				name: 'unitNm',
+				align: 'center'
+			},
+			{
+				header: '발주량',
+				name: 'ordAmt',
+				align: 'right'
+			},
+			{
+				header: '미입고량',
+				name: 'notinAmt',
+				align: 'right'
+			},
+			{
+				header: '단위',
+				name: 'unit',
+				hidden: true
 			},
 			{
 				header: '관리수량',
@@ -541,7 +452,7 @@ btnFind.addEventListener("click", function(){
 btnOrdFind.addEventListener("click", function(){
 	ordDialog.dialog("open");
 	ordGrid.readData();
-	$('#ui-id-1').html('발주 내역');
+	$('#ui-id-2').html('발주 내역');
 	ordGrid.refreshLayout();
 });
 //업체검색버튼 function

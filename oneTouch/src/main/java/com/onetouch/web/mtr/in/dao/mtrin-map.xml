@@ -5,21 +5,26 @@
 	<select id="selectIn" resultType="com.onetouch.web.mtr.in.dao.MtrInVO">
 		SELECT 
 			A.IN_NO,
-			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE, 
 			A.MTR_CD, 
-			B.MTR_NM,
-			B.UNIT,
-			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT_NM,
 			A.ORD_NO, 
 			A.FLT_AMT, 
 			A.IN_AMT,
 			A.TOT_COST,
 			A.UNIT_COST, 
-			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM  
+			B.MTR_NM,
+			B.UNIT,
+			C.ORD_AMT,
+			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE,
+			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM
 		FROM 
-			MTR_IN A, ADM_MTR B
+			MTR_IN A, ADM_MTR B, MTR_ORD_DTL C
 		WHERE 
 			A.MTR_CD = B.MTR_CD
+		AND
+			A.MTR_CD = C.MTR_CD
+		AND
+			A.ORD_NO = C.ORD_NO 
 		
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
