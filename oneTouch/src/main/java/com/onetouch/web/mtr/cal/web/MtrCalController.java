@@ -58,7 +58,7 @@ public class MtrCalController {
 	//mainGrid readData
 	@ResponseBody
 	@PostMapping("/mtrCalForm")
-	public Map<String,Object> seletCalList(@RequestBody MtrSearchVO searchVO){
+	public Map<String,Object> seletCalForm(@RequestBody MtrSearchVO searchVO){
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);
