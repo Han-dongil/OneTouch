@@ -8,8 +8,8 @@ public class MtrOrdVO {
 	private String mtrCd;
 	private String mtrNm;
 	private String unit;
+	private String unitNm;
 	private String unitCost;
-	private String ordCnt;
 	private String ordAmt;
 	private String inAmt;
 	private String notinAmt;

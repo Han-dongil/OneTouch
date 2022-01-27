@@ -13,23 +13,7 @@ function mMtr(){
 		
 	dialog.dialog("open");
 			
-	$("#dialog-form").attr('title', '자재');
-	
 	$("#dialog-form").load("../modalMtr", function(){
-		let mtrGrid = tui.Grid;
-		
-		mtrGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const mtrColumns = [ 
 			{
 				header: '자재코드',
@@ -88,7 +72,7 @@ function mMtr(){
 			}
 		]; 
 		
-		mtrGrid = new Grid({
+		let mtrGrid = new Grid({
 			el : document.getElementById('mtr_grid'),
 			data : mtrData,
 			columns : mtrColumns,
@@ -130,20 +114,6 @@ function mPrd(){
 	$("#dialog-form").attr('title', '제품');
 	
 	$("#dialog-form").load("../modalPrd", function(){
-		let prdGrid = tui.Grid;
-		
-		prdGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const prdColumns = [ 
 			{
 				header: '제품코드',
@@ -177,7 +147,7 @@ function mPrd(){
 			}
 		];
 		
-		prdGrid = new Grid({
+		let prdGrid = new Grid({
 			el : document.getElementById('prd_grid'),
 			data : prdData,
 			columns : prdColumns
@@ -217,20 +187,6 @@ function mPrc(){
 	$("#dialog-form").attr('title', '공정');
 	
 	$("#dialog-form").load("../modalPrc", function(){
-		let prcGrid = tui.Grid;
-		
-		prcGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-
 		const prcColumns = [ 
 			{
 				header: '공정코드',
@@ -274,7 +230,7 @@ function mPrc(){
 			}
 		];
 	
-		prcGrid = new Grid({
+		let prcGrid = new Grid({
 			el : document.getElementById('prc_grid'),
 			data : prcData,
 			columns : prcColumns
@@ -359,20 +315,6 @@ function mBas(basCd){
 	$("#dialog-form").attr('title', title);
 	
 	$("#dialog-form").load("../modalBas", function(){
-		let basGrid = tui.Grid;
-		
-		basGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const basColumns = [ 
 			{
 				header: title + '코드',
@@ -385,7 +327,7 @@ function mBas(basCd){
 			}
 		];
 		
-		basGrid = new Grid({
+		let basGrid = new Grid({
 			el : document.getElementById('bas_grid'),
 			data : basData,
 			columns : basColumns
@@ -468,20 +410,6 @@ function mBas(basCd,btn){
 	$("#dialog-form").attr('title', title);
 	
 	$("#dialog-form").load("../modalBas", function(){
-		let basGrid = tui.Grid;
-		
-		basGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const basColumns = [ 
 			{
 				header: title + '코드',
@@ -494,7 +422,7 @@ function mBas(basCd,btn){
 			}
 		];
 		
-		basGrid = new Grid({
+		let basGrid = new Grid({
 			el : document.getElementById('bas_grid'),
 			data : basData,
 			columns : basColumns
@@ -533,20 +461,6 @@ function mBas2(){
 	$("#dialog-form").attr('title', '공통');
 	
 	$("#dialog-form").load("../modalBas2", function(){
-		let bas2Grid = tui.Grid;
-		
-		bas2Grid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const bas2Columns = [ 
 			{
 				header: '제품코드',
@@ -566,7 +480,7 @@ function mBas2(){
 		]; 
 
 		
-		bas2Grid = new Grid({
+		let bas2Grid = new Grid({
 			el : document.getElementById('bas_grid2'),
 			data : bas2Data,
 			columns : bas2Columns
@@ -609,20 +523,6 @@ function mBas2(){
 	$("#dialog-form").attr('title', title);
 	
 	$("#dialog-form").load("../modalBas", function(){
-		let basGrid = tui.Grid;
-		
-		basGrid.applyTheme('striped',{
-			cell:{
-				header: {
-		            background: '#4B49AC',
-		            text: '#fff'
-		        },
-		        evenRow: {
-		        	background:'#F5F7FF'
-		        }
-			}
-		})
-		
 		const basColumns = [ 
 			{
 				header: title + '코드',
@@ -631,7 +531,7 @@ function mBas2(){
 			}
 		];
 		
-		basGrid = new Grid({
+		let basGrid = new Grid({
 			el : document.getElementById('bas_grid'),
 			data : basData,
 			columns : basColumns

@@ -18,13 +18,21 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/toastr-options.js"></script>
 
 </head>
 <style type="text/css">
 	.tui-grid-cell-summary{
 		text-align: center;
 	}
+/* 	.ui-tabs .ui-tabs-nav .ui-tabs-anchor{
+		style: "background-color: #4747A1"
+	}
+	.ui-tabs-active{
+		style: "background-color: #4747A1"
+	} */
 </style>
 <body>
 	<div class="container">
@@ -72,26 +80,6 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
-toastr.options = {
-	       "closeButton": true,
-	       "debug": false,
-	       "newestOnTop": false,
-	       "progressBar": true,
-	       "positionClass": "toast-top-center",
-	       "preventDuplicates": false,
-	       "onclick": null,
-	       "showDuration": "3",
-	       "hideDuration": "100",
-	       "timeOut": "1500",
-	       "extendedTimeOut": "1000",
-	       "showEasing": "swing",
-	       "hideEasing": "linear",
-	       "showMethod": "fadeIn",
-	       "hideMethod": "fadeOut",
-	       "tapToDismiss": false,
-	       "closeHtml": "확인"
-	     }
-
 fetch('mtrStckRadio')
 .then(response=>response.json())
 .then(result=>{
@@ -114,24 +102,15 @@ $( function() {
     $( "#tabs" ).tabs({
     	activate: function( event, ui ) {
     		if(ui.newTab[0].innerText == '자재별'){
-    				mtrGrid.refreshLayout();
+    			mtrGrid.refreshLayout();
+    		} else{
+    			lotGrid.refreshLayout();
+    			
     		}
     	}
     });
     
   } );
-
-var Grid = tui.Grid;
-Grid.applyTheme('striped', {
-     cell: {
-       header: {
-         background: '#eef'
-       },
-       evenRow: {
-         background: '#fee'
-       }
-     },
-   });
 const lotDataSource = {
 		  api: {
 		    readData: { url: './lotStckList', method: 'POST' }
@@ -227,7 +206,7 @@ var lotGrid = new Grid({
 					}
 				}
    });
-window.setTimeout(function(){lotGrid.refreshLayout()}, 100);
+window.setTimeout(function(){lotGrid.refreshLayout()}, 200);
    
 const mtrDataSource = {
 		  api: {
@@ -276,6 +255,9 @@ const mtrColumns = [{
 					   header: '사용가능수량',
 					   name: 'stckUse',
 					   align: 'right',
+					   validation: {
+					        validatorFn: (value, row, columnName) => Number(value) > Number(row['safeStck'])
+					   },
 					   sortable: true
 					 },
 					 {
