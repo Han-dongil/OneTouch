@@ -21,12 +21,12 @@
 				<div>
 					<label>설비구분</label>
 					<select id="fctCd" name="fctCd"></select>
-					<label>점검일자기준 출력</label>
-					<input type="checkbox" id="searchCheck" name="searchCheck" value="1" onclick="checkClick(event)">
+					<!-- <label>점검일자기준 출력</label>
+					<input type="checkbox" id="searchCheck" name="searchCheck" value="1" onclick="checkClick(event)"> -->
 				</div>
 				
 				<div>
-					<div id="checkDiv">
+					<!-- <div id="checkDiv">
 						<label>자료구분</label>
 						<label>
 							<span>점검일자</span>
@@ -37,7 +37,7 @@
 						</label>
 						<input type="radio" name="orderBy" value="dCompanyNm" id="radio-2"> 
 							
-					</div>
+					</div> -->
 				</div>
 				
 				<div>
@@ -128,7 +128,7 @@
     header: '총생산량',
     name: 'totPdtAmt',
     editor: 'datePicker'
-  },
+  }/* ,
   {
     header: 'uph생산량',
     name: 'uphPdtAmt',
@@ -138,7 +138,7 @@
     header: '사번',
     name: 'empNo',
     editor: 'datePicker'
-  }
+  } */
     ]
 	let data;
     let dataVO;

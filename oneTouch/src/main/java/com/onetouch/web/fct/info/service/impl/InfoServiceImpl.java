@@ -41,8 +41,23 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public List<LineVO> LineSelect() {
-		return mapper.LineSelect();
+	public List<LineVO> LineSelect(LineVO lineVO) {
+		return mapper.LineSelect(lineVO);
+	}
+
+
+	@Override
+	public int LineInsert(LineVO lineVO) {
+		System.out.println("서비스임플 인서트부분");
+		System.out.println(lineVO);
+		return mapper.LineInsert(lineVO);
+	}
+
+
+	@Override
+	public int LineDelete(LineVO lineVO) {
+		System.out.println("라인 삭제");
+		return mapper.LineDelete(lineVO);
 	}
 
 

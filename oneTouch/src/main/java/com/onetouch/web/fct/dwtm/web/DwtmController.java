@@ -52,6 +52,8 @@ public class DwtmController {
 	@ResponseBody
 	@PostMapping("/dwtmSelectAll")
 	public List<DwtmVO> dwtmSelect(@RequestBody DwtmVO dwtmVO){
+		System.out.println("비동기 테이블 목록조회테스트");
+		System.out.println(dwtmVO);
 		return dservice.dwtmSelectAll(dwtmVO);
 		
 	}

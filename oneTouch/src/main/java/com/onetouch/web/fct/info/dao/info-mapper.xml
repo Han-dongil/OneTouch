@@ -6,17 +6,27 @@
 
 <!-- 라인 조회-->
 <select id="LineSelect" resultType="com.onetouch.web.fct.info.dao.LineVO">
-	SELECT * from fct_line
+	SELECT * from fct_line 
+	<if test='fctLineChek =="Y"'>
+		WHERE use_yn = 'Y'
+	</if>
 </select>
 <!-- 라인 등록 -->
 <insert id="LineInsert">
-	insert into fct_line values(#{lineNO},#{totPdtAmt},#{uphPdtAmt},#{useYn},#{empNo})
+	insert into fct_line values(#{lineNO},#{totPdtAmt},#{uphPdtAmt},
+	<if test = "useYn ==null or useYn==''">
+      'N'	
+   </if>
+   <if test = 'useYn =="Y"'>
+      'Y'
+   </if>
+   ,#{empNo})
 </insert>
 <update id="LineUpdate">
 	UPDATE fct_line SET TOT_PDT_AMT = #{totPdtAmt}, UPH_PDT_AMT = #{uphPdtAmt}, USE_YN = #{useYn}, EMP_NO = #{empNo} WHERE LINE_NO = #{lineNO}
 </update>
 <delete id="LineDelete">
-	
+	DELETE fct_line where line_no = #{lineNO}
 </delete>
 
 
