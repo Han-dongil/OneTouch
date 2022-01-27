@@ -180,9 +180,6 @@ public class InfoController {
 	  @ResponseBody
 	  @PostMapping(value = "/infoInsert", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
 	  public ResponseEntity<InfoVO> InfoInsert(MultipartFile uploadFile, InfoVO infoVO) {
-		  System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		  log.info("update ahax post.......");
-		  
 		  
 		  String uploadFolder = "C:\\upload";			
 		  String uploadFolderPath = getFolder();
@@ -239,9 +236,6 @@ public class InfoController {
 				e.printStackTrace();
 			}//end catch
 		  }
-		  
-		 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(infoVO.getFctImg());
 		  infoservice.insertFctInfo(infoVO);
 		  return new ResponseEntity<>(infoVO, HttpStatus.OK);
 				  //infoservice.selectFctInfoAll(infoVO);
@@ -274,12 +268,8 @@ public class InfoController {
 		public ResponseEntity<byte[]> getFile(String fileName)  {
 			log.info("fileName:" + fileName);
 			File file = new File("c:\\upload\\" + fileName);
-			
 			log.info("file" + file);
-			
 			ResponseEntity<byte[]> result = null;
-			
-			
 			try {
 				HttpHeaders header = new HttpHeaders();
 
