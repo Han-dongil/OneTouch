@@ -44,7 +44,7 @@
 		 prc_cd,
 		 prd_cd)
 		VALUES
-		((SELECT NVL(MAX(prc_seq),0)+1 FROM adm_prc_flow WHERE prd_cd=#{prdCd}),
+		 #{prcSeq},
 		 #{workCmt},
 		 #{stdLoad},
 		 #{unitCost},

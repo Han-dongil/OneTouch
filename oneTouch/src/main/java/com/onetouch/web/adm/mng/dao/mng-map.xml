@@ -91,7 +91,7 @@
 		 #{pdtDay},
 		 #{prcSect},
 		 <if test="cmt != null">#{cmt},</if>
-		 (SELECT NVL(MAX(seq),0)+1 FROM adm_prc_mng),
+		 #{seq},
 		 #{useYn}
 		 )
 		

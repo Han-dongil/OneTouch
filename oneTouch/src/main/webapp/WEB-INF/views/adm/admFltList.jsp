@@ -176,8 +176,8 @@ hr{
 	grid.on('editingStart', (ev) => {
 		if(ev.columnName == 'fltCd') {
 			var value = grid.getValue(ev.rowKey, 'fltCd');
-			if(value != null) {
-				console.log(value);
+			if(value != '') {
+				//console.log(value);
 				alert('불량코드는 수정이 불가능합니다');
 				ev.stop();
 			}
@@ -236,7 +236,13 @@ hr{
 	
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		grid.appendRow({})
+		rowk = grid.getRowCount() - 1;
+		if(grid.getRowCount() == 0) {
+			seqVal = 1;
+		} else {			
+			seqVal = parseInt(grid.getValue(rowk,'seq'))+1
+		}
+		grid.appendRow({'fltCd':'','seq':seqVal})
 	})	
 
 	

@@ -49,8 +49,9 @@ public class MngController {
 	}
 
 	/*
-	 * 이 형태로 만들어줘야함 { "result": true, 
-	 * 						"data": { "contents": [], "pagination": {
+	 * 이 형태로 만들어줘야함 
+	 * { "result": true, 
+	 * 	 "data": { "contents": [], "pagination": {
 	 * "page": 1, "totalCount": 100 } } }
 	 */
 
