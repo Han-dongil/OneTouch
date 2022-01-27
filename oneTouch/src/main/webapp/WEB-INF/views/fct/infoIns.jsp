@@ -1,161 +1,167 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
-<head> 
+<head>
 <meta charset="UTF-8">
 <title>설비등록페이지</title>
 <!-- 토스트그리드 cdn -->
 <link rel="stylesheet"
-   href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <link rel="stylesheet"
-   href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <!-- 토스트 그리드 위에 데이트피커 가 선언되어야 작동이 된다 (순서가중요) -->
 <link rel="stylesheet"
-   href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script
-   src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+
 <!-- 토스트그리드 cdn -->
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-   crossorigin="anonymous"></script>
+
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 <style>
-    td>input {
-     width:100px;
-     height:25px;
-     font-size:1px;
-   } 
-   td{
-      font-size:1px;
-   }
+td>input {
+	width: 100px;
+	height: 25px;
+	font-size: 1px;
+}
+
+td {
+	font-size: 1px;
+}
 </style>
 
 </head>
 <body>
-   <div class="row" >
-      <div class="col-5">
-         <!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
-         <button type="button" id='LinebtnAdd' onclick=LineAdd()>라인추가</button>
-         <button type="button" id='LinebtnDel'>라인삭제</button>
-         <button type="button" id='LinebtnSave'>라인저장</button>
-         <button type="button" id='LinebtnEdit'>라인수정</button>
-         <button type="button" id='LinebtnClear' onclick=LineClear()>라인초기화</button>
-         <form id="lineForm" method="post">
-            <div class="row" style=" border-top: 2px solid black;  padding: 5px;">
-               <div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
-                  <table>
-                        <tr>
-                           <td>라인</td>
-                           <td><input type="text" id="lineinput" name="lineNoinput" value="" style="text-transform: uppercase;"/></td>
-                           <td>총생산량</td>
-                           <td><input type="number" id="totPdtAmt" name="totPdtAmt" value="" /></td>
-                        </tr>
-                        <tr>
-                           <td>UPH생산량</td>
-                           <td><input type="number" id="uphPdtAmt" name="uphPdtAmt" value="" /></td>
-                           <td>사용여부</td>
-                           <td><input type="checkbox" id="useYn" name="useYn" checked="" value="" /></td>
-                        </tr>
-                        <tr>
-                           <td>사원</td>
-                           <td><input type="text" id="empNo" name="empNo" value="" /></td>
-                        </tr>
-                     </table>
-                  </div>
-               </div>
-         
-         </form>
-         <div id="lineGrid"></div>
-      </div>
-      <div class="col-6">
-         <div>
-            <!-- <button type="button" id='btnFind'>조회</button> -->
-            <button type="button" id='btnAdd'>추가</button>
-            <button type="button" id='btnDel'>삭제</button>
-            <button type="button" id='btnSave'>저장</button>
-            <button type="button" id='btnEdit'>수정</button>
-         </div>
-         <div class="row" style="/* margin-top: 10px; */ border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-            <div class="col-7" style="margin-top: 30px;">
-               <form id="infoFrm" method="post" enctype="multipart/form-data">
-                  <table>
-                     <tr>
-                        <td>설비코드</td>
-                        <td><input type="text" id="fctCd" name="fctCd" value="" /></td>
-                        <td>모델명</td>
-                        <td><input type="text" id="fctModel" name="fctModel" value="" /></td>
-                        <!-- <td>사용여부</td>
+	<div class="row">
+		<div class="col-4">
+			<!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
+			<button type="button" id='LinebtnAdd' onclick=LineAdd()>라인추가</button>
+			<button type="button" id='LinebtnDel' onclick=LineDel()>라인삭제</button>
+			<button type="button" id='LinebtnEdit'>라인수정</button>
+			<button type="button" id='LinebtnClear' onclick=LineClear()>라인초기화</button>
+			<form id="lineForm" method="post">
+				<div class="row" style= "margin-bottom:30px;border-top: 2px solid black; padding: 5px;">
+					<div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
+						<table>
+							<tr>
+								<td>라인</td>
+								<td><input type="text" id="lineinput" name="lineNO"
+									value="" style="text-transform: uppercase;" /></td>
+								<td>총생산량</td>
+								<td><input type="number" id="totPdtAmt" name="totPdtAmt"
+									value="" /></td>
+							</tr>
+							<tr>
+								<td>UPH생산량</td>
+								<td><input type="number" id="uphPdtAmt" name="uphPdtAmt"
+									value="" /></td>
+								<td>사용여부</td>
+								<td><input type="checkbox" id="useYn" name="useYn" value="N" /></td>
+							</tr>
+							<tr>
+								<td>사원</td>
+								<td><input type="text" id="empNo" name="empNo" value="" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+			</form>
+			<div id="lineGrid"></div>
+		</div>
+		<div class="col-8">
+			<div>
+				<!-- <button type="button" id='btnFind'>조회</button> -->
+				<button type="button" id='btnAdd'>추가</button>
+				<button type="button" id='btnDel'>삭제</button>
+				<button type="button" id='btnSave'>저장</button>
+				<button type="button" id='btnEdit'>수정</button>
+			</div>
+			<div class="row" style="border-top: 2px solid black; padding: 5px;">
+				<div class="col-7" style="margin-top: 30px;">
+					<form id="infoFrm" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td>설비코드</td>
+								<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
+								<td>모델명</td>
+								<td><input type="text" id="fctModel" name="fctModel"
+									value="" /></td>
+								<!-- <td>사용여부</td>
                         <td><input type="checkbox" id="useYn" name="useYn" checked="" /></td> -->
-                     </tr>
-                     <tr>
-                        <td>설비규격</td>
-                        <td><input type="text" id="fctStd" name="fctStd" value="" /></td>
-                        <td>라인번호</td>
-                        <td><input type="text" id="lineNo" name="lineNo" value="" /></td>
-                        <td>공정</td>
-                        <td><input type="text" id="prcCd" name="prcCd" value="" /></td>
-                        
-                     </tr>
-                     <tr>
-                        <td>입고일</td>
-                        <td><input type="date" id="inDate" name="inDate" value="" /></td>
-                        <td>구매금액</td>
-                        <td>
-                           <input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" />원
-                        </td>
-                        <td>회사코드</td>
-                        <td><input type="text" id="compCd" name="compCd" value="" /></td>
-                     </tr>
-                     <tr>
-                        <!-- <td>이미지</td>
+							</tr>
+							<tr>
+								<td>설비규격</td>
+								<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
+								<td>라인번호</td>
+								<td><input type="text" id="lineNO" name="lineNO" value="" /></td>
+								<td>공정</td>
+								<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
+
+							</tr>
+							<tr>
+								<td>입고일</td>
+								<td><input type="date" id="inDate" name="inDate" value="" /></td>
+								<td>구매금액</td>
+								<td><input type="text" id="purchCost" name="purchCost"
+									onkeyup="inputNumberFormat(this)" value="" />원</td>
+								<td>회사코드</td>
+								<td><input type="text" id="compCd" name="compCd" value="" /></td>
+							</tr>
+							<tr>
+								<!-- <td>이미지</td>
                         <td><input type="text" id="FctImg" name="FctImg" value="" /></td> -->
-                        <!-- <td>시간당 생산량</td>
+								<!-- <td>시간당 생산량</td>
                         <td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
                            value="" /></td> -->
-                        <td>담당자</td>
-                        <td><input type="text" id="empNo" name="empNo" value="" /></td>
-                        <td>점검주기</td>
-                        <td><input type="number" id="chkProd" name="chkProd" value="" /></td>
-                        <td>
-                           <select id="chkProdUnit" name="chkProdUnit">
-                              <option value="Y">년</option>
-                              <option value="M">달</option>
-                              <option value="W">주</option>
-                              <option value="D">일</option>
-                           </select>
-                        </td>
-                        <td><input type="hidden" id="fctNm" name="fctNm" value="" /></td>
-                     </tr>
-                  </table>
-                  <div class="col-5">
-               
-               
-               <div class ='uploadDiv'>
-                  <td><input style=" margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)"/></td>
-                  <!-- <button id='uploadBtn'>Upload</button> -->
-               </div>
-            </form>
-         </div>
-         <div class=col-4>
-            <img src="../resources/img/logo.jpg" id="fctImges" style="width: 200px; height: 150px;">
-            <input type = hidden id="fctImg" value="">
-         </div>
-         
-         </div>
-      </div>
-      <div id="dialog-form"></div>
-         <div id="grid" style=""></div>
-   </div> <!-- row -->
-   <div id="fctGubundialog-form" title="설비구분"></div>
-   <script>
+								<td>담당자</td>
+								<td><input type="text" id="empNo" name="empNo" value="" /></td>
+								<td>점검주기</td>
+								<td><input type="number" id="chkProd" name="chkProd"
+									value="" /></td>
+								<td><select id="chkProdUnit" name="chkProdUnit">
+										<option value="Y">년</option>
+										<option value="M">달</option>
+										<option value="W">주</option>
+										<option value="D">일</option>
+								</select></td>
+								<td><input type="hidden" id="fctNm" name="fctNm" value="" /></td>
+							</tr>
+						</table>
+						<div class="col-5">
+
+
+							<div class='uploadDiv'>
+								<td><input style="margin-bottom: 20px;" type="file"
+									id="fctImgBtn" name="uploadFile" value="" multiple
+									onchange="setThumbnail(event)" /></td>
+								<!-- <button id='uploadBtn'>Upload</button> -->
+							</div>
+					</form>
+				</div>
+				
+
+			</div>
+			<div class=col-4>
+					<img src="../resources/img/logo.jpg" id="fctImges"
+						style="width: 200px; height: 150px;"> <input type=hidden
+						id="fctImg" value="">
+				</div>
+		</div>
+		<div id="dialog-form"></div>
+		<div id="grid" style=""></div>
+	</div>
+	<!-- row -->
+	<div id="fctGubundialog-form" title="설비구분"></div>
+	<script>
    let dialog; 
+   let lineStatusVO = {};
    
    //설비업체 Modal start=========================================================================================
    dialog = $( "#dialog-form" ).dialog({   
@@ -185,8 +191,8 @@
    //라인
    function getModalLine(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
       console.log('getModalLine 메서드 출력')
-      console.log(param.lineNo)
-            $("#lineNo").val(param.lineNo);
+      console.log(param.lineNO)
+            $("#lineNO").val(param.lineNO);
             dialog.dialog('close');
    }
     
@@ -308,7 +314,7 @@
     let lineColumns = [
     {
     header: '라인',
-    name: 'lineNo',
+    name: 'lineNO',
     editor: 'text'
   },
   {
@@ -372,7 +378,6 @@
       
       document.getElementById('fctCd').value = dataVO.fctCd;
       document.getElementById('fctNm').value = dataVO.fctNm;
-      document.getElementById('useYn').value = (dataVO.useYn=='Y')?'true':'false';
       document.getElementById('prcCd').value = dataVO.prcCd;
       document.getElementById('fctStd').value = dataVO.fctStd;
       document.getElementById('fctModel').value = dataVO.fctModel;
@@ -401,16 +406,19 @@
       //lineData[ev.rowKey];
       console.log('라인그리드 테스트')
       console.log(lineVO)
-      document.getElementById('lineinput').value = lineVO.lineNo;
+      document.getElementById('lineinput').value = lineVO.lineNO;
       document.getElementById('totPdtAmt').value = lineVO.totPdtAmt;
       document.getElementById('uphPdtAmt').value = lineVO.uphPdtAmt;
-      document.getElementById('useYn').value = (lineVO.useYn=='Y')?'true':'false';
+      document.getElementById('useYn').checked = (lineVO.useYn=='Y')?true:false;
       document.getElementById('empNo').value = lineVO.empNo;
    })
     
    //라인 찾는 아작스 
    $.ajax({
-      url : '../fct/LineSelect',
+      url : './LineSelect',
+      method:'post',
+      data: JSON.stringify(lineStatusVO),
+	  contentType: "application/json",
       success : function(result){
          lineData = result;
          LineGrid.resetData(result);
@@ -422,7 +430,7 @@
     //클릭 이벤트 그리드
     fctGrid.on('check', (ev) => {
        
-       let vo = {fctCd:""};
+       vo = {fctCd:""};
        vo.fctCd = data[ev.rowKey].fctCd;
       console.log(vo)
       targetId.push(vo);
@@ -445,7 +453,6 @@
        btnDel.addEventListener("click", function(){
           //삭제 아작스 처리
              $.ajax({
-                
                 url: "./deleteInfo",
                 method: "POST",
                 data: JSON.stringify(targetId),         //json을 string으로 바꿔줘야함 
@@ -481,7 +488,6 @@
                    console.log('성공')
                    fctGrid.resetData(result)
                 }
-          
              })
           //grid.request('modifyData');
        })//add버튼 
@@ -512,9 +518,12 @@
          mPrc();
       })
       //라인 input 클릭 이벤트 
-      $("#lineNo").on("click", function(){
+      $("#lineNO").on("click", function(){
          console.log('라인 인풋박스 클릭 이벤트')
-         mLine();
+         let fctLineChek= 'Y'; 
+         lineStatusVO.fctLineChek = fctLineChek;
+         console.log(lineStatusVO)
+         mLine(lineStatusVO);
       })
       
       function getModalPrc(param){//모달에서 값을 선택했을 때 호출
@@ -620,8 +629,54 @@
    
    //라인 등록
    function LineAdd(){
-		$
+	   let lineInput = $("#lineForm").serializeObject();
+	   console.log('추가 버튼 클릭');
+	   console.log(lineInput)
+	   
+	   //등록아작스 
+          fetch('./LineInsert',{
+        	  method:'POST',
+        	  headers:{
+  				"Content-Type": "application/json",
+  			},
+        	  body:JSON.stringify(lineInput)
+          })
+	   .then(response=> response.json())
+	   .then(result=>{
+		   console.log(result)
+	   })
    }
+   //라인삭제
+	function LineDel(){
+		let lineInput = $("#lineForm").serializeObject();
+		console.log('삭제 버튼 클릭');
+		console.log(lineInput)
+		console.log(lineInput.useYn)
+		
+		if(lineInput.useYn == 'N' && lineInput.useYn == null ){
+			console.log('n이거나 null 일때 ')	
+		}
+		/* 
+		if(lineInput.useYn == 'N'){
+ 			console.log('삭제가능');
+			  //등록아작스 
+	          fetch('./LineDelete',{
+	        	  method:'POST',
+	        	  headers:{
+	  				"Content-Type": "application/json",
+	  			},
+	        	  body:JSON.stringify(lineInput)
+	          })
+		   .then(response=> response.json())
+		   .then(result=>{
+			   console.log(result)
+		   })
+		}
+		else{
+			console.log('삭제가능');
+			alert("사용중인 라인은 삭제 할수 없습니다.")
+		} */
+	}
    //라인 input 초기화 
 	function LineClear(){
 		document.getElementById('lineinput').value = '';
@@ -630,13 +685,20 @@
 		document.getElementById('useYn').checked = false;
 		document.getElementById('empNo').value = '';
    }
-   
-         
-         
-         
-         
-   
-   
+	
+	document.getElementById('useYn').addEventListener('click',function(event){
+		let checkValue = document.getElementById('useYn').checked;
+		if(checkValue ==true){
+			document.getElementById('useYn').value= 'Y';	
+		}
+		else{
+			document.getElementById('useYn').value= 'N';
+		}
+		console.log(event.target.value)
+		
+		
+	})
+
 
 </script>
 

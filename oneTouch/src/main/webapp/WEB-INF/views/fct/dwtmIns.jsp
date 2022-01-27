@@ -237,7 +237,7 @@
 		  
 		 
 	//공정 코드 조회 ajax 요청 select 부분에 담아서 보여주기 
-	$.ajax({
+	/* $.ajax({
 		url:'./admMngList',
 		dataType: 'json',
 		async : false
@@ -248,7 +248,7 @@
 		  for(let contentss of list){
 			$('#checkPrcCd').append("<option value="+contentss.prcCd+">"+contentss.prcNm+"</option>")
 		}  
-	}) 
+	})  */
 	
 	//fct그리드 클릭 이벤트
 	fctGrid.on('click', (ev) =>{
@@ -468,6 +468,7 @@
 	function dwtmSelect(){
 		console.log('공정구분 검색')
 		console.log(dwtmCheckData)
+		dwtmCheckData.checkPrcCd ='d';
 		
 			$.ajax({
 				url:'./dwtmSelectAll',

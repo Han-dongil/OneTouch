@@ -9,9 +9,12 @@ import com.onetouch.web.fct.info.dao.LineVO;
 public interface InfoService {
 	
 	
-	
+	//라인삭제
+	int LineDelete(LineVO lineVO);
 	//라인조회
-	List<LineVO> LineSelect();
+	List<LineVO> LineSelect(LineVO lineVO);
+	int LineInsert(LineVO lineVO);
+	
 	//수정 
 	int InfoUpdate(InfoVO infoVO);
 

@@ -586,12 +586,15 @@ function mBas2(){
 	
 	
 	//라인 모달 
-	function mLine(){
+	function mLine(lineStatusVO){
 	console.log('테스트 하는 중입니다.')
 	let basData;
-		
+	
 	$.ajax({
 		url : '../fct/LineSelect',
+		method:'post',
+		data: JSON.stringify(lineStatusVO),
+		contentType: "application/json",
 		success : function(result){
 			basData = result;
 		}
@@ -620,7 +623,7 @@ function mBas2(){
 		const basColumns = [ 
 			{
 				header: title + '코드',
-				name: 'lineNo',
+				name: 'lineNO',
 				//hidden: true
 			}
 		];

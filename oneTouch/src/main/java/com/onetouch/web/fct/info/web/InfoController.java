@@ -40,14 +40,33 @@ public class InfoController {
 	@Autowired InfoService infoservice;
 	@Autowired InfoMapper infomapper;
 	@Autowired BasMapper basservice;
-		
+	
+	//라인 삭제
+	@ResponseBody
+	@PostMapping("/LineDelete")
+	public List<LineVO> lineDelete(@RequestBody LineVO lineVO){
+		System.out.println("라인 삭제 컨트롤러 연결완료");
+		infoservice.LineDelete(lineVO);
+		return infoservice.LineSelect(lineVO);
+	}
+	
 	//라인 조회
 	@ResponseBody
-	@GetMapping("/LineSelect")
-	public List<LineVO> lineSelect(){
+	@PostMapping("/LineSelect")
+	public List<LineVO> lineSelect(@RequestBody LineVO lineVO){
 		System.out.println("라인 조회 컨트롤러 연결완료");
-		return infoservice.LineSelect();
+		return infoservice.LineSelect(lineVO);
 	}
+	//라인 등록
+	@ResponseBody
+	@PostMapping("/LineInsert")
+	public List<LineVO> lineInsert(@RequestBody LineVO lineVO){
+		System.out.println("라인 등록 컨트롤러 연결");
+		System.out.println(lineVO);
+		infoservice.LineInsert(lineVO);
+		return infoservice.LineSelect(lineVO);
+	}
+	
 	
 //수정
   @ResponseBody
