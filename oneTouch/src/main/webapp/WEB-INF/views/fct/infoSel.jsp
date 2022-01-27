@@ -11,7 +11,6 @@
 <!-- 토스트 그리드 위에 데이트피커 가 선언되어야 작동이 된다 (순서가중요) -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <!-- 토스트그리드 cdn -->
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 </head>
@@ -19,37 +18,30 @@
 <form id="frm" method="post">
 			<div style="margin-top: 10px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
 				<div>
-					<label>설비구분</label>
-					<select id="fctCd" name="fctCd"></select>
-					<!-- <label>점검일자기준 출력</label>
-					<input type="checkbox" id="searchCheck" name="searchCheck" value="1" onclick="checkClick(event)"> -->
-				</div>
-				
-				<div>
-					<!-- <div id="checkDiv">
-						<label>자료구분</label>
-						<label>
-							<span>점검일자</span>
-						</label>
-						<input type="radio" name="orderBy" value="dDate" id="radio-1" checked="checked">
-						<label>
-							<span>차기점검일</span>
-						</label>
-						<input type="radio" name="orderBy" value="dCompanyNm" id="radio-2"> 
-							
-					</div> -->
-				</div>
-				
-				<div>
-					<button type="button" id="searcnBtn" onclick="checkSeach(event)">조회</button>
-					<button type="button" id="resetBtn">새자료</button>
-					<button type="button" id="excelBtn">Excel</button>
-					<button type="button" id="printBtn">인쇄</button>
+					<span>
+							<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
+							<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
+							<label> ~ </label> 
+							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
+						</span>&nbsp;&nbsp;
+						
+						<span>
+							<label class="form-check-label">설비구분</label>
+							<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
+						</span>
 				</div>
 			</div>
+			<div style="margin-top: 20px;">
+				<button type="button" id="searcnBtn" class="btn btn-primary mr-2 floatrightbtn" onclick="checkSeach(event)">조회</button>
+				<button type="button" id="resetBtn" class="btn btn-primary mr-2 floatrightbtn">새자료</button>
+				<button type="button" id="excelBtn" class="btn btn-primary mr-2 floatrightbtn">Excel</button>
+				<button type="button" id="printBtn" class="btn btn-primary mr-2 floatrightbtn">인쇄</button>
+			</div>
 		</form>
-	<div id="grid"></div>
-	
+			
+		<div style="margin-left:100px; margin-right:100px;margin-bottom:100px " id="grid"></div>
+				
+		
 	<script type="text/javascript">
 	let targetId = [];
 	//공정코드 저장할 map 변수 
@@ -152,7 +144,7 @@
   		console.log(datas)
   	}) */
     
-    //공정 코드 조회 ajax 요청
+    //설비구분 코드 조회 ajax 요청
 
     	$.ajax({
 			url:'./selectFixPrc',
@@ -161,9 +153,9 @@
 		}).done(function(datas){
 			console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 			console.log(datas)
-			$('#fctCd').append("<option value='d'>전체</option>")
+			$('#checkPrcCd').append("<option value='d'>전체</option>")
 			for(let data of datas){
-				$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
+				$('#checkPrcCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
 			}
 		}) 
     
@@ -171,16 +163,19 @@
      //공정코드 조건조회 ajax 
      function checkSeach(event){
     	let target = document.getElementById('fctCd')
+    	let checkVal = $("#frm").serializeObject();
+    	/* console.log('조회')
+    	console.log(checkVal)
 	 	let checkPrcCd = target.options[target.selectedIndex].value
 	 	 let vo={};
 	 	 vo.checkPrcCd=checkPrcCd;
     	console.log('맵확인하기!!!!!!!!!')
     	console.log(vo)
-    	
+    	 */
 	 	 $.ajax({
 	 		url:'./list1',
 	 		method: "POST",
-	 		data: JSON.stringify(vo),
+	 		data: JSON.stringify(checkVal),
 	 		contentType:"application/json",
 	 		async: false,
 	 		success:function(result){
@@ -206,6 +201,7 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          rowHeaders : [ 'checkbox' ],
+         bodyHeight:600,
          columns,
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {

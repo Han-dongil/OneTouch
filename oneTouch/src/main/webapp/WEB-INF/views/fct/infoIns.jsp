@@ -303,7 +303,6 @@ td {
      fctGrid = new Grid({
         el: document.getElementById('grid'),
         data:data,  //이름이 같다면 생격가능
-        rowHeaders : [ 'checkbox' ],
         columns:fctColumns,
         bodyHeight: 600,
        minBodyHeight: 600,
@@ -330,7 +329,15 @@ td {
   {
     header: '사용여부',
     name: 'useYn',
-    editor: 'text'
+    editor: {
+     type: 'radio',
+     options:{
+    	 listItems:[
+    		 {text:'Y', value:'Y'},
+    		 {text:'N', value:'N'}
+    	 ]
+     }
+	}    	
   },
   {
     header: '사원',
@@ -343,7 +350,6 @@ td {
      LineGrid = new Grid({
         el: document.getElementById('lineGrid'),
         data:lineData,  //이름이 같다면 생격가능
-        rowHeaders : [ 'checkbox' ],
         columns:lineColumns,
         bodyHeight: 600,
        minBodyHeight: 600,
@@ -369,8 +375,6 @@ td {
              
           
         }) 
-      
-      
    fctGrid.on('click',(ev) =>{
       
       dataVO =fctGrid.getData()[ev.rowKey]; 
@@ -387,17 +391,15 @@ td {
       document.getElementById('chkProd').value = dataVO.chkProd;
       document.getElementById('fctImg').value = dataVO.fctImg;
       
-      //document.getElementById('fctImg').value = dataVO.fctImg;
+      
       var fileCallPath = encodeURIComponent(dataVO.uploadPath+"/s_"+dataVO.fctImg);
       console.log('이미지 테스트')
       console.log(fileCallPath);
       document.getElementById('fctImges').setAttribute("src", 'display?fileName='+fileCallPath);
-      //document.getElementById('fctImges').src = fileCallPath;
       console.log('사진 경로 띄우기')
       console.log(dataVO.fctImg+dataVO.uploadPath)
-      //line 테이블 join해서 사용하기 
-      //document.getElementById('uphPdtAmt').value = dataVO.uphPdtAmt;
-      //document.getElementById('empNo').value = dataVO.empNo;
+      //상세정보에 체크 박스 이벤트 걸기
+     
    })
    
    //라인 그리드 클릭 이벤트 
@@ -410,7 +412,16 @@ td {
       document.getElementById('totPdtAmt').value = lineVO.totPdtAmt;
       document.getElementById('uphPdtAmt').value = lineVO.uphPdtAmt;
       document.getElementById('useYn').checked = (lineVO.useYn=='Y')?true:false;
+      document.getElementById('useYn').value = lineVO.useYn;
       document.getElementById('empNo').value = lineVO.empNo;
+      
+      document.getElementById('useYn').addEventListener('click', function(event){
+    	  if(lineVO.useYn == 'Y'){
+	    	  alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
+	    	  document.getElementById('useYn').checked = true;
+	    	  
+    	  }
+      })
    })
     
    //라인 찾는 아작스 
@@ -653,13 +664,9 @@ td {
 		console.log(lineInput)
 		console.log(lineInput.useYn)
 		
-		if(lineInput.useYn == 'N' && lineInput.useYn == null ){
-			console.log('n이거나 null 일때 ')	
-		}
-		/* 
-		if(lineInput.useYn == 'N'){
- 			console.log('삭제가능');
-			  //등록아작스 
+		if(lineInput.useYn == 'N' || lineInput.useYn == undefined ){
+			console.log('n이거나 null 일때 ')
+			 //라인 삭제 
 	          fetch('./LineDelete',{
 	        	  method:'POST',
 	        	  headers:{
@@ -670,12 +677,13 @@ td {
 		   .then(response=> response.json())
 		   .then(result=>{
 			   console.log(result)
+			   alert(lineInput.lineNO+"라인이 삭제되었습니다");
+			   LineGrid.resetData(result);
 		   })
 		}
-		else{
-			console.log('삭제가능');
-			alert("사용중인 라인은 삭제 할수 없습니다.")
-		} */
+		else if(lineInput.useYn == 'Y'){
+			alert("해당 라인에 사용중인 설비를 먼저 등록해제 해주세요")
+		}
 	}
    //라인 input 초기화 
 	function LineClear(){
@@ -698,6 +706,8 @@ td {
 		
 		
 	})
+	
+	
 
 
 </script>

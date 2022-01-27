@@ -18,12 +18,15 @@
 		FROM fct_dwtm d JOIN fct_info f
 		ON d.fct_cd = f.fct_cd
 		WHERE 1=1
-		<!-- <if test='checkPrcCd != "d" and checkPrcCd !=""'>
-			AND f.prc_cd = #{checkPrcCd}
-		</if> -->
+		<if test='checkPrcCd != "d" and checkPrcCd !=""'>
+			AND substr(f.fct_cd,1,11) = #{checkPrcCd}
+		</if>
 		<if test='proceedCheck == "proceed"'>
 			AND d.fin_dt is null
 			AND d.str_dt is not null 
+		</if>
+		<if test='proceedCheck == "done"'>
+			AND d.fin_dt is not null
 		</if>
 		
 	</select>

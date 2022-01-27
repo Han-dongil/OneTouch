@@ -32,7 +32,7 @@
 	.blue{background-color: skyblue}
 	.green{background-color: green}
 </style>
-</head>
+</hel>
 <body>
 
 <div>
