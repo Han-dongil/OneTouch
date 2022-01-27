@@ -102,7 +102,10 @@ const dataSource = {
 
 var grid = new Grid({
      el : document.getElementById('grid'),
-     data : dataSource,  // 컬럼명과 data명이 같다면 생략가능 
+     data : dataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      columns : [
 				 {
 				   header: '입고일자',

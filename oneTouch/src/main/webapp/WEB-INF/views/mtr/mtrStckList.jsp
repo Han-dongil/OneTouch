@@ -16,6 +16,8 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="${path}/resources/js/modal.js"></script>
 
 </head>
@@ -70,10 +72,29 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+toastr.options = {
+	       "closeButton": true,
+	       "debug": false,
+	       "newestOnTop": false,
+	       "progressBar": true,
+	       "positionClass": "toast-top-center",
+	       "preventDuplicates": false,
+	       "onclick": null,
+	       "showDuration": "3",
+	       "hideDuration": "100",
+	       "timeOut": "1500",
+	       "extendedTimeOut": "1000",
+	       "showEasing": "swing",
+	       "hideEasing": "linear",
+	       "showMethod": "fadeIn",
+	       "hideMethod": "fadeOut",
+	       "tapToDismiss": false,
+	       "closeHtml": "확인"
+	     }
+
 fetch('mtrStckRadio')
 .then(response=>response.json())
 .then(result=>{
-	console.log("result");
 	let div = document.getElementById("mtrRadio");
 	for(let i = 0; i < result.length; i++){
 		let input = document.createElement("input");
@@ -178,6 +199,9 @@ const lotColumns = [{
 var lotGrid = new Grid({
      el : document.getElementById('lotTab'),
      data : lotDataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      columns : lotColumns,
 				summary : {
 					height: 40,
@@ -271,6 +295,9 @@ const mtrColumns = [{
 var mtrGrid = new Grid({
      el : document.getElementById('mtrTab'),
      data : mtrDataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      columns : mtrColumns,
 				summary : {
 					height: 40,
@@ -311,15 +338,12 @@ function format(value){
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-lotGrid.on('response', function(ev) {
-	console.log("lotev")
-	console.log(ev)
-      //grid.resetOriginData();
+lotGrid.on('dblclick', function(ev) {
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
    });
-mtrGrid.on('response', function(ev) {
-	console.log("mtrev")
-	console.log(ev)
-      //grid.resetOriginData();
+   
+mtrGrid.on('dblclick', function(ev) {
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
    });
    
 btnFind.addEventListener("click", function(){
