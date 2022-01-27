@@ -106,6 +106,9 @@ const dataSource = {
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      rowHeaders : [ 'checkbox'],
      columns : [
 				{

@@ -102,6 +102,9 @@ const dataSource = {
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      columns : [
 				{
 				header: '반품번호',

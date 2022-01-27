@@ -18,12 +18,12 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BasList">공통코드관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BomList">제품Bom관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mngList">공정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FlwList">공정흐름관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FltList">불량코드관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mtrList">자재정보관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BasList">🍊공통코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/BomList">🍋제품Bom관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mngList">🍍공정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FlwList">🍒공정흐름관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/FltList">🍑불량코드관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/adm/mtrList">🍓자재정보관리</a></li>
               </ul>
             </div>
           </li>
@@ -53,14 +53,14 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inForm">입고자재관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inList">입고자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/outList">출고자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnForm">반품자재관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnList">반품자재조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calForm">재고조정관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calList">재고조정조회</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/stckList">재고조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inForm">🍔입고자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/inList">🍕입고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/outList">🌭출고자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnForm">🍟반품자재관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/rtnList">🥞반품자재조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calForm">🥪재고조정관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/calList">🍗재고조정조회</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/mtr/stckList">🍿재고조회</a></li>
               </ul>
             </div>
           </li>

@@ -64,7 +64,13 @@
 		<hr>
 	</div>
 	<div id="grid"></div>
-	<div id="dialog-form"></div>
+	<div id="dialog-form">
+		<label>자재구분</label>
+		<input type="text" id="mDitemCode" name="ditemCode">
+		<br>
+		<label>입고업체</label>&nbsp;&nbsp;&nbsp;
+		<input type="text" id="mDitemCodeNm" name="ditemCodeNm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
 	<div id="dialog-lot">
 		<label>자재코드</label>
 		<input type="text" id="mDitemCode" name="ditemCode" disabled="disabled">
@@ -122,6 +128,9 @@ const dataSource = {
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      rowHeaders : [ 'checkbox'],
      columns : [
 				 {
@@ -390,6 +399,9 @@ let lotDataSource = {
 let lotGrid = new Grid({
 el : document.getElementById('dialog-lot'),
 data : lotDataSource,
+scrollX : false,
+scrollY : true,
+bodyHeight: 400,
 rowHeaders : [ 'checkbox'],
 columns : [ 
 			{

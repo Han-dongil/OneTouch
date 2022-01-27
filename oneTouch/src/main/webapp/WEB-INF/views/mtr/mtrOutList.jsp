@@ -112,6 +112,9 @@ const dataSource = {
 var grid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 400,
      columns : [
 				{
 				   header: '출고번호',

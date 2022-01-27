@@ -158,6 +158,9 @@ var mainGrid = new Grid({
 			  contentType: 'application/json',
 			  initialRequest: false
 			},  // 컬럼명과 data명이 같다면 생략가능 
+	 scrollX : false,
+	 scrollY : true,
+	 bodyHeight: 400,
      rowHeaders : [ 'checkbox'],
      columns : [
 				{
@@ -328,7 +331,7 @@ mainGrid.on('editingStart', (ev) => {
     }
 })
 mainGrid.on('dblclick', (ev) => {
-	if(ev.columnName == 'mtrNm' || ev.columnName == 'unit' || ev.columnName == 'compNm') {
+	if(ev.columnName == 'mtrNm' || ev.columnName == 'unitNm' || ev.columnName == 'compNm') {
 	       toastr["warning"]("자재코드를 수정해 주세요.")
 	    }
 })
@@ -467,6 +470,9 @@ let ordDataSource = {
 let ordGrid = new Grid({
 el : document.getElementById('dialog-ord'),
 data : ordDataSource,
+scrollX : false,
+scrollY : true,
+bodyHeight: 400,
 columns : [ 
 			{
 				header: '발주일자',

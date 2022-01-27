@@ -91,7 +91,10 @@ function mMtr(){
 		mtrGrid = new Grid({
 			el : document.getElementById('mtr_grid'),
 			data : mtrData,
-			columns : mtrColumns
+			columns : mtrColumns,
+			scrollX : false,
+			scrollY : true,
+			bodyHeight: 400
 		});
 		
 		mtrGrid.on('dblclick', ev => {
