@@ -112,6 +112,10 @@
 	let basCode;
 	let basName;
 	let rowk;
+	let chkRowKeys;
+	let basDtlLength;
+	let sum = 0;
+	let seqVal = 0;
 	let Grid = tui.Grid;
 	
  	Grid.applyTheme('default',{
@@ -211,7 +215,8 @@
 			contentType: 'application/json',
 			initialRequest: false
 	}
-	
+ 	
+	//왼쪽 그리드 그리기
 	const grid1 = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource1,
@@ -221,6 +226,7 @@
 		minBodyHeight: 400
 	});
 	
+ 	//오른쪽 그리드 그리기
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
@@ -229,8 +235,6 @@
 		bodyHeight: 460,
 		minBodyHeight: 460
 	})
-	
-
 
 	//검색버튼
 	btnSrc.addEventListener("click", function() {
@@ -258,11 +262,16 @@
 	
 	//추가버튼
 	btnAddDtl.addEventListener("click", function() {
-		grid2.appendRow({});
 		rowk = grid2.getRowCount() - 1;
-		console.log(basCode);
+		if(grid2.getRowCount() == 0) {
+			seqVal = 1;
+		} else {			
+			seqVal = parseInt(grid2.getValue(rowk,'seq'))+1
+		}
+		grid2.appendRow({'dtlCd':'','seq':seqVal});
+		//console.log(basCode);
 		grid2.setValue(rowk, "basCd", basCodeVal, false);
-		console.log(grid2.getValue(rowk, "basCd"));
+		//console.log(grid2.getValue(rowk, "basCd"));
 	})
 	
 	//삭제버튼
@@ -274,21 +283,9 @@
 	grid2.on('editingStart', (ev) => {
 		if(ev.columnName == 'dtlCd') {
 			var value = grid2.getValue(ev.rowKey, 'dtlCd');
-			if(value != null) {
-				console.log(value);
+			//console.log(value);
+			if(value != '') {
 				alert('상세코드는 수정이 불가능합니다');
-				ev.stop();
-			}
-		}
-	})
-	
-	//표시순서 자동추가알림
-	grid2.on('editingStart', (ev) => {
-		if(ev.columnName == 'seq') {
-			var value = grid2.getValue(ev.rowKey, 'seq');
-				console.log(value);
-			if(value == null) {
-				alert('표시순서는 자동추가됩니다');
 				ev.stop();
 			}
 		}
@@ -297,18 +294,49 @@
 	/* 기초코드 기능 */
 	//저장버튼
 	btnSaveBas.addEventListener("click", function() {
+		//for(i=0; i<grid1.)
 		grid1.blur();
 		grid1.request('modifyData');
 	})
 	
 	//추가버튼
 	btnAddBas.addEventListener("click", function() {
-		grid1.appendRow({});
+		grid1.appendRow({'basCd':''},{focus : true});
 	})	
 	
 	//삭제버튼
 	btnDelBas.addEventListener("click", function() {
-		grid1.removeCheckedRows(true);
+		chkRowKeys = grid1.getCheckedRowKeys();
+		for(i=0; i<chkRowKeys.length; i++) {
+			basCodeVal = grid1.getValue(chkRowKeys[i],'basCd');
+	 		$.ajax({
+				url: './admBasDtlList',
+				data: {'basCd':basCodeVal},
+				dataType: 'json',
+				async : false	
+			}).done(function(datas){
+				basDtlLength = datas.data.contents.length;
+				sum += basDtlLength;
+			})	
+		}
+		if(sum == 0) {
+			grid1.removeCheckedRows(true);
+		} else {
+			alert("삭제 불가능");
+		}
+		sum = 0;
+	})
+	
+	//기초코드 수정불가알림
+	grid1.on('editingStart', (ev) => {
+		if(ev.columnName == 'basCd') {
+			var value = grid1.getValue(ev.rowKey, 'basCd');
+			console.log(value);
+			if(value != '') {
+				alert('기초코드는 수정이 불가능합니다');
+				ev.stop();
+			}
+		}
 	})
 	
 </script>

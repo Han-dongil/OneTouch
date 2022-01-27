@@ -55,7 +55,7 @@ public class BasController {
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("result", true);
 		maps.put("data", map);
-		//System.out.println(map);
+		//System.out.println("이거"+maps);
 		return maps;
 	}
 	

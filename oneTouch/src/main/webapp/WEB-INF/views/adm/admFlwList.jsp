@@ -269,9 +269,14 @@
 			
 		//추가버튼
 		btnAdd.addEventListener("click", function() {
-			grid2.appendRow({});
 			rowk = grid2.getRowCount() - 1;
-			console.log(prdCodeVal);
+			if(grid2.getRowCount() == 0) {
+				seqVal = 1;
+			} else {			
+				seqVal = parseInt(grid2.getValue(rowk,'prcSeq'))+1
+			}
+			grid2.appendRow({'prcSeq':seqVal});
+			//console.log(prdCodeVal);
 			grid2.setValue(rowk, "prdCd", prdCodeVal, false);
 		})	
 		

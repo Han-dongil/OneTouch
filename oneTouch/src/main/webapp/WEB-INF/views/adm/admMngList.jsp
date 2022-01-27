@@ -240,6 +240,7 @@ hr{
 	
 	//수정할때 공정구분명 선택하면 공정구분코드도 히든컬럼에 들어가게 하기
 	grid.on("editingFinish", ev => {
+		console.log(prcLists);
 		if(ev.columnName == 'prcSectNm') {
 			for(i=0; i<prcLists.length; i++) {
 				/* console.log(prcLists[i].prcSectNm);
@@ -279,7 +280,13 @@ hr{
 	
 	//등록버튼
 	btnAdd.addEventListener("click", function() {
-		grid.appendRow({});
+		rowk = grid2.getRowCount() - 1;
+		if(grid2.getRowCount() == 0) {
+			seqVal = 1;
+		} else {			
+			seqVal = parseInt(grid2.getValue(rowk,'seq'))+1
+		}
+		grid.appendRow({'seq':seqVal});
 	})	
 
 </script>
