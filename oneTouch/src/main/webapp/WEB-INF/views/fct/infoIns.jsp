@@ -11,8 +11,8 @@
 <!-- 토스트그리드 cdn -->
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<!-- <link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"> -->
 <!-- 토스트 그리드 위에 데이트피커 가 선언되어야 작동이 된다 (순서가중요) -->
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
@@ -43,7 +43,7 @@ td {
 			<!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
 			<button type="button" id='LinebtnAdd' onclick=LineAdd()>추가</button>
 			<button type="button" id='LinebtnDel' onclick=LineDel()>삭제</button>
-			<button type="button" id='LinebtnEdit'>수정</button>
+			<button type="button" id='LinebtnEdit' onclick=LineUpt()>수정</button>
 			<button type="button" id='LinebtnClear' onclick=LineClear()>초기화</button>
 			<form id="lineForm" method="post" style="margin-bottom: 25px;">
 				<div class="row" style= " /* border-top: 2px solid black; */ padding: 5px;">
@@ -87,13 +87,15 @@ td {
 				<button type="button" id='btnSave'>저장</button>
 				<button type="button" id='btnEdit'>수정</button>
 			</div>
-		<form id="infoFrm" method="post" enctype="multipart/form-data" >
+		<form id="infoFrm"  onsubmit="return false" method="post" enctype="multipart/form-data" >
 			<div class="row" style="/* border-top: 2px solid black; */ padding: 5px;">
-				<div class="col-7" style="margin-top: 30px; margin-bottom:10px;">
+				<div class="col-5" style="margin-top: 30px; margin-bottom:10px;">
 						<table>
 							<tr>
 								<td>설비코드</td>
-								<td><input type="text" id="fctCd" name="fctCd" value="" /></td>
+								<td><input type="text" id="fctCd" name="fctCd" value="" list="fctCd-options" onkeyup="enterkey()" />
+								<datalist id="fctCd-options"></datalist>
+								</td>
 								<td>모델명</td>
 								<td><input type="text" id="fctModel" name="fctModel"
 									value="" /></td>
@@ -104,7 +106,7 @@ td {
 								<td>설비규격</td>
 								<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
 								<td>라인번호</td>
-								<td><input type="text" id="lineNO" name="lineNO" value="" /></td>
+								<td><select id="lineNO" name="lineNO" ></select></td>
 								<td>공정</td>
 								<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
 
@@ -139,15 +141,21 @@ td {
 							</tr>
 						</table>
 						<div class="col-5">
-
-
+							
 							<div class='uploadDiv'>
 								<td></td>
 								<!-- <button id='uploadBtn'>Upload</button> -->
 							</div>
+							
 				</div>
-				
-
+				<div style="margin-top: 53px; margin-left: 195px;">
+					<form>
+						<label>검색</label>
+						<input type="text" id="checkfct" name="checkfct" value="" list="fctCd-options" />
+						<datalist id="fctCd-options"></datalist>
+						<button id="selectBtn" onclick=selectCheckFct()>조회</button>
+					</form>
+				</div>
 			</div>
 			<div class=col-4>
 					<img src="../resources/img/logo.jpg" id="fctImges" style="width: 250px; height: 200px;">
@@ -519,10 +527,10 @@ td {
       //설비구분 Modal start=========================================================================================
       //let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
       
-      $("#fctCd").on("click", function(){
+     /*  $("#fctCd").on("click", function(){
          console.log('설비코드 버튼 클릭')
          mBas('FCT_DIV',event.target);
-      })
+      }) */
       $("#fctNm").on("click", function(){
          console.log('설비이름 버튼 클릭')
          mBas('FCT_DIV',event.target);
@@ -541,13 +549,9 @@ td {
          mPrc();
       })
       //라인 input 클릭 이벤트 
-      $("#lineNO").on("click", function(){
-         console.log('라인 인풋박스 클릭 이벤트')
-         let fctLineChek= 'Y'; 
-         lineStatusVO.fctLineChek = fctLineChek;
-         console.log(lineStatusVO)
-         mLine(lineStatusVO);
-      })
+       $("#lineNO").on("click", function(){
+         /*mLine(lineStatusVO); */
+      }) 
       
       function getModalPrc(param){//모달에서 값을 선택했을 때 호출
          //선택한 값 parameter받아서 각자 처리
@@ -720,6 +724,100 @@ td {
 		
 	})
 	
+	//라인 수정 
+	function LineUpt(){
+		console.log('수정버튼 클릭 이벤트')
+		let lineInput =$("#lineForm").serializeObject();
+		console.log('폼태그 값 시리얼 라이즈')
+		console.log(lineInput)
+		fetch('./LineUpdate',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(lineInput)
+		})
+		.then(response=> response.json())
+		.then(result=>{
+			console.log('라인업데이트')
+			console.log(result)
+			LineGrid.reset(result)
+		})
+	}
+	
+	//라인번호 select 값 조회 
+	function selectLine(){
+		let fctLineChek= 'Y'; 
+        lineStatusVO.fctLineChek = fctLineChek;
+		$.ajax({
+		      url : './LineSelect',
+		      method:'post',
+		      data: JSON.stringify(lineStatusVO),
+		      contentType: "application/json",
+		      success : function(result){
+		    	  for(d of result){
+		    	  	$('#lineNO').append("<option value="+d.lineNO+">"+d.lineNO+"</option>")
+		    	  }
+		      }
+		   });
+	}
+	//설비코드를 검색 input에 list에 append해준다. 
+	function checkFctList(){
+		fetch('./selelctCheckFct')
+		.then(response=>response.json())
+		.then(result=>{
+			for(let data of result){
+				$('#fctCd-options').append("<option value="+data.fctCd+">"+data.fctNm+"</option>")
+			}
+		})
+		
+	}
+	
+
+	//엔터키 이벤트 막아주기 
+	document.getElementById('fctCd').addEventListener('keydown', event=>{
+			//event.preventDefault();
+	})
+	//엔터키 이벤트
+	 function enterkey() {
+		let code = document.getElementById('fctCd').value
+		if (window.event.keyCode == 13) {
+			for(d of fctGrid.getData()){
+				if(d.fctCd == code  ){
+					  document.getElementById('fctCd').value = d.fctCd;
+				      document.getElementById('fctNm').value = d.fctNm;
+				      document.getElementById('prcCd').value = d.prcCd;
+				      document.getElementById('fctStd').value = d.fctStd;
+				      document.getElementById('fctModel').value = d.fctModel;
+				      document.getElementById('compCd').value = d.compCd;
+				      document.getElementById('inDate').value = d.inDate;
+				      document.getElementById('purchCost').value = d.purchCost;
+				      document.getElementById('chkProd').value = d.chkProd;
+				      document.getElementById('fctImg').value = d.fctImg;
+				      var fileCallPath = encodeURIComponent(d.uploadPath+"/s_"+d.fctImg);
+				      console.log('이미지 테스트')
+				      console.log(fileCallPath);
+				      if(d.uploadPath == null){
+				    	  console.log('이미지 없음')
+				    	  document.getElementById('fctImges').setAttribute("src", '../resources/img/logo.jpg');
+				      }
+				      else{
+						document.getElementById('fctImges').setAttribute("src", 'display?fileName='+fileCallPath);
+						console.log('사진 경로 띄우기')
+						console.log(d.fctImg+d.uploadPath)
+				      }
+				      
+							
+				}
+			}
+			
+      
+     
+			
+		}
+	}
+	selectLine()		//라인코드 select option으로 넣어주기
+	checkFctList()
 	
 
 

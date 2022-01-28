@@ -10,6 +10,8 @@ public interface InfoService {
 	
 	//현재 날자 조회
 	InfoVO todayDate();
+	//라인수정
+	int LineUpdate(LineVO lineVO);
 	//라인삭제
 	int LineDelete(LineVO lineVO);
 	//라인조회
@@ -19,6 +21,9 @@ public interface InfoService {
 	//수정 
 	int InfoUpdate(InfoVO infoVO);
 
+	//검색조건 설비코드 조회 
+	List<InfoVO> selectCheckFct(InfoVO infoVO);
+	
 	List<InfoVO> selectFctInfoAll(InfoVO infoVO);
 	void deleteFctInfo(List<InfoVO> list);
 	InfoVO selectFctInfo(InfoVO infoVO);

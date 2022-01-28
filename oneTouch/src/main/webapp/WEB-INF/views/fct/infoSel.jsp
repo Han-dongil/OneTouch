@@ -49,7 +49,8 @@
 	let targetId = [];
 	//공정코드 저장할 map 변수 
 	let grid;
-	let today;//날자변수
+	let pastDay;//날자변수
+	let todayDay;//날자변수
    let Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
    Grid.applyTheme('clean', {
@@ -184,6 +185,7 @@
      function checkSeach(event){
     	let target = document.getElementById('fctCd')
     	let checkVal = $("#frm").serializeObject();
+    	console.log('첨에 조회를 불러온다.')
     	console.log(checkVal)
     	/* console.log('조회')
     	console.log(checkVal)
@@ -294,21 +296,28 @@
        })  */
        
        function todayDate(){
-			let d;
+			let to;
+			let from;
 			fetch('./selectTodayDate')
 			.then(response=>response.json())
 			.then(result=>{
-				d= result.todayDate.substr(0,10)
-				console.log(d)
+				from= result.fixFrom.substr(0,10)
+				to= result.fixTo.substr(0,10)
+				
+				console.log('todayDate 함수 호출')
+				console.log(from)
+				console.log(to)
+			}).then(x=>{
+       			document.getElementById('fixFrom').value = from;
+       			document.getElementById('fixTo').value = to;
+       			checkSeach();
+				
 			})
-			console.log(d)
-			today = d;
+			
 		}
        	todayDate()
-		console.log(today)
-	
-       //document.getElementById('fixFrom').value = ;
-       checkSeach();
+		
+      
 </script>
 </body>
 </html> 
