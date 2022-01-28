@@ -67,6 +67,18 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 
+	@Override
+	public List<InfoVO> selectCheckFct(InfoVO infoVO) {
+		return mapper.selectCheckFct();
+	}
+
+
+	@Override
+	public int LineUpdate(LineVO lineVO) {
+		return mapper.LineUpdate(lineVO);
+	}
+
+
 
 
 

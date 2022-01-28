@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,6 +50,14 @@ public class InfoController {
 	public InfoVO selectTodaDate(){
 		return infoservice.todayDate();
 	}
+	//라인 수정
+	@ResponseBody
+	@PostMapping("/LineUpdate")
+	public List<LineVO> lineUpdate(@RequestBody LineVO lineVO){
+		System.out.println("라인 업데이투");
+		infoservice.LineUpdate(lineVO);
+		return infoservice.LineSelect(lineVO);
+	}
 	
 	//라인 삭제
 	@ResponseBody
@@ -81,8 +91,10 @@ public class InfoController {
   @PostMapping(value ="/Updateinfo" ,produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
   public List<InfoVO> InfoUpdate(MultipartFile uploadFile, InfoVO infoVO) {
 
-	  String uploadFolder = "C:\\upload";			
+	  String uploadFolder = "/resources/upload/";	//C:\\upload			
 	  String uploadFolderPath = getFolder();
+	  System.out.println("겟 폴더 출력");
+	  System.out.println(uploadFolderPath);
 	  
 	  if(uploadFile != null && uploadFile.getSize() >0) {
 		  
@@ -132,6 +144,13 @@ public class InfoController {
 	  
 	  infoservice.InfoUpdate(infoVO);
 	  return infoservice.selectFctInfoAll(infoVO);
+  }
+  
+  	//검색조건 설비코드 조회 
+  @ResponseBody
+  @GetMapping("/selelctCheckFct")
+  public List<InfoVO> showCheckfCT(){
+	  return infomapper.selectCheckFct();
   }
 	
 	//공정코드 조회 
@@ -187,13 +206,13 @@ public class InfoController {
 	  // 설비 등록 아작스 -------------------------------------------------------------------------------------------//
 	  @ResponseBody
 	  @PostMapping(value = "/infoInsert", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-	  public ResponseEntity<InfoVO> InfoInsert(MultipartFile uploadFile, InfoVO infoVO) {
-		  System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	  public ResponseEntity<InfoVO> InfoInsert(MultipartFile uploadFile, InfoVO infoVO ,HttpServletRequest request) {
 		  log.info("update ahax post.......");
+		    System.out.println(request.getContextPath());
 		  
-		  
-		  String uploadFolder = "C:\\upload";			
+		  String uploadFolder ="/resources/upload/";			
 		  String uploadFolderPath = getFolder();
+		  
 		  
 			/* uploadFile 매개변수에 값이 있는지 확인 */
 		  if(uploadFile != null && uploadFile.getSize() >0) {
@@ -281,7 +300,7 @@ public class InfoController {
 		@ResponseBody
 		public ResponseEntity<byte[]> getFile(String fileName)  {
 			log.info("fileName:" + fileName);
-			File file = new File("c:\\upload\\" + fileName);
+			File file = new File("/resources/img/" + fileName);
 			
 			log.info("file" + file);
 			

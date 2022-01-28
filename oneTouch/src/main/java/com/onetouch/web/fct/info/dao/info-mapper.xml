@@ -5,7 +5,7 @@
 
 <!-- 현재 날자 값 조회 -->
 <select id="todayDate" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	SELECT sysdate as todayDate FROM dual
+	SELECT (sysdate-7) as fixFrom, sysdate fixTo   FROM dual
 </select>
 
 <!-- 라인 조회-->
@@ -60,8 +60,10 @@ select * from fct_info where line_no = #{lineNo}
 		</if>
 </select>
 
-
-
+<!-- 설비코드 조회 -->
+<select id="selectCheckFct" resultType="com.onetouch.web.fct.info.dao.InfoVO">
+	SELECT fct_cd,fct_nm FROM fct_info
+</select>
 <!-- 단건조회 -->
 <select id="selectFctInfo" resultType="com.onetouch.web.fct.info.dao.InfoVO">
 	select * from fct_Info where fct_cd = #{fct_cd}
@@ -82,7 +84,7 @@ select * from fct_info where line_no = #{lineNo}
 							 ,FCT_IMG
 							 ,UPLOAD_PATH
 							 ) 
-	values (FN_GET_FCTCD_FROM_PRCCD(#{fctCd}),#{fctNm},#{lineNo},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{chkProdUnit},#{fctImg},#{uploadPath})
+	values (#{fctCd},#{fctNm},#{lineNO},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{chkProdUnit},#{fctImg},#{uploadPath})
 </insert>
 <!-- 수정 -->
 <update id="InfoUpdate">
