@@ -35,7 +35,7 @@
 </delete>
 <!-- 주문서조회 -->
 <select id="ordShtSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select prd_cd as prdCd , cnt as needCnt from pdt_ord_sht_dtl
+	select prd_cd as prdCd,prd_cd as prdCd1 , cnt as needCnt from pdt_ord_sht_dtl
 	where 1=1
 	<if test='ordShtNo!=null and ordShtNo!=""'>
 		AND ord_sht_no = #{ordShtNo}

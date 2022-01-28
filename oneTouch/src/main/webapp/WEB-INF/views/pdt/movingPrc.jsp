@@ -24,6 +24,10 @@
 <form id="prcMove" name="prcMove">
 	작업일자<input type="date" id="startDate" name="startDate">~ 
 	<input type="date" id="endDate" name="endDate"> 
+	<label for="checkedY">진행완료</label>
+	<input type="radio" id="checkedY" name="prcCheck" value="Y">
+	<label for="checkedN">진행중</label>
+	<input type="radio" id="checkedN" name="prcCheck" value="N">
 	<button type="button" id="searchBtn" name="searchBtn">검색</button>
 </form> 
 <div class="row">
@@ -55,10 +59,10 @@
 		name : 'instrNo',
 	},{
 		header : '작업시작일시',
-		name : 'workStrDate',
+		name : 'workStrDt',
 	},{
 		header : '지시수량',
-		name : 'instrCnt',
+		name : 'goalCnt',
 	},{
 		header : '생산량',
 		name : 'pdtCnt',
@@ -142,7 +146,7 @@
 /////////////////////////////이벤트리스너//////////////////////////////
 	searchBtn.addEventListener('click',ev=>{
 		let searchData=$('#prcMove').serializeObject();
-		fetch('workSearchList',{
+		fetch('movingSearchList',{
 				method:'POST',
 				headers:{
 				"Content-Type": "application/json",
@@ -177,7 +181,7 @@
 	
 
 		
-		let searchData=movingGrid.getRow(ev);		
+		let searchData=movingGrid.getRow(ev.rowKey);		
 		 fetch('prcMovingNonRoop',{
 			method:'POST',
 			headers:{
@@ -195,6 +199,8 @@
 	})
 	
 	function movingShowFnc(ev){
+		console.log(ev)
+		console.log("ddddd")
 		let searchData=movingGrid.getRow(ev);
 		fetch('prcMovingShow',{
 			method:'POST',
@@ -207,7 +213,7 @@
 		.then(result=>{
 			movingPrcGrid.resetData(result);
 			
-			if(v[0]==ev){
+			if(v.length=1){
 				console.log("aaaaaaaaaaaaaaaaa")
 				console.log(v[0])
 				movingShowFnc(ev);

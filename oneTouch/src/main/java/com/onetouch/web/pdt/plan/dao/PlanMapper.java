@@ -20,5 +20,8 @@ public interface PlanMapper {
 	PlanVO findLineNo(String prdCd);
 	void planCheck(WorkVO vo);
 	List<PlanVO> pdtPlanDtllist(PlanVO vo);
+	List<PlanVO> safeStckView();
+	List<PlanVO> selectPrd();
+	
 	
 }

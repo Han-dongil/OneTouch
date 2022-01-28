@@ -98,8 +98,8 @@ public class PlanServiceImpl implements PlanService {
 	
 	
 	@Override
-	public List<PrdVO> prdCdFind() {
-		return bomMapper.selectPrdAll();
+	public List<PlanVO> prdCdFind() {
+		return mapper.selectPrd();
 	}
 
 	@Override
@@ -161,6 +161,10 @@ public class PlanServiceImpl implements PlanService {
 		infoMapper.selectprcCd(vo);
 		
 		return infoMapper.selectprcCd(vo);
+	}
+	@Override
+	public List<PlanVO> safeStckView() {
+		return mapper.safeStckView();
 	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기

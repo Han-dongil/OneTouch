@@ -14,4 +14,5 @@ public interface PrcService {
 	void updateFlt(PrcVO vo);
 	void fastStop(PrcVO vo);
 	List<PrcVO> prcMovingView(PrcVO vo);
+	List<PrcVO> movingSearchList(PrcVO vo);
 }

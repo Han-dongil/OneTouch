@@ -4,46 +4,63 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/img/**" location="/img/" />
-	
- 	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
-				p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView" />
-		<!--Don't add suffix or prefix like you do with .jsp files-->
-		<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" >
+
+	<beans:bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:order="1"
+		p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView" />
+	<!--Don't add suffix or prefix like you do with .jsp files -->
+	<beans:bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<beans:property name="definitions">
 			<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
 		</beans:property>
 	</beans:bean>
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 		<beans:property name="order" value="3" />
 	</beans:bean>
-	
-	<context:component-scan base-package="com.onetouch.web">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotyep.Service"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotyep.Repository"/>
+
+	<context:component-scan
+		base-package="com.onetouch.web">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotyep.Service" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotyep.Repository" />
 	</context:component-scan>
-	
-	<!-- 종현 파일 업로드  -->
+
+	<!-- 종현 파일 업로드 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
 	</beans:bean>
-	
-	
-	
+
+	<task:scheduler id="jobScheduler" pool-size="10" />
+	<task:executor id="jobTaskExecutor" pool-size="10" />
+	<task:annotation-driven
+		executor="jobTaskExecutor" scheduler="jobScheduler" />
+
+
 </beans:beans>

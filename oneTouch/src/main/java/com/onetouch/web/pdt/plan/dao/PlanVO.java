@@ -21,10 +21,13 @@ public class PlanVO extends LotVO {
 	private String workStrDate;
 	private String workPlanTime;
 	private String nowPhs;
+	private String prdCd1;
 	//bom 테이블 컬럼
 	private String useAmt;
 	private String mtrLot;
 	private String realCnt;
+	private String safeStck;
+	
 	
 	
 }

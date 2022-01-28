@@ -24,6 +24,7 @@ public class PrcVO extends WorkVO{
 	private String prcSeq;
 	private int prcEndNull;
 	private String prdSect; 
+	private String prcCheck;
 	//메세지
 	private String msg;
 	//동기화

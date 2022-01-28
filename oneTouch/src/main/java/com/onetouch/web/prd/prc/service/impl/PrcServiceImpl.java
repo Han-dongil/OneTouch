@@ -3,6 +3,7 @@ package com.onetouch.web.prd.prc.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.onetouch.web.prd.prc.dao.PrcMapper;
@@ -95,6 +96,7 @@ public class PrcServiceImpl implements PrcService{
 		if(flowMin==Integer.parseInt(a)) { //공정흐름 1번이 들어온경우
 			System.out.println("qqqqqqqqqqqq");
 			System.out.println(vo);
+			vo.setMsg("공정종료");
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);  //입력된시간불러와서 리턴
 			vo.setMsg("공정종료.");
@@ -107,12 +109,14 @@ public class PrcServiceImpl implements PrcService{
 		else if(Integer.parseInt(a)!=flowMax &&  Integer.parseInt(a)-1==mapper.endFlowCheck(vo)) { //1번흐름이 아니고 엔드시간찍힌애들의 합이 내플로우 -1과같을떄(앞공정종료o)
 			System.out.println("qqqqqqqqqqqq");
 			System.out.println(vo);
+			vo.setMsg("공정종료");
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);
 			vo.setMsg("공정종료!!.");
 			return vo;
 		}
 		else if(Integer.parseInt(a)-1==mapper.endFlowCheck(vo) &&  Integer.parseInt(a)==flowMax) {
+			vo100.setMsg("라인가동종료");
 			mapper.endUpdate(vo100); //시간업데이트
 			vo=mapper.endTimeSelect(vo100);
 			//lot 번호 부여
@@ -180,12 +184,34 @@ public class PrcServiceImpl implements PrcService{
 	@Override
 	public List<PrcVO> prcMovingView(PrcVO vo) {
 		int upCheck=mapper.updateCheck();
+		
+		if(mapper.prcFlowCount(vo) == mapper.prcPlayCount()) {
+			
+		}
 		while(true) {
 			if(upCheck!=mapper.updateCheck()) {
 				return mapper.prcMovingView(vo);
 			}
 		}
 	}
+
+	@Override
+	public List<PrcVO> movingSearchList(PrcVO vo) {
+		
+		if("Y".equals(vo.getPrcCheck())){
+			System.out.println("진행종료");
+			return mapper.movingSearchListFinish(vo);
+		}
+		else{
+			System.out.println("미진행");
+			return mapper.movingSearchList(vo);
+		}
+	}
+	
+//	@Scheduled(fixedDelay = 10000) //5초마다 실행 (실행시간 별도)
+//	public void task1() {
+//		
+//	}
 	
 	
 	

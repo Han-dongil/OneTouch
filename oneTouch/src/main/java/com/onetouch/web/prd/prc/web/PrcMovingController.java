@@ -54,7 +54,15 @@ public class PrcMovingController {
 	@ResponseBody
 	@RequestMapping("prcMovingNonRoop")
 	public List<PrcVO> prcMovingNonRoop(@RequestBody PrcVO vo){
+		System.out.println(vo);
 		System.out.println(mapper.prcMovingView(vo));
 		return mapper.prcMovingView(vo);
 	}
+	@ResponseBody
+	@RequestMapping("movingSearchList")
+	public List<PrcVO> movingSearchList(@RequestBody PrcVO vo){
+		
+		return service.movingSearchList(vo);
+	}
+	
 }

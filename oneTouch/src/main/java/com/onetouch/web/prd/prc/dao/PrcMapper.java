@@ -32,4 +32,8 @@ public interface PrcMapper {
 	List<PrcVO> usedlotFind(PrcVO vo); 
 	List<PrcVO> prcMovingView(PrcVO vo);
 	int updateCheck();
+	int prcFlowCount(PrcVO vo);
+	int prcPlayCount();
+	List<PrcVO> movingSearchList(PrcVO vo);
+	List<PrcVO> movingSearchListFinish(PrcVO vo);
 }

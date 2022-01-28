@@ -10,10 +10,10 @@
 	<if test='nowPhs =="N"'>
 		and now_phs ='N'
 	</if>
- 	<if test='startDate!="" and startDate!="null"'>
+ 	<if test='startDate!="" and startDate!=null'>
 		and due_date>#{startDate}
 	</if>
- 	<if test='endDate!="" and endDate!="null"'>
+ 	<if test='endDate!="" and endDate!=null'>
 		and #{endDate}>due_date
 	</if>  
 	
@@ -113,5 +113,25 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 <update id="planCheck">
 	update pdt_plan set now_phs = 'Y' where plan_no=#{planNo}
 </update>
+
+<!-- 안전 재고 생산 -->
+<select id="safeStckView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select a.mtr_cd as prdCd , a.safe_stck ,nvl(a.safe_stck,0) - nvl(b.stck_cnt,0) need_cnt
+	from adm_mtr a left join mtr_lot_stck b
+	on a.mtr_cd = b.mtr_cd
+	where a.mtr_cd like 'PRD%' and a.safe_stck > (nvl(b.stck_cnt,0)-nvl(b.hld_cnt,0))
+	order by 1
+</select>
+<select id="selectPrd" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select  prd_cd,
+			prd_cd as prdCd1,
+	        prd_nm,
+	        prd_std,
+	        mng_unit,
+	        use_yn,
+	        prd_sect,
+	        able_line_no
+	from    adm_prd
+</select>
 
 </mapper>
