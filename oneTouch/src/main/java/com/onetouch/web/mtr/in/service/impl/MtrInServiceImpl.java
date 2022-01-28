@@ -23,6 +23,7 @@ public class MtrInServiceImpl implements MtrInService {
 	@Autowired MtrLotMapper lotMapper;
 	@Override
 	public List<MtrInVO> selectIn(MtrSearchVO inSearchVO) {
+		System.out.println(inMapper.selectIn(inSearchVO));
 		return inMapper.selectIn(inSearchVO);
 	}
 	

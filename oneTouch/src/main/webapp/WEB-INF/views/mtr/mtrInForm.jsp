@@ -149,7 +149,6 @@ let mainGrid = new Grid({
 					header: '발주량',
 					name: 'ordAmt',
 					align: 'right',
-					editor: 'text',
 				    formatter({value}){
 					   return format(value);
 				    },
@@ -263,6 +262,7 @@ mainGrid.on('editingFinish', (ev) => {
 			if(mainGrid.getValue(ev.rowKey, 'inAmt')*1 > mainGrid.getValue(ev.rowKey, 'notinAmt')*1){
 				toastr["info"]("입고량이 해당자재의 미입고량보다 많습니다.")
 				ev.stop();
+				//mainGrid.setValue(ev.rowKey, 'inAmt', '')
 			} else {
 				let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
 				let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
