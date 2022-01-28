@@ -1,5 +1,6 @@
 package com.onetouch.web.prd.prc.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,9 +160,11 @@ public class PrcServiceImpl implements PrcService{
 		PrcVO vo2=new PrcVO();
 		vo2=vo;
 		String fltSave=mapper.realFlt(vo).getSumFlt();
+		String pdtSave=mapper.realFlt(vo).getPdtCnt();
 		while(true){
 			String flt=mapper.realFlt(vo2).getSumFlt();
-			if(!fltSave.equals(flt)||fltSave==vo.getGoalCnt()) {
+			String pdt=mapper.realFlt(vo2).getPdtCnt();
+			if(!fltSave.equals(flt)||fltSave==vo.getGoalCnt()||!pdtSave.equals(pdt)||pdtSave==vo.getPdtCnt()) {
 				return mapper.realFlt(vo);
 			}
 		}
@@ -185,9 +188,6 @@ public class PrcServiceImpl implements PrcService{
 	public List<PrcVO> prcMovingView(PrcVO vo) {
 		int upCheck=mapper.updateCheck();
 		
-		if(mapper.prcFlowCount(vo) == mapper.prcPlayCount()) {
-			
-		}
 		while(true) {
 			if(upCheck!=mapper.updateCheck()) {
 				return mapper.prcMovingView(vo);
@@ -208,10 +208,23 @@ public class PrcServiceImpl implements PrcService{
 		}
 	}
 	
-//	@Scheduled(fixedDelay = 10000) //5초마다 실행 (실행시간 별도)
-//	public void task1() {
-//		
-//	}
+	@Scheduled(fixedDelay = 10000) //10초마다 실행 (실행시간 별도)
+	public void selectTask1() {
+		List<PrcVO> list= new ArrayList<>();
+		list=mapper.autoSelect();
+		System.out.println(list);
+		for(PrcVO vo : list) {
+			if(Integer.parseInt(vo.getGoalCnt())>Integer.parseInt(vo.getPdtCnt())) {
+				int uph=mapper.uphFind(vo);
+				System.out.println(uph);
+				System.out.println(vo.getPdtCnt());
+				vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getPdtCnt())));
+				System.out.println(vo);
+				mapper.autoUpdate(vo);
+			}
+		}
+		
+	}
 	
 	
 	

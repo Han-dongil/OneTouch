@@ -154,6 +154,8 @@
 		.then(result=>{
 			if(result.sumFlt!=result.goalCnt){
 				hiddenGrid.setValue(0,'sumFlt',result.sumFlt*1);
+				hiddenGrid.setValue(0,'pdtCnt',result.pdtCnt*1);
+				console.log(result)
 				fltCheck();
 				
 			}else{

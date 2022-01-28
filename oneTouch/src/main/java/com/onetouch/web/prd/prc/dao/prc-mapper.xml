@@ -105,8 +105,9 @@
 		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="realFlt" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select instr_no,flt_cnt,prc_cd ,nvl((select sum(flt_cnt) 
+		select instr_no,flt_cnt,prc_cd,pdt_cnt ,nvl((select sum(flt_cnt) 
                                     from prd_prc_mng
+                                    where instr_no=#{instrNo}
                                     group by instr_no),0) as sumFlt
 		from prd_prc_mng
 		where prc_cd=#{prcCd} AND instr_no=#{instrNo}
@@ -134,13 +135,13 @@
 		where instr_no=#{instrNo}
 	</update>
 	<select id="usedlotFind" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
-		select * from used_mtr_lot where instr_no like '%PWO%'
-	 	<if test='instrNo!="" and instrNo!=null'>
-			and instr_no=#{instrNo}
-		</if> 
-	 	<if test='mtrLot!="" and mtrLot!=null'>
-			and mtr_lot=#{mtrLot}
-		</if> 
+			select * from used_mtr_lot where instr_no like '%PWO%'
+		 	<if test='instrNo!="" and instrNo!=null'>
+				and instr_no=#{instrNo}
+			</if> 
+		 	<if test='mtrLot!="" and mtrLot!=null'>
+				and mtr_lot=#{mtrLot}
+			</if> 
 		  
 	</select>
 	<select id="prcMovingView" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
@@ -151,13 +152,16 @@
 		select (to_number(sum(nvl2(work_fin_dt,1,0)))+to_number(sum(nvl2(work_str_dt,1,0)))+to_number(sum(nvl(flt_cnt,0)))+to_number(sum(nvl2(now_phs,1,0)))) as upCheck from prd_prc_mng
 	</select>
 	<select id="movingSearchListFinish" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select distinct a.instr_no , a.mtr_lot, a.line_no , to_char(b.work_str_dt,'yyyy-MM-dd') work_str_dt, to_char(b.work_fin_dt,'yyyy-MM-dd') work_fin_dt, b.goal_cnt , (select min(pdt_cnt)
+		select a.instr_no , a.mtr_lot , a.line_no , a.work_str_dt , a.work_fin_dt , a.goal_cnt, a.pdt_cnt
+		from (select distinct a.instr_no , a.mtr_lot, a.line_no , to_char(b.work_str_dt,'yyyy-MM-dd') work_str_dt, to_char(b.work_fin_dt,'yyyy-MM-dd') work_fin_dt, b.goal_cnt , (select min(pdt_cnt)
                                                                                                                                                                     from prd_prc_mng
                                                                                                                                                                     where instr_no=a.instr_no) as pdt_cnt 
 		from used_mtr_lot a join prd_prc_mng b
 		on a.instr_no = b.instr_no
 		where 1=1
-		and a.instr_no like '%PWO%'
+		and a.instr_no like '%PWO%') a join pdt_work_instr b
+		on a.instr_no = b.instr_no
+		where b.now_phs='Y'
 	 	<if test='startDate!="" and startDate!="null"'>
 			and work_str_dt>#{startDate}
 		</if>
@@ -189,5 +193,19 @@
 	from prd_prc_mng
 	where now_phs like '%가동종료%'
 	</select>
-	
+	<select id="autoSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select line_no , prc_cd ,instr_no ,nvl(pdt_cnt,0) pdt_cnt,(nvl(goal_cnt,0)-nvl(flt_cnt,0)) goalCnt from prd_prc_mng
+		where now_phs='가동중'
+	</select>
+	<select id="uphFind" resultType="integer">
+		select trunc(((a.uph_pdt_amt)/60/6),3)
+		from fct_line a join fct_info b
+		on a.line_no = b.line_no
+		where a.line_no=#{lineNo}
+		and b.prc_cd=#{prcCd}
+		order by a.line_no
+	</select>
+	<update id="autoUpdate">
+		update prd_prc_mng set pdt_cnt=#{pdtCnt} where instr_no = #{instrNo}
+	</update>	
 </mapper>

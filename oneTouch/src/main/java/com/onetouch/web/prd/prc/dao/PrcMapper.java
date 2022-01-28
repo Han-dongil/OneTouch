@@ -36,4 +36,7 @@ public interface PrcMapper {
 	int prcPlayCount();
 	List<PrcVO> movingSearchList(PrcVO vo);
 	List<PrcVO> movingSearchListFinish(PrcVO vo);
+	List<PrcVO> autoSelect();
+	int uphFind(PrcVO vo);
+	void autoUpdate(PrcVO vo);
 }
