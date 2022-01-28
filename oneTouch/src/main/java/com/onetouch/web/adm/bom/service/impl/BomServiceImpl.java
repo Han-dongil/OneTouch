@@ -43,18 +43,18 @@ public class BomServiceImpl implements BomService {
 	@Override
 	public void modify(ModifyVO<BomVO> mvo) {
 		if(mvo.getCreatedRows() != null) {
-			for(BomVO mngvo : mvo.getCreatedRows()) {
-				mapper.insertBom(mngvo);
+			for(BomVO bomvo : mvo.getCreatedRows()) {
+				mapper.insertBom(bomvo);
 			};
 		}
 		if(mvo.getUpdatedRows() != null) {
-			for(BomVO mngvo : mvo.getUpdatedRows()) {
-				mapper.updateBom(mngvo);
+			for(BomVO bomvo : mvo.getUpdatedRows()) {
+				mapper.updateBom(bomvo);
 			};
 		}
 		if(mvo.getDeletedRows() != null) {
-			for(BomVO mngvo : mvo.getDeletedRows()) {
-				mapper.deleteBom(mngvo);
+			for(BomVO bomvo : mvo.getDeletedRows()) {
+				mapper.deleteBom(bomvo);
 			};
 		}
 		

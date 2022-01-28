@@ -68,18 +68,19 @@
 	
 	<!-- 제품 선택했을때 bom조회 -->
 	<select id="selectBomDtl" resultType="com.onetouch.web.adm.bom.dao.BomVO">
-		select  mtr_cd, 
-		        FN_GET_MTR_CD_TO_NM(mtr_cd) as mtrNm,
-		        use_amt,
-		        ord_chk,
-		        pdt_chk,
-		        FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
-		        cmt,
-		        bom_cd,
-		        prc_cd,
-		        prd_cd
-		from 	adm_bom
-		where 	prd_cd = #{prdCd}
+		select   mtr_cd, 
+		         FN_GET_MTR_CD_TO_NM(mtr_cd) as mtrNm,
+		         use_amt,
+		         ord_chk,
+		         pdt_chk,
+		         FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
+		         cmt,
+		         bom_cd,
+		         prc_cd,
+		         prd_cd
+		from 	 adm_bom
+		where 	 prd_cd = #{prdCd}
+		order by mtr_cd
 	</select>
 	
 	<!-- prd 쿼리 -->
@@ -99,7 +100,7 @@
 			 #{mngUnit},
 			 #{prdSect},
 			 #{ableLineNo},
-			 <if test = "useYn == null || useYn == ''" >
+			 <if test = "useYn == null and useYn == ''" >
 				'N'
 			</if>
 			<if test = "useYn == 'on'">
@@ -119,7 +120,7 @@
 				mng_unit = #{mngUnit},
 				prd_sect = #{prdSect},
 				use_yn = 
-				<if test = "useYn == null || useYn == ''" >
+				<if test = "useYn == null and useYn == ''" >
 					'N'
 				</if>
 				<if test = "useYn == 'on'">
@@ -141,8 +142,8 @@
 					use_amt = #{useAmt},
 					ord_chk = #{ordChk},
 					pdt_chk = #{pdtChk},
-			<if test="cmt != null">cmt = #{cmt},</if>
 					prc_cd = #{prcCd}
+			<if test="cmt != null and cmt != ''">,cmt = #{cmt}</if>
 			where	bom_cd=#{bomCd}
 		</update>
 		
@@ -155,7 +156,7 @@
 			 pdt_chk,
 			 prc_cd,
 			 bom_cd
-			 <if test="cmt != null">,cmt</if>
+			 <if test="cmt != null and cmt != ''">,cmt</if>
 			 )
 			 VALUES(
 			 #{mtrCd},
@@ -165,7 +166,7 @@
 			 #{pdtChk},
 			 #{prcCd},
 			 FN_MAKE_BOMCD()
-			 <if test="cmt != null">,#{cmt}</if>
+			 <if test="cmt != null and cmt != ''">,#{cmt}</if>
 			 )
 		</insert>
 </mapper>

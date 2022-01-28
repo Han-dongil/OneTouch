@@ -44,9 +44,10 @@ public class FltController {
 	// 삭제,수정,등록 처리
 	@ResponseBody
 	@PostMapping("/fltModifyData")
-	public void modify(@RequestBody ModifyVO<FltVO> mvo) {
+	public String modify(@RequestBody ModifyVO<FltVO> mvo) {
 		System.out.println("modify" + mvo);
 		fltservice.modify(mvo);
+		return "fltCont";
 	}
 	
 }

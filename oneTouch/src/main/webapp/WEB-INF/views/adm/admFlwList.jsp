@@ -64,6 +64,7 @@
 </div>
 </div>
 <script type="text/javascript">
+	//--------변수선언--------
 	let prdCode1;
 	let prdCode2;
 	let prdCodeVal;
@@ -71,9 +72,11 @@
 	let PrdDtl;
 	let lineSplit =[];
 	let Grid = tui.Grid;
+	//--------변수선언 끝--------
 	
 	document.getElementById('btnEditPrd').setAttribute('disabled', true);
 	
+	//--------그리드 css--------
 	Grid.applyTheme('default',{
 		cell:{
 			/* header:{
@@ -88,6 +91,7 @@
 	        }
 		}
 	})
+	//--------그리드 css--------
 	
 	const columns1 = [{
 		

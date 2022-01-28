@@ -102,37 +102,15 @@ hr{
 	<div id="grid1"></div>
 	<div id="dialog-form" title="title"></div>
 </div>
-
-
-<!-- <br>
-<h3>[제품BOM관리]</h3>
-<hr>
-<h4>✔제품정보</h4>
-<form id="bomFrm" name="bomFrm" method="post">
-	<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" readonly>
-	<button type="button" id="btnPrdCd">🔍</button><br>
-	<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm" readonly><br>
-	<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm" readonly><br>
-	<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm" readonly><br>
-	<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm" readonly><br>
-	<label>공정라인&nbsp;</label><select id="ableLineNo" name="ableLineNo"></select><br>
-	<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;" readonly>
-</form>
-<hr>
-<div align="right" style="margin-right: 3%;">
-<button type="button" id="btnAdd">추가</button>
-<button type="button" id="btnDel">삭제</button>
-<button type="button" id="btnSave">저장</button>
-</div>
-<h4>✔제품소요량관리</h4>
-<div id="grid1"></div>
-<div id="dialog-form" title="title"></div> -->
-
-
 <script>
+	//--------변수선언--------
 	let rowk;
+	let BomCnt = 0;
+	let prdCdVal;
 	let Grid = tui.Grid;
+	//--------변수선언 끝--------
 	
+	//--------그리드 css--------
 	Grid.applyTheme('striped',{
 		cell:{
 			header: {
@@ -144,24 +122,56 @@ hr{
 	        }
 		}
 	}) 
+	//--------그리드 css 끝--------
 	
-	//제품코드옆의 돋보기 누르면
-	btnPrdCd.addEventListener("click", function() {
-		mPrd();
-		$('#ui-id-1').html('제품코드');
-	})
+	//--------제품정보 보여주는 form 기능--------
+		//제품코드옆의 돋보기 누르면
+		btnPrdCd.addEventListener("click", function() {
+			mPrd();
+			$('#ui-id-1').html('제품코드');
+		})
+		
+		//모달설정
+		let dialog;
+		dialog = $( "#dialog-form" ).dialog({
+			autoOpen : false,
+			modal : true,
+			resizable: false,
+			height: "auto",
+			width: 800,
+			height: 400
+		});
+		
+		//제품코드 눌렀을때 나오는 모달에서 더블클릭했을때 실행되는 함수
+		function getModalPrd(param) {
+			document.getElementById('prdCd').value = param.prdCd;
+			document.getElementById('prdNm').value = param.prdNm;
+			document.getElementById('prdStdNm').value = param.prdStdNm;
+			document.getElementById('mngUnitNm').value = param.mngUnitNm;
+			document.getElementById('prdSectNm').value = param.prdSectNm;
+			if(param.useYn == 'Y') {
+				document.getElementById('useYn').checked = true
+			} else {
+				document.getElementById('useYn').checked = false
+			}
+			
+			lineSplit = param.ableLineNo.split("/")
+			for(i=0;i<lineSplit.length;i++) {
+				let option = document.createElement('option');
+				option.value = lineSplit[i];
+				option.innerHTML = lineSplit[i];
+				document.getElementById('ableLineNo').appendChild(option);
+			}
+			
+			dialog.dialog("close");
+			
+			//bom보여주기
+			prdCode = {'prdCd':$('#prdCd').val()};
+			mainGrid.readData(1,prdCode,true);
+		}		
+	//--------제품정보 보여주는 form 기능 끝--------
 	
-	//모달설정
-	let dialog;
-	dialog = $( "#dialog-form" ).dialog({
-		autoOpen : false,
-		modal : true,
-		resizable: false,
-		height: "auto",
-		width: 800,
-		height: 400
-	});
-	
+	//--------그리드컬럼 선언--------
 	const columns = [{
 		header: '자재코드',
 		name: 'mtrCd'
@@ -225,7 +235,9 @@ hr{
 		name: 'bomCd',
 		hidden : true
 	}]
+	//--------그리드컬럼 선언 끝--------
 	
+	//--------dataSource 선언--------
 	var dataSource = {
 			api: {
 				readData: {
@@ -240,7 +252,9 @@ hr{
 			contentType: 'application/json',
 			initialRequest: false
 	}
+	//--------dataSource 선언 끝--------
 	
+	//--------그리드 그리기--------
 	let mainGrid = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource,
@@ -249,104 +263,128 @@ hr{
 		bodyHeight: 284,
 		minBodyHeight: 284
 	})
+	//--------그리드 그리기 끝--------
 	
-	function getModalPrd(param) {
-		//제품정보 보여주기
-		console.log(param);
-		document.getElementById('prdCd').value = param.prdCd;
-		document.getElementById('prdNm').value = param.prdNm;
-		document.getElementById('prdStdNm').value = param.prdStdNm;
-		document.getElementById('mngUnitNm').value = param.mngUnitNm;
-		document.getElementById('prdSectNm').value = param.prdSectNm;
-		if(param.useYn == 'Y') {
-			document.getElementById('useYn').checked = true
-		} else {
-			document.getElementById('useYn').checked = false
+
+	//--------제품 bom 그리드 기능 (mainGrid)--------
+	
+		//메인그리드 업뎃후에 bom코드갯수세기
+	 	mainGrid.on('onGridUpdated',function() {
+	 		BomCnt = mainGrid.getRowCount();
+	 	})
+	 	
+		//자재명 더블클릭 모달띄우기
+		mainGrid.on("dblclick", (ev)=> {
+			if (ev.columnName === 'mtrNm' || 
+					ev.columnName === 'mtrCd') {
+				rowk = ev.rowKey;
+				mMtr();
+				$('#ui-id-1').html('자재');
+			}
+		})
+		
+		//자재명 더블클릭한 모달창안에서 더블클릭
+		function getModalMtr(param) {
+			//같은 자재 못들어가게 체크
+			let flag = 0;
+			for(data of mainGrid.getData()) {
+				if(data.mtrCd == param.mtrCd) {
+					alert("이미 등록된 자재입니다.")
+					flag = 1;
+				}
+			}
+			if(flag != 1) {
+				mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
+				mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
+				dialog.dialog("close");		
+			}
 		}
 		
-		lineSplit = param.ableLineNo.split("/")
-		for(i=0;i<lineSplit.length;i++) {
-			let option = document.createElement('option');
-			option.value = lineSplit[i];
-			option.innerHTML = lineSplit[i];
-			document.getElementById('ableLineNo').appendChild(option);
+		//사용공정명 더블클릭 모달띄우기
+		mainGrid.on("dblclick", (ev)=> {
+			if (ev.columnName === 'prcNm') {
+				rowk = ev.rowKey;
+				mPrc();
+				$('#ui-id-1').html('사용공정명');
+			}
+		})
+		
+		//사용공정명 더블클릭한 모달창 안에서 더블클릭
+		function getModalPrc(param) {
+			mainGrid.setValue(rowk, "prcCd", param.prcCd, false);
+			mainGrid.setValue(rowk, "prcNm", param.prcNm, false);
+			dialog.dialog("close");	
 		}
 		
-		dialog.dialog("close");
+		//등록버튼
+		btnAdd.addEventListener("click", function() {
+			mainGrid.appendRow({'mtrCd':'',
+								'mtrNm':'',
+								'useAmt':'',
+								'ordChk':'',
+								'pdtChk':'',
+								'prcNm':'',
+								'cmt':''},
+								{focus : true});
+			rowk = mainGrid.getRowCount() - 1;
+			prdCdVal = document.getElementById("prdCd").value
+			mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
+		})
 		
-		//bom보여주기
-		prdCode = {'prdCd':$('#prdCd').val()};
-		console.log(prdCode);
-		mainGrid.readData(1,prdCode,true);
-	}
-	
-	//자재명 더블클릭 모달띄우기
-	mainGrid.on("dblclick", (ev)=> {
-		if(ev.columnName === 'mtrCd') {
-			alert('자재명을 더블클릭하세요');
-		}
-		console.log(ev);
-		if (ev.columnName === 'mtrNm') {
-			rowk = ev.rowKey;
-			mMtr();
-			$('#ui-id-1').html('자재');
-		}
-	})
-	
-	//자재명 더블클릭한 모달창안에서 더블클릭
-	function getModalMtr(param) {
-		console.log("더블클릭자재");
-		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
-		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
-		dialog.dialog("close");	
-	}
-	
-	//사용공정명 더블클릭 모달띄우기
-	mainGrid.on("dblclick", (ev)=> {
-		console.log(ev);
-		if (ev.columnName === 'prcNm') {
-			rowk = ev.rowKey;
-			mPrc();
-			$('#ui-id-1').html('사용공정명');
-		}
-	})
-	
-	//사용공정명 더블클릭한 모달창 안에서 더블클릭
-	function getModalPrc(param) {
-		console.log("더블클릭공정");
-		mainGrid.setValue(rowk, "prcCd", param.prcCd, false);
-		mainGrid.setValue(rowk, "prcNm", param.prcNm, false);
-		dialog.dialog("close");	
-	}
-	
-	//삭제버튼
-	btnDel.addEventListener("click", function() {
-		mainGrid.removeCheckedRows(true);
-	})
-	
-	//저장버튼
-	btnSave.addEventListener("click", function() {
-		mainGrid.blur();
-		mainGrid.request('modifyData');
-	})
-	
-	//등록버튼
-	btnAdd.addEventListener("click", function() {
-		mainGrid.appendRow({});
-		rowk = mainGrid.getRowCount() - 1;
-		console.log(rowk);
-		prdCdVal = document.getElementById("prdCd").value
-		mainGrid.setValue(rowk, "prdCd", prdCdVal, false);
-		console.log(mainGrid.getValue(rowk,'prdCd'));
-	})	
-	
-	//초기화버튼
-	btnReset.addEventListener("click", function() {
-		if(!confirm("초기화하시겠습니까?")){
-			return false;
-		}
-		$('#bomFrm')[0].submit();
-	})
+		//삭제버튼
+		btnDel.addEventListener("click", function() {
+			mainGrid.removeCheckedRows(true);
+			mainGrid.request("modifyData");
+		})
+		
+		//저장버튼
+		btnSave.addEventListener("click", function() {
+			mainGrid.blur();
+			//필수입력
+			rowk = mainGrid.getRowCount();
+			if(BomCnt <= rowk) {
+				for(i=BomCnt; i<rowk; i++) {
+					if(mainGrid.getRow(i).mtrCd == '') {
+						alert("자재코드는 필수입력칸입니다!!");
+						return;
+					} else if(mainGrid.getRow(i).mtrNm == '') {
+						alert("자재명은 필수입력칸입니다!!");
+						return;
+					} else if(mainGrid.getRow(i).useAmt == '') {
+						alert("사용량은 필수입력칸입니다!!");
+						return;
+					} else if(mainGrid.getRow(i).ordChk == '') {
+						alert("발주는 필수입력칸입니다!!");
+						return;
+					} else if(mainGrid.getRow(i).pdtChk == '') {
+						alert("생산은 필수입력칸입니다!!");
+						return;
+					} else if(mainGrid.getRow(i).prcNm == '') {
+						alert("사용공정명은 필수입력칸입니다!!");
+						return;
+					}
+				}
+				mainGrid.request('modifyData');
+			}
+		})
+			
+		//초기화버튼
+		btnReset.addEventListener("click", function() {
+			if(!confirm("초기화하시겠습니까?")){
+				return;
+			}
+			$('#bomFrm')[0].submit();
+		})
+		
+		//메인그리드 readData(등록수정삭제 후에)
+		mainGrid.on("response", function(ev) {
+			if(ev.xhr.response == "bomCont") {
+				mainGrid.readData();
+				console.log("메인그리드 readData했음");
+			}
+		})
+
+	//--------제품 bom 그리드 기능 끝(mainGrid)--------
 </script>
 </body>
 </html>
