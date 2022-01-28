@@ -37,9 +37,6 @@
 
 <div>
 
-
- 
-
 	<div style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
 		<form id="fixFrm" method="post">
 		<span style="margin-left: 100px;">
@@ -282,7 +279,8 @@
 		   if(ev.columnName == "prodChkNo" || ev.columnName == "chkDt" || ev.columnName == "chkExpectDt" || ev.columnName == "chkProd" || ev.columnName == "chkProdUnit" || ev.columnName == "prodChkNo" || ev.columnName == "fctCd" || ev.columnName == "fctNm"){
 				console.log('ininininininininininininininininin')
 			  	//success: 성공(초록), info : 정보(하늘색), warning:경고(주항), error:에러(빨강)
-				toastr["warning"]("변경할 수 없는 코드 입니다.", "경고입니다.")
+				alert("변경할 수 없는 코드 입니다.")
+			  	//toastr["warning"]("변경할 수 없는 코드 입니다.", "경고입니다.")
 				
 				//현재함수 종료
 			   ev.stop();
@@ -338,7 +336,6 @@
 	    el: document.getElementById('dialog-form'),
 	    data: dataSourceProdCheck,  //이름이 같다면 생격가능
 	    rowHeaders : [ 
-	    	{type : 'rowNum', width: 100, align : 'left', valign : 'botton'},
 	    	{type : 'checkbox'} ],
 	   columns: columnsProdCheck
 	 });

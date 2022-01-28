@@ -7,6 +7,8 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InfoMapper {
 
+	//현재 날자 조회
+	InfoVO todayDate();
 	//라인삭제
 	int LineDelete(LineVO lineVO);
 	//라인 조회 

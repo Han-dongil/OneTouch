@@ -1,5 +1,7 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,7 @@
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 <!-- 토스트그리드 cdn -->
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+<script src="${path}/resources/js/function.js"></script>
 </head>
 <body>
 <form id="frm" method="post">
@@ -20,7 +23,7 @@
 				<div>
 					<span>
 							<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
-							<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
+							<input type="Date" id="fixFrom" value="" name="fixFrom" class="datepicker"> 
 							<label> ~ </label> 
 							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
 						</span>&nbsp;&nbsp;
@@ -46,24 +49,28 @@
 	let targetId = [];
 	//공정코드 저장할 map 변수 
 	let grid;
-	
+	let today;//날자변수
    let Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
-   Grid.applyTheme('striped', {
+   Grid.applyTheme('clean', {
       cell: {
     	  header: {
 	            background: '#4B49AC',
 	            text: '#fff'
 	        },
-	        evenRow: {
+	        /* evenRow: {
 	        	background:'#F5F7FF'
+	        } */
+			},
+	        row:{
+	        	hover:{
+	          	  background:'#F5F7FF'
+	            }
 	        }
-        
-      },
-      //고정칼럼 색상 설정
+     /*  //고정칼럼 색상 설정
       frozenBorder: {
            border: 'red'
-      }
+      } */
     });
    
    //th 영역
@@ -71,35 +78,44 @@
     {
     header: '설비코드',
     name: 'fctCd',
-    editor: 'text'
+    editor: 'text',
+    width:120,
+    align:'center'
   },
   {
     header: '설비명',
     name: 'fctNm',
-    editor: 'text'
+    editor: 'text',
+    align:'center'
   },
   {
     header: '공정',
     name: 'prcCd',
-    editor: 'text'
+    editor: 'text',
+    width:70,
+    align:'center'
   },
   {
     header: '설비규격',
     name: 'fctStd',
-    editor: 'text'
+    editor: 'text',
+    align:'center'
   },
   {
     header: '모델명',
     name: 'fctModel',
-    editor: 'text'
+    editor: 'text',
+    align:'center'
   },
   {
     header: '회사코드',
-    name: 'compCd'
+    name: 'compCd',
+    align:'center'
   },
   {
     header: '사용목적',
-    name: 'usePurp'
+    name: 'usePurp',
+    align:'center'
   },  
   {     //날짜(데이터피커) cdn 받아서 넣었다
      headet: '입고일',
@@ -109,17 +125,21 @@
   {
     header: '구매금액',
     name: 'purchCost',
-    editor: 'datePicker'
+    editor: 'text',
+    align:'center'
   },
   {
     header: '점검주기',
     name: 'chkProd',
-    editor: 'datePicker'
+    editor: 'datePicker',
+    width:70,
+    align:'center'
   },
   {
     header: '총생산량',
     name: 'totPdtAmt',
-    editor: 'datePicker'
+    editor: 'datePicker',
+    width:70
   }/* ,
   {
     header: 'uph생산량',
@@ -164,6 +184,7 @@
      function checkSeach(event){
     	let target = document.getElementById('fctCd')
     	let checkVal = $("#frm").serializeObject();
+    	console.log(checkVal)
     	/* console.log('조회')
     	console.log(checkVal)
 	 	let checkPrcCd = target.options[target.selectedIndex].value
@@ -200,9 +221,10 @@
    grid = new Grid({
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
-         rowHeaders : [ 'checkbox' ],
+         /* rowHeaders : [ 'checkbox' ], */
          bodyHeight:600,
          columns,
+         width:1000
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {
               frozenCount: 2, // 3개의 컬럼을 고정하고
@@ -270,6 +292,22 @@
        btnFind.addEventListener("click", function(){
     	   //grid.;
        })  */
+       
+       function todayDate(){
+			let d;
+			fetch('./selectTodayDate')
+			.then(response=>response.json())
+			.then(result=>{
+				d= result.todayDate.substr(0,10)
+				console.log(d)
+			})
+			console.log(d)
+			today = d;
+		}
+       	todayDate()
+		console.log(today)
+	
+       //document.getElementById('fixFrom').value = ;
        checkSeach();
 </script>
 </body>

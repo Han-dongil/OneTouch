@@ -49,6 +49,7 @@ public class InfoVO extends MngVO  {
 	private String fileName;		//원본파일의 이름
 	private String uuid;			//uuid값
 	private boolean image;			//이미지여부정보
+	String todayDate;
 	
 	
 	

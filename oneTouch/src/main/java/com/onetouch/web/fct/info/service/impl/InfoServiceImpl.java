@@ -61,6 +61,12 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 
+	@Override
+	public InfoVO todayDate() {
+		return mapper.todayDate();
+	}
+
+
 
 
 

@@ -26,33 +26,35 @@
 <script src="${path}/resources/js/modal.js"></script>
 <style>
 td>input {
-	width: 100px;
-	height: 25px;
-	font-size: 1px;
+	width: 120px;
+	height: 30px;
+	font-size: 15px;
 }
 
 td {
-	font-size: 1px;
+	font-size: 13px;
 }
 </style>
 
 </head>
 <body>
 	<div class="row">
-		<div class="col-4">
+		<div class="col-3" style="border-right: 1px solid gray;">
 			<!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
-			<button type="button" id='LinebtnAdd' onclick=LineAdd()>라인추가</button>
-			<button type="button" id='LinebtnDel' onclick=LineDel()>라인삭제</button>
-			<button type="button" id='LinebtnEdit'>라인수정</button>
-			<button type="button" id='LinebtnClear' onclick=LineClear()>라인초기화</button>
-			<form id="lineForm" method="post">
-				<div class="row" style= "margin-bottom:30px;border-top: 2px solid black; padding: 5px;">
+			<button type="button" id='LinebtnAdd' onclick=LineAdd()>추가</button>
+			<button type="button" id='LinebtnDel' onclick=LineDel()>삭제</button>
+			<button type="button" id='LinebtnEdit'>수정</button>
+			<button type="button" id='LinebtnClear' onclick=LineClear()>초기화</button>
+			<form id="lineForm" method="post" style="margin-bottom: 25px;">
+				<div class="row" style= " /* border-top: 2px solid black; */ padding: 5px;">
 					<div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
 						<table>
 							<tr>
 								<td>라인</td>
 								<td><input type="text" id="lineinput" name="lineNO"
 									value="" style="text-transform: uppercase;" /></td>
+							</tr>
+							<tr>
 								<td>총생산량</td>
 								<td><input type="number" id="totPdtAmt" name="totPdtAmt"
 									value="" /></td>
@@ -61,21 +63,23 @@ td {
 								<td>UPH생산량</td>
 								<td><input type="number" id="uphPdtAmt" name="uphPdtAmt"
 									value="" /></td>
-								<td>사용여부</td>
-								<td><input type="checkbox" id="useYn" name="useYn" value="N" /></td>
 							</tr>
 							<tr>
 								<td>사원</td>
 								<td><input type="text" id="empNo" name="empNo" value="" /></td>
+							</tr>
+							<tr>
+								<td>사용여부</td>
+								<td><input type="checkbox" id="useYn" name="useYn" value="N" /></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 
 			</form>
-			<div id="lineGrid"></div>
+			<div style=" margin-left: 40px;"  id="lineGrid"></div>
 		</div>
-		<div class="col-8">
+		<div class="col-9">
 			<div>
 				<!-- <button type="button" id='btnFind'>조회</button> -->
 				<button type="button" id='btnAdd'>추가</button>
@@ -83,9 +87,9 @@ td {
 				<button type="button" id='btnSave'>저장</button>
 				<button type="button" id='btnEdit'>수정</button>
 			</div>
-			<div class="row" style="border-top: 2px solid black; padding: 5px;">
-				<div class="col-7" style="margin-top: 30px;">
-					<form id="infoFrm" method="post" enctype="multipart/form-data">
+		<form id="infoFrm" method="post" enctype="multipart/form-data" >
+			<div class="row" style="/* border-top: 2px solid black; */ padding: 5px;">
+				<div class="col-7" style="margin-top: 30px; margin-bottom:10px;">
 						<table>
 							<tr>
 								<td>설비코드</td>
@@ -138,24 +142,24 @@ td {
 
 
 							<div class='uploadDiv'>
-								<td><input style="margin-bottom: 20px;" type="file"
-									id="fctImgBtn" name="uploadFile" value="" multiple
-									onchange="setThumbnail(event)" /></td>
+								<td></td>
 								<!-- <button id='uploadBtn'>Upload</button> -->
 							</div>
-					</form>
 				</div>
 				
 
 			</div>
 			<div class=col-4>
-					<img src="../resources/img/logo.jpg" id="fctImges"
-						style="width: 200px; height: 150px;"> <input type=hidden
-						id="fctImg" value="">
+					<img src="../resources/img/logo.jpg" id="fctImges" style="width: 250px; height: 200px;">
+					<input style="margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)" />
+					<input type=hidden id="fctImg" value="">
 				</div>
 		</div>
+	</form>
 		<div id="dialog-form"></div>
-		<div id="grid" style=""></div>
+		<div style = "margin-left:70px;">
+			<div id="grid" ></div>
+		</div>
 	</div>
 	<!-- row -->
 	<div id="fctGubundialog-form" title="설비구분"></div>
@@ -205,22 +209,20 @@ td {
    let s = 'd';
    var Grid = tui.Grid;
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
-   Grid.applyTheme('striped', {   
+   Grid.applyTheme('clean', {   
         cell: {
            header: {
                background: '#4B49AC',
                text: '#fff'
-           },
-           evenRow: {
-              background:'#F5F7FF'
            }
-          
-        },
-        //고정칼럼 색상 설정
-        frozenBorder: {
-             border: 'red'
+   		},
+        row:{
+        	hover:{
+          	  background:'#F5F7FF'
+            }
         }
-      });
+      }
+   );
    
    //th 영역
     let fctColumns = [
@@ -248,7 +250,7 @@ td {
     header: '모델명',
     name: 'fctModel',
     editor: 'text'
-  },
+  }/* ,
   {
     header: '회사코드',
     name: 'compCd'
@@ -256,7 +258,7 @@ td {
   {
     header: '사용목적',
     name: 'usePurp'
-  },  
+  } */,  
   {     
      //날짜(데이터피커) cdn 받아서 넣었다
      headet: '입고일',
@@ -306,6 +308,7 @@ td {
         columns:fctColumns,
         bodyHeight: 600,
        minBodyHeight: 600,
+       width: 800
     });
     
     
@@ -317,6 +320,25 @@ td {
     editor: 'text'
   },
   {
+	    header: '사용여부',
+	    name: 'useYn',
+	    editor: {
+	     type: 'radio',
+	     options:{
+	    	 listItems:[
+	    		 {text:'Y', value:'Y'},
+	    		 {text:'N', value:'N'}
+	    	 ]
+	     }
+		}
+  },
+		{
+			header: '사원',
+		    name: 'empNo',
+		    editor: 'text'
+	  	}    	
+	  /* ,
+  {
     header: '총생산량',
     name: 'totPdtAmt',
     editor: 'text'
@@ -325,25 +347,7 @@ td {
     header: 'UPH생산량',
     name: 'uphPdtAmt',
     editor: 'text'
-  },
-  {
-    header: '사용여부',
-    name: 'useYn',
-    editor: {
-     type: 'radio',
-     options:{
-    	 listItems:[
-    		 {text:'Y', value:'Y'},
-    		 {text:'N', value:'N'}
-    	 ]
-     }
-	}    	
-  },
-  {
-    header: '사원',
-    name: 'empNo',
-    editor: 'text'
-  }
+  }*/
     ]
  
   //그리드를 id 값안에다가 붙여넣어준다.
@@ -353,6 +357,7 @@ td {
         columns:lineColumns,
         bodyHeight: 600,
        minBodyHeight: 600,
+       width:250
     });
       
       
@@ -395,9 +400,16 @@ td {
       var fileCallPath = encodeURIComponent(dataVO.uploadPath+"/s_"+dataVO.fctImg);
       console.log('이미지 테스트')
       console.log(fileCallPath);
-      document.getElementById('fctImges').setAttribute("src", 'display?fileName='+fileCallPath);
-      console.log('사진 경로 띄우기')
-      console.log(dataVO.fctImg+dataVO.uploadPath)
+      if(dataVO.uploadPath == null){
+    	  console.log('이미지 없음')
+    	  document.getElementById('fctImges').setAttribute("src", '../resources/img/logo.jpg');
+      }
+      else{
+		document.getElementById('fctImges').setAttribute("src", 'display?fileName='+fileCallPath);
+		console.log('사진 경로 띄우기')
+		console.log(dataVO.fctImg+dataVO.uploadPath)
+      }
+      
       //상세정보에 체크 박스 이벤트 걸기
      
    })
@@ -555,6 +567,7 @@ td {
           
          let infoForm = document.getElementById('infoFrm');
          let formData = new FormData(infoForm);
+         console.log('업데이트')
          console.log(formData)
           $.ajax({
             url: "./Updateinfo",
