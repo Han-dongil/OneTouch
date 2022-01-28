@@ -1,5 +1,5 @@
 var Grid = tui.Grid;
-Grid.applyTheme('default', {
+Grid.applyTheme('clean', {
        cell: {
     	 normal: {
    	      border: '#FFFFFF'
