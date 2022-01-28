@@ -68,7 +68,7 @@
 				mng_unit = #{mngUnit},
 				pdt_day = #{pdtDay},
 				prc_sect = #{prcSect},
-		<if test="cmt != null">cmt = #{cmt},</if>
+		<if test="cmt != null and cmt !=''">cmt = #{cmt},</if>
 				seq = #{seq},
 				use_yn = #{useYn}
 		WHERE	prc_cd = #{prcCd}
@@ -81,7 +81,7 @@
 		 mng_unit,
 		 pdt_day,
 		 prc_sect,
-		 <if test="cmt != null">cmt,</if>
+		 <if test="cmt != null and cmt !=''">cmt,</if>
 		 seq,
 		 use_yn)
 		 VALUES(
@@ -90,7 +90,7 @@
 		 #{mngUnit},
 		 #{pdtDay},
 		 #{prcSect},
-		 <if test="cmt != null">#{cmt},</if>
+		 <if test="cmt != null and cmt !=''">#{cmt},</if>
 		 #{seq},
 		 #{useYn}
 		 )

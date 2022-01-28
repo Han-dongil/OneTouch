@@ -61,8 +61,13 @@ hr{
 
 
 <script type="text/javascript">
+	//--------변수선언--------
+	let rowk;
+	let fltCnt;
 	let Grid = tui.Grid;
+	//--------변수선언 끝--------
 	
+	//--------그리드 css--------
 	Grid.applyTheme('default',{
 		cell:{
 			header: {
@@ -74,8 +79,9 @@ hr{
 	        }
 		}
 	}) 
+	//--------그리드 css 끝--------
 	
-	
+	//--------그리드컬럼 선언--------
 	const columns = [{
 		header : '불량코드',
 		name : 'fltCd',
@@ -126,8 +132,9 @@ hr{
 		name : 'prcCd',
 		hidden : true
 	}]
+	//--------그리드컬럼 선언 끝--------
 	
-	//전체조회
+	//--------dataSource 선언--------
 	var dataSource = {
 			api: {
 				readData: {
@@ -139,8 +146,9 @@ hr{
 			},
 			contentType: 'application/json'
 	 };
-	
-	//그리드생성
+	 //--------dataSource 선언 끝--------
+
+	//--------그리드 그리기--------		
 	let grid = new Grid({
 		el: document.getElementById('grid'),
 		data: dataSource, 
@@ -149,103 +157,142 @@ hr{
 		bodyHeight: 450,
 		minBodyHeight: 450
 	}); 
+	//--------그리드 그리기 끝--------	
 	
-	//표시순서 자동추가알림
-	grid.on('editingStart', (ev) => {
-		if(ev.columnName == 'seq') {
-			var value = grid.getValue(ev.rowKey, 'seq');
-				console.log(value);
-			if(value == null) {
-				alert('표시순서는 자동추가됩니다');
+	//--------불량코드관리 그리드 기능 (grid)--------
+	
+		//그리드 업뎃후에 불량코드갯수세기
+	 	grid.on('onGridUpdated',function() {
+	 		fltCnt = grid.getRowCount();
+	 	})
+	
+		//등록버튼
+		btnAdd.addEventListener("click", function() {
+			rowk = grid.getRowCount() - 1;
+			if(grid.getRowCount() == 0) {
+				seqVal = 1;
+			} else {			
+				seqVal = parseInt(grid.getValue(rowk,'seq'))+1
+			}
+			grid.appendRow({'fltCd':'',
+							'fltNm':'',
+							'fltMtt':'',
+							'fltSect':'',
+							'prcNm':'',
+							'cmt':'',
+							'seq':seqVal},
+							{focus : true});
+		})	
+		
+		//삭제버튼
+		btnDel.addEventListener("click", function() {
+			grid.removeCheckedRows(true);
+			grid.request('modifyData');	
+		})
+		
+		//저장버튼----덜됨
+		btnSave.addEventListener("click", function() {
+			grid.blur();
+			rowk = grid.getRowCount();
+			if(fltCnt <= rowk) {
+				for(i=fltCnt; i<rowk; i++) {
+					if(grid.getRow(i).fltNm == '') {
+						alert("불량명은 필수입력칸입니다!!");
+						return;
+					} else if(grid.getRow(i).fltMtt == '') {
+						alert("불량내역은 필수입력칸입니다!!");
+						return;
+					} else if(grid.getRow(i).fltSect == '') {
+						alert("불량구분은 필수입력칸입니다!!");
+						return;
+					} else if(grid.getRow(i).prcNm == '') {
+						alert("발생공정명은 필수입력칸입니다!!");
+						return;
+					} else if(grid.getRow(i).seq == '') {
+						alert("표시순서는 필수입력칸입니다!!");
+						return;
+					} 
+				}
+				grid.request('modifyData');
+			}
+		})
+		
+		//모달설정
+		let dialog;
+		dialog = $( "#dialog-form" ).dialog({
+			autoOpen : false,
+			modal : true,
+			resizable: false,
+			height: "auto",
+			width: 700,
+			height: 400
+		});
+		
+		//불량코드 수정불가알림
+		grid.on('editingStart', (ev) => {
+			if(ev.columnName == 'fltCd') {
+				if(fltCnt > ev.rowKey) {
+					alert('불량코드는 수정이 불가능합니다');
+					ev.stop();
+				} else {
+					alert('불량코드는 자동추가됩니다');
+					ev.stop();
+				}
+			}
+		})
+		
+		//불량코드 자동추가알림
+		grid.on('editingStart', (ev) => {
+			if(ev.columnName == 'fltCd') {
+				var value = grid.getValue(ev.rowKey, 'fltCd');
+					console.log(value);
+				if(value == null) {
+					alert('불량코드는 자동추가됩니다');
+					ev.stop();
+				}
+			}
+		})
+		
+		//사용공정명 더블클릭 모달띄우기
+		grid.on("dblclick", (ev)=> {
+			fltSectVal = grid.getValue(ev.rowKey, 'fltSect');
+			if (ev.columnName === 'prcNm' && fltSectVal == '생산불량') {
+				rowk = ev.rowKey;
+				mPrc();
+				$('#ui-id-1').html('발생공정명');
+			}
+			if((ev.columnName === 'prcNm' && fltSectVal == null) ||
+					(ev.columnName === 'prcNm' && fltSectVal == '')) {
+				alert("불량구분을 먼저 선택해주세요")
 				ev.stop();
 			}
-		}
-	})
-	
-	let dialog;
-	dialog = $( "#dialog-form" ).dialog({
-		autoOpen : false,
-		modal : true,
-		resizable: false,
-		height: "auto",
-		width: 700,
-		height: 400
-	});
-	
-	//불량코드 수정불가알림
-	grid.on('editingStart', (ev) => {
-		if(ev.columnName == 'fltCd') {
-			var value = grid.getValue(ev.rowKey, 'fltCd');
-			if(value != '') {
-				//console.log(value);
-				alert('불량코드는 수정이 불가능합니다');
-				ev.stop();
+		})
+		
+		//자재불량 선택했을때 발생공정명 컬럼에 '해당사항없음' 붙여주기----덜됨
+		grid.on("editingFinish", (ev) => {
+			if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
+				grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
 			}
+		})
+		
+		
+		//사용공정명 더블클릭한 모달창 안에서 더블클릭
+		function getModalPrc(param) {
+			console.log("더블클릭공정");
+			grid.setValue(rowk, "prcCd", param.prcCd, false);
+			grid.setValue(rowk, "prcNm", param.prcNm, false);
+			dialog.dialog("close");	
 		}
-	})
-	
-	//불량코드 자동추가알림
-	grid.on('editingStart', (ev) => {
-		if(ev.columnName == 'fltCd') {
-			var value = grid.getValue(ev.rowKey, 'fltCd');
-				console.log(value);
-			if(value == null) {
-				alert('불량코드는 자동추가됩니다');
-				ev.stop();
+		
+		//그리드 readData(등록수정삭제 후에)
+		grid.on("response", function(ev) {
+			if(ev.xhr.response == "fltCont") {
+				grid.readData();
+				console.log("그리드 readData했음");
 			}
-		}
-	})
-	
-	//사용공정명 더블클릭 모달띄우기
-	grid.on("dblclick", (ev)=> {
-		fltSectVal = grid.getValue(ev.rowKey, 'fltSect');
-		if (ev.columnName === 'prcNm' && fltSectVal == '생산불량') {
-			rowk = ev.rowKey;
-			mPrc();
-			$('#ui-id-1').html('발생공정명');
-		}
-		if(ev.columnName === 'prcNm' && fltSectVal == '자재불량') {
-			alert("자재불량은 발생공정이 없습니다.")
-			ev.stop();
-		}
-		if((ev.columnName === 'prcNm' && fltSectVal == null) ||
-				(ev.columnName === 'prcNm' && fltSectVal == '')) {
-			alert("불량구분을 먼저 선택해주세요")
-			ev.stop();
-		}
-	})
-	
-	//사용공정명 더블클릭한 모달창 안에서 더블클릭
-	function getModalPrc(param) {
-		console.log("더블클릭공정");
-		grid.setValue(rowk, "prcCd", param.prcCd, false);
-		grid.setValue(rowk, "prcNm", param.prcNm, false);
-		dialog.dialog("close");	
-	}
-	
-	//삭제버튼
-	btnDel.addEventListener("click", function() {
-		grid.removeCheckedRows(true);
-	})
-	
-	//저장버튼
-	btnSave.addEventListener("click", function() {
-		grid.blur();
-		grid.request('modifyData');
-	})
-	
-	//등록버튼
-	btnAdd.addEventListener("click", function() {
-		rowk = grid.getRowCount() - 1;
-		if(grid.getRowCount() == 0) {
-			seqVal = 1;
-		} else {			
-			seqVal = parseInt(grid.getValue(rowk,'seq'))+1
-		}
-		grid.appendRow({'fltCd':'','seq':seqVal})
-	})	
+		})
 
-	
+	//--------불량코드관리 그리드 기능 끝(grid)--------
 </script>
 </body>
 </html>

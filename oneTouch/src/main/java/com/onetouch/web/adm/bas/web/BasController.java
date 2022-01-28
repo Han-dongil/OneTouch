@@ -55,24 +55,25 @@ public class BasController {
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("result", true);
 		maps.put("data", map);
-		//System.out.println("이거"+maps);
 		return maps;
 	}
 	
 	//삭제수정등록 처리 (basDtl)
 	@ResponseBody
 	@PostMapping("/basDtlModifyData")
-	public void modify(@RequestBody ModifyVO<BasDtlVO> mvo) {
+	public String modify(@RequestBody ModifyVO<BasDtlVO> mvo) {
 		System.out.println("modify" + mvo);
 		basservice.modify(mvo);
+		return "basDtlCont";
 	}
 	
 	//삭제수정등록 처리 (basAll)
 	@ResponseBody
 	@PostMapping("/basAllModifyData")
-	public void modifyBas(@RequestBody ModifyVO<BasVO> mvo) {
+	public String modifyBas(@RequestBody ModifyVO<BasVO> mvo) {
 		System.out.println("modify" + mvo);
 		basservice.modifyBas(mvo);
+		return "basAllCont";
 	}
 	
 }

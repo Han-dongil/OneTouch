@@ -46,8 +46,9 @@ public class BomController {
 	//삭제수정등록 처리
 	@ResponseBody
 	@PostMapping("/bomModifyData")
-	public void modify(@RequestBody ModifyVO<BomVO> mvo) {
+	public String modify(@RequestBody ModifyVO<BomVO> mvo) {
 		System.out.println("modify" + mvo);
 		bomservice.modify(mvo);
+		return "bomCont";
 	}
 }
