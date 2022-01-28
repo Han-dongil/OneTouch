@@ -19,9 +19,16 @@
 <!-- 제어쿼리ui -->
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/function.js"></script>
+
 <style type="text/css">
-	.red{background-color: red}
+	.red{
+			background-color:red
+		}
+	.green{
+			background-color:green 
+		  }
 </style>
+
 </head>
 <body>
 
@@ -129,21 +136,16 @@
 	let rdostatus =1; //비동기 등록, 비동기 중인 설비 라이도 버튼 값 
 	let dwtmList = [];
 
-	Grid.applyTheme('striped', {	
+	Grid.applyTheme('clean', {	
         cell: {
         	header: {
 	            background: '#4B49AC',
 	            text: '#fff'
 	        },
-	        evenRow: {
-	        	background:'#F5F7FF'
-	        }
+	       
           
-        },
-        //고정칼럼 색상 설정
-        frozenBorder: {
-             border: 'red'
         }
+       
       });
 	
 	
@@ -268,8 +270,9 @@
 		document.getElementById('fctCd').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
 		document.getElementById('fctNm').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
 		document.getElementById('dwtmDate').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-		
-		
+		fctGrid.addCellClassName(ev.rowKey,'fctPhs','green')	
+		console.log('ev찍어용')	
+		console.log(ev)	
 	})
 	
 	dwtmGrid.on('click',(ev)=>{
@@ -477,7 +480,6 @@
 				data: JSON.stringify(dwtmCheckData),
 				contentType:"application/json"
 			}).done(function(datas){
-				console.log(datas)
 				dwtmData = datas;	
 				dwtmGrid.resetData(datas)
 			}) 
@@ -560,10 +562,30 @@
 		}
 	}) 
 
+	function changePhs(){
+		
+		for( object of fctGrid.getData()){
+			console.log(object)
+			if(object.fctPhs == 'Y'){
+				fctGrid.addCellClassName(object.rowKey,'fctPhs','green');
+			}
+			else if(object.fctPhs == 'N'){
+				fctGrid.addCellClassName(object.rowKey,'fctPhs','red');
+			}
+			
+		}
+		
+		
+		
+	}
 	
 	fctChekPrcCd();	//페이지 접속후 기본으로 설비를 보여주는 그리드 출력하는 함수
 	document.getElementById("dwtmFctGridDiv").style = 'display:none';
-	fctGrid.addColumnClassName('fctPhs','red')
+	
+	changePhs()	//설비 상태 값을 이용한 색 주는 함수
+
+
+	
 	
 </script>
 </body>

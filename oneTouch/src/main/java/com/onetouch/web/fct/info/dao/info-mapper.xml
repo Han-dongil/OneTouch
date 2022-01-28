@@ -3,6 +3,10 @@
 <mapper namespace="com.onetouch.web.fct.info.dao.InfoMapper">
 <!-- 작성자 : 박종현 -->
 
+<!-- 현재 날자 값 조회 -->
+<select id="todayDate" resultType="com.onetouch.web.fct.info.dao.InfoVO">
+	SELECT sysdate as todayDate FROM dual
+</select>
 
 <!-- 라인 조회-->
 <select id="LineSelect" resultType="com.onetouch.web.fct.info.dao.LineVO">
