@@ -156,6 +156,15 @@ let mainGrid = new Grid({
 				    sortable: true
 				 },
 				 {
+					header: '미입고량',
+					name: 'notinAmt',
+					align: 'right',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
+				 },
+				 {
 				   header: '불량량',
 				   name: 'fltAmt',
 				   align: 'right',
@@ -242,12 +251,26 @@ let mainGrid = new Grid({
 					}
 				}
    		});
+//삼항연산자 예시
+/* let greeting = person => {
+	  let name = person ? person.name : `stranger`
+	  return `Howdy, ${name}`
+	} */
 //단가 * 입고량 바로 총금액으로 반영
 mainGrid.on('editingFinish', (ev) => {
-	let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
-	let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
-	if(inAmt != 0){
-		mainGrid.setValue(ev.rowKey,"totCost",inAmt*unitCost)
+	if(ev.columnName == 'inAmt'){
+		if(mainGrid.getValue(ev.rowKey, 'notinAmt') != ''){
+			if(mainGrid.getValue(ev.rowKey, 'inAmt')*1 > mainGrid.getValue(ev.rowKey, 'notinAmt')*1){
+				toastr["info"]("입고량이 해당자재의 미입고량보다 많습니다.")
+				ev.stop();
+			} else {
+				let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
+				let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
+				if(inAmt != 0){
+					mainGrid.setValue(ev.rowKey,"totCost",inAmt*unitCost)
+				}
+			}
+		}
 	}
 }) 
 //기존의 데이터는 수정이안되게 하는것
@@ -364,7 +387,7 @@ el : document.getElementById('dialog-ord'),
 data : ordDataSource,
 scrollX : false,
 scrollY : true,
-bodyHeight: 400,
+bodyHeight: 300,
 columns : [ 
 			{
 				header: '발주일자',
@@ -420,6 +443,7 @@ ordGrid.on('dblclick', ev => {
 
 function getModalOrd(param){
 	param.rowKey = mainGrid.getRowCount();
+	param.inAmt = 0;
 	mainGrid.appendRow(param);
 	totCal();
 	today(param.rowKey);
@@ -436,6 +460,7 @@ btnAdd.addEventListener("click", function(){
 //삭제버튼
 btnDel.addEventListener("click", function(){
 	mainGrid.removeCheckedRows(true);
+	mainGrid.request('modifyData');
 });
 //저장버튼
 btnSave.addEventListener("click", function(){
