@@ -177,8 +177,12 @@
 	//무빙그리드 클릭
 	movingGrid.on('click',ev=>{
 		console.log("dddddddddddddd")
-		v.push(ev.rowKey);
-	
+		if(movingGrid.getValue(ev.rowKey,'instrNo') != v[0]){
+			v.length=0;
+		}
+		v.push(movingGrid.getValue(ev.rowKey,'instrNo'));
+		console.log(v);
+		console.log(v.length);
 
 		
 		let searchData=movingGrid.getRow(ev.rowKey);		
@@ -192,8 +196,18 @@
 		.then(response=>response.json())
 		.then(result=>{
 			movingPrcGrid.resetData(result);
+			if(movingGrid.getValue(ev.rowKey,'instrNo') == v[0] && v.length==1){
+				console.log("aaaaaaaaaaaaaaaaa")
+				console.log(v.length)
+				movingShowFnc(movingGrid.getValue(ev.rowKey,'instrNo'));
+				
+				
+			}
+			else{
+				console.log("a22222222222222")
+				console.log(v.length)
+			}
 		}) 
-		movingShowFnc(ev.rowKey)
 		
 		
 	})
@@ -211,18 +225,11 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			movingPrcGrid.resetData(result);
-			
-			if(v.length=1){
-				console.log("aaaaaaaaaaaaaaaaa")
-				console.log(v[0])
+			if(v[0]==ev ){
+				movingPrcGrid.resetData(result);
 				movingShowFnc(ev);
 			}
-			else{
-				console.log("a22222222222222")
-				console.log(v[0])
-				v.length=0;	
-			}
+			
 			
 			
 		})
