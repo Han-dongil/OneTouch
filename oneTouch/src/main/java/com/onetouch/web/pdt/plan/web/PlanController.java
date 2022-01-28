@@ -80,7 +80,7 @@ public class PlanController {
 	}
 	@ResponseBody
 	@GetMapping("prdCdFind")
-	public List<PrdVO> prdCdFind(){
+	public List<PlanVO> prdCdFind(){
 		return service.prdCdFind();
 	}
 
@@ -138,4 +138,12 @@ public class PlanController {
 		System.out.println(ordShtNo);
 		return ordMapper.ordShtSelect(ordShtNo);
 	}
- }
+	//안전재고 확인
+	@ResponseBody
+	@GetMapping("safeStckView")
+	public List<PlanVO> safeStckView(){
+		
+		return service.safeStckView();
+	}
+}
+

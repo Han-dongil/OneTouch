@@ -16,10 +16,11 @@ public interface PlanService {
 	void insertPlan(ModifyVO<PlanVO> list);
 	List<PlanVO> lotCntSelect(PlanVO vo);
 	void insertPlanDtl(Map<String,List<PlanVO>> map);
-	List<PrdVO> prdCdFind();
+	List<PlanVO> prdCdFind();
 	List<BomVO> prcCdFind(PlanVO vo);
 	void addInsertPlan (Map<String,List<PlanVO>> map);
 	List<PlanVO> addPlanLotSelect(PlanVO vo);
 	List<PlanVO> findLineNo(String prdCd);
 	List<InfoVO> prcLineFine(PlanVO vo);
+	List<PlanVO> safeStckView();
 }

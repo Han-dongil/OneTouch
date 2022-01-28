@@ -21,7 +21,7 @@
 		</select>
 		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
 		<button type="button" action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
-		<button type="button" id="addBtn" name="addBtn">주문서추가</button>
+		<!-- <button type="button" id="addBtn" name="addBtn">주문서추가</button> -->
 	</form>
 	<div id="grid"></div>
 	<script>
