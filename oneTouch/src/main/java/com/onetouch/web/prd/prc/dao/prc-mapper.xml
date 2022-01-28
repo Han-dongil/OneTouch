@@ -17,7 +17,7 @@
 		where a.able_line_no like '%'||#{lineNo}||'%'
 	</select>
 	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select p.instr_no, p.work_str_time, p.pdt_cnt, f.prc_seq
+		select p.instr_no, p.work_str_time,p.instr_cnt goalCnt, f.prc_seq
 		from pdt_work_instr_dtl p, 
 		    (select a.prd_cd, a.prd_nm, a.prd_std, a.mng_unit, a.prd_sect, a.able_line_no, a.use_yn,    b.prc_cd, b.prc_seq, b.work_cmt, b.std_load, b.unit_cost, b.lead_time
 		     from adm_prd a join adm_prc_flow b
@@ -105,7 +105,7 @@
 		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="realFlt" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select instr_no,flt_cnt,prc_cd,pdt_cnt ,nvl((select sum(flt_cnt) 
+		select instr_no,flt_cnt,prc_cd,nvl(pdt_cnt,0) pdt_cnt ,nvl((select sum(flt_cnt) 
                                     from prd_prc_mng
                                     where instr_no=#{instrNo}
                                     group by instr_no),0) as sumFlt
@@ -149,7 +149,7 @@
 		from prd_prc_mng where instr_no=#{instrNo} AND line_no = #{lineNo}	
 	</select>
 	<select id="updateCheck" resultType="_int">
-		select (to_number(sum(nvl2(work_fin_dt,1,0)))+to_number(sum(nvl2(work_str_dt,1,0)))+to_number(sum(nvl(flt_cnt,0)))+to_number(sum(nvl2(now_phs,1,0)))) as upCheck from prd_prc_mng
+		select (to_number(sum(nvl2(work_fin_dt,1,0)))+to_number(sum(nvl2(work_str_dt,1,0)))+to_number(sum(nvl(flt_cnt,0)))+to_number(sum(nvl2(now_phs,1,0)))+to_number(sum(nvl(pdt_cnt,0)))) as upCheck from prd_prc_mng
 	</select>
 	<select id="movingSearchListFinish" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select a.instr_no , a.mtr_lot , a.line_no , a.work_str_dt , a.work_fin_dt , a.goal_cnt, a.pdt_cnt
@@ -206,6 +206,6 @@
 		order by a.line_no
 	</select>
 	<update id="autoUpdate">
-		update prd_prc_mng set pdt_cnt=#{pdtCnt} where instr_no = #{instrNo}
+		update prd_prc_mng set pdt_cnt=#{pdtCnt} where instr_no = #{instrNo} and prc_cd=#{prcCd}
 	</update>	
 </mapper>

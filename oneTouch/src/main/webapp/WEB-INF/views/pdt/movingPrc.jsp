@@ -160,6 +160,7 @@
 	})
 	//메인그리드 클릭
 	grid.on('click',ev=>{
+
 		let searchData=grid.getRow(ev.rowKey);
 			fetch('PrcMovingLot',{
 				method:'POST',
@@ -196,7 +197,7 @@
 		.then(response=>response.json())
 		.then(result=>{
 			movingPrcGrid.resetData(result);
-			if(movingGrid.getValue(ev.rowKey,'instrNo') == v[0] && v.length==1){
+			if(movingGrid.getValue(ev.rowKey,'instrNo') == v[0]){
 				console.log("aaaaaaaaaaaaaaaaa")
 				console.log(v.length)
 				movingShowFnc(movingGrid.getValue(ev.rowKey,'instrNo'));
