@@ -256,13 +256,14 @@ let mainGrid = new Grid({
 	  return `Howdy, ${name}`
 	} */
 //단가 * 입고량 바로 총금액으로 반영
+// 내가 찍은 셀 확인 > 셀값 초기화 
 mainGrid.on('editingFinish', (ev) => {
 	if(ev.columnName == 'inAmt'){
 		if(mainGrid.getValue(ev.rowKey, 'notinAmt') != ''){
 			if(mainGrid.getValue(ev.rowKey, 'inAmt')*1 > mainGrid.getValue(ev.rowKey, 'notinAmt')*1){
 				toastr["info"]("입고량이 해당자재의 미입고량보다 많습니다.")
-				ev.stop();
-				//mainGrid.setValue(ev.rowKey, 'inAmt', '')
+				mainGrid.setValue(ev.rowKey, 'inAmt', '0')
+				//ev.stop();
 			} else {
 				let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
 				let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
