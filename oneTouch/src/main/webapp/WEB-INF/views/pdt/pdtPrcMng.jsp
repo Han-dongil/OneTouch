@@ -71,8 +71,8 @@
 				header : '작업타임',
 				name : 'workStrTime'
 			},{
-				header : '생산수량',
-				name : 'pdtCnt'
+				header : '목표수량',
+				name : 'goalCnt'
 			},{
 				header : '흐름순서',
 				name : 'prcSeq'
@@ -233,11 +233,17 @@
 				optionTag.innerHTML=obj.prcCd;
 				prcCdTag.appendChild(optionTag);
 			}
+			prcGridData($('#selectFrm').serializeObject())
 		})
 	})
 	mainGrid.on("click",ev=>{
+		hiddenGrid.resetData([{}])
+		hiddenGrid.setValue(0,'fltCnt',0);
 		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
-		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'pdtCnt'))
+		hiddenGrid.setValue(0,'pdtCnt',0)
+		hiddenGrid.setValue(0,'lineNo',document.getElementById('lineNo').value)
+		hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
+		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
 		
 		mainGrid.getRow(ev.rowKey)
 	})
@@ -272,6 +278,7 @@
 		hiddenGrid.setValue(0,'prcCd',ev.target.value)
 		prcGridData(prcVO)
 	})
+	
 	</script>
 </body>
 </html>

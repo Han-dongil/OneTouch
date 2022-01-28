@@ -41,7 +41,7 @@
 		AND ord_sht_no = #{ordShtNo}
 	</if>
 </select>
-<select id="orderSeq" resultType="OrdVO">
+<select id="orderSeq" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
 	select
 	PKG_MAKE_CODE.CODE('POR','pdt_ord_sht','ord_sht_no') as ordShtNo from
 	dual

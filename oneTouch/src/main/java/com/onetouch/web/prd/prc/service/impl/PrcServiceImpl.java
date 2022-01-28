@@ -99,7 +99,9 @@ public class PrcServiceImpl implements PrcService{
 			System.out.println(vo);
 			vo.setMsg("공정종료");
 			mapper.endUpdate(vo); //시간업데이트
+			System.out.println("11111111111111111");
 			vo=mapper.endTimeSelect(vo);  //입력된시간불러와서 리턴
+			System.out.println("2222222222222222");
 			vo.setMsg("공정종료.");
 			return vo;
 		}
@@ -128,6 +130,7 @@ public class PrcServiceImpl implements PrcService{
 				String lot=(mapper.insertHrdLotSelect(vo100)).getPrdLot();
 				vo100.setPrdLot(lot);
 				vo.setPrdLot(lot);
+				System.out.println(vo100);
 				mapper.hrdInsert(vo100);
 			}
 			else if(sect.equals("PDT_SECT002")) {
@@ -137,7 +140,6 @@ public class PrcServiceImpl implements PrcService{
 				System.out.println(vo100);
 				mapper.prdInsert(vo100);
 			}
-			System.out.println("kkkkkkkkkkkkkkkkkkkkkkk");
 			System.out.println(vo100);
 			mapper.planPhsUpdate(vo100);
 			vo.setMsg("라인가동 종료!!.");
@@ -159,10 +161,10 @@ public class PrcServiceImpl implements PrcService{
 
 		PrcVO vo2=new PrcVO();
 		vo2=vo;
-		String fltSave=mapper.realFlt(vo).getSumFlt();
+		String fltSave=mapper.realFlt(vo).getSumFlt();  
 		String pdtSave=mapper.realFlt(vo).getPdtCnt();
 		while(true){
-			String flt=mapper.realFlt(vo2).getSumFlt();
+			String flt=mapper.realFlt(vo2).getSumFlt(); 
 			String pdt=mapper.realFlt(vo2).getPdtCnt();
 			if(!fltSave.equals(flt)||fltSave==vo.getGoalCnt()||!pdtSave.equals(pdt)||pdtSave==vo.getPdtCnt()) {
 				return mapper.realFlt(vo);
@@ -226,8 +228,7 @@ public class PrcServiceImpl implements PrcService{
 		
 	}
 	
-	
-	
+
 	
 
 }
