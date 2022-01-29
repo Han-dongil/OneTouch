@@ -22,8 +22,8 @@ public class InfoServiceImpl implements InfoService {
 
 
 	@Override
-	public void deleteFctInfo(List<InfoVO> list) {
-		mapper.deleteFctInfo(list);
+	public void deleteFctInfo(InfoVO infoVO) {
+		mapper.deleteFctInfo(infoVO);
 	}
 	
 	@Override

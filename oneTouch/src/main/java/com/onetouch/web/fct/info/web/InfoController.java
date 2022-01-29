@@ -10,8 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -91,10 +89,8 @@ public class InfoController {
   @PostMapping(value ="/Updateinfo" ,produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
   public List<InfoVO> InfoUpdate(MultipartFile uploadFile, InfoVO infoVO) {
 
-	  String uploadFolder = "/resources/upload/";	//C:\\upload			
+	  String uploadFolder = "C:\\upload";			
 	  String uploadFolderPath = getFolder();
-	  System.out.println("겟 폴더 출력");
-	  System.out.println(uploadFolderPath);
 	  
 	  if(uploadFile != null && uploadFile.getSize() >0) {
 		  
@@ -197,22 +193,22 @@ public class InfoController {
 	
 	  @ResponseBody      
 	  @PostMapping("/deleteInfo")
-	  public List<InfoVO> delete(@RequestBody List<InfoVO> del,InfoVO infoVO) {
+	  public List<InfoVO> delete(@RequestBody InfoVO infoVO) {
 		 
-		  infoservice.deleteFctInfo(del);
+		  infoservice.deleteFctInfo(infoVO);
 		  return infoservice.selectFctInfoAll(infoVO);
 	  }
 	  
 	  // 설비 등록 아작스 -------------------------------------------------------------------------------------------//
 	  @ResponseBody
 	  @PostMapping(value = "/infoInsert", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
-	  public ResponseEntity<InfoVO> InfoInsert(MultipartFile uploadFile, InfoVO infoVO ,HttpServletRequest request) {
+	  public ResponseEntity<InfoVO> InfoInsert(MultipartFile uploadFile, InfoVO infoVO) {
+		  System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		  log.info("update ahax post.......");
-		    System.out.println(request.getContextPath());
 		  
-		  String uploadFolder ="/resources/upload/";			
+		  
+		  String uploadFolder = "C:\\upload";			
 		  String uploadFolderPath = getFolder();
-		  
 		  
 			/* uploadFile 매개변수에 값이 있는지 확인 */
 		  if(uploadFile != null && uploadFile.getSize() >0) {
@@ -300,7 +296,7 @@ public class InfoController {
 		@ResponseBody
 		public ResponseEntity<byte[]> getFile(String fileName)  {
 			log.info("fileName:" + fileName);
-			File file = new File("/resources/img/" + fileName);
+			File file = new File("c:\\upload\\" + fileName);
 			
 			log.info("file" + file);
 			

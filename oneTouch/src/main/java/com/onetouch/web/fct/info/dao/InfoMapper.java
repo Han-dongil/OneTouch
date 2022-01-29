@@ -30,7 +30,7 @@ public interface InfoMapper {
 	List<InfoVO> selectFctInfoAll(InfoVO infoVO);
 	InfoVO selectFctInfo(InfoVO infoVO);
 	//삭제
-	void deleteFctInfo(List<InfoVO> list);
+	void deleteFctInfo(InfoVO infoVO);
 	//등록
 	void insertFctInfo(InfoVO infoVO);
 	
