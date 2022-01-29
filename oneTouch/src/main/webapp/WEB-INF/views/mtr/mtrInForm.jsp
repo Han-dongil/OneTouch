@@ -21,7 +21,6 @@
 <script src="${path}/resources/js/grid-common.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 <script src="${path}/resources/js/toastr-options.js"></script>
-
 </head>
 <style type="text/css">
 	.tui-grid-cell-summary{
@@ -103,7 +102,8 @@ let mainGrid = new Grid({
 					type: 'datePicker',
 					options: {
 					language: 'ko',
-					format: 'yyyy-MM-dd'
+					format: 'yyyy-MM-dd',
+					showAlways: true
 					}
 				 },
 					align: 'center',
@@ -443,9 +443,22 @@ ordGrid.on('dblclick', ev => {
 });
 
 function getModalOrd(param){
+/* 	let flag = 0;
+	for(data of mainGrid.getData()) {
+		if(data.mtrCd == param.mtrCd) {
+			alert("이미 등록된 자재입니다.")
+			flag = 1;
+		}
+	}
+	if(flag != 1) {
+		mainGrid.setValue(rowk, "mtrCd", param.mtrCd, false);
+		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
+		dialog.dialog("close");		
+	}
+	 */
 	param.rowKey = mainGrid.getRowCount();
 	param.inAmt = 0;
-	mainGrid.appendRow(param);
+	mainGrid.appendRow(param,{focus:true});
 	totCal();
 	today(param.rowKey);
 	ordDialog.dialog("close");
@@ -453,7 +466,8 @@ function getModalOrd(param){
 
 //추가버튼
 btnAdd.addEventListener("click", function(){
-	mainGrid.appendRow();
+	//mainGrid.appendRow({},{'at':0});
+	mainGrid.appendRow({},{focus:true});
 	console.log(mainGrid.getRowCount()-1)
 	today(mainGrid.getRowCount()-1)
 	
