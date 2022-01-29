@@ -25,7 +25,7 @@ public interface InfoService {
 	List<InfoVO> selectCheckFct(InfoVO infoVO);
 	
 	List<InfoVO> selectFctInfoAll(InfoVO infoVO);
-	void deleteFctInfo(List<InfoVO> list);
+	void deleteFctInfo(InfoVO infoVO);
 	InfoVO selectFctInfo(InfoVO infoVO);
 	void insertFctInfo(InfoVO infoVO);
 	

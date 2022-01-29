@@ -45,14 +45,16 @@ td {
 			<button type="button" id='LinebtnDel' onclick=LineDel()>삭제</button>
 			<button type="button" id='LinebtnEdit' onclick=LineUpt()>수정</button>
 			<button type="button" id='LinebtnClear' onclick=LineClear()>초기화</button>
-			<form id="lineForm" method="post" style="margin-bottom: 25px;">
+			<form id="lineForm" onsubmit="return false" method="post" style="margin-bottom: 25px;">
 				<div class="row" style= " /* border-top: 2px solid black; */ padding: 5px;">
 					<div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
 						<table>
 							<tr>
 								<td>라인</td>
-								<td><input type="text" id="lineinput" name="lineNO"
-									value="" style="text-transform: uppercase;" /></td>
+								<td>
+									<input type="text" id="lineinput" name="lineNO" list="l-option" onkeyup="lineenterkey()"  value="" style="text-transform: uppercase;" />
+									<datalist id="l-option"></datalist>
+								</td>
 							</tr>
 							<tr>
 								<td>총생산량</td>
@@ -89,36 +91,43 @@ td {
 			</div>
 		<form id="infoFrm"  onsubmit="return false" method="post" enctype="multipart/form-data" >
 			<div class="row" style="/* border-top: 2px solid black; */ padding: 5px;">
-				<div class="col-5" style="margin-top: 30px; margin-bottom:10px;">
+				<div class="col-7" style="margin-top: 30px; margin-bottom:10px;">
 						<table>
 							<tr>
 								<td>설비코드</td>
-								<td><input type="text" id="fctCd" name="fctCd" value="" list="fctCd-options" onkeyup="enterkey()" />
+								<td><input type="text" id="fctCd" name="fctCd" value="" list="fctCd-options" onkeyup="fctenterkey()" autocomplete="off"  />
 								<datalist id="fctCd-options"></datalist>
 								</td>
 								<td>모델명</td>
-								<td><input type="text" id="fctModel" name="fctModel"
-									value="" /></td>
+								<td><input type="text" id="fctModel" name="fctModel" value="" autocomplete="off"  /></td>
 								<!-- <td>사용여부</td>
                         <td><input type="checkbox" id="useYn" name="useYn" checked="" /></td> -->
 							</tr>
 							<tr>
 								<td>설비규격</td>
-								<td><input type="text" id="fctStd" name="fctStd" value="" /></td>
+								<td>
+									<input type="text" id="fctStd" name="fctStd" value="" list="fctStdList"  autocomplete="off"  />
+									<datalist id="fctStdList"></datalist>
+								</td>
 								<td>라인번호</td>
 								<td><select id="lineNO" name="lineNO" ></select></td>
 								<td>공정</td>
-								<td><input type="text" id="prcCd" name="prcCd" value="" /></td>
+								<td>
+									<input type="text" id="prcCd" name="prcCd" list="prcList" value="" autocomplete="off"  />
+									<datalist id="prcList"></datalist>
+								</td>
 
 							</tr>
 							<tr>
 								<td>입고일</td>
 								<td><input type="date" id="inDate" name="inDate" value="" /></td>
 								<td>구매금액</td>
-								<td><input type="text" id="purchCost" name="purchCost"
-									onkeyup="inputNumberFormat(this)" value="" />원</td>
+								<td><input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value=""  autocomplete="off" />원</td>
 								<td>회사코드</td>
-								<td><input type="text" id="compCd" name="compCd" value="" /></td>
+								<td>
+									<input type="text" id="compCd" name="compCd" value="" list="componyList" autocomplete="off"  />
+									<datalist id="componyList"></datalist>
+								</td>
 							</tr>
 							<tr>
 								<!-- <td>이미지</td>
@@ -127,10 +136,15 @@ td {
                         <td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
                            value="" /></td> -->
 								<td>담당자</td>
-								<td><input type="text" id="empNo" name="empNo" value="" /></td>
+								<td>
+									<input type="text" id="empNo" name="empNo" value="" list="empList" autocomplete="off"  />
+									<datalist id="empList">
+										<option >설비직원</option>
+									</datalist>
+								</td>
+								
 								<td>점검주기</td>
-								<td><input type="number" id="chkProd" name="chkProd"
-									value="" /></td>
+								<td><input type="number" id="chkProd" name="chkProd" value="" autocomplete="off"  /></td>
 								<td><select id="chkProdUnit" name="chkProdUnit">
 										<option value="Y">년</option>
 										<option value="M">달</option>
@@ -149,15 +163,9 @@ td {
 							
 				</div>
 				<div style="margin-top: 53px; margin-left: 195px;">
-					<form>
-						<label>검색</label>
-						<input type="text" id="checkfct" name="checkfct" value="" list="fctCd-options" />
-						<datalist id="fctCd-options"></datalist>
-						<button id="selectBtn" onclick=selectCheckFct()>조회</button>
-					</form>
 				</div>
 			</div>
-			<div class=col-4>
+			<div class=col-5>
 					<img src="../resources/img/logo.jpg" id="fctImges" style="width: 250px; height: 200px;">
 					<input style="margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)" />
 					<input type=hidden id="fctImg" value="">
@@ -181,9 +189,9 @@ td {
       modal : true,
    });
 
-   $("#compCd").on("click", function(){
+   /* $("#compCd").on("click", function(){
       mBas('FCT_COM',event.target);
-   });   
+   }); */   
    function getModalBas(param, btn){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
       console.log('getModalBas 메서드 출력')
       console.log(btn.id)
@@ -201,12 +209,12 @@ td {
          }
       }
    //라인
-   function getModalLine(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
+   /* function getModalLine(param){ //모달에서 값을 선택했을 때 호출 나중에 주석 풀어서 사용
       console.log('getModalLine 메서드 출력')
       console.log(param.lineNO)
             $("#lineNO").val(param.lineNO);
             dialog.dialog('close');
-   }
+   } */
     
 
    
@@ -453,8 +461,9 @@ td {
       success : function(result){
          lineData = result;
          LineGrid.resetData(result);
-         console.log('line출력')
-         console.log(result)
+         for(let lines of result){
+        	 $('#l-option').append("<option value="+lines.lineNO+">"+lines.lineNO+"</option>")
+         }
       }
    });
    
@@ -482,11 +491,13 @@ td {
        })
        
        btnDel.addEventListener("click", function(){
+    	   let del = $('#infoFrm').serializeObject();
+    	   console.log(del)
           //삭제 아작스 처리
              $.ajax({
                 url: "./deleteInfo",
                 method: "POST",
-                data: JSON.stringify(targetId),         //json을 string으로 바꿔줘야함 
+                data: JSON.stringify(del),         //json을 string으로 바꿔줘야함 
                 contentType:"application/json",         //넘겨주는 데이터가 json이라는 걸 알려주는 것 
                 success:function(result){
                    console.log('성공')
@@ -503,6 +514,7 @@ td {
            
            let infoForm = document.getElementById('infoFrm')
            var formData = new FormData(infoForm);
+           
            console.log(formData)
          
          
@@ -545,9 +557,10 @@ td {
       //   modal : true,
       //});
       
-      $("#prcCd").on("click", function(){
+      //공정모달사용하는 부분
+      /* $("#prcCd").on("click", function(){
          mPrc();
-      })
+      }) */
       //라인 input 클릭 이벤트 
        $("#lineNO").on("click", function(){
          /*mLine(lineStatusVO); */
@@ -581,13 +594,64 @@ td {
             data:formData,
             dataType:'Json',
             success:function(result){
-               console.log('성공')
                //data = result;
                fctGrid.resetData(result)
             }
        
           })
        })
+       //설비규격 조회
+		function selectfctSize(){
+			let Size="FCT_SIZE";
+			$.ajax({
+				url : '../modalBasList',
+				method : 'POST',
+				data : 'basCd=' + Size,
+				success : function(result){
+					for(data of result){
+						console.log(result)
+						$('#fctStdList').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
+					}	
+				}
+			})
+      	}
+       //회사코드 조회
+       function componySelect(){
+    	  let data = 'FCT_COM';
+    	  $.ajax({
+			url : '../modalBasList',
+			method : 'POST',
+			data : 'basCd=' + data,
+			success : function(result){
+				for(data of result){
+					$('#componyList').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
+			}
+		}
+	});
+     /*   fetch('../modalBasList',{
+    	   method:'POST',
+    	   	body:JSON.stringify(data)
+       })
+    	  .then(response=>response.json())
+    	  .then(result=>{
+    		  console.log('회사')
+    		  console.log(result)
+    		  for(let data of result){
+    			  //$('#componyList').append("<option value="+data.prcCd+">"+data.prcNm+"</option>")
+    		  }
+    	  }) */
+      }
+    	  
+       //공정코드 inputlist로 조회
+       function prcSelect(){
+       fetch('../modalPrcList')
+    	  .then(response=>response.json())
+    	  .then(result=>{
+    		  for(let data of result){
+    			  $('#prcList').append("<option value="+data.prcCd+">"+data.prcNm+"</option>")
+    		  }
+    	  })
+       }
        //금액 천단위 구분 기호 함수
        function inputNumberFormat(obj) {
          obj.value = comma(uncomma(obj.value));
@@ -744,7 +808,6 @@ td {
 			LineGrid.reset(result)
 		})
 	}
-	
 	//라인번호 select 값 조회 
 	function selectLine(){
 		let fctLineChek= 'Y'; 
@@ -755,9 +818,12 @@ td {
 		      data: JSON.stringify(lineStatusVO),
 		      contentType: "application/json",
 		      success : function(result){
+		    	  $('#lineNO').append("<option value='d'>전체</option>")
 		    	  for(d of result){
 		    	  	$('#lineNO').append("<option value="+d.lineNO+">"+d.lineNO+"</option>")
 		    	  }
+		    	  
+		    	  
 		      }
 		   });
 	}
@@ -778,8 +844,35 @@ td {
 	document.getElementById('fctCd').addEventListener('keydown', event=>{
 			//event.preventDefault();
 	})
+	
+	//라인input 엔터키 이벤트 
+	function lineenterkey(){
+		let linecode = document.getElementById('lineinput').value
+		if(window.event.keyCode == 13){
+			console.log('엔터키 이벤트 성공')
+			for( d of LineGrid.getData()){
+				if(d.lineNO == linecode){
+			      console.log('라인그리드 테스트')
+			      document.getElementById('lineinput').value = d.lineNO;
+			      document.getElementById('totPdtAmt').value = d.totPdtAmt;
+			      document.getElementById('uphPdtAmt').value = d.uphPdtAmt;
+			      document.getElementById('useYn').checked = (d.useYn=='Y')?true:false;
+			      document.getElementById('useYn').value = d.useYn;
+			      document.getElementById('empNo').value = d.empNo;
+			      
+			      document.getElementById('useYn').addEventListener('click', function(event){
+			    	  if(d.useYn == 'Y'){
+				    	  alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
+				    	  document.getElementById('useYn').checked = true;
+				    	  
+			    	  	}
+			      })
+				}
+			}
+		}
+	}
 	//엔터키 이벤트
-	 function enterkey() {
+	 function fctenterkey() {
 		let code = document.getElementById('fctCd').value
 		if (window.event.keyCode == 13) {
 			for(d of fctGrid.getData()){
@@ -818,8 +911,9 @@ td {
 	}
 	selectLine()		//라인코드 select option으로 넣어주기
 	checkFctList()
-	
-
+	prcSelect()		//공정코드조회
+	componySelect()	//회사코드조회
+	selectfctSize()	//설비규격조회
 
 </script>
 

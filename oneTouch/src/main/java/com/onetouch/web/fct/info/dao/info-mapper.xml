@@ -3,6 +3,8 @@
 <mapper namespace="com.onetouch.web.fct.info.dao.InfoMapper">
 <!-- 작성자 : 박종현 -->
 
+<!-- 작업자 조회 -->
+<select id="selectEmp" ></select>
 <!-- 현재 날자 값 조회 -->
 <select id="todayDate" resultType="com.onetouch.web.fct.info.dao.InfoVO">
 	SELECT (sysdate-7) as fixFrom, sysdate fixTo   FROM dual
@@ -103,7 +105,7 @@ select * from fct_info where line_no = #{lineNo}
 </update>
 <!-- 삭제 -->
 <delete id="deleteFctInfo">
-	delete fct_info where fct_cd in <foreach collection="list" item="lists" open="(" close=")" separator=",">#{lists.fctCd}</foreach> 
+	delete fct_info where fct_cd =#{fctCd} 
 </delete>	
 </mapper>
 
