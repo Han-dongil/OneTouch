@@ -78,10 +78,12 @@ public class MtrInServiceImpl implements MtrInService {
 		    	inMapper.updateIn(data);
 		    	};
 		}
-		if(mvo.getDeletedRows() != null) {
-		    for(MtrInVO data : mvo.getDeletedRows()){
-		    	inMapper.deleteIn(data); };
-		}
+	}
+
+	@Override
+	public void deleteIn(ModifyVO<MtrInVO> mvo) {
+		for(MtrInVO data : mvo.getDeletedRows()){
+	    	inMapper.deleteIn(data); };
 	}
 
 
