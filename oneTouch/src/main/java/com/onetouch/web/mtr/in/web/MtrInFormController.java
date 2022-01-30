@@ -52,6 +52,13 @@ public class MtrInFormController {
 		mtrInService.modifyIn(mvo);
 		 return 0;
 	}
+	//mainGrid delete
+	@ResponseBody
+	@PostMapping("/mtrDelete")
+	public int delete(@RequestBody ModifyVO<MtrInVO> mvo){
+		mtrInService.deleteIn(mvo);
+		return 0;
+	}
 	
 	//mtrOrdGrid readData
 	@ResponseBody

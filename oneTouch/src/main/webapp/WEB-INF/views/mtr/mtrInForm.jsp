@@ -80,6 +80,7 @@ let mainGrid = new Grid({
      data : {
 		  api: {
 			    readData: { url: './mtrInForm', method: 'POST' },
+			    deleteData: { url: './mtrDelete', method: 'POST'},
 		    	modifyData: { url: './mtrModify', method: 'POST' }
 			  },
 			  contentType: 'application/json',
@@ -475,7 +476,7 @@ btnAdd.addEventListener("click", function(){
 //삭제버튼
 btnDel.addEventListener("click", function(){
 	mainGrid.removeCheckedRows(true);
-	mainGrid.request('modifyData');
+	mainGrid.request('deleteData');
 });
 //저장버튼
 btnSave.addEventListener("click", function(){
