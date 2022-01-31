@@ -38,7 +38,7 @@
 
 <!-- 공정관리VO를 상속받는 설비VO를 리절트 타입으로  -->
 <select id="selectprcCd" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-select * from fct_info where line_no = #{lineNo}
+select fct_cd , fct_nm , line_no ,prc_cd,(select FN_GET_PRC_CD_TO_NM(prc_cd) from dual) as prc_nm , fct_std FCT_MODEL,COMP_CD,USE_PURP,IN_DATE, PURCH_COST,CHK_PROD,CHK_PROD_UNIT,FCT_PHS,FCT_IMG,UPLOAD_PATH from fct_info where line_no=#{lineNo}
 </select>
 
 <!-- 등록 목록조회 -->

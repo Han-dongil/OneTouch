@@ -19,6 +19,7 @@ public class PlanVO extends LotVO {
 	private String needCnt;
 	private String instrCnt;
 	private String workStrDate;
+	private String workEndDate;
 	private String workPlanTime;
 	private String nowPhs;
 	private String prdCd1;
@@ -27,6 +28,8 @@ public class PlanVO extends LotVO {
 	private String mtrLot;
 	private String realCnt;
 	private String safeStck;
+	//date차이
+	private int date;
 	
 	
 	

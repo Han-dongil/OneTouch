@@ -13,12 +13,14 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-	<form>
-		<input type='date' id='inputDate'>
-		<select name="phs" id="phs">
-			<option value="N">미계획</option>
-			<option value="Y">계획완료</option>
-		</select>
+	<form name="frm" id="frm">
+		<input type='date' id='inputDate' name="ordDate">
+		<input type="radio" id="checkedY" name="nowPhs" value="Y" checked>
+		<label for="checkedY">진행완료</label>
+		<input type="radio" id="checkedN" name="nowPhs" value="N">
+		<label for="checkedN">진행중</label>
+		<input type="radio" id="checked" name="nowPhs" value="">
+		<label for="checked">전체</label>
 		<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()">선택삭제</button>
 		<button type="button" action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 		<!-- <button type="button" id="addBtn" name="addBtn">주문서추가</button> -->
@@ -107,13 +109,13 @@
 	})
 	//날짜별 조회 ajax
 	function dateSelectFnc(){
-		console.log(document.getElementById('phs').value);
 		let inputDate=document.getElementById('inputDate').value;
+		let FormData=$("#frm").serialize()
 		event.preventDefault();
 		$.ajax({
 			url:'./ord',
 			method:'POST',
-			data:'ordDate='+inputDate+'&nowPhs='+document.getElementById('phs').value,
+			data:FormData,
 			success:function(result){
 				console.log(result)
 				grid.resetData(result);

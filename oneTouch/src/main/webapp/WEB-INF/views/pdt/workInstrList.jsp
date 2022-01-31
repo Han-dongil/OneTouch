@@ -25,10 +25,8 @@
 	
 	<button type="button" id="planModal" name="planModal">생산계획조회</button>
 	<div id="workGrid"></div>
-	<button type="button" id="prcSelectBtn" name="prcSelectBtn">공정조회</button>
-	<div>ㅁㅁ</div>
 	<div id="prcDtlGrid"></div>
-	<button type="button" id="workAddBtn" name="workAddBtn">지시추가</button>
+	<button type="button" id="workAddBtn" name="workAddBtn">소요자재등록</button>
 	<div id="plan-dialog-form" title="생산계획조회">
 		<div>생산계획 조회</div>
 		<select id="planCheck">
@@ -38,9 +36,9 @@
 		<button id="modalSearchBtn" name="modalSearchBtn">조회</button>
 	</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
-	<div id="hiddenGrid"></div>
-	<div id="hiddenMainDiv"></div>
-	<div id="hiddenModalMain"></div>
+	<div id="hiddenGrid" style="display:none"></div>
+	<div id="hiddenMainDiv" style="display:none"></div>
+	<div id="hiddenModalMain" style="display:none"></div>
 	<button type="button" id="modifyBtn" name="modifyBtn">지시등록</button>
 	<button type="button" id="addRow">행추가</button>
 	<button type="button" id="resetGrid">초기화</button>
@@ -56,6 +54,83 @@
 		let selectInstrDate;
 		let hiddenMainGrid;
 		let mainHiddenDiv=document.getElementById('hiddenMainDiv');
+/////////////////////////////////////////////////////////////////////////
+class abc{
+  constructor(props){
+    const { grid ,rowKey , columnInfo,value} =props;
+    const el = document.createElement('select');
+
+    let data = props.columnInfo.editor.options.listItems;
+
+    for(let i =0 ; i< data.length ; i++){
+      let opt = document.createElement('option');
+      opt.innerText=data[i].text;
+      opt.value=data[i].value;
+      if(opt.value==value){
+        opt.selected=true;
+      }
+      el.append(opt);
+    }
+    el.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      console.log("aaa");
+    })
+    
+    this.el=el;
+    
+  }
+
+  getElement(){
+    return this.el;
+  }
+
+  render(props){
+    this.el.value=String(props.value);
+
+  }
+
+}
+		class prdEditor{
+	  constructor(props){
+	    let{grid,rowKet,columnInfo,value}=props;
+	    let el=document.createElement('div');
+	    let select = document.createElement('select');
+
+	    let data = props.columnInfo.editor.options.listItems;
+
+	    for(let i=0 ; i<data.length ; i++){
+	      let opt=document.createElement('option');
+	      opt.innerText=data[i].text;
+	      opt.value=data[i].value;
+	      if(opt.value==value){
+	        opt.selected=true;
+	      }
+	      select.append(opt);
+	    }
+	    el.append(select);
+
+	    select.addEventListener('click',ev=>{
+	      ev.stopPropagation();
+	    })
+	    el.align='center'
+	    
+	    this.el=el;
+	    this.select = select;
+
+	  }
+
+	  getElement(){
+	    return this.el;
+
+	  }
+
+	  getValue(){
+	    return this.select.value;
+	  }
+
+	} 
+		
+///////////////////////////////////////////////////////////////////////////		
 		//메인그리드 설정
 		//생산계획 조회 모달 그리드
 		//그리드 테마적용
@@ -86,17 +161,20 @@
 			} 
 		//메인 그리드 컬럼 설정	
 		const mainColumns = [{
-			header : '제품번호',
-			name : 'prdCd',       
-			formatter: 'listItemText',
-			editor: {
-				type: 'select',
-				options: {
-					listItems: [
-					]
-				}
-			},
-		},{
+	    	header: '제품코드',
+	        name: 'prdCd',
+	        align:'center',
+	        editor:{
+	          type:prdEditor,
+	          options:{
+	            listItems:[
+	            ]
+	          }
+	        },
+	        rederer:{
+	          type:abc
+	        }
+	      },{
 			header : '계획번호',
 			name : 'planNo'
 		},{
@@ -109,7 +187,8 @@
 		},{
 			header : '작업우선순위',
 			name : 'workProt',
-			editor : 'text'
+			editor : 'text',
+			hidden:true
 		},{
 			header : '계획일자',
 			name : 'planDate',
@@ -417,6 +496,7 @@
 		modalGrid.on('check',ev=>{
 			console.log("aaaaaaaaaaaaaa")
 			console.log(ev.columnName)
+			modalGrid.blur();
 			
 			selectInstrDate=modalGrid.getValue(ev.rowKey,'instrDate')			
 			let finDateSave=modalGrid.getValue(ev.rowKey,'pdtFinDate')	
@@ -425,6 +505,7 @@
 			fetch('planDtlList/'+planNo)
 			.then(response=>response.json())
 			.then(x=>{
+				console.log(x);
 				let startInstrNo=x[0].instrNo
 				console.log(startInstrNo)
 				let abc=startInstrNo.substr(0,11)
@@ -445,8 +526,12 @@
 				}
 			})
 		})
-		//공정조회버튼 누르면 공정정보 
-		prcSelectBtn.addEventListener('click',ev=>{
+		mainGrid.on('check',ev=>{
+			for(i=0;i<mainGrid.getData().length;i++){
+				if(i!=ev.rowKey){
+					mainGrid.uncheck(i);
+				}
+			}
 			hiddenMainGrid.appendRows(mainGrid.getCheckedRows());
 			instrDate=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrDate')			
 			let instrNo=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrNo')
@@ -460,13 +545,6 @@
 			.then(response=>response.json())
 			.then(result=>{
 				main2Grid=result;
-				prcGrid.hideColumn('mtrLot');
-				prcGrid.hideColumn('hldCnt');
-				prcGrid.hideColumn('stckCnt');
-				prcGrid.hideColumn('mtrCd');
-/* 				prcGrid.showColumn('fctNm');
-				prcGrid.showColumn('fctCd'); */
-				prcColumns[4].hidden=true;
 				let datas=[];
 				for(let obj of result){
 					obj.instrDate=selectInstrDate;
@@ -475,7 +553,7 @@
 				}
 				if(mainGrid.getCheckedRows().length==1){
 					prcGrid.resetData(datas);
-					mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
+					//mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
 				}
 				else{
 					prcGrid.appendRows(datas);
@@ -483,11 +561,7 @@
 				
 			})
 		})
-		//메인그리드 이벤트
-		mainGrid.on("click",ev=>{
 		
-			
-		})
 		
 		//메인2그리드 누르면 자재정보
 		prcGrid.on("click",ev=>{
@@ -544,16 +618,32 @@
 		})
 		modifyBtn.addEventListener('click',ev=>{
 			let a={};
+			let b=[];
+			let map=new Map();
 			a.planData=hiddenModalGrid.getData();
-			a.detailData=hiddenMainGrid.getData();
+			for(obj of hiddenMainGrid.getData()){
+				if(map.has(obj.prcCd))
+				{}
+				else{
+					map.set(obj.prcCd)
+					b.push(obj)					
+				}	
+			}
+			a.detailData=b;
 			a.lotData=hiddenGrid.getData()
-			fetch('workInsertAll',{
+			 fetch('workInsertAll',{
 				method:'POST',
 				headers:{
 					"Content-Type": "application/json",
 				},
 				body:JSON.stringify(a)
 			})
+			mainGrid.resetData([{}]);
+			modalGrid.resetData([{}]);
+			prcGrid.resetData([{}]);
+			hiddenModalGrid.resetData([{}]);
+			hiddenMainGrid.resetData([{}]);
+			hiddenGrid.resetData([{}]);
 		})
 		
 		//////////////////////////////////////이벤트/////////////////////////////////////////

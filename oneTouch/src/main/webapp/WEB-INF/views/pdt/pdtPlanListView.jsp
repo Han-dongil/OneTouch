@@ -24,10 +24,12 @@
 	<form id="planSearchFrm" name="planSearchFrm">
 		계획일자<input type="date" id="startDate" name="startDate"> ~
 		<input type="date" id="endDate" name="endDate"> 
-		<select name="nowPhs" id="nowPhs">
-			<option value="N">미지시</option>
-			<option value="Y">지시완료</option>
-		</select>
+		<input type="radio" id="checkedN" name="nowPhs" value="N">
+		<label for="checkedN">미지시</label>
+		<input type="radio" id="checkedY" name="nowPhs" value="Y">
+		<label for="checkedY">지시완료</label>
+		<input type="radio" id="checked" name="nowPhs" value="">
+		<label for="checked">전체</label>
 		<button type="button" id="findPlan" name="findPlan">계획서 조회</button>
 		<br>
 		제품코드<input type="text" id="prdCd" name="prdCd">
