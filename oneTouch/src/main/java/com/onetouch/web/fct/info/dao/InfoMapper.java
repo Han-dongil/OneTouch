@@ -7,6 +7,8 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InfoMapper {
 
+	//설비이름 조회 
+	InfoVO selectFctNm(InfoVO infoVO);
 	//현재 날자 조회
 	InfoVO todayDate();
 	//라인수정

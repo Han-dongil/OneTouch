@@ -41,19 +41,20 @@ td {
 	<div class="row">
 		<div class="col-3" style="border-right: 1px solid gray;">
 			<!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
-			<button type="button" id='LinebtnAdd' onclick=LineAdd()>추가</button>
+			<button type="button" id='LinebtnAdd' onclick=LineAdd()>등록</button>
 			<button type="button" id='LinebtnDel' onclick=LineDel()>삭제</button>
 			<button type="button" id='LinebtnEdit' onclick=LineUpt()>수정</button>
 			<button type="button" id='LinebtnClear' onclick=LineClear()>초기화</button>
-			<form id="lineForm" onsubmit="return false" method="post" style="margin-bottom: 25px;">
-				<div class="row" style= " /* border-top: 2px solid black; */ padding: 5px;">
+			<form id="lineForm" onsubmit="return false" method="post"
+				style="margin-bottom: 25px;">
+				<div class="row" style="padding: 5px;">
 					<div class="col-12" style="margin-top: 30px; margin-bottom: 30px;">
 						<table>
 							<tr>
 								<td>라인</td>
-								<td>
-									<input type="text" id="lineinput" name="lineNO" list="l-option" onkeyup="lineenterkey()"  value="" style="text-transform: uppercase;" />
-									<datalist id="l-option"></datalist>
+								<td><input type="text" id="lineinput" name="lineNO"
+									list="l-option" onkeyup="lineenterkey()" value=""
+									style="text-transform: uppercase;" /> <datalist id="l-option"></datalist>
 								</td>
 							</tr>
 							<tr>
@@ -72,62 +73,67 @@ td {
 							</tr>
 							<tr>
 								<td>사용여부</td>
-								<td><input type="checkbox" id="useYn" name="useYn" value="N" /></td>
+								<td><input type="checkbox" id="useYn" name="useYn"
+									value="N" /></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 
 			</form>
-			<div style=" margin-left: 40px;"  id="lineGrid"></div>
+			<div style="margin-left: 40px;" id="lineGrid"></div>
 		</div>
 		<div class="col-9">
 			<div>
 				<!-- <button type="button" id='btnFind'>조회</button> -->
-				<button type="button" id='btnAdd'>추가</button>
 				<button type="button" id='btnDel'>삭제</button>
 				<button type="button" id='btnSave'>저장</button>
 				<button type="button" id='btnEdit'>수정</button>
+				<button type="button" id='btnFctEdit' onclick="fctClear()">초기화</button>
 			</div>
-		<form id="infoFrm"  onsubmit="return false" method="post" enctype="multipart/form-data" >
-			<div class="row" style="/* border-top: 2px solid black; */ padding: 5px;">
-				<div class="col-7" style="margin-top: 30px; margin-bottom:10px;">
+			<form id="infoFrm" onsubmit="return false" method="post"
+				enctype="multipart/form-data">
+				<div class="row" style="padding: 5px;">
+					<div class="col-7" style="margin-top: 30px; margin-bottom: 10px;">
 						<table>
 							<tr>
 								<td>설비코드</td>
-								<td><input type="text" id="fctCd" name="fctCd" value="" list="fctCd-options" onkeyup="fctenterkey()" autocomplete="off"  />
-								<datalist id="fctCd-options"></datalist>
-								</td>
+								<td><input type="text" id="fctCd" name="fctCd" value="" oninput="onfctCd(event)"
+									list="fctCd-options" onkeyup="fctenterkey()" autocomplete="off" style="text-transform: uppercase;" />
+									<datalist id="fctCd-options"></datalist></td>
+								<td>설비이름</td>
+								<td><input type="text" id="fctNm" name="fctNm" value="" /></td>
 								<td>모델명</td>
-								<td><input type="text" id="fctModel" name="fctModel" value="" autocomplete="off"  /></td>
+								<td><input type="text" id="fctModel" name="fctModel"
+									value="" autocomplete="off" /></td>
 								<!-- <td>사용여부</td>
                         <td><input type="checkbox" id="useYn" name="useYn" checked="" /></td> -->
 							</tr>
 							<tr>
 								<td>설비규격</td>
-								<td>
-									<input type="text" id="fctStd" name="fctStd" value="" list="fctStdList"  autocomplete="off"  />
-									<datalist id="fctStdList"></datalist>
-								</td>
+								<td><input type="text" id="fctStd" name="fctStd" value=""
+									list="fctStdList" autocomplete="off" /> <datalist
+										id="fctStdList"></datalist></td>
 								<td>라인번호</td>
-								<td><select id="lineNO" name="lineNO" ></select></td>
+								<td><input id="lineNO" name="lineNO" list="linoNolist"
+									autocomplete="off" /> <datalist id="linoNolist"></datalist></td>
+
 								<td>공정</td>
-								<td>
-									<input type="text" id="prcCd" name="prcCd" list="prcList" value="" autocomplete="off"  />
-									<datalist id="prcList"></datalist>
-								</td>
+								<td><input type="text" id="prcCd" name="prcCd"
+									list="prcList" value="" autocomplete="off" /> <datalist
+										id="prcList"></datalist></td>
 
 							</tr>
 							<tr>
 								<td>입고일</td>
 								<td><input type="date" id="inDate" name="inDate" value="" /></td>
 								<td>구매금액</td>
-								<td><input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value=""  autocomplete="off" />원</td>
+								<td><input type="text" id="purchCost" name="purchCost"
+									onkeyup="inputNumberFormat(this)" value="" autocomplete="off" />원</td>
 								<td>회사코드</td>
-								<td>
-									<input type="text" id="compCd" name="compCd" value="" list="componyList" autocomplete="off"  />
-									<datalist id="componyList"></datalist>
-								</td>
+								<td><input type="text" id="compCd" name="compCd" value=""
+									list="componyList" autocomplete="off" /> <datalist
+										id="componyList"></datalist></td>
 							</tr>
 							<tr>
 								<!-- <td>이미지</td>
@@ -135,51 +141,46 @@ td {
 								<!-- <td>시간당 생산량</td>
                         <td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
                            value="" /></td> -->
-								<td>담당자</td>
-								<td>
-									<input type="text" id="empNo" name="empNo" value="" list="empList" autocomplete="off"  />
-									<datalist id="empList">
-										<option >설비직원</option>
-									</datalist>
-								</td>
-								
+
 								<td>점검주기</td>
-								<td><input type="number" id="chkProd" name="chkProd" value="" autocomplete="off"  /></td>
+								<td><input type="number" id="chkProd" name="chkProd"
+									value="" autocomplete="off" /></td>
 								<td><select id="chkProdUnit" name="chkProdUnit">
 										<option value="Y">년</option>
 										<option value="M">달</option>
 										<option value="W">주</option>
 										<option value="D">일</option>
 								</select></td>
-								<td><input type="hidden" id="fctNm" name="fctNm" value="" /></td>
 							</tr>
 						</table>
 						<div class="col-5">
-							
+
 							<div class='uploadDiv'>
 								<td></td>
 								<!-- <button id='uploadBtn'>Upload</button> -->
 							</div>
-							
+
+						</div>
+						<div style="margin-top: 53px; margin-left: 195px;"></div>
+					</div>
+					<div class=col-5>
+						<img src="../resources/img/logo.jpg" id="fctImges"
+							style="width: 250px; height: 200px;"> <input
+							style="margin-bottom: 20px;" type="file" id="fctImgBtn"
+							name="uploadFile" value="" multiple
+							onchange="setThumbnail(event)" /> <input type=hidden id="fctImg"
+							value="">
+					</div>
 				</div>
-				<div style="margin-top: 53px; margin-left: 195px;">
-				</div>
+			</form>
+			<div id="dialog-form"></div>
+			<div style="margin-left: 70px;">
+				<div id="grid"></div>
 			</div>
-			<div class=col-5>
-					<img src="../resources/img/logo.jpg" id="fctImges" style="width: 250px; height: 200px;">
-					<input style="margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)" />
-					<input type=hidden id="fctImg" value="">
-				</div>
 		</div>
-	</form>
-		<div id="dialog-form"></div>
-		<div style = "margin-left:70px;">
-			<div id="grid" ></div>
-		</div>
-	</div>
-	<!-- row -->
-	<div id="fctGubundialog-form" title="설비구분"></div>
-	<script>
+		<!-- row -->
+		<div id="fctGubundialog-form" title="설비구분"></div>
+		<script>
    let dialog; 
    let lineStatusVO = {};
    
@@ -258,8 +259,8 @@ td {
     editor: 'text'
   },
   {
-    header: '설비규격',
-    name: 'fctStd',
+    header: '라인',
+    name: 'lineNO',
     editor: 'text'
   },
   {
@@ -379,8 +380,7 @@ td {
       
       
       
-       //ajax 요청
-        
+       //설비 조회
         $.ajax({
            url:'./list1',   //나중에 이거 대신에 컨트롤러 요청하면 됨 
            method: 'POST',
@@ -393,9 +393,8 @@ td {
             data = datas;
              fctGrid.resetData(data);
              fctGrid.refreshLayout();
-             
-          
-        }) 
+        })
+        
    fctGrid.on('click',(ev) =>{
       
       dataVO =fctGrid.getData()[ev.rowKey]; 
@@ -411,7 +410,7 @@ td {
       document.getElementById('purchCost').value = dataVO.purchCost;
       document.getElementById('chkProd').value = dataVO.chkProd;
       document.getElementById('fctImg').value = dataVO.fctImg;
-      
+      document.getElementById('lineNO').value = dataVO.lineNO;
       
       var fileCallPath = encodeURIComponent(dataVO.uploadPath+"/s_"+dataVO.fctImg);
       console.log('이미지 테스트')
@@ -430,6 +429,8 @@ td {
      
    })
    
+   
+   
    //라인 그리드 클릭 이벤트 
    LineGrid.on('click',(ev) =>{
       let lineVO = LineGrid.getData()[ev.rowKey];
@@ -443,7 +444,10 @@ td {
       document.getElementById('useYn').value = lineVO.useYn;
       document.getElementById('empNo').value = lineVO.empNo;
       
+      
+      
       document.getElementById('useYn').addEventListener('click', function(event){
+    	  console.log(lineVO.useYn)
     	  if(lineVO.useYn == 'Y'){
 	    	  alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
 	    	  document.getElementById('useYn').checked = true;
@@ -486,9 +490,7 @@ td {
           fctGrid.resetOriginData()   //현재 데이터를 변경된 데이터로 확장한다. 
        })
        
-       btnAdd.addEventListener("click", function(){
-          fctGrid.appendRow({})
-       })
+      
        
        btnDel.addEventListener("click", function(){
     	   let del = $('#infoFrm').serializeObject();
@@ -508,15 +510,42 @@ td {
              })
        })
        
+       
+       function onfctCd(ev){	
+    	let vo = {};
+    	console.log("체인지 성공")
+    	vo.fctCd =ev.target.value
+    	console.log()
+    	
+    	$.ajax({
+        		url:"./selectFctNm",
+        		method:'POST',
+        		data: JSON.stringify(vo),
+        		contentType:"application/json",
+        		dataType:'Json',
+        		success:function(result){
+        			console.log('등록 선택 후 설키 이름 조회')
+        			
+        			/* //console.log(result.fctNm)*/
+        			document.getElementById('fctNm').value = result.fctNm; 
+        			
+        		}
+        	})
+       }
         btnSave.addEventListener("click", function(){
-           console.log('11111111111111')
-           //console.log($('#infoFrm').serialize())
+			//설비코드 input에서 값을 
+        	
            
-           let infoForm = document.getElementById('infoFrm')
-           var formData = new FormData(infoForm);
-           
-           console.log(formData)
+         console.log('콤마 없애기 ')
+         console.log(document.getElementById("purchCost").value)
+         let commaVal = document.getElementById("purchCost").value;
+         let str = String(commaVal);
+         str = str.replace('\,','')
+         console.log(str)
+         document.getElementById("purchCost").value=str;
          
+         let infoForm = document.getElementById('infoFrm')
+         var formData = new FormData(infoForm);
          
           //등록아작스 
            $.ajax({
@@ -525,46 +554,46 @@ td {
                 processData: false,
                 contentType: false,
                 method: "POST",
+                async:false,
                 data:formData,
                 dataType:'Json',
                 success:function(result){
-                   console.log('성공')
-                   fctGrid.resetData(result)
+                	
+                	 $.ajax({
+                         url:'./list1',   //나중에 이거 대신에 컨트롤러 요청하면 됨 
+                         method: 'POST',
+                         data: JSON.stringify(vo),
+                         contentType: "application/json",
+                         async : false               //동기 = 절차적 
+                      }).done(function(datas){
+                           console.log('조회 테스트')
+                          console.log(datas)
+                          data = datas;
+                           fctGrid.resetData(data);
+                           fctGrid.refreshLayout();
+                      })
+                   
+                   
                 }
              })
-          //grid.request('modifyData');
+             console.log('데이터 출력하기')
+             let fctCode = document.getElementById('fctCd').value
+             console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+             console.log(fctCode)
+             console.log(fctGrid.getData())
+             
+             for(fdata of fctGrid.getData()){
+            	 if(fctCode == fdata.fctCd){
+					fctGrid.focus(fdata.rowKey,'fctCd',true)
+					
+				}
+             }
+             
+             //등록된 행focus
+             
        })//add버튼 
-       
       
-      //설비구분 Modal start=========================================================================================
-      //let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
-      
-     /*  $("#fctCd").on("click", function(){
-         console.log('설비코드 버튼 클릭')
-         mBas('FCT_DIV',event.target);
-      }) */
-      $("#fctNm").on("click", function(){
-         console.log('설비이름 버튼 클릭')
-         mBas('FCT_DIV',event.target);
-      })
    
-      //설비구분 Modal end=========================================================================================
-      
-       //공정 Modal start=========================================================================================
-      //let dialog; //가져가서 사용할 때는 주석 풀어서 사용(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
-      //dialog = $( "#dialog-form" ).dialog({ //갸져가서 주석 풀어서 사용 이미 있으면 빼고해도 됨     //<div id="dialog-form" title="title"></div> 같이 가져갈 것
-      //   autoOpen : false,
-      //   modal : true,
-      //});
-      
-      //공정모달사용하는 부분
-      /* $("#prcCd").on("click", function(){
-         mPrc();
-      }) */
-      //라인 input 클릭 이벤트 
-       $("#lineNO").on("click", function(){
-         /*mLine(lineStatusVO); */
-      }) 
       
       function getModalPrc(param){//모달에서 값을 선택했을 때 호출
          //선택한 값 parameter받아서 각자 처리
@@ -572,13 +601,7 @@ td {
          console.log(param);
          dialog.dialog("close");
       }
-      //공정 Modal end=========================================================================================
-       
-       
-       /* btnFind.addEventListener("click", function(){
-          //grid.;
-          
-       }) */ 
+    
        //수정 아작스 
        btnEdit.addEventListener("click", function(){
           
@@ -660,11 +683,11 @@ td {
             str = String(str);
             return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
         }
-
-        function uncomma(str) {
-            str = String(str);
-            return str.replace(/[^\d]+/g, '');
-        }
+       function uncomma(str) {
+           str = String(str);
+           str = str.replace('\,','')
+           return str;
+       }
         //천단위 구분 기호 끝
 
 
@@ -735,7 +758,19 @@ td {
           })
 	   .then(response=> response.json())
 	   .then(result=>{
+		   
 		   console.log(result)
+		   LineGrid.resetData(result)
+		   console.log('test')
+		   console.log(result)
+		   let lineCode = document.getElementById('lineinput').value;
+			for(lineData of result){
+				console.log('test2222')
+				console.log(lineData)
+				if(lineCode == lineData.lineNO){
+					LineGrid.focus(lineData.rowKey,'lineNO',true)
+				}
+			}		   
 	   })
    }
    //라인삭제
@@ -766,6 +801,7 @@ td {
 			alert("해당 라인에 사용중인 설비를 먼저 등록해제 해주세요")
 		}
 	}
+   
    //라인 input 초기화 
 	function LineClear(){
 		document.getElementById('lineinput').value = '';
@@ -773,6 +809,22 @@ td {
 		document.getElementById('uphPdtAmt').value = '';
 		document.getElementById('useYn').checked = false;
 		document.getElementById('empNo').value = '';
+   }
+	//fct input 초기화 
+	function fctClear(){
+		document.getElementById('fctCd').value = '';
+		document.getElementById('fctNm').value = '';
+		document.getElementById('prcCd').value = '';
+		document.getElementById('fctModel').value = '';
+		document.getElementById('fctStd').value = '';
+		document.getElementById('compCd').value = '';
+		document.getElementById('inDate').value = '';
+		document.getElementById('purchCost').value = '';
+		document.getElementById('chkProd').value = '';
+		document.getElementById('fctImg').value = '';
+		document.getElementById('lineNO').value = '';
+		document.getElementById('fctImges').value = '';
+		document.getElementById('fctImges').setAttribute("src", '../resources/img/logo.jpg');
    }
 	
 	document.getElementById('useYn').addEventListener('click',function(event){
@@ -793,7 +845,6 @@ td {
 		console.log('수정버튼 클릭 이벤트')
 		let lineInput =$("#lineForm").serializeObject();
 		console.log('폼태그 값 시리얼 라이즈')
-		console.log(lineInput)
 		fetch('./LineUpdate',{
 			method:'POST',
 			headers:{
@@ -805,7 +856,7 @@ td {
 		.then(result=>{
 			console.log('라인업데이트')
 			console.log(result)
-			LineGrid.reset(result)
+			LineGrid.resetData(result)
 		})
 	}
 	//라인번호 select 값 조회 
@@ -820,13 +871,20 @@ td {
 		      success : function(result){
 		    	  $('#lineNO').append("<option value='d'>전체</option>")
 		    	  for(d of result){
-		    	  	$('#lineNO').append("<option value="+d.lineNO+">"+d.lineNO+"</option>")
+		    	  	$('#linoNolist').append("<option value="+d.lineNO+">"+d.lineNO+"</option>")
 		    	  }
 		    	  
 		    	  
 		      }
 		   });
 	}
+	
+	//설비코드 대문자로 입력받기 
+	  $("#fctCd").bind("keyup", function() {
+		console.log("대문자로 입력받기")
+        $(this).val($(this).val().toUpperCase());
+
+    });
 	//설비코드를 검색 input에 list에 append해준다. 
 	function checkFctList(){
 		fetch('./selelctCheckFct')
@@ -916,6 +974,5 @@ td {
 	selectfctSize()	//설비규격조회
 
 </script>
-
 </body>
 </html>

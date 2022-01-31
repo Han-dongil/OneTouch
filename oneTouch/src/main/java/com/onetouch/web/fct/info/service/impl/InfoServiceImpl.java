@@ -79,6 +79,12 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 
+	@Override
+	public InfoVO selectFctNm(InfoVO infoVO) {
+		return mapper.selectFctNm(infoVO);
+	}
+
+
 
 
 
