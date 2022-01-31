@@ -42,6 +42,17 @@ public class InfoController {
 	@Autowired BasMapper basservice;
 	
 	
+	//설비이름 조회
+	@ResponseBody
+	@PostMapping("/selectFctNm")
+	public InfoVO selectFctNm(@RequestBody InfoVO infoVO) {
+		System.out.println("설비이름 조회 ");
+		System.out.println(infoVO.getFctCd());
+		return infoservice.selectFctNm(infoVO);
+		
+		
+	}
+	
 	//현재 날자 조회
 	@ResponseBody
 	@GetMapping("/selectTodayDate")

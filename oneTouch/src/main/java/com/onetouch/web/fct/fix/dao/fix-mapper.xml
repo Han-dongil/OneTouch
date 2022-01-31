@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.fct.fix.dao.FixMapper">
+	
+	
+	<!-- 수리요청할 설비 조회 --> 
+	<select id="prdPrcMngSelect" resultType="com.onetouch.web.fct.fix.dao.FixVO">
+		SELECT M.FCT_CD as fctCd
+		FROM (SELECT * FROM FCT_INFO WHERE LINE_NO IN 
+							(SELECT P.LINE_NO FROM PRD_PRC_MNG P
+							WHERE P.instr_no IN 
+								(SELECT M.instr_no from PRD_PRC_MNG M  where M.now_phs = '라인가동종료')
+								AND work_fin_dt in to_date(sysdate,'yy-MM-dd')-1
+		GROUP BY P.LINE_NO,P.INSTR_NO
+		HAVING sum(P.flt_cnt) >1)) M LEFT JOIN 
+								(SELECT FCT_CD FROM FCT_FIX_MNG WHERE req_dt > (sysdate -1) AND( FIX_PHS = '수리요청' or FIX_PHS = '수리중' or FIX_PHS = '수리완료') ) P 
+		ON M.FCT_CD = P.FCT_CD
+		WHERE P.FCT_CD IS NULL
+	</select>
 	<select id="fixSelectList" resultType="com.onetouch.web.fct.fix.dao.FixVO">
 		SELECT fix_cd,fct_cd, req_dt, str_dt, fin_dt, fix_phs, fix_cmt, cnt, unit_cost, tot_cost FROM fct_fix_mng
 		WHERE 1=1
@@ -53,6 +69,12 @@
 	</update>
 	
 	<insert id="insertFtc">
+		
+	</insert>
 	
+	<!-- 생산공정에서 수리요청 해주는 쿼리 -->
+	<insert id="insertRequestFixFtc">
+		insert into fct_fix_mng(FIX_CD, FCT_CD,REQ_DT, FIX_PHS) values(PKG_MAKE_CODE.CODE('FCR','FCT_FIX_MNG','FIX_CD'), #{fctCd}, SYSDATE,'수리요청')
+			
 	</insert>
 </mapper>

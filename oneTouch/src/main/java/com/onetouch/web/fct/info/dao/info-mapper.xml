@@ -3,6 +3,11 @@
 <mapper namespace="com.onetouch.web.fct.info.dao.InfoMapper">
 <!-- 작성자 : 박종현 -->
 
+
+<!-- 설비이름 조회 -->
+<select id="selectFctNm" resultType="com.onetouch.web.fct.info.dao.InfoVO">
+	select dtl_nm as fctNm from adm_bas_dtl_cd where dtl_cd like '%' || substr(#{fctCd},0,11) || '%'
+</select>
 <!-- 작업자 조회 -->
 <select id="selectEmp" ></select>
 <!-- 현재 날자 값 조회 -->
@@ -86,7 +91,7 @@ select * from fct_info where line_no = #{lineNo}
 							 ,FCT_IMG
 							 ,UPLOAD_PATH
 							 ) 
-	values (#{fctCd},#{fctNm},#{lineNO},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},#{purchCost},#{chkProd},#{chkProdUnit},#{fctImg},#{uploadPath})
+	values (#{fctCd},#{fctNm},#{lineNO},#{prcCd},#{fctStd},#{fctModel},#{compCd},#{inDate},to_number(#{purchCost}),#{chkProd},#{chkProdUnit},#{fctImg},#{uploadPath})
 </insert>
 <!-- 수정 -->
 <update id="InfoUpdate">
