@@ -90,5 +90,11 @@ public class BomServiceImpl implements BomService {
 		mapper.updatePrd(prdvo);
 	}
 
+	@Override
+	public void deletePrd(PrdVO prdvo) {
+		mapper.deletePrd(prdvo);
+		
+	}
+
 
 }

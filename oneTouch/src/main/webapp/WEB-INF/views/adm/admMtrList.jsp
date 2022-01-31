@@ -52,7 +52,7 @@ hr{
 		<div class = "col-4">
 			<h4 class="gridtitle">✔자재목록</h4>
 			<span class="floatright">
-				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+				
 			</span>
 			<br><br>
 			<hr>
@@ -63,6 +63,7 @@ hr{
 			<span class="floatright">
 				<button type="button" id="btnReset" class="btn btn-main newalign2">초기화</button>
 				<button type="button" id="btnAdd" class="btn btn-main newalign2">등록</button>
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 				<button type="button" id="btnEdit" class="btn btn-primary newalign2">수정</button>
 			</span>
 			<br><br>
@@ -181,8 +182,11 @@ hr{
 
 <script type="text/javascript">
 	let Grid = tui.Grid;
+	let rowk;
 	
+	//페이지 로드되면 수정막기
 	document.getElementById('btnEdit').setAttribute('disabled', true);
+	document.getElementById('btnDel').setAttribute('disabled', true);
 	
 	Grid.applyTheme('default',{
 		cell:{
@@ -228,7 +232,6 @@ hr{
 		columns,
 		bodyHeight: 520,
 		minBodyHeight: 520,
-		rowHeaders : [ 'checkbox' ]
 	});
 	
 	grid.on("click", (ev) => {
@@ -258,7 +261,6 @@ hr{
 				document.getElementById('unit').setAttribute('value',MtrDtl.unit);
 				document.getElementById('mtrSect').setAttribute('value',MtrDtl.mtrSect);
 				document.getElementById('compCd').setAttribute('value',MtrDtl.compCd);
-				//console.log($('#mtrFrm').serialize());
 				
 				if(MtrDtl.useYn == 'Y') {
 					document.getElementById('useYn').checked = true
@@ -269,7 +271,8 @@ hr{
 				//자재코드는 수정 안되게 막아주기
 				document.getElementById('mtrCd').setAttribute('readonly',true);
 				document.getElementById('btnAdd').setAttribute('disabled', true);
-				document.getElementById('btnEdit').disabled = undefined;	
+				document.getElementById('btnEdit').disabled = undefined;
+				document.getElementById('btnDel').disabled = undefined;
 			})
 		}
 	})
@@ -345,10 +348,8 @@ hr{
 			//contentType: 'application/json',
 			success: function(result) {
 				console.log("수정완료!!!!!!!!!!!")
-				console.log(result)
 			}
 		})
-		$('#mtrFrm')[0].submit();
 	})
 	
 
@@ -364,10 +365,11 @@ hr{
 			dataType: 'json',
 			success: function(result) {
 				console.log("등록완료!!!!!!!!!!!")
-				console.log(result)
 			}
 		})
-		$('#mtrFrm')[0].submit();
+		grid.readData();
+		grid.focus(grid.getRowCount(),'mtrCd',true);
+		//formClear();
 	})	
 	
 	//초기화버튼
@@ -375,13 +377,42 @@ hr{
 		if(!confirm("초기화하시겠습니까?")){
 			return false;
 		}
-		$('#mtrFrm')[0].submit();
+		formClear();
 	})
+	
+	//초기화함수
+	function formClear() {
+		document.getElementById('mtrCd').value = '';
+		document.getElementById('mtrNm').value = '';
+		document.getElementById('stdNm').value = '';
+		document.getElementById('unitNm').value = '';
+		document.getElementById('mtrSectNm').value = '';
+		document.getElementById('compNm').value = '';
+		document.getElementById('mngAmt').value = '';
+		document.getElementById('safeStck').value = '';
+		document.getElementById('std').value = '';
+		document.getElementById('unit').value = '';
+		document.getElementById('mtrSect').value = '';
+		document.getElementById('compCd').value = '';
+		document.getElementById('mtrCd').readOnly = false;
+		document.getElementById('useYn').checked = false;
+	}
 	
 	//삭제버튼
 	btnDel.addEventListener("click", function() {
-		grid.removeCheckedRows(true);
-		grid.request('modifyData');
+		if(!confirm("삭제하시겠습니까?")){
+			return false;
+		}
+		$.ajax({
+			url: "./deleteMtr",
+			method: "POST",
+			data: $('#mtrFrm').serializeObject(),
+			dataType: 'json',
+			success: function(result) {
+				console.log("삭제완료!!!!!!!!!!!")
+			}
+		}) 
+		formClear();
 	})
 	
 	

@@ -15,6 +15,7 @@ public interface BomService {
 	
 	void insertPrd(PrdVO prdvo);
 	void updatePrd(PrdVO prdvo);
+	void deletePrd(PrdVO prdvo);
 	
 	void modify(ModifyVO<BomVO> mvo);
 	void modifyPrd(ModifyVO<PrdVO> mvo);

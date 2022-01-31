@@ -269,12 +269,17 @@ hr{
 		})
 		
 		//자재불량 선택했을때 발생공정명 컬럼에 '해당사항없음' 붙여주기----덜됨
-		grid.on("editingFinish", (ev) => {
+/* 		grid.on("editingFinish", (ev) => {
 			if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
 				grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
 			}
-		})
+		}) */
 		
+		grid.on("onAfterChange", (ev) => {
+		if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
+			grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
+		}
+	}) 
 		
 		//사용공정명 더블클릭한 모달창 안에서 더블클릭
 		function getModalPrc(param) {

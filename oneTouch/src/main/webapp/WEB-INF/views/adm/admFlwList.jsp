@@ -24,7 +24,7 @@
 <div class = "col-4">
 	<h4>✔제품목록</h4>
 	<div align="right">
-		<button id="btnDelPrd" type="button">삭제</button><hr>
+		<hr>
 	</div>
 	<div id="grid1"></div>
 	<br>
@@ -34,6 +34,7 @@
 	<div align="right" style="margin-right: 3%;">
 		<button type="button" id="btnReset">초기화</button>
 		<button type="button" id="btnAddPrd">등록</button>
+		<button id="btnDelPrd" type="button">삭제</button>
 		<button type="button" id="btnEditPrd">수정</button><hr>
 	</div>
 	<form id="flwFrm" name="flwFrm" method="post">
@@ -70,11 +71,14 @@
 	let prdCodeVal;
 	let rowk;
 	let PrdDtl;
+	let flwCnt;
 	let lineSplit =[];
 	let Grid = tui.Grid;
 	//--------변수선언 끝--------
 	
+	//수정,삭제버튼 막아놓기
 	document.getElementById('btnEditPrd').setAttribute('disabled', true);
+	document.getElementById('btnDelPrd').setAttribute('disabled', true);
 	
 	//--------그리드 css--------
 	Grid.applyTheme('default',{
@@ -97,22 +101,19 @@
 		
 			header : '제품코드',
 			name : 'prdCd',
-			sortable : true, //정렬
-			editor : 'text'
+			sortable : true //정렬
 		},
 		{
 			header : '제품명',
 			name : 'prdNm',
-			sortable : true,
-			editor : 'text'
+			sortable : true
 		}];
 	
 	const columns2 = [{
 		
 		header : '공정순서',
 		name : 'prcSeq',
-		sortable : true,
-		editor : 'text'
+		sortable : true
 	},
 	{
 		header : '공정명',
@@ -181,8 +182,7 @@
 		data: dataSource1,
 		columns: columns1,
 		bodyHeight: 520,
-		minBodyHeight: 520,
-		rowHeaders : [ 'checkbox' ]
+		minBodyHeight: 520
 	});
 	
 	const grid2 = new Grid({
@@ -200,100 +200,127 @@
 	grid1.on("click", (ev) =>{
 		
 		if(ev.columnName === 'prdCd' || ev.columnName === 'prdNm'){	
-				prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
-				console.log(prdCode1);
-				
-				//제품상세정보 받아오기
-				$.ajax({
-					url:'./admPrdDtlList',
-					dataType:'json',
-					data : prdCode1,
-					async : false
-				}).done(function(datas) {
-					PrdDtl = datas.data.contents[0];
-					console.log(PrdDtl);
-					document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
-					document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
-					document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
-					document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
-					document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
-					document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
-					document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
-					document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
-					document.getElementById('ableLineNo').setAttribute('value',PrdDtl.ableLineNo);
-					
-					if(PrdDtl.useYn == 'Y') {
-						document.getElementById('useYn').checked = true
-					} else {
-						document.getElementById('useYn').checked = false
-					}
-					
-					//제품코드는 수정 안되게 막아주기
-					document.getElementById('prdCd').setAttribute('readonly',true);
-					document.getElementById('btnAddPrd').setAttribute('disabled', true);
-					document.getElementById('btnEditPrd').disabled = undefined;	
-	
-					})
+			prdCode1 = {'prdCd':grid1.getValue(ev.rowKey,'prdCd')};
+			console.log(prdCode1);
 			
+			//제품상세정보 받아오기
+			$.ajax({
+				url:'./admPrdDtlList',
+				dataType:'json',
+				data : prdCode1,
+				async : false
+			}).done(function(datas) {
+				PrdDtl = datas.data.contents[0];
+				console.log(PrdDtl);
+				document.getElementById('prdCd').value = PrdDtl.prdCd;
+				document.getElementById('prdNm').value = PrdDtl.prdNm;
+				document.getElementById('prdStdNm').value = PrdDtl.prdStdNm;
+				document.getElementById('mngUnitNm').value = PrdDtl.mngUnitNm;
+				document.getElementById('prdSectNm').value = PrdDtl.prdSectNm;
+				document.getElementById('prdStd').value = PrdDtl.prdStd;
+				document.getElementById('mngUnit').value = PrdDtl.mngUnit;
+				document.getElementById('prdSect').value = PrdDtl.prdSect;
+				document.getElementById('ableLineNo').value = PrdDtl.ableLineNo;
+				
+				
+				/* document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
+				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
+				document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
+				document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
+				document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
+				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
+				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
+				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
+				document.getElementById('ableLineNo').setAttribute('value',PrdDtl.ableLineNo);
+				 */
+				if(PrdDtl.useYn == 'Y') {
+					document.getElementById('useYn').checked = true
+				} else {
+					document.getElementById('useYn').checked = false
+				}
+				
+				//제품코드는 수정 안되게 막아주기
+				document.getElementById('prdCd').setAttribute('readonly',true);
+				document.getElementById('btnAddPrd').setAttribute('disabled', true);
+				document.getElementById('btnEditPrd').disabled = undefined;	
+				document.getElementById('btnDelPrd').disabled = undefined;	
+
+				prdCodeVal = $('#prdCd').val();
+				prdCode2 = {'prdCd' : prdCodeVal};
+				grid2.readData(1,prdCode2,true);
+			})
 		}
 	})
 
 	/*공정흐름*/
-		//공정순서 자동추가알림
-		grid2.on('editingStart', (ev) => {
-			if(ev.columnName == 'prcSeq') {
-				var value = grid2.getValue(ev.rowKey, 'prcSeq');
-					console.log(value);
-				if(value == null) {
-					alert('표시순서는 자동추가됩니다');
-					ev.stop();
-				}
-			}
-		})
-		
-		//공정순서 수정막기
-		grid2.on('editingStart', (ev) => {
-			if(ev.columnName == 'prcSeq') {
-				var value = grid2.getValue(ev.rowKey, 'prcSeq');
-				if(value != null) {
-					ev.stop();
-				}
-			}
-		})
 	
-			
-		//조회 버튼
-		btnFlw.addEventListener("click", function() {
-			prdCodeVal = $('#prdCd').val();
-			prdCode2 = {'prdCd' : prdCodeVal};
-			console.log(prdCodeVal);
-			grid2.readData(1,prdCode2,true);
-		})
-		
-			
-		//추가버튼
+		//그리드2 다 업뎃후에 공정흐름갯수세기
+	 	grid2.on('onGridUpdated',function() {
+	 		flwCnt = grid2.getRowCount();
+	 	})	
+	 	
+	 	//추가버튼
 		btnAdd.addEventListener("click", function() {
-			rowk = grid2.getRowCount() - 1;
-			if(grid2.getRowCount() == 0) {
+			console.log(prdCodeVal);
+			rowk = grid2.getRowCount();
+			if(rowk == 0) {
 				seqVal = 1;
 			} else {			
-				seqVal = parseInt(grid2.getValue(rowk,'prcSeq'))+1
+				seqVal = parseInt(grid2.getValue(rowk-1,'prcSeq'))+1
 			}
-			grid2.appendRow({'prcSeq':seqVal});
-			//console.log(prdCodeVal);
+			grid2.appendRow({'prcSeq':seqVal,
+							 'prcNm':'',
+							 'workCmt':'',
+							 'stdLoad':'',
+							 'unitCost':'',
+							 'leadTime':''},
+							 {focus : true});
 			grid2.setValue(rowk, "prdCd", prdCodeVal, false);
 		})	
+		
+
 		
 		//삭제버튼
 		btnDel.addEventListener("click", function(){
 			grid2.removeCheckedRows(true);
+			grid2.request('modifyData');	
 		})
 		
 		//저장버튼
 		btnSave.addEventListener("click", function() {
 			grid2.blur();
-			grid2.request('modifyData');
+			rowk = grid2.getRowCount();
+			if(flwCnt <= rowk) {
+				for(i=flwCnt; i<grid2.getRowCount(); i++) {
+					if(grid2.getRow(i).prcSeq == '') {
+						alert("공정순서는 필수입력칸입니다!!");
+						return;
+					} else if(grid2.getRow(i).prcNm == '') {
+						alert("공정명은 필수입력칸입니다!!");
+						return;
+					} else if(grid2.getRow(i).stdLoad == '') {
+						alert("기준부하율은 필수입력칸입니다!!");
+						return;
+					} else if(grid2.getRow(i).unitCost == '') {
+						alert("단가는 필수입력칸입니다!!");
+						return;
+					} else if(grid2.getRow(i).leadTime == '') {
+						alert("LEAD타임은 필수입력칸입니다!!");
+						return;
+					}
+				}			
+			}
+			grid2.request('modifyData');			
 		})
+		
+		//그리드2 readData(등록수정삭제 후에)
+		grid2.on("response", function(ev) {
+			if(ev.xhr.response == "flwCont") {
+				grid2.readData();
+				console.log("그리드2 readData했음");
+			}
+		})
+	
 	/*공정흐름끝*/
 		
 	//제품규격검색버튼
@@ -331,15 +358,12 @@
 		//선택한 값 parameter받아서 각자 처리
 		//각각의 인풋에 값 넣어주기 위해서 if문 쓰기
 		if(param.dtlCd.includes('PDT_SECT')) {
-			console.log("1")
 			$("#prdSectNm").val(param.dtlNm);
 			$("#prdSect").val(param.dtlCd);
 		} else if(param.dtlCd.includes('MTR')) {
-			console.log("2")
 			$("#mngUnitNm").val(param.dtlNm);
 			$("#mngUnit").val(param.dtlCd);
 		} else {
-			console.log("3")
 			$("#prdStdNm").val(param.dtlNm);
 			$("#prdStd").val(param.dtlCd);
 		}
@@ -377,9 +401,6 @@
 	/*제품*/
 		//수정버튼
 		btnEditPrd.addEventListener("click", function() {
-			//console.log($('#useYn').is(':checked'));
-			//console.log($('#flwFrm'));
-			//console.log(document.getElementById('useYn').getAttribute('value'));
 			if(!confirm("수정하시겠습니까?")){
 				return false;
 			}
@@ -388,20 +409,46 @@
 				method: "POST",
 				data: $('#flwFrm').serializeObject(),
 				dataType: 'json',
-				//contentType: 'application/json',
 				success: function(result) {
 					console.log("수정완료!!!!!!!!!!!")
-					console.log(result)
+					grid1.resetData(result);
+					prdCodeVal = document.getElementById('prdCd').value;
+					for(prdCdData of grid1.getData()) {
+						if(prdCodeVal == prdCdData.prdCd) {
+							console.log("if문 들어오는지");
+							grid1.focus(prdCdData.rowKey, 'prdCd', true);
+						}
+					}
 				}
 			})
-			$('#flwFrm')[0].submit();
+			alert("수정되었습니다~~");
 		})	
 		
 		//등록버튼
 		btnAddPrd.addEventListener("click", function() {
-			if(!confirm("등록하시겠습니까?")){
-				return false;
-			}
+			if(document.getElementById('prdCd').value == '') {
+				alert("제품코드는 필수입력칸입니다!!");
+				return;
+			} else if(document.getElementById('prdNm').value == '') {
+				alert("제품명은 필수입력칸입니다!!");
+				return;
+			} else if(document.getElementById('prdStdNm').value == '') {
+				alert("제품규격은 필수입력칸입니다!!");
+				return;
+			} else if(document.getElementById('mngUnitNm').value == '') {
+				alert("관리단위는 필수입력칸입니다!!");
+				return;
+			} else if(document.getElementById('prdSectNm').value == '') {
+				alert("제품구분은 필수입력칸입니다!!");
+				return;
+			} else if(document.getElementById('ableLineNo').value == '') {
+				alert("공정라인은 필수입력칸입니다!!");
+				return;
+			} else{
+				if(!confirm("등록하시겠습니까?")){
+					return false;
+				}
+			}			
 			$.ajax({
 				url: "./insertPrd",
 				method: "POST",
@@ -409,10 +456,20 @@
 				dataType: 'json',
 				success: function(result) {
 					console.log("등록완료!!!!!!!!!!!")
-					console.log(result)
+					console.log(result);
+					grid1.resetData(result);
+					prdCodeVal = document.getElementById('prdCd').value;
+					for(prdCdData of grid1.getData()) {
+						if(prdCodeVal == prdCdData.prdCd) {
+							console.log("if문 들어오는지");
+							grid1.focus(prdCdData.rowKey, 'prdCd', true);
+						}
+					}
 				}
 			})
-			$('#flwFrm')[0].submit();
+			//grid1.readData();
+
+			//grid1.focus(grid1.getRowCount(),'prdCd',true);
 		})
 		
 		//초기화버튼
@@ -420,15 +477,48 @@
 			if(!confirm("초기화하시겠습니까?")){
 				return false;
 			}
-			$('#flwFrm')[0].submit();
-			
+			formClear();	
 		})
+		
+		//초기화함수
+		function formClear() {
+			document.getElementById('prdCd').value = '';
+			document.getElementById('prdNm').value = '';
+			document.getElementById('prdStdNm').value = '';
+			document.getElementById('mngUnitNm').value = '';
+			document.getElementById('prdSectNm').value = '';
+			document.getElementById('ableLineNo').value = '';
+			document.getElementById('prdStd').value = '';
+			document.getElementById('mngUnit').value = '';
+			document.getElementById('prdSect').value = '';
+			document.getElementById('prdCd').readOnly = false;
+			document.getElementById('useYn').checked = false;
+			grid2.clear();
+			document.getElementById('btnAddPrd').disabled = undefined;
+			document.getElementById('btnEditPrd').setAttribute('disabled', true);
+			document.getElementById('btnDelPrd').setAttribute('disabled', true);
+		}
 		
 		//삭제버튼
 		btnDelPrd.addEventListener("click", function() {
-			grid1.removeCheckedRows(true);
-			grid1.request('modifyData');
+			if(!confirm("삭제하시겠습니까?")){
+				return false;
+			}
+			$.ajax({
+				url: "./deletePrd",
+				method: "POST",
+				data: $('#flwFrm').serializeObject(),
+				dataType: 'json',
+				success: function(result) {
+					console.log("삭제완료!!!!!!!!!!!")
+					grid1.resetData(result);
+					grid1.focus(grid1.getRowCount()-1,'prdCd',true);
+				}
+			})
+			formClear();	
 		})
+		
+		
 	/*제품 끝*/
 
 </script>
