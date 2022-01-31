@@ -16,6 +16,7 @@
 		join pdt_plan_dtl b
 		on(a.plan_no = b.plan_no)
 		where a.plan_no=#{planVo}
+		and to_date(work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
 	</select>
 	<select id="workok">
 		select plan_no from pdt_work_instr

@@ -11,10 +11,11 @@
 		select sum(nvl2(work_fin_dt,1,0)) as prcEndNull from prd_prc_mng where instr_no= #{instrNo}
 	</select>
 	<select id="prcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-			select distinct prc_cd,prc_seq
+		select distinct prc_cd,prc_seq
 		from adm_prd a join adm_prc_flow b
 		on a.prd_cd = b.prd_cd
 		where a.able_line_no like '%'||#{lineNo}||'%'
+		order by prc_seq
 	</select>
 	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select p.instr_no, p.work_str_time,p.instr_cnt goalCnt, f.prc_seq
@@ -152,8 +153,8 @@
 		select (to_number(sum(nvl2(work_fin_dt,1,0)))+to_number(sum(nvl2(work_str_dt,1,0)))+to_number(sum(nvl(flt_cnt,0)))+to_number(sum(nvl2(now_phs,1,0)))+to_number(sum(nvl(pdt_cnt,0)))) as upCheck from prd_prc_mng
 	</select>
 	<select id="movingSearchListFinish" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select a.instr_no , a.mtr_lot , a.line_no , a.work_str_dt , a.work_fin_dt , a.goal_cnt, a.pdt_cnt
-		from (select distinct a.instr_no , a.mtr_lot, a.line_no , to_char(b.work_str_dt,'yyyy-MM-dd') work_str_dt, to_char(b.work_fin_dt,'yyyy-MM-dd') work_fin_dt, b.goal_cnt , (select min(pdt_cnt)
+		select a.instr_no ,  a.line_no , a.work_str_dt , a.work_fin_dt , a.goal_cnt, a.pdt_cnt
+		from (select distinct a.instr_no , a.line_no , to_char(b.work_str_dt,'yyyy-MM-dd') work_str_dt, to_char(b.work_fin_dt,'yyyy-MM-dd') work_fin_dt, b.goal_cnt , (select min(pdt_cnt)
                                                                                                                                                                     from prd_prc_mng
                                                                                                                                                                     where instr_no=a.instr_no) as pdt_cnt 
 		from used_mtr_lot a join prd_prc_mng b

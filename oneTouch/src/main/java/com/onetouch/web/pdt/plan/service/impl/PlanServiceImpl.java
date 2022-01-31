@@ -71,22 +71,30 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void insertPlanDtl(Map<String,List<PlanVO>> map) {
 		List<PlanVO> list=map.get("detail");
-		List<PlanVO> lotList=map.get("lot");
+
 		System.out.println("aaaaaaaaaaaaaaaaaaaaa");
-		System.out.println(map.get("lot").get(0).getMtrLot());
 		PlanVO inVo=map.get("plan").get(0);
-		
-		mapper.insertPlan(inVo);
+		if(map.get("plan")!=null) {
+			for(PlanVO vo:map.get("plan")) {
+				mapper.insertPlan(vo);
+			}
+		}
 		if(list!=null) {
 			for(PlanVO vo : list) {
-				System.out.println(vo);
-				System.out.println("111111");
-				mapper.planDtlInsert(vo);
-				System.out.println("222222");
+				int date=mapper.dateCal(vo);
+				for(int i=0 ;i<=date;i++) {
+					vo.setDate(i);
+					System.out.println(vo.getDate());
+					System.out.println(mapper.test(vo));
+					mapper.planDtlInsert(vo);
+					System.out.println("222222");
+				}
+				if(inVo.getOrdShtNo()!=null)
 				ordMapper.ordCheck(inVo.getOrdShtNo());
 			}
 		}
-		if(lotList!=null) {
+		if(map.get("lot")!=null) {
+			List<PlanVO> lotList=map.get("lot");
 			for(PlanVO vo : lotList) {
 				System.out.println("333333");
 				mapper.LotFindInsert(vo);
@@ -147,24 +155,47 @@ public class PlanServiceImpl implements PlanService {
 		System.out.println(lines);
 		String line[]=lines.split("/");
 		List<PlanVO> list=new ArrayList<>();
+		List<PlanVO> list2=new ArrayList<>();
+		List<Integer> list3=new ArrayList<>();
 		for(int i=0; i<line.length;i++) {
 			PlanVO vo=new PlanVO();
 			vo.setLineNo(line[i]);
 			System.out.println(vo.getLineNo());
 			list.add(vo);
 		}
+		list2=mapper.useFct();
+		System.out.println(list);
+		System.out.println(list2);
+		
+		for(int i =0 ; i< list.size() ;i++ ) {
+			for(PlanVO vo2 : list2) {
+				if(list.get(i).getLineNo().equals(vo2.getLineNo())) {
+					list3.add(i);
+				}
+				
+			}
+		}
+		
+		for(int i=0 ; i< list3.size();i++) {
+			list.remove(i);
+		}
+		
 		System.out.println(list);
 		return list;
 	}
 	@Override
 	public List<InfoVO> prcLineFine(PlanVO vo) {
-		infoMapper.selectprcCd(vo);
 		
 		return infoMapper.selectprcCd(vo);
 	}
 	@Override
 	public List<PlanVO> safeStckView() {
 		return mapper.safeStckView();
+	}
+	@Override
+	public List<PlanVO> slectDate(PlanVO vo) {
+				
+		return mapper.slectDate(vo);
 	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기

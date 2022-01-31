@@ -249,13 +249,23 @@
 	})
 	//불량+버튼
 	fltAdd.addEventListener('click',ev=>{
-		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1+1);
-		updateFlt();
+		if(hiddenGrid.getValue(0,'goalCnt')*1>hiddenGrid.getValue(0,'pdtCnt')*1+hiddenGrid.getValue(0,'fltCnt')*1){
+			hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1+1);
+			updateFlt();
+		}
+		else{
+			alert("불량량은 목표수량을 초과할수없습니다")
+		}
 	})
 	//불량-버튼
 	fltMinus.addEventListener('click',ev=>{
-		hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1-1);
-		updateFlt();
+		if(hiddenGrid.getValue(0,'fltCnt')*1>=0){
+			hiddenGrid.setValue(0,'fltCnt',hiddenGrid.getValue(0,'fltCnt')*1-1);
+			updateFlt();
+		}
+		else{
+			alert("불량이 0보다 적을수 없습니다.")
+		}
 	})
 	function updateFlt(){
 		fetch('fltUpdate',{

@@ -37,6 +37,7 @@ public class OrdController {
 	@PostMapping("ord")
 	public List<OrdVO> select(OrdVO vo){
 		List<OrdVO> list= new ArrayList<>();
+		System.out.println(vo.getNowPhs());
 		list =service.select(vo);
 		return list;
 	}

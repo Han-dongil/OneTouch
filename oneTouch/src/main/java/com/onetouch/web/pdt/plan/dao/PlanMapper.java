@@ -22,6 +22,9 @@ public interface PlanMapper {
 	List<PlanVO> pdtPlanDtllist(PlanVO vo);
 	List<PlanVO> safeStckView();
 	List<PlanVO> selectPrd();
-	
+	int dateCal(PlanVO vo);
+	PlanVO test(PlanVO vo);	
+	List<PlanVO> slectDate(PlanVO vo);
+	List<PlanVO> useFct();
 	
 }

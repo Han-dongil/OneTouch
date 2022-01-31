@@ -75,7 +75,7 @@ public class PlanController {
 	@PostMapping("planDtlInsert")
 	public void planDtlInsert(@RequestBody Map<String,List<PlanVO>> map){
 		System.out.println("zzzzzzzzzz");
-		System.out.println(map.get("lot").get(0).getMtrLot());
+		//System.out.println(map.get("lot").get(0).getMtrLot());
 		service.insertPlanDtl(map);
 	}
 	@ResponseBody
@@ -142,8 +142,14 @@ public class PlanController {
 	@ResponseBody
 	@GetMapping("safeStckView")
 	public List<PlanVO> safeStckView(){
-		
 		return service.safeStckView();
 	}
+	//지시가능날짜 확인
+	@ResponseBody
+	@PostMapping("slectDate")
+	public List<PlanVO> slectDate(@RequestBody PlanVO vo){
+		return service.slectDate(vo);
+	}
+	
 }
 

@@ -23,4 +23,5 @@ public interface PlanService {
 	List<PlanVO> findLineNo(String prdCd);
 	List<InfoVO> prcLineFine(PlanVO vo);
 	List<PlanVO> safeStckView();
+	List<PlanVO> slectDate(PlanVO vo);
 }

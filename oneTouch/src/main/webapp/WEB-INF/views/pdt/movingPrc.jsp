@@ -177,7 +177,6 @@
 	let v=[]; 
 	//무빙그리드 클릭
 	movingGrid.on('click',ev=>{
-		console.log("dddddddddddddd")
 		if(movingGrid.getValue(ev.rowKey,'instrNo') != v[0]){
 			v.length=0;
 		}
@@ -198,14 +197,10 @@
 		.then(result=>{
 			movingPrcGrid.resetData(result);
 			if(movingGrid.getValue(ev.rowKey,'instrNo') == v[0]){
-				console.log("aaaaaaaaaaaaaaaaa")
 				console.log(v.length)
 				movingShowFnc(movingGrid.getValue(ev.rowKey,'instrNo'));
-				
-				
 			}
 			else{
-				console.log("a22222222222222")
 				console.log(v.length)
 			}
 		}) 
