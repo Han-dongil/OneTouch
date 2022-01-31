@@ -12,6 +12,7 @@ public interface MtrService {
 	
 	void updateMtr(MtrVO mtrvo);
 	void insertMtr(MtrVO mtrvo);
+	void deleteMtr(MtrVO mtrvo);
 	
 	void modify(ModifyVO<MtrVO> mvo);
 }

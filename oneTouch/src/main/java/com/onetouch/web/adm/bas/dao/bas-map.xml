@@ -10,7 +10,10 @@
 		<if test="basNm != null and basNm !=''">
 			AND bas_nm like '%' || #{basNm} || '%'
 		</if>
-		order by bas_nm
+		<if test="basCd != null and basCd !=''">
+			AND bas_cd like '%' || #{basCd} || '%'
+		</if>
+		order by bas_cd
 	</select>
 	
 	<!-- 기초코드 등록 -->

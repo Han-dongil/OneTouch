@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.mtr.dao.MtrVO;
 import com.onetouch.web.adm.mtr.service.MtrService;
-import com.onetouch.web.zzz.dao.ModifyVO;
 
 @RequestMapping("/adm")
 @Controller
@@ -73,16 +71,17 @@ public class MtrController {
 	@PostMapping("/insertMtr")
 	public List<MtrVO> insertMtr(MtrVO mtrvo) {
 		mtrservice.insertMtr(mtrvo);
-		System.out.println("upd"+mtrvo);
+		System.out.println("ins"+mtrvo);
 		return mtrservice.selectAdmMtrDtl(mtrvo);
 	}
 	
-	//mtr 삭제
+	//form 삭제
 	@ResponseBody
-	@PostMapping("/mtrModifyData")
-	public void modify(@RequestBody ModifyVO<MtrVO> mvo) {
-		System.out.println("modify" + mvo);
-		mtrservice.modify(mvo);
+	@PostMapping("/deleteMtr")
+	public List<MtrVO> deleteMtr(MtrVO mtrvo) {
+		mtrservice.deleteMtr(mtrvo);
+		System.out.println("del"+mtrvo);
+		return mtrservice.selectAdmMtrDtl(mtrvo);
 	}
 	
 }

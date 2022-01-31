@@ -223,6 +223,15 @@
 	
 	//--------기초코드 기능 (그리드1)--------
 	
+		//페이지 로드될때 기초코드의 첫번째코드의 상세코드 보여주기
+		grid2.on('onGridMounted',function() {
+			console.log("1");
+			basCodeVal = grid1.getValue(0,'basCd');
+			basCode = {'basCd' : basCodeVal};
+			grid2.readData(1,basCode,true);
+			console.log("2");
+		})
+	
 		//그리드1 업뎃후에 기초코드갯수세기
 	 	grid1.on('onGridUpdated',function() {
 	 		basAllCnt = grid1.getRowCount();
@@ -351,7 +360,7 @@
 			grid2.blur();
 			rowk = grid2.getRowCount();
 			if(basDtlCnt <= rowk) {
-				for(i=0; i<grid2.getRowCount(); i++) {
+				for(i=basDtlCnt; i<grid2.getRowCount(); i++) {
 					if(grid2.getRow(i).dtlCd == '') {
 						alert("상세코드는 필수입력칸입니다!!");
 						return;

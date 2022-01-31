@@ -26,7 +26,7 @@
 	
 	<update id="updateFlw">
 		UPDATE 	adm_prc_flow
-		SET 	work_cmt = #{workCmt},
+		SET 	<if test="workCmt != null and workCmt != ''">work_cmt = #{workCmt},</if>
 				std_load = #{stdLoad},
 				unit_cost = #{unitCost},
 				lead_time = #{leadTime},
@@ -37,15 +37,15 @@
 	<insert id="insertFlw">
 		INSERT INTO adm_prc_flow
 		(prc_seq,
-		 work_cmt,
+		 <!-- <if test="workCmt != null and workCmt != ''">work_cmt,</if> -->
 		 std_load,
 		 unit_cost,
 		 lead_time,
 		 prc_cd,
 		 prd_cd)
-		VALUES
+		VALUES(
 		 #{prcSeq},
-		 #{workCmt},
+		<!--  <if test="workCmt != null and workCmt != ''">#{workCmt},</if> -->
 		 #{stdLoad},
 		 #{unitCost},
 		 #{leadTime},

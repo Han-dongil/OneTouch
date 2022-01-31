@@ -80,12 +80,13 @@ public class FlwController {
 		return maps;
 	}
 	
-	//공정흐름관리 저장
+	//공정흐름관리 등록수정삭제
 	@ResponseBody
 	@PostMapping("/flwModifyData")
-	public void modify(@RequestBody ModifyVO<FlwVO> mvo) {
+	public String modify(@RequestBody ModifyVO<FlwVO> mvo) {
 		System.out.println("modify" + mvo);
 		flwservice.modify(mvo);
+		return "flwCont";
 	}
 	
 	//form 수정
@@ -93,7 +94,7 @@ public class FlwController {
 	@PostMapping("/updatePrd")
 	public List<PrdVO> updatePrd(PrdVO prdvo) {
 		bomservice.updatePrd(prdvo);
-		return bomservice.selectPrd(prdvo);
+		return bomservice.selectPrdAll();
 	}
 	
 	//form 등록
@@ -101,15 +102,16 @@ public class FlwController {
 	@PostMapping("/insertPrd")
 	public List<PrdVO> insertPrd(PrdVO prdvo) {
 		bomservice.insertPrd(prdvo);
-		return bomservice.selectPrd(prdvo);
+		return bomservice.selectPrdAll();
 	}
 	
-	//제품 삭제
+	//form 삭제
 	@ResponseBody
-	@PostMapping("/prdModifyData")
-	public void modifyPrd(@RequestBody ModifyVO<PrdVO> mvo) {
-		System.out.println("modify" + mvo);
-		bomservice.modifyPrd(mvo);
+	@PostMapping("/deletePrd")
+	public List<PrdVO> deletePrd(PrdVO prdvo) {
+		System.out.println("삭제확인"+prdvo);
+		bomservice.deletePrd(prdvo);
+		return bomservice.selectPrdAll();
 	}
-	
+
 }

@@ -4,17 +4,18 @@
 	 
 	<!-- 전체제품조회리스트 -->
 	<select id="selectPrdAll" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
-		select  prd_cd,
-		        prd_nm,
-		        prd_std,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
-		        mng_unit,
-		        FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
-		        use_yn,
-		        prd_sect,
-		        FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
-		        able_line_no
-		from    adm_prd
+		select   prd_cd,
+		         prd_nm,
+		         prd_std,
+		         FN_GET_BAS_DTL_CD_TO_NM(prd_std) as prdStdNm,
+		         mng_unit,
+		         FN_GET_BAS_DTL_CD_TO_NM(mng_unit) as mngUnitNm,
+		         use_yn,
+		         prd_sect,
+		         FN_GET_BAS_DTL_CD_TO_NM(prd_sect) as prdSectNm,
+		         able_line_no
+		from     adm_prd
+		order by prd_cd
 	</select>
 	
 	<!-- use_yn = 'Y'인 select -->
@@ -91,21 +92,22 @@
 			 prd_std,
 			 mng_unit,
 			 prd_sect,
-			 able_line_no,
-			 use_yn)
+			 use_yn,
+			 able_line_no
+			 )
 			values 
 			(#{prdCd},
 			 #{prdNm},
 			 #{prdStd},
 			 #{mngUnit},
 			 #{prdSect},
-			 #{ableLineNo},
-			 <if test = "useYn == null and useYn == ''" >
-				'N'
+			 <if test = "useYn == null or useYn == ''" >
+				'N',
 			</if>
 			<if test = "useYn == 'on'">
-				'Y'
-			</if>)
+				'Y',
+			</if>
+			#{ableLineNo})
 		</insert>
 		
 		<delete id="deletePrd">
@@ -120,7 +122,7 @@
 				mng_unit = #{mngUnit},
 				prd_sect = #{prdSect},
 				use_yn = 
-				<if test = "useYn == null and useYn == ''" >
+				<if test = "useYn == null or useYn == ''" >
 					'N'
 				</if>
 				<if test = "useYn == 'on'">

@@ -36,6 +36,7 @@ public class FlwServiceImpl implements FlwService{
 		}
 		if(mvo.getCreatedRows() != null) {
 			for(FlwVO flwvo : mvo.getCreatedRows()) {
+				System.out.println(flwvo);
 				mapper.insertFlw(flwvo);
 			};
 		}

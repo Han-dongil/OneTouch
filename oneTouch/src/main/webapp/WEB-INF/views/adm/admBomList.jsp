@@ -138,8 +138,7 @@ hr{
 			modal : true,
 			resizable: false,
 			height: "auto",
-			width: 800,
-			height: 400
+			width: 800
 		});
 		
 		//제품코드 눌렀을때 나오는 모달에서 더블클릭했을때 실행되는 함수
