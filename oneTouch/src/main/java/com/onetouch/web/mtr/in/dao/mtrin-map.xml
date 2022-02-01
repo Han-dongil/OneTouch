@@ -23,9 +23,9 @@
 		WHERE 
 			A.MTR_CD = B.MTR_CD
 		AND
-			A.MTR_CD = C.MTR_CD
+			A.MTR_CD = C.MTR_CD(+)
 		AND
-			A.ORD_NO = C.ORD_NO 
+			A.ORD_NO = C.ORD_NO(+) 
 		
 		<if test="startDate != null and startDate != ''"> 
 			<![CDATA[AND TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
@@ -58,9 +58,10 @@
 			ORD_NO,
 			UNIT,
 			IN_AMT,
-			FLT_AMT,
+			<if test='fltAmt != null and fltAmt != ""'>FLT_AMT,</if>
 			UNIT_COST,
-			TOT_COST
+			TOT_COST,
+			EMP_NO
 			)
 		VALUES(
 			#{inNo},
@@ -69,13 +70,14 @@
 			#{ordNo},
 			#{unit},
 			#{inAmt},
-			#{fltAmt},
+			<if test='fltAmt != null and fltAmt != ""'>#{fltAmt},</if>
 			#{unitCost},
-			(#{unitCost}*#{inAmt})
+			(#{unitCost}*#{inAmt}),
+			#{empNo}
 			)
 	</insert>
 	<!-- 입고등록후 발주디테일에 수량업데이트 -->
-	<update id="updateOrd">
+	<update id="plusOrd">
 		UPDATE MTR_ORD_DTL
 		SET
 			IN_AMT = (NVL(IN_AMT,0)+#{inAmt}),
@@ -111,6 +113,23 @@
 		FROM MTR_IN
 		WHERE IN_NO = #{inNo}
 	</delete>
+	<!-- 삭제 후 발주디테일에 수량업데이트 -->
+	<update id="minusOrd">
+		UPDATE MTR_ORD_DTL
+		SET
+			IN_AMT = (NVL(IN_AMT,0)-NVL(#{inAmt},0)),
+			<if test='fltAmt =! null and fltAmt =! ""'>
+				FLT_AMT = (NVL(FLT_AMT,0)-#{fltAmt}),
+			</if>
+			NOTIN_AMT = NOTIN_AMT
+						+NVL(#{inAmt},0)
+						+NVL(#{fltAmt},0)
+		WHERE
+			ORD_NO = #{ordNo} 
+		AND
+			MTR_CD = #{mtrCd}
+	</update>
+	
 	<update id="prdNeed">
 		update MTR_LOT_STCK
 		set 

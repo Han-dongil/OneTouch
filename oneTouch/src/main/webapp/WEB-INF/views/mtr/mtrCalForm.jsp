@@ -191,6 +191,11 @@ var mainGrid = new Grid({
 				   header: '단위',
 				   name: 'unit',
 				   hidden: true
+				 },
+				 {
+				   header: '등록자',
+				   name: 'empNo',
+				   hidden: true
 				 }
 				],
 				summary : {
@@ -336,9 +341,8 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 	height: "auto",
 	width: 800,
 	buttons:{
-		"확인":()=>{
+			"확인":()=>{
 			let rows = lotGrid.getCheckedRows();
-			console.log(rows);
 			let year = dt.getFullYear()
 			let month = ('0' + (dt.getMonth()+1)).slice(-2)
 			let day = ('0' + (dt.getDate())).slice(-2)

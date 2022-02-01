@@ -22,4 +22,5 @@ public class MtrInVO extends LotVO{
 	private String fltAmt;
 	private String unitCost;
 	private String totCost;
+	private String empNo;
 }
