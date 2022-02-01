@@ -144,6 +144,9 @@ let mainGrid = new Grid({
 				   name: 'mtrNm',
 				   align: 'left',
 				   editor: 'text',
+				   validation: {
+					   required:true
+				   },
 				   sortable: true
 				 },
 				 {
@@ -200,9 +203,6 @@ let mainGrid = new Grid({
 				   formatter({value}){
 					   return format(value);
 				   },
-					/* validation: {
-						dataType: 'number'
-		          	}, */
 				   sortable: true
 				 },
 				 {
@@ -213,10 +213,10 @@ let mainGrid = new Grid({
 				   formatter({value}){
 					   return format(value);
 				   },
-					/* validation: {
+					validation: {
 						dataType: 'number',
 		            	required: true
-		          	}, */
+		          	},
 				   sortable: true
 				 },
 				 {
@@ -227,6 +227,10 @@ let mainGrid = new Grid({
 				   formatter({value}){
 					   return format(value);
 				   },
+				   validation: {
+						dataType: 'number',
+		            	required: true
+		          	},
 				   sortable: true
 				 },
 				 {
@@ -376,13 +380,9 @@ let ordDialog = $( "#dialog-ord" ).dialog({
 	width: 800,
 	buttons:{
 		"확인":()=>{
-		let year = dt.getFullYear();
-		let month = ('0' + (dt.getMonth()+1)).slice(-2);
-		let day = ('0' + (dt.getDate())).slice(-2);
-		let str = year + '-' + month + '-' + day;
 		let rows = ordGrid.getCheckedRows();
 		for(row of rows){
-			row.inDate = str
+			row.inDate = today();
 			row.rowKey = mainGrid.getRowCount();
 			row.inAmt = row.notinAmt;
 			mainGrid.appendRow(row,{focus:true});
