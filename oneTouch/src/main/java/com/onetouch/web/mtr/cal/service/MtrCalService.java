@@ -10,13 +10,6 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public interface MtrCalService {
 	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
 	List<LotVO> selectLot(MtrCalVO mtrCalVO);
-
-	/* void modify(ModifyVO mvo); */
-	/*
-	 * void insert(InVO vo); 
-	 * void update(InVO vo); 
-	 * void delete(InVO vo);
-	 */
-	void modifyCal(ModifyVO<MtrCalVO> mtrCalVO);
+	void createCal(ModifyVO<MtrCalVO> mtrCalVO);
 	
 }

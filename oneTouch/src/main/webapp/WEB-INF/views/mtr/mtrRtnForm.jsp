@@ -34,28 +34,26 @@
 		<form id="frm" method="post">
 			<div>
 				<div>
-					<label>발주일자</label> <input type="Date" id="startDate"
-						name="startDate">&nbsp; <label> ~ </label>&nbsp; <input
-						type="Date" id="endDate" name="endDate">
+					<label>발주일자</label> <input type="Date" id="startDate" name="startDate">&nbsp; 
+					<label> ~ </label>&nbsp; 
+					<input type="Date" id="endDate" name="endDate">
 				</div>
 				<div>
 					<label>입고업체</label> <input type="text" id="compCd" name="compCd">
-					<button type="button" id="btnInCom">ㅇ</button>
-					&nbsp; <label>입고업체명</label> <input type="text" id="compNm"
-						name="compNm" disabled="disabled">
+					<button type="button" id="btnInCom">ㅇ</button>&nbsp; 
+					<label>입고업체명</label> 
+					<input type="text" id="compNm" name="compNm" disabled="disabled">
 				</div>
 				<div>
-					<label>자재코드</label> <input type="text" id="ditemCode"
-						name="ditemCode">
-					<button type="button" id="btnMtrCd">ㅇ</button>
-					&nbsp; <label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input
-						type="text" id="ditemCodeNm" name="ditemCodeNm"
-						disabled="disabled">
+					<label>자재코드</label> <input type="text" id="ditemCode" name="ditemCode">
+					<button type="button" id="btnMtrCd">ㅇ</button>&nbsp;
+					 <label>자재명</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+					 <input type="text" id="ditemCodeNm" name="ditemCodeNm" disabled="disabled">
 				</div>
 			</div>
 		</form>
 		<div align="right">
-			<button type="button" id="btnFind">조회</button>
+			<button type="button" id="btnFind">반품대상조회</button>
 			<button type="button" id="btnSave">저장</button>
 		</div>
 		<hr>
@@ -65,6 +63,30 @@
 
 <script type="text/javascript">
 let rowk = -1;
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastMonth() {
+	let dt = new Date();
+	let month = dt.getMonth();
+	dt.setMonth(month -1);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastMonth();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
 const dataSource = {
 		  api: {
 		    readData: { url: './mtrRtnForm', method: 'POST' },

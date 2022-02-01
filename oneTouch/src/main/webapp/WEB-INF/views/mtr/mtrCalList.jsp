@@ -67,6 +67,30 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastWeek() {
+	let dt = new Date();
+	let day = dt.getDate();
+	dt.setDate(day -7);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastWeek();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
 const dataSource = {
 		  api: {
 		    readData: { url: './mtrCalList', method: 'POST' }
@@ -103,7 +127,8 @@ var grid = new Grid({
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
-				   sortable: true
+				   sortable: true,
+				   hidden: true
 				 },
 				 {
 				   header: '자재명',
@@ -118,6 +143,12 @@ var grid = new Grid({
 				   sortable: true
 				 },
 				 {
+				   header: 'Lot No',
+				   name: 'mtrLot',
+				   align: 'center',
+				   sortable: true
+				 },
+				 {
 				   header: '정산량',
 				   name: 'calAmt',
 				   formatter({value}){
@@ -127,9 +158,9 @@ var grid = new Grid({
 				   sortable: true
 				 },
 				 {
-				   header: 'Lot No',
-				   name: 'mtrLot',
-				   align: 'center',
+				   header: '재고수량',
+				   name: 'stckCnt',
+				   align: 'right',
 				   sortable: true
 				 },
 				 {
@@ -151,6 +182,12 @@ var grid = new Grid({
 			                } 
 			            },	
 			            calAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            stckCnt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);

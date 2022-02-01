@@ -38,6 +38,7 @@ public class MtrCalController {
 		data.put("data", datas);
 		return data;
 	}
+	
 	//lotGrid readData
 	@ResponseBody
 	@PostMapping("/mtrLotModal")
@@ -55,6 +56,7 @@ public class MtrCalController {
 	public String calForm() {
 		return "tiles/mtr/mtrCalForm";
 	}
+	
 	//mainGrid readData
 	@ResponseBody
 	@PostMapping("/mtrCalForm")
@@ -66,40 +68,12 @@ public class MtrCalController {
 		data.put("data", datas);
 		return data;
 	}
+	
 	//mainGrid modifyData
 	@ResponseBody
-	@PostMapping("/mtrCalModify")
+	@PostMapping("/mtrCalCreate")
 	public int mtrCalModify(@RequestBody ModifyVO<MtrCalVO> mtrCalVO){
-		mtrCalService.modifyCal(mtrCalVO);
+		mtrCalService.createCal(mtrCalVO);
 		return 0;
 	}
-	
-
-	/*
-	 * //mainGrid readData
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @PostMapping("/mtrCalForm") public Map<String,Object>
-	 * selectCalForm(@RequestBody MtrSearchVO searchVO){ Map<String,Object> datas =
-	 * new HashMap<>(); Map<String,Object> data = new HashMap<>();
-	 * data.put("result", true); datas.put("contents",
-	 * mtrInService.selectIn(searchVO)); data.put("data", datas); return data; }
-	 * 
-	 * //mainGrid modify
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @PostMapping("/mtrModify") public int modify(@RequestBody ModifyVO<MtrInVO>
-	 * mvo){ mtrInService.modifyIn(mvo); return 0; }
-	 * 
-	 * //mtrOrdGrid readData
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("/mtrOrdModal") public Map<String,Object> ordList(){
-	 * Map<String,Object> datas = new HashMap<>(); Map<String,Object> data = new
-	 * HashMap<>(); data.put("result", true); datas.put("contents",
-	 * mtrOrdService.ordMtrList()); data.put("data", datas); return data; }
-	 */
 }

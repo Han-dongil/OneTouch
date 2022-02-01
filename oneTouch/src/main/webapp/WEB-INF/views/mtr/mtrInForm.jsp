@@ -72,8 +72,31 @@
 <div id="dialog-lot"></div>
 
 <script type="text/javascript">
-let dt = new Date();
 let rowk = -1;
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastWeek() {
+	let dt = new Date();
+	let day = dt.getDate();
+	dt.setDate(day -7);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastWeek();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
 
 let mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -132,8 +155,7 @@ let mainGrid = new Grid({
 				 {
 				   header: '단위',
 				   name: 'unit',
-				   align: 'center',
-				   sortable: true
+				   hidden: true
 				 },
 				 {
 				   header: '업체',
@@ -262,14 +284,6 @@ let mainGrid = new Grid({
 					}
 				}
    		});
-//셀에 오늘날짜 넣는 function
-function today(ev) {
-	let year = dt.getFullYear()
-	let month = ('0' + (dt.getMonth()+1)).slice(-2)
-	let day = ('0' + (dt.getDate())).slice(-2)
-	let str = year + '-' + month + '-' + day
-	mainGrid.setValue(ev, 'inDate', str)
-}
 
 //숫자 천의 자릿수마다 , 찍어주는 function
 function format(value){
@@ -410,7 +424,7 @@ function getModalOrd(param){
 		param.inAmt = 0;
 		mainGrid.appendRow(param,{focus:true});
 		totCal();
-		today(param.rowKey);
+		mainGrid.setValue(param.rowKey, 'inDate', today())
 		ordDialog.dialog("close");
 	};
 
@@ -537,9 +551,7 @@ ordGrid.on('dblclick', ev => {
 btnAdd.addEventListener("click", function(){
 	//mainGrid.appendRow({},{'at':0});
 	mainGrid.appendRow({},{focus:true});
-	console.log(mainGrid.getRowCount()-1)
-	today(mainGrid.getRowCount()-1)
-	
+	mainGrid.setValue(mainGrid.getRowCount()-1, 'inDate', today())
 });
 //삭제버튼
 btnDel.addEventListener("click", function(){
