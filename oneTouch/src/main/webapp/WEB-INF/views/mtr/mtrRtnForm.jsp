@@ -155,7 +155,12 @@ var mainGrid = new Grid({
 				name: 'cmt',
 				align: 'left',
 				editor: 'text'
-				}
+				},
+				 {
+				   header: '등록자',
+				   name: 'empNo',
+				   hidden: true
+				 }
 				],
 				summary : {
 					height: 40,

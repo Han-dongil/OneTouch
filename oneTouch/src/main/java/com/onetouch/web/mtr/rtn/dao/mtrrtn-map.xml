@@ -80,7 +80,8 @@
 			RTN_REQ_DATE,
 			MTR_CD,
 			<if test='cmt != null and cmt != ""'>CMT,</if>
-			RTN_AMT
+			RTN_AMT,
+			EMP_NO
 			)
 		VALUES(
 			PKG_MAKE_CODE.CODE('RTN', 'MTR_RTN', 'RTN_NO', 'RTN_REQ_DATE'),
@@ -88,7 +89,8 @@
 			SYSDATE,
 			#{mtrCd},
 			<if test='cmt != null and cmt != ""'>#{cmt},</if>
-			#{rtnAmt}
+			#{rtnAmt},
+			#{empNo}
 			)
 	</insert>
 	<update id="updateCmt">
