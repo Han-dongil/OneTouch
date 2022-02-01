@@ -63,6 +63,30 @@
 	<div id="dialog-form"></div>
 
 <script type="text/javascript">
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastWeek() {
+	let dt = new Date();
+	let day = dt.getDate();
+	dt.setDate(day -7);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastWeek();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
 const dataSource = {
 		  api: {
 		    readData: { url: './mtrRtnList', method: 'POST' }

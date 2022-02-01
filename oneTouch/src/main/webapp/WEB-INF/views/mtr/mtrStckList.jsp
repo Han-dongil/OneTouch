@@ -25,7 +25,7 @@
 </head>
 <style type="text/css">
 	.tui-grid-cell-summary{
-		text-align: center;
+		text-align: right;
 	}
 /* 	.ui-tabs .ui-tabs-nav .ui-tabs-anchor{
 		style: "background-color: #4747A1"
@@ -41,7 +41,7 @@
 		<form id="frm" method="post">
 			<div>
 				<div>
-					<label>해당일자</label>
+					<label>입고일자</label>
 					<input type="Date" id="startDate" name="startDate">&nbsp;
 					<label> ~ </label>&nbsp;
 					<input type="Date" id="endDate" name="endDate">
@@ -186,7 +186,7 @@ var lotGrid = new Grid({
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
-				   		ordNo: {
+				   		mtrLot: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
@@ -198,6 +198,12 @@ var lotGrid = new Grid({
 			                } 
 			            },
 			            stckCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            stckUse: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
@@ -300,6 +306,17 @@ var mtrGrid = new Grid({
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
+			                } 
+			            },
+			            stckUse: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            safeStck: {
+			                template(summary){
+			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
 			                } 
 			            }
 					}
