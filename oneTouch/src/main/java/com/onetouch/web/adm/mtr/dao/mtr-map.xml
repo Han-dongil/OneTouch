@@ -18,6 +18,7 @@
 		        use_yn,
 		        mng_amt
 		from    adm_mtr
+		order by mtr_cd
 	</select>
 	
 	<!-- use_yn='Y' 자재리스트 -->
@@ -56,6 +57,23 @@
 		        mng_amt
 		from    adm_mtr
 		where 	mtr_cd = #{mtrCd}
+	</select>
+	
+	<!-- 자재규격 불러오기 -->
+	<select id="selectMtrSize" resultType="com.onetouch.web.adm.mtr.dao.MtrVO">
+		select  dtl_nm as stdNm, 
+				dtl_cd as std 
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'MTR_SIZE'
+		AND 	use_yn = 'Y'
+	</select>
+	<!-- 자재구분 불러오기 -->
+	<select id="selectMtrSect" resultType="com.onetouch.web.adm.mtr.dao.MtrVO">
+		select  dtl_nm as mtrSectNm, 
+				dtl_cd as mtrSect 
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'MTR_SECT'
+		AND 	use_yn = 'Y'
 	</select>
 	
 	<update id="updateMtr">

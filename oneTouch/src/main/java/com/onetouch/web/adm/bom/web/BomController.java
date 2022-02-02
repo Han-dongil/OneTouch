@@ -1,6 +1,7 @@
 package com.onetouch.web.adm.bom.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,19 @@ public class BomController {
 	//삭제수정등록 처리
 	@ResponseBody
 	@PostMapping("/bomModifyData")
-	public String modify(@RequestBody ModifyVO<BomVO> mvo) {
+	public List<BomVO> modify(@RequestBody ModifyVO<BomVO> mvo) {
+		BomVO bomvo = new BomVO();
 		System.out.println("modify" + mvo);
 		bomservice.modify(mvo);
-		return "bomCont";
+		if(mvo.getCreatedRows().size() > 0) {
+			bomvo.setPrdCd(mvo.getCreatedRows().get(0).getPrdCd());
+		}
+		if(mvo.getUpdatedRows().size() > 0) {
+			bomvo.setPrdCd(mvo.getUpdatedRows().get(0).getPrdCd());
+		}
+		if(mvo.getDeletedRows().size() > 0) {
+			bomvo.setPrdCd(mvo.getDeletedRows().get(0).getPrdCd());
+		}
+		return bomservice.selectBomDtl(bomvo);
 	}
 }

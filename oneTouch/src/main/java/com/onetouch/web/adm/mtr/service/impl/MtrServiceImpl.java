@@ -52,6 +52,16 @@ public class MtrServiceImpl implements MtrService{
 		}
 	}
 
+	@Override
+	public List<MtrVO> selectMtrSize() {
+		return mapper.selectMtrSize();
+	}
+
+	@Override
+	public List<MtrVO> selectMtrSect() {
+		return mapper.selectMtrSect();
+	}
+
 
 
 

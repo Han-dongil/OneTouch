@@ -96,5 +96,15 @@ public class BomServiceImpl implements BomService {
 		
 	}
 
+	@Override
+	public List<PrdVO> selectPrdSize() {
+		return mapper.selectPrdSize();
+	}
+
+	@Override
+	public List<PrdVO> selectPrdSect() {
+		return mapper.selectPrdSect();
+	}
+
 
 }

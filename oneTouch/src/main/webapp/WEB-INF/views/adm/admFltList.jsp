@@ -64,6 +64,7 @@ hr{
 	//--------변수선언--------
 	let rowk;
 	let fltCnt;
+	let modifyList=[];
 	let Grid = tui.Grid;
 	//--------변수선언 끝--------
 	
@@ -213,6 +214,15 @@ hr{
 						return;
 					} 
 				}
+				let create = grid.getModifiedRows().createdRows;
+				let update = grid.getModifiedRows().updatedRows;
+				for(let i=0; i<create.length; i++) {
+					modifyList.push(create[i].fltCd);
+				}
+				for(let i=0; i<update.length; i++) {
+					modifyList.push(update[i].fltCd);
+				}
+				console.log(modifyList);
 				grid.request('modifyData');
 			}
 		})
@@ -269,17 +279,17 @@ hr{
 		})
 		
 		//자재불량 선택했을때 발생공정명 컬럼에 '해당사항없음' 붙여주기----덜됨
-/* 		grid.on("editingFinish", (ev) => {
+ 		grid.on("editingFinish", (ev) => {
+			if(ev.columnName === 'fltSect' && ev.value == '자재불량') {
+				grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
+			}
+		}) 
+		
+		/* grid.on("onAfterChange", (ev) => {
 			if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
 				grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
 			}
 		}) */
-		
-		grid.on("onAfterChange", (ev) => {
-		if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
-			grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
-		}
-	}) 
 		
 		//사용공정명 더블클릭한 모달창 안에서 더블클릭
 		function getModalPrc(param) {
@@ -291,9 +301,19 @@ hr{
 		
 		//그리드 readData(등록수정삭제 후에)
 		grid.on("response", function(ev) {
-			if(ev.xhr.response == "fltCont") {
-				grid.readData();
-				console.log("그리드 readData했음");
+			if(JSON.parse(ev.xhr.response).result != true) {
+				grid.resetData(JSON.parse(ev.xhr.response));
+				for(fltCdData of grid.getData()) {
+					//console.log(fltCdData.fltCd);
+					//console.log(modifyList[modifyList.length-1]);
+					if(modifyList[modifyList.length-1] == fltCdData.fltCd) {
+						grid.focus(fltCdData.rowKey, 'fltCd', true);
+						break;
+					} else {
+						grid.focus(grid.getRowCount()-1,'fltCd',true);
+					}
+				}
+				console.log("그리드1 readData했음");
 			}
 		})
 

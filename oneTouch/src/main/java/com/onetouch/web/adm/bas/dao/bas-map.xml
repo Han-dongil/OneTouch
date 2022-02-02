@@ -8,10 +8,8 @@
 		from     adm_bas_cd
 		where	 1=1
 		<if test="basNm != null and basNm !=''">
-			AND bas_nm like '%' || #{basNm} || '%'
-		</if>
-		<if test="basCd != null and basCd !=''">
-			AND bas_cd like '%' || #{basCd} || '%'
+			AND (bas_nm like '%' || #{basNm} || '%'
+			OR bas_cd like '%' || #{basNm} || '%')
 		</if>
 		order by bas_cd
 	</select>
@@ -21,19 +19,19 @@
 		insert  into adm_bas_cd
 		(bas_cd,
 		 bas_nm
-		 <if test = "basCmt != null or basCmt != ''">,bas_cmt</if>)
+		 <if test = "basCmt != null and basCmt != ''">,bas_cmt</if>)
 		 values 
 		(#{basCd},
 		 #{basNm}
-		 <if test = "basCmt != null or basCmt != ''">,#{basCmt})</if>
+		 <if test = "basCmt != null and basCmt != ''">,#{basCmt}</if>)
 	</insert>
 	
 	<!-- 기초코드 수정 -->
 	<update id="updateBasAll">
 		update 	adm_bas_cd
-		set	 	bas_cd = #{basCd},
-				bas_nm = #{basNm},
-				bas_cmt = #{basCmt}
+		set	 	bas_nm = #{basNm}
+				<if test = "basCmt != null and basCmt != ''">,bas_cmt = #{basCmt}</if>
+		where 	bas_cd = #{basCd}
 	</update>
 	
 	<!-- 기초코드 삭제 -->
@@ -62,7 +60,8 @@
 		         dtl_nm,
 		         dtl_cmt,
 		         seq,
-		         use_yn
+		         use_yn,
+		         bas_cd
 		from 	 adm_bas_dtl_cd 
 		where 	 bas_cd = #{basCd}
 		order by seq
@@ -73,7 +72,7 @@
 		(dtl_cd,
 		 dtl_nm,
 		 bas_cd,
-		 <if test="dtlCmt != null">dtl_cmt,</if>
+		 <if test="dtlCmt != null and dtlCmt !=''">dtl_cmt,</if>
 		 seq,
 		 use_yn
 		 )
@@ -81,7 +80,7 @@
 		 #{dtlCd},
 		 #{dtlNm},
 		 #{basCd},
-		 <if test="dtlCmt != null">#{dtlCmt},</if>
+		 <if test="dtlCmt != null and dtlCmt !=''">#{dtlCmt},</if>
 		 #{seq},
 		 #{useYn}
 		 )
@@ -90,8 +89,9 @@
 	<update id="updateBas">
 		UPDATE  adm_bas_dtl_cd
 		SET 	dtl_nm = #{dtlNm},
-		<if test="dtlCmt != null">dtl_cmt = #{dtlCmt},</if>
+		<if test="dtlCmt != null and dtlCmt !=''">dtl_cmt = #{dtlCmt},</if>
 				seq = #{seq},
+				bas_cd = #{basCd},
 				use_yn = #{useYn}
 		WHERE	dtl_cd = #{dtlCd}
 	</update>

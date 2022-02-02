@@ -1,6 +1,7 @@
 package com.onetouch.web.adm.flt.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,10 @@ public class FltController {
 	// 삭제,수정,등록 처리
 	@ResponseBody
 	@PostMapping("/fltModifyData")
-	public String modify(@RequestBody ModifyVO<FltVO> mvo) {
+	public List<FltVO> modify(@RequestBody ModifyVO<FltVO> mvo) {
 		System.out.println("modify" + mvo);
 		fltservice.modify(mvo);
-		return "fltCont";
+		return fltservice.selectFlt();
 	}
 	
 }

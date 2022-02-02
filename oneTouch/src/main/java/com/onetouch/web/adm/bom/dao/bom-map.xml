@@ -84,6 +84,24 @@
 		order by mtr_cd
 	</select>
 	
+	<!-- 제품규격 불러오기 -->
+	<select id="selectPrdSize" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select  dtl_nm as prdStdNm, 
+				dtl_cd as prdStd 
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'PDT_SIZE'
+		AND 	use_yn = 'Y'
+	</select>
+	
+	<!-- 제품구분 불러오기 -->
+	<select id="selectPrdSect" resultType="com.onetouch.web.adm.bom.dao.PrdVO">
+		select  dtl_nm as prdSectNm, 
+				dtl_cd as prdSect 
+		from 	adm_bas_dtl_cd 
+		where 	bas_cd = 'PDT_SECT'
+		AND 	use_yn = 'Y'
+	</select>
+	
 	<!-- prd 쿼리 -->
 		<insert id="insertPrd">
 			insert	into adm_prd

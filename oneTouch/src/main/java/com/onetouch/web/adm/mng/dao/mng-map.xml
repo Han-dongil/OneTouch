@@ -46,6 +46,7 @@
 				dtl_cd as prcSect 
 		from 	adm_bas_dtl_cd 
 		where 	bas_cd = 'PDT_PRC'
+		AND 	use_yn = 'Y'
 	</select>
 	
 	<!-- 단위구분 불러오기 -->
@@ -54,6 +55,7 @@
 				dtl_cd as mngUnit
 		from 	adm_bas_dtl_cd 
 		where 	bas_cd = 'MTR_UNIT'
+		AND 	use_yn = 'Y'
 	</select>
 	
 	<delete id="deletePrc">
