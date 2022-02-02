@@ -24,7 +24,7 @@
 	<form id="workSearchFrm" name="planSearchFrm">
 		계획일자<input type="date" id="startDate" name="startDate"> ~
 		<input type="date" id="endDate" name="endDate"> 
-		<input type="radio" id="checkedN" name="nowPhs" value="N">
+		<input type="radio" id="checkedN" name="nowPhs" value="N" checked>
 		<label for="checkedN">진행중</label>
 		<input type="radio" id="checkedY" name="nowPhs" value="Y">
 		<label for="checkedY">공정완료</label>
@@ -115,10 +115,6 @@
 	},{
 		header : '가동시간',
 		name : 'workStrTime',
- 		editor : 'text'
-	},{
-		header : 'bom코드',
-		name : 'bomCd',
  		editor : 'text'
 	}];
 	//메인그리드 생성

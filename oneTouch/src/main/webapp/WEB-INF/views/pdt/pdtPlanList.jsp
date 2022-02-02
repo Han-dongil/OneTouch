@@ -400,6 +400,10 @@ class lineEditor{
 			name : 'instrCnt',
 		 		editor : 'text'
 		},{
+			header : '생산가능수량',
+			name : 'uphPdtAmt',
+		 		editor : 'text'
+		},{
 	    	header: '시작날짜',
 	        name: 'workStrDate',
 	        align:'center',
@@ -704,6 +708,10 @@ class lineEditor{
 			if(ev.columnName=='workStrDate' || ev.columnName=='workEndDate'){
 				disabledDays.length=0;
 			}
+			if(ev.columnName=='instrCnt'){
+				alert("생산가능 수량을 초과하여 생산할수 없습니다")
+				planGrid.setValue(planGrid.getData()[0].rowKey,'instrCnt',0)
+			}
 	 		//plan 그리드 
 	 		//라인번호 선택하면 공정코드가져옴
 	 		if(ev.columnName=='lineNo'){
@@ -735,7 +743,9 @@ class lineEditor{
 		 		.then(response=>response.json())
 		 		.then(result=>{
 		 			let i=0;
-		 			planColumns[0].editor.options.listItems.length=0;
+		 			console.log(result)
+		 			planGrid.setValue(planGrid.getData()[0].rowKey,'uphPdtAmt',result[0].uphPdtAmt)
+		 			planColumns[1].editor.options.listItems.length=0;
 					for(obj of result){
 						console.log(obj)
 						planColumns[0].editor.options.listItems.push({text:obj.lineNo,value:obj.lineNo})

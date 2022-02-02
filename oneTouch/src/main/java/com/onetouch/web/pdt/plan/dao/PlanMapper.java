@@ -26,5 +26,6 @@ public interface PlanMapper {
 	PlanVO test(PlanVO vo);	
 	List<PlanVO> slectDate(PlanVO vo);
 	List<PlanVO> useFct();
+	List<PlanVO> lineUphFind(List<PlanVO> list);
 	
 }

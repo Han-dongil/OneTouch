@@ -30,7 +30,8 @@ public class PlanVO extends LotVO {
 	private String safeStck;
 	//date차이
 	private int date;
-	
+	//uph
+	private String uphPdtAmt;
 	
 	
 }

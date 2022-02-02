@@ -24,6 +24,7 @@
 <body>
 	
 	<button type="button" id="planModal" name="planModal">생산계획조회</button>
+<!-- 	<button type="button" id="rowAdd" name="rowAdd">행추가</button> -->
 	<div id="workGrid"></div>
 	<div id="prcDtlGrid"></div>
 	<button type="button" id="workAddBtn" name="workAddBtn">소요자재등록</button>
@@ -129,6 +130,41 @@ class abc{
 	  }
 
 	} 
+		
+	class dateEditor{
+	    constructor(props){
+	      let{grid,rowKet,columnInfo,value}=props;
+	      let el=document.createElement('div');
+	      let select = document.createElement('input');
+	      select.type="text";
+	      select.class="calander";
+	      select.id="datepicker";
+
+	      let data = props.columnInfo.editor.options.listItems;
+
+	      el.append(select);
+
+	      select.addEventListener('click',ev=>{
+	        ev.stopPropagation();
+	      })
+	      el.align='center'
+	      
+	      this.el=el;
+	      this.select = select;
+
+	    }
+
+	    getElement(){
+	      return this.el;
+
+	    }
+
+	    getValue(){
+	      return this.select.value;
+	    }
+
+	  }
+ 
 		
 ///////////////////////////////////////////////////////////////////////////		
 		//메인그리드 설정
@@ -807,7 +843,12 @@ function lpad(str,padLen,padStr){
 	str=str.length>=padLen ? str.substring(0,padLen) : str;
 	return str;
 }
+		
+		
 // lpad("01",5,"0") // 00001		
+/* rowAdd.addEventListener('click',ev=>{
+	mainGrid.appendRow([{}]);
+}) */
 	</script>
 	
 </body>
