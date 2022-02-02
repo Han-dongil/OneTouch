@@ -39,7 +39,7 @@ public class WorkController {
 
 	@ResponseBody
 	@GetMapping("modalPlanList/{planCheck}")
-	public List<PlanVO> modalPlanCheckList(@PathVariable String planCheck){
+	public List<WorkVO> modalPlanCheckList(@PathVariable String planCheck){
 		/*
 		 * System.out.println("dddd"); Map<String,Object> map=new HashMap<>();
 		 * map.put("contents",service.planList()); Map<String,Object> map2=new

@@ -37,6 +37,7 @@ public class WorkServiceImpl implements WorkService {
 	public List<WorkVO> planListView(String planNo) {
 		List<WorkVO> list=new ArrayList<>();
 		List<WorkVO> list2=new ArrayList<>();
+		WorkVO vo1 = new WorkVO();
 		list =mapper.workDetailSelect(planNo);
 		System.out.println(list);
 		for (WorkVO vo : list) {
@@ -47,8 +48,11 @@ public class WorkServiceImpl implements WorkService {
 		return list2;
 	}
 	@Override
-	public List<PlanVO> planList(String planCheck) {
-		List<PlanVO> list=mapper.planList(planCheck);
+	public List<WorkVO> planList(String planCheck) {
+		WorkVO vo1 = new WorkVO();
+		vo1.setPlanCheck(planCheck);
+		//List<WorkVO> list=mapper.workListDetail(vo1);
+		List<WorkVO> list=mapper.planList(vo1);
 		return list;
 	}
 	@Override
@@ -63,6 +67,15 @@ public class WorkServiceImpl implements WorkService {
 		if(map.get("planData")!=null) {
 			for(WorkVO vo : map.get("planData") ) {
 				mapper.workInsert(vo);
+				if((mapper.finalWorkStrDateFind(vo).getWorkStrDate()).equals(vo.getWorkStrDate()))
+				{
+					vo.setNowPhs("Y");
+					System.out.println("막날");
+				}
+				else {
+					vo.setNowPhs("P");
+					System.out.println("막날x");
+				}
 				planMapper.planCheck(vo);
 			}
 		}

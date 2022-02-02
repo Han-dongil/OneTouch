@@ -24,7 +24,7 @@
 	<form id="planSearchFrm" name="planSearchFrm">
 		계획일자<input type="date" id="startDate" name="startDate"> ~
 		<input type="date" id="endDate" name="endDate"> 
-		<input type="radio" id="checkedN" name="nowPhs" value="N">
+		<input type="radio" id="checkedN" name="nowPhs" value="N" checked>
 		<label for="checkedN">미지시</label>
 		<input type="radio" id="checkedY" name="nowPhs" value="Y">
 		<label for="checkedY">지시완료</label>

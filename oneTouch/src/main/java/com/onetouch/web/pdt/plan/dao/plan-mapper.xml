@@ -118,7 +118,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	select prd_cd , prd_nm, able_line_no as lineNo from adm_prd where prd_cd=#{prdCd}
 </select>
 <update id="planCheck">
-	update pdt_plan set now_phs = 'Y' where plan_no=#{planNo}
+	update pdt_plan set now_phs = #{nowPhs} where plan_no=#{planNo}
 </update>
 
 <!-- 안전 재고 생산 -->
@@ -149,12 +149,20 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	where line_no=#{lineNo}
 </select>
 
-<select id="useFct" resultType="planVO">
+<select id="useFct" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select DISTINCT a.line_no
 	from fct_line a join fct_info b
 	on (a.line_no = b.line_no)
 	where fct_phs='N'
 	order by 1
+</select>
+
+<select id="lineUphFind" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select line_no , uph_pdt_amt*24 uphPdtAmt from fct_line
+	where line_no in
+	<foreach collection="list" item="vo" open="(" close=")" separator=",">
+		#{vo.lineNo}
+	</foreach>
 </select>
 
 </mapper>

@@ -176,16 +176,18 @@ public class PlanServiceImpl implements PlanService {
 			}
 		}
 		
+		System.out.println(list);
 		for(int i=0 ; i< list3.size();i++) {
 			list.remove(i);
 		}
-		
+		System.out.println("aaaaaa");
+		list=mapper.lineUphFind(list);
 		System.out.println(list);
 		return list;
 	}
 	@Override
 	public List<InfoVO> prcLineFine(PlanVO vo) {
-		
+		System.out.println("여기"+infoMapper.selectprcCd(vo));
 		return infoMapper.selectprcCd(vo);
 	}
 	@Override

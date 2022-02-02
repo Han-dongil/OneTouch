@@ -175,7 +175,7 @@
 		})
 	})
 	let v=[]; 
-	//무빙그리드 클릭
+	//무빙그리드 클릭 
 	movingGrid.on('click',ev=>{
 		if(movingGrid.getValue(ev.rowKey,'instrNo') != v[0]){
 			v.length=0;
@@ -210,7 +210,6 @@
 	
 	function movingShowFnc(ev){
 		console.log(ev)
-		console.log("ddddd")
 		let searchData=movingGrid.getRow(ev);
 		fetch('prcMovingShow',{
 			method:'POST',

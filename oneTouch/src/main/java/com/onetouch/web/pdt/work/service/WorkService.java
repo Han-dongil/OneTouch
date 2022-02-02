@@ -9,7 +9,7 @@ import com.onetouch.web.pdt.work.dao.WorkVO;
 public interface WorkService {
 	List<WorkVO> workList();
 	List<WorkVO> planListView(String planNo);
-	List<PlanVO> planList(String planCheck);
+	List<WorkVO> planList(String planCheck);
 	List<PlanVO> findLotMtrCnt(PlanVO vo);
 	void workInsert(Map<String,List<WorkVO>> map);
 	List<WorkVO> workListDetail(WorkVO vo);

@@ -18,16 +18,20 @@
 		order by prc_seq
 	</select>
 	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select p.instr_no, p.work_str_time,p.instr_cnt goalCnt, f.prc_seq
-		from pdt_work_instr_dtl p, 
-		    (select a.prd_cd, a.prd_nm, a.prd_std, a.mng_unit, a.prd_sect, a.able_line_no, a.use_yn,    b.prc_cd, b.prc_seq, b.work_cmt, b.std_load, b.unit_cost, b.lead_time
-		     from adm_prd a join adm_prc_flow b
-		     on a.prd_cd = b.prd_cd 
-		     where a.able_line_no like '%'||#{lineNo}||'%' and b.prc_cd=#{prcCd}) f
-		where p.prd_cd = f.prd_cd
-		AND p.line_no=#{lineNo}
-		and p.prc_cd=#{prcCd}
-		order by p.work_str_time
+		select p.instr_no, p.work_str_time,p.work_str_date,p.goalCnt goalCnt, p.prc_seq
+		from pdt_work_instr a join (select p.instr_no, p.work_str_time,p.work_str_date,p.instr_cnt goalCnt, f.prc_seq
+				from pdt_work_instr_dtl p, 
+				    (select a.prd_cd, a.prd_nm, a.prd_std, a.mng_unit, a.prd_sect, a.able_line_no, a.use_yn,    b.prc_cd, b.prc_seq, b.work_cmt, b.std_load, b.unit_cost, b.lead_time
+				     from adm_prd a join adm_prc_flow b
+				     on a.prd_cd = b.prd_cd 
+				     where a.able_line_no like '%'||#{lineNo}||'%' and b.prc_cd=#{prcCd}) f
+				where p.prd_cd = f.prd_cd
+				and to_date(p.work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
+		        AND p.line_no=#{lineNo}
+				and p.prc_cd=#{prcCd}
+				order by p.work_str_time) p
+		on a.instr_no = p.instr_no
+		where a.now_phs='N'
 	</select>
 	<select id="prcFlowMinMax" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select *

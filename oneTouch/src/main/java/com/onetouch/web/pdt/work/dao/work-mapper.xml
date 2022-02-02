@@ -17,6 +17,9 @@
 		on(a.plan_no = b.plan_no)
 		where a.plan_no=#{planVo}
 		and to_date(work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
+		<!-- <if test='workStrDate!=null and workStrDate=""'>
+			and to_date(work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
+		</if> -->
 	</select>
 	<select id="workok">
 		select plan_no from pdt_work_instr
@@ -32,10 +35,10 @@
 			and now_phs ='N'
 		</if>
 	 	<if test='startDate!="" and startDate!="null"'>
-			and instr_date>#{startDate}
+			and instr_date>=#{startDate}
 		</if>
 	 	<if test='endDate!="" and endDate!="null"'>
-			and #{endDate}>instr_date
+			and #{endDate}>=instr_date
 		</if>  
 	</select>
 	<select id="workListDetail" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
@@ -49,10 +52,10 @@
 			and prd_cd like '%'||#{prdCd}||'%'
 		</if>
 	 	<if test='startDate!="" and startDate!=null'>
-			and work_str_date>#{startDate}
+			and work_str_date>=#{startDate}
 		</if>
 	 	<if test='endDate!="" and endDate!=null'>
-			and #{endDate}>work_str_date
+			and #{endDate}>=work_str_date
 		</if> 
 	</select>
 		<select id="prcMovingList" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
@@ -60,17 +63,24 @@
 		where line_no=#{lineNo} AND instr_no=#{instrNo}
 	</select>
 	<select id="planList"
-		resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select *
-		from pdt_plan where 1=1
+		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select DISTINCT *
+		from ((select a.plan_no , a.ord_sht_no , a.due_date , a.work_prot , a.plan_date , a.now_phs ,b.work_str_date
+		        from pdt_plan a join pdt_plan_dtl b
+		        on a.plan_no=b.plan_no
+		        where to_date(b.work_str_date,'yyyy-MM-dd') = to_date(sysdate,'yyyy-MM-dd'))) a left join (select * from pdt_work_instr
+		                                                          where to_date(instr_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')) b
+		on a.plan_no = b.plan_no
+		where 1=1
+		
 <!-- 		<if test='ordDate!=""'>
 			and to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
 		</if> -->
 		<if test='planCheck =="Y"'>
-			and now_phs ='Y'
+			and b.instr_no is not null
 		</if>
 		<if test='planCheck =="N"'>
-			and now_phs ='N'
+			and b.instr_no is null
 		</if>
 
 	</select>
@@ -125,7 +135,10 @@
 		WHERE
 		MTR_LOT = #{mtrLot}
 	</update>
-	
+	<select id="finalWorkStrDateFind" resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+		select max(to_char(work_str_date,'yyyy-MM-dd')) workStrDate from pdt_plan_dtl
+		where plan_no =#{planNo}
+	</select>
 
 
 </mapper>
