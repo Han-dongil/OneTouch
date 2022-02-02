@@ -1,15 +1,15 @@
 var Grid = tui.Grid;
 Grid.applyTheme('clean', {
-       cell: {
-    	 normal: {
-   	      border: '#FFFFFF'
-   	    },
-       header: {
-         background: '#4B49AC',
-         text: '#fff'
-       }
-    },
-    row: {
+	cell: {
+		normal: {
+			border: '#FFFFFF'
+		},
+		header: {
+			background: '#4B49AC',
+			text: '#fff'
+		}
+	},
+	row: {
 		hover: {
 			background: '#eeeeff'
 		}

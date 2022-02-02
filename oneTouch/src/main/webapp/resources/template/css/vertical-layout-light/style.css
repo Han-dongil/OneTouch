@@ -11246,6 +11246,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 /* 추가버튼 */
+
 .btn-main {
   color: #fff;
   background-color: #7978E9;
@@ -11254,15 +11255,15 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-main:hover {
   color: #fff;
-  background-color: rgb(114, 114, 233);
-  border-color: rgb(104, 104, 227);
+  background-color: rgb(98, 98, 225);
+  border-color: rgb(92, 92, 222);
 }
 
 .btn-main:focus, .btn-main.focus {
   color: #fff;
-  background-color: #7372e9;
-  border-color: rgb(104, 104, 227);
-  box-shadow: 0 0 0 0.2rem #9b9bf9;
+  background-color: rgb(98, 98, 225);
+  border-color: rgb(92, 92, 222);
+  box-shadow: 0 0 0 0.2rem rgb(155, 155, 249, 0.5);
 }
 
 .btn-main.disabled, .btn-main:disabled {
@@ -11274,14 +11275,132 @@ fieldset:disabled .wizard > .actions a,
 .btn-main:not(:disabled):not(.disabled):active, .btn-main:not(:disabled):not(.disabled).active,
 .show > .btn-main.dropdown-toggle {
   color: #fff;
-  background-color: rgb(104, 104, 227);
-  border-color: rgb(98, 98, 225);
+  background-color: rgb(92, 92, 222);
+  border-color: rgb(88, 88, 222);
 }
 
 .btn-main:not(:disabled):not(.disabled):active:focus, .btn-main:not(:disabled):not(.disabled).active:focus,
 .show > .btn-main.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem #9b9bf9;
+  box-shadow: 0 0 0 0.2rem rgb(155, 155, 249, 0.5);
 }
+
+/*----------*/
+
+.btn-important {
+  color: #fff;
+  background-color: #F3797E !important;
+  border-color: #F3797E !important;
+}
+
+.btn-important:hover {
+  color: #fff;
+  background-color: rgb(240, 98, 105) !important;
+  border-color: rgb(238, 85, 92) !important;
+}
+
+.btn-important:focus, .btn-important.focus {
+  color: #fff;
+  background-color: rgb(240, 98, 105);
+  border-color: rgb(238, 85, 92);
+  box-shadow: 0 0 0 0.2rem rgb(247, 170, 174, 0.5);
+}
+
+.btn-important.disabled, .btn-important:disabled {
+  color: #fff;
+  background-color: #F3797E;
+  border-color: #F3797E;
+}
+
+.btn-important:not(:disabled):not(.disabled):active, .btn-important:not(:disabled):not(.disabled).active,
+.show > .btn-important.dropdown-toggle {
+  color: #fff;
+  background-color: rgb(238, 85, 92);
+  border-color: rgb(236, 53, 63);
+}
+
+.btn-important:not(:disabled):not(.disabled):active:focus, .btn-important:not(:disabled):not(.disabled).active:focus,
+.show > .btn-important.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgb(247, 170, 174, 0.5);
+}
+
+/*----------*/
+
+.btn-start {
+  color: #fff;
+  background-color: #36b9ad;
+  border-color: #36b9ad;
+}
+
+.btn-start:hover {
+  color: #fff;
+  background-color: rgb(51, 172, 160);
+  border-color: rgb(49, 164, 152);
+}
+
+.btn-start:focus, .btn-start.focus {
+  color: #fff;
+  background-color: rgb(51, 172, 160);
+  border-color: rgb(49, 164, 152);
+  box-shadow: 0 0 0 0.2rem rgb(81, 204, 191, 0.5);
+}
+
+.btn-start.disabled, .btn-start:disabled {
+  color: #fff;
+  background-color: #36b9ad;
+  border-color: #36b9ad;
+}
+
+.btn-start:not(:disabled):not(.disabled):active, .btn-start:not(:disabled):not(.disabled).active,
+.show > .btn-start.dropdown-toggle {
+  color: #fff;
+  background-color: rgb(49, 164, 152);
+  border-color: rgb(45, 149, 138);
+}
+
+.btn-start:not(:disabled):not(.disabled):active:focus, .btn-start:not(:disabled):not(.disabled).active:focus,
+.show > .btn-start.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgb(81, 204, 191, 0.5);
+}
+
+/*----------*/
+
+.btn-sub {
+  color: #fff;
+  background-color: #7DA0FA;
+  border-color: #7DA0FA;
+}
+
+.btn-sub:hover {
+  color: #fff;
+  background-color: rgb(105, 145, 250);
+  border-color: rgb(86, 131, 250);
+}
+
+.btn-sub:focus, .btn-sub.focus {
+  color: #fff;
+  background-color: rgb(105, 145, 250);
+  border-color: rgb(86, 131, 250);
+  box-shadow: 0 0 0 0.2rem rgb(165, 189, 252, 0.5);
+}
+
+.btn-sub.disabled, .btn-sub:disabled {
+  color: #fff;
+  background-color: #7DA0FA;
+  border-color: #7DA0FA;
+}
+
+.btn-sub:not(:disabled):not(.disabled):active, .btn-sub:not(:disabled):not(.disabled).active,
+.show > .btn-sub.dropdown-toggle {
+  color: #fff;
+  background-color: rgb(86, 131, 250);
+  border-color: rgb(65, 116, 250);
+}
+
+.btn-sub:not(:disabled):not(.disabled):active:focus, .btn-sub:not(:disabled):not(.disabled).active:focus,
+.show > .btn-sub.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgb(165, 189, 252, 0.5);
+}
+
 /* 추가end */
 
 .btn-warning {
