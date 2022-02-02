@@ -1,6 +1,7 @@
 package com.onetouch.web.adm.bas.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,19 +62,29 @@ public class BasController {
 	//삭제수정등록 처리 (basDtl)
 	@ResponseBody
 	@PostMapping("/basDtlModifyData")
-	public String modify(@RequestBody ModifyVO<BasDtlVO> mvo) {
-		System.out.println("modify" + mvo);
+	public List<BasDtlVO> modify(@RequestBody ModifyVO<BasDtlVO> mvo) {
+		BasDtlVO basdtlvo = new BasDtlVO();
+		System.out.println("modify1" + mvo);
 		basservice.modify(mvo);
-		return "basDtlCont";
+		if(mvo.getCreatedRows().size() > 0) {
+			basdtlvo.setBasCd(mvo.getCreatedRows().get(0).getBasCd());
+		}
+		if(mvo.getUpdatedRows().size() > 0) {
+			basdtlvo.setBasCd(mvo.getUpdatedRows().get(0).getBasCd());
+		}
+		if(mvo.getDeletedRows().size() > 0) {
+			basdtlvo.setBasCd(mvo.getDeletedRows().get(0).getBasCd());
+		}
+		return basservice.selectBasDtl(basdtlvo);
 	}
 	
 	//삭제수정등록 처리 (basAll)
 	@ResponseBody
 	@PostMapping("/basAllModifyData")
-	public String modifyBas(@RequestBody ModifyVO<BasVO> mvo) {
+	public List<BasVO> modifyBas(@RequestBody ModifyVO<BasVO> mvo) {
 		System.out.println("modify" + mvo);
 		basservice.modifyBas(mvo);
-		return "basAllCont";
+		return basservice.selectBasAll(null);
 	}
 	
 }

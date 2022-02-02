@@ -12,6 +12,8 @@ public interface BomService {
 	List<PrdVO> selectPrdAll();
 	List<PrdVO> selectUsePrdAll();
 	List<PrdVO> selectUsePrd();
+	List<PrdVO> selectPrdSize();
+	List<PrdVO> selectPrdSect();
 	
 	void insertPrd(PrdVO prdvo);
 	void updatePrd(PrdVO prdvo);

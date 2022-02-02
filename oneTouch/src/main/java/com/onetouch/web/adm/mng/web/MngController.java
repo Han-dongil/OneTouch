@@ -72,9 +72,9 @@ public class MngController {
 	// 삭제,수정,등록 처리
 	@ResponseBody
 	@PostMapping("/mngModifyData")
-	public String modify(@RequestBody ModifyVO<MngVO> mvo) {
+	public List<MngVO> modify(@RequestBody ModifyVO<MngVO> mvo) {
 		System.out.println("modify" + mvo);
 		mngservice.modify(mvo);
-		return "mngCont";
+		return mngservice.selectPrcMng();
 	}
 }

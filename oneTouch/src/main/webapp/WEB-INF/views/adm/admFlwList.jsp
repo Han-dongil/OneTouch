@@ -37,18 +37,18 @@
 		<button id="btnDelPrd" type="button">삭제</button>
 		<button type="button" id="btnEditPrd">수정</button><hr>
 	</div>
-	<form id="flwFrm" name="flwFrm" method="post">
-		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd"><br>
+	<form id="flwFrm" name="flwFrm" method="post" onsubmit="return false">
+		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" onkeyup="enterPrdCd()"><br>
 		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm"><br>
-		<label>제품규격&nbsp;</label><input id="prdStdNm" name="prdStdNm">
-			<button type="button" id="btnprdStd">🔍</button><br>
-		<label>관리단위&nbsp;</label><input id="mngUnitNm" name="mngUnitNm">
-			<button type="button" id="btnmngUnit">🔍</button><br>
-		<label>제품구분&nbsp;</label><input id="prdSectNm" name="prdSectNm">
-			<button type="button" id="btnprdSect">🔍</button><br>
-		<input type="hidden" id="prdSect" name="prdSect">
+		<label>제품규격&nbsp;</label><select id="prdStdNm" name="prdStd"></select><br>
+			<!-- <button type="button" id="btnprdStd">🔍</button> -->
+		<label>관리단위&nbsp;</label><select id="mngUnitNm" name="mngUnit"></select><br>
+			<!-- <button type="button" id="btnmngUnit">🔍</button> -->
+		<label>제품구분&nbsp;</label><select id="prdSectNm" name="prdSect"></select><br>
+			<!-- <button type="button" id="btnprdSect">🔍</button> -->
+		<!-- <input type="hidden" id="prdSect" name="prdSect">
 		<input type="hidden" id="mngUnit" name="mngUnit">
-		<input type="hidden" id="prdStd" name="prdStd">
+		<input type="hidden" id="prdStd" name="prdStd"> -->
 		<label>공정라인&nbsp;</label><input id="ableLineNo" name="ableLineNo" style="width: 500px;"><br>
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
@@ -73,6 +73,7 @@
 	let PrdDtl;
 	let flwCnt;
 	let lineSplit =[];
+	let modifyList = [];
 	let Grid = tui.Grid;
 	//--------변수선언 끝--------
 	
@@ -142,13 +143,47 @@
 	{
 		header : '제품코드',
 		name : 'prdCd',
-		hidden : true
 	},
 	{
 		header : '공정코드',
 		name : 'prcCd',
 		hidden : true
 	}];
+	
+
+	
+	//제품규격 상세코드에서 받아오기
+	$.ajax({
+		url: './prdSizeList',
+		dataType:'json',
+		async : false
+	}).done(function(datas){
+		for(data of datas) {
+			$('#prdStdNm').append("<option value="+data.prdStd+">"+data.prdStdNm+"</option>")
+		}
+	});
+	
+	//단위구분 상세코드에서 받아오기
+	$.ajax({
+		url: './flwUnitList',
+		dataType:'json',
+		async : false
+	}).done(function(datas){
+		for(data of datas) {
+			$('#mngUnitNm').append("<option value="+data.mngUnit+">"+data.mngUnitNm+"</option>")
+		}
+	});
+	
+	//제품구분 상세코드에서 받아오기
+	$.ajax({
+		url: './prdSectList',
+		dataType:'json',
+		async : false
+	}).done(function(datas){
+		for(data of datas) {
+			$('#prdSectNm').append("<option value="+data.prdSect+">"+data.prdSectNm+"</option>")
+		}
+	});
 	
 	var dataSource1 = {
 			api: {
@@ -214,31 +249,18 @@
 				console.log(PrdDtl);
 				document.getElementById('prdCd').value = PrdDtl.prdCd;
 				document.getElementById('prdNm').value = PrdDtl.prdNm;
-				document.getElementById('prdStdNm').value = PrdDtl.prdStdNm;
-				document.getElementById('mngUnitNm').value = PrdDtl.mngUnitNm;
-				document.getElementById('prdSectNm').value = PrdDtl.prdSectNm;
-				document.getElementById('prdStd').value = PrdDtl.prdStd;
-				document.getElementById('mngUnit').value = PrdDtl.mngUnit;
-				document.getElementById('prdSect').value = PrdDtl.prdSect;
+				document.getElementById('prdStdNm').value = PrdDtl.prdStd;
+				document.getElementById('mngUnitNm').value = PrdDtl.mngUnit;
+				document.getElementById('prdSectNm').value = PrdDtl.prdSect;
 				document.getElementById('ableLineNo').value = PrdDtl.ableLineNo;
 				
-				
-				/* document.getElementById('prdCd').setAttribute('value',PrdDtl.prdCd);
-				document.getElementById('prdNm').setAttribute('value',PrdDtl.prdNm);
-				document.getElementById('prdStdNm').setAttribute('value',PrdDtl.prdStdNm);
-				document.getElementById('mngUnitNm').setAttribute('value',PrdDtl.mngUnitNm);
-				document.getElementById('prdSectNm').setAttribute('value',PrdDtl.prdSectNm);
-				document.getElementById('prdStd').setAttribute('value',PrdDtl.prdStd);
-				document.getElementById('mngUnit').setAttribute('value',PrdDtl.mngUnit);
-				document.getElementById('prdSect').setAttribute('value',PrdDtl.prdSect);
-				document.getElementById('ableLineNo').setAttribute('value',PrdDtl.ableLineNo);
-				 */
 				if(PrdDtl.useYn == 'Y') {
 					document.getElementById('useYn').checked = true
 				} else {
 					document.getElementById('useYn').checked = false
 				}
 				
+				 //console.log($('#flwFrm').serializeObject());
 				//제품코드는 수정 안되게 막아주기
 				document.getElementById('prdCd').setAttribute('readonly',true);
 				document.getElementById('btnAddPrd').setAttribute('disabled', true);
@@ -277,9 +299,7 @@
 							 {focus : true});
 			grid2.setValue(rowk, "prdCd", prdCodeVal, false);
 		})	
-		
-
-		
+				
 		//삭제버튼
 		btnDel.addEventListener("click", function(){
 			grid2.removeCheckedRows(true);
@@ -310,19 +330,36 @@
 					}
 				}			
 			}
+			let create = grid2.getModifiedRows().createdRows;
+			let update = grid2.getModifiedRows().updatedRows;
+			for(let i=0; i<create.length; i++) {
+				modifyList.push(create[i].prcSeq);
+			}
+			for(let i=0; i<update.length; i++) {
+				modifyList.push(update[i].prcSeq);
+			} 
 			grid2.request('modifyData');			
 		})
 		
 		//그리드2 readData(등록수정삭제 후에)
 		grid2.on("response", function(ev) {
-			if(ev.xhr.response == "flwCont") {
-				grid2.readData();
+			if(JSON.parse(ev.xhr.response).result != true) {
+				console.log(JSON.parse(ev.xhr.response));
+				grid2.resetData(JSON.parse(ev.xhr.response));
+				for(prcSeqData of grid2.getData()) {
+					if(modifyList[modifyList.length-1] == prcSeqData.prcSeq) {
+						grid2.focus(prcSeqData.rowKey, 'prcSeq', true);
+						break;
+					} else {
+						grid2.focus(grid2.getRowCount()-1,'prcSeq',true);
+					}
+				} 
 				console.log("그리드2 readData했음");
-			}
+			} 
 		})
 	
 	/*공정흐름끝*/
-		
+/* 		
 	//제품규격검색버튼
 	btnprdStd.addEventListener("click", function() {
 		mBas('PDT_SIZE');
@@ -340,7 +377,7 @@
 		mBas('PDT_SECT');
 		$('#ui-id-1').html('제품구분');
 	})
-
+ */
 	
 	//모달설정
 	let dialog;
@@ -463,13 +500,14 @@
 						if(prdCodeVal == prdCdData.prdCd) {
 							console.log("if문 들어오는지");
 							grid1.focus(prdCdData.rowKey, 'prdCd', true);
+							document.getElementById('btnAddPrd').setAttribute('disabled', true);
+							document.getElementById('btnEditPrd').disabled = undefined;	
+							document.getElementById('btnDelPrd').disabled = undefined;	
 						}
 					}
 				}
 			})
-			//grid1.readData();
-
-			//grid1.focus(grid1.getRowCount(),'prdCd',true);
+			
 		})
 		
 		//초기화버튼
@@ -488,9 +526,9 @@
 			document.getElementById('mngUnitNm').value = '';
 			document.getElementById('prdSectNm').value = '';
 			document.getElementById('ableLineNo').value = '';
-			document.getElementById('prdStd').value = '';
+/* 			document.getElementById('prdStd').value = '';
 			document.getElementById('mngUnit').value = '';
-			document.getElementById('prdSect').value = '';
+			document.getElementById('prdSect').value = ''; */
 			document.getElementById('prdCd').readOnly = false;
 			document.getElementById('useYn').checked = false;
 			grid2.clear();
@@ -518,6 +556,38 @@
 			formClear();	
 		})
 		
+		//제품검색 대문자로 입력받기
+		$("#prdCd").bind("keyup", function() {
+     		console.log("대문자로 입력받기")
+       		$(this).val($(this).val().toUpperCase());
+  		});
+		
+		//제품검색 엔터키
+		function enterPrdCd() {
+			prdCodeVal = document.getElementById('prdCd').value;
+			if(window.event.keyCode == 13){
+				console.log('엔터키 이벤트 성공')
+				for(prdCdData of grid1.getData()) {
+					if(prdCdData.prdCd == prdCodeVal) {
+						document.getElementById('prdCd').value = prdCdData.prdCd;
+						document.getElementById('prdNm').value = prdCdData.prdNm;
+						document.getElementById('prdStdNm').value = prdCdData.prdStd;
+						document.getElementById('mngUnitNm').value = prdCdData.mngUnit;
+						document.getElementById('prdSectNm').value = prdCdData.prdSect;
+						document.getElementById('ableLineNo').value = prdCdData.ableLineNo;
+						
+						if(prdCdData.useYn == 'Y') {
+							document.getElementById('useYn').checked = true
+						} else {
+							document.getElementById('useYn').checked = false
+						}
+						document.getElementById('btnAddPrd').setAttribute('disabled', true);
+						document.getElementById('btnEditPrd').disabled = undefined;	
+						document.getElementById('btnDelPrd').disabled = undefined;	
+					}
+				}
+			}
+		}
 		
 	/*제품 끝*/
 
