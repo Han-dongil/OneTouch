@@ -76,6 +76,7 @@ public class PlanServiceImpl implements PlanService {
 		PlanVO inVo=map.get("plan").get(0);
 		if(map.get("plan")!=null) {
 			for(PlanVO vo:map.get("plan")) {
+				System.out.println(vo);
 				mapper.insertPlan(vo);
 			}
 		}
@@ -196,7 +197,7 @@ public class PlanServiceImpl implements PlanService {
 	}
 	@Override
 	public List<PlanVO> slectDate(PlanVO vo) {
-				
+		System.out.println("11"+mapper.slectDate(vo));		
 		return mapper.slectDate(vo);
 	}
 	

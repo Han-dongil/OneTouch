@@ -256,7 +256,7 @@ class abc{
 		},{
 			header : '지시타임',
 			name : 'workStrTime',
-			hidden : false
+			hidden : true
 		}];
 
 		

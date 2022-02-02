@@ -42,7 +42,7 @@
 	on(a.prc_cd = b.prc_cd)
 	order by 1,3 -->
 select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc_cd as prcCd 
-                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , b.hld_cnt as hldCnt ,b.stck_cnt as stckCnt
+                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , b.hld_cnt as hldCnt ,b.stck_cnt as stckCnt , b.stck_cnt - b.hld_cnt as realCnt
                             from used_mtr_lot a join mtr_lot_stck b
                             on (a.mtr_lot = b.mtr_lot)
                             where a.instr_no = #{planNo} and a.prc_cd=#{prcCd}
@@ -92,7 +92,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 
 </select> 
 <insert id="planDtlInsert">
-	insert into pdt_plan_dtl (line_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_plan_time,work_str_date) 
+	insert into pdt_plan_dtl (line_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_str_date) 
 	values(
 	#{lineNo},
 	#{planNo},
@@ -100,7 +100,6 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	#{prcCd},
 	#{needCnt},
 	#{instrCnt},
-	#{workPlanTime},
 	to_date(#{workStrDate},'yyyy-MM-dd')+#{date})
 </insert>
 <insert id="LotFindInsert">
@@ -145,8 +144,13 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 </select>
 
 <select id="slectDate" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select DISTINCT to_char(work_str_date,'yyyy-MM-dd') as workStrDate from pdt_plan_dtl
-	where line_no=#{lineNo}
+	select a.line_no , a.uph_pdt_amt*24-instr_cnt uphPdtAmt , b.work_str_date
+	from fct_line a join (select  line_no ,  work_str_date , sum(instr_cnt) instr_cnt from (    
+	                        select distinct plan_no , line_no , work_str_date , instr_cnt from pdt_plan_dtl)
+	                        group by  line_no , work_str_date) b
+	on a.line_no = b.line_no
+	where a.line_no=#{lineNo}
+	
 </select>
 
 <select id="useFct" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">

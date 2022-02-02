@@ -377,33 +377,6 @@ class lineEditor{
           type:abc
         }
       },{
-    	header: '공정코드',
-        name: 'prcCd',
-        align:'center',
-        editor:{
-          type:prcEditor,
-          options:{
-            listItems:[
-            ]
-          }
-        },
-        rederer:{
-          type:abc
-        },
-        hidden:true
-      },{
-			header : '필요수량',
-			name : 'needCnt',
-		 		editor : 'text'
-		},{
-			header : '지시수량',
-			name : 'instrCnt',
-		 		editor : 'text'
-		},{
-			header : '생산가능수량',
-			name : 'uphPdtAmt',
-		 		editor : 'text'
-		},{
 	    	header: '시작날짜',
 	        name: 'workStrDate',
 	        align:'center',
@@ -432,6 +405,30 @@ class lineEditor{
 		          type:abc
 		        }
 		      },{
+    	header: '공정코드',
+        name: 'prcCd',
+        align:'center',
+        editor:{
+          type:prcEditor,
+          options:{
+            listItems:[
+            ]
+          }
+        },
+        rederer:{
+          type:abc
+        },
+        hidden:true
+      },{
+			header : '필요수량',
+			name : 'needCnt',
+		 		editor : 'text'
+		},{
+			header : '일별지시수량',
+			name : 'instrCnt',
+		 		editor : 'text'
+		}
+/* 		,{
 			header : '작업시간',
 			name : 'workPlanTime',
 			editor: {
@@ -444,7 +441,8 @@ class lineEditor{
 					]
 				}
 			}
-		},{
+		} */
+		,{
 			header : '계획번호',
 			name : 'planNo',
 			hidden:false
@@ -705,16 +703,11 @@ class lineEditor{
 	
 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
 	 	planGrid.on('editingFinish',ev=>{
-			if(ev.columnName=='workStrDate' || ev.columnName=='workEndDate'){
-				disabledDays.length=0;
-			}
-			if(ev.columnName=='instrCnt'){
-				alert("생산가능 수량을 초과하여 생산할수 없습니다")
-				planGrid.setValue(planGrid.getData()[0].rowKey,'instrCnt',0)
-			}
+
 	 		//plan 그리드 
 	 		//라인번호 선택하면 공정코드가져옴
 	 		if(ev.columnName=='lineNo'){
+				disabledDays.length=0;
  				insertLineNo=planGrid.getValue(ev.rowKey,'lineNo');
 	 			fetch('lotLineFind/'+planGrid.getValue(ev.rowKey,'lineNo'))
 	 			.then(response=>response.json())
@@ -734,6 +727,27 @@ class lineEditor{
 
 		 				i++;
 	 				}
+	 				
+	 				///////////////////지시불가능날짜 불러오기
+	 	    		let lineData={}
+	 	 			lineData.lineNo=planGrid.getValue(ev.rowKey,'lineNo');
+	 	 			fetch('slectDate',{
+	 	 				method:'POST',
+	 	 				headers:{
+	 	 					"Content-Type": "application/json",
+	 	 				},
+	 	 				body:JSON.stringify(lineData)
+	 	 			})
+	 	 			.then(response=>response.json())
+	 	 			.then(result=>{
+	 	 				for(obj of result){
+	 	 					if(obj.uphPdtAmt==0){
+		 	 					disabledDays.push((obj.workStrDate).substring(0,10).replaceAll("-0","-"))
+	 	 					}
+	 	 					
+	 	 				}
+	 	 				console.log(disabledDays);
+	 	 			})
 	 				
 	 			})
 	 		}
@@ -938,27 +952,63 @@ class lineEditor{
 		grid.blur();//커서 인풋밖으로빼냄
 		planGrid.blur();//커서 인풋밖으로빼냄
 		hiddenGrid.blur();//커서 인풋밖으로빼냄
-		let planInsertData={};
-		planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
-		planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
-		planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
-		
-		
-		fetch('planDtlInsert',{
+		let msg='';
+		//////////////////////////////////////////////////////////////////
+   		let lineData={}
+		lineData.lineNo=planGrid.getValue(planGrid.getData()[0].rowKey,'lineNo');
+		fetch('slectDate',{
 			method:'POST',
 			headers:{
 				"Content-Type": "application/json",
 			},
-			body:JSON.stringify(planInsertData)
+			body:JSON.stringify(lineData)
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			
+			for(obj of result){
+				console.log("요기")
+				console.log(obj.uphPdtAmt)
+				console.log(planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt'))
+				if(obj.uphPdtAmt*1<planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt')*1){
+					obj.uphPdtAmt//그날생산수량
+					obj.workStrDate//해당일
+					msg +=obj.workStrDate+'일의 생산 가능수량은' +obj.uphPdtAmt+'개입니다'
+				}
+				
+			}
+			if(msg!=''){
+				alert(msg);
+			}
+			else{
+				let planInsertData={};
+				planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
+				planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
+				planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
+				
+				
+				fetch('planDtlInsert',{
+					method:'POST',
+					headers:{
+						"Content-Type": "application/json",
+					},
+					body:JSON.stringify(planInsertData)
+				})
+				.then(response=>response.json())
+				.then(result=>{
+					
+				})
+				grid.resetData([{}]);
+				planGrid.resetData([{}]);
+				insertDtlGrid.resetData([{}]);
+				lotGrid.resetData([{}]);
+				disabledDays.length=0;
+			}
 		})
-		grid.resetData([{}]);
-		planGrid.resetData([{}]);
-		insertDtlGrid.resetData([{}]);
-		lotGrid.resetData([{}]);
+		
+		
+		
+		
+
 	})
 	
  	delBtn.addEventListener("click",function(){
@@ -1141,25 +1191,7 @@ function needOrdCd(){
    		 }
 		}
  		if(ev.columnName=='workStrDate' || ev.columnName=='workEndDate'){
- 			 ///////////////////지시불가능날짜 불러오기
-    		let lineData={}
- 			lineData.lineNo=planGrid.getValue(ev.rowKey,'lineNo');
- 			fetch('slectDate',{
- 				method:'POST',
- 				headers:{
- 					"Content-Type": "application/json",
- 				},
- 				body:JSON.stringify(lineData)
- 			})
- 			.then(response=>response.json())
- 			.then(result=>{
- 				for(obj of result){
- 					
- 					disabledDays.push(obj.workStrDate.replaceAll("-0","-"))
- 					
- 				}
- 				console.log(disabledDays);
- 			})
+ 			
  			//////////////////////////////////
  			$( function() {
  			    $( "#datepicker" ).datepicker({
