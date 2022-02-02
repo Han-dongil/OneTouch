@@ -1,21 +1,23 @@
 var Grid = tui.Grid;
-Grid.applyTheme('default', {
-       cell: {
-    	 normal: {
-   	      border: '#FFFFFF'
-   	    },
-       header: {
-         background: '#4B49AC',
-         text: '#fff'
-       }
-    },
-    row: {
+
+Grid.applyTheme('clean', {
+	cell: {
+		normal: {
+			border: '#FFFFFF'
+		},
+		header: {
+			background: '#4B49AC',
+			text: '#fff'
+		}
+	},
+	row: {
 		hover: {
 			background: '#eeeeff'
 		}
 	}
 });
 Grid.setLanguage('ko');
+
 /* Grid.setLanguage('ko', {
   	display: {
         noData: 'No data.',
