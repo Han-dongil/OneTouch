@@ -282,7 +282,24 @@ mainGrid.on('onGridUpdated', function(ev) {
 //---------mainGrid LOT번호 입력 alert---------
 mainGrid.on('editingStart', function(ev) {
 	if(rown <= rowk){
-		if(ev.columnName == 'calAmt' && mainGrid.getValue(ev.rowKey,'mtrLot') == ""){
+		if(ev.columnName == "mtrLot"){
+			$('#ui-id-2').html('자재별 LOT정보');
+			if(mainGrid.getValue(ev.rowKey, 'mtrNm') == null || mainGrid.getValue(ev.rowKey, 'mtrNm') == ''){
+				toastr["warning"]("자재를 선택해 주세요.")
+				ev.stop();
+			}else if(mainGrid.getValue(ev.rowKey, 'calSectNm') == null || mainGrid.getValue(ev.rowKey, 'calSectNm') == ''){
+				toastr["warning"]("정산 구분을 입력해 주세요.")
+				ev.stop();
+			}else{
+				 let row = mainGrid.getRow(ev.rowKey);
+				 lotDialog.dialog("open");
+				 document.getElementById('mDitemCode').value = row.mtrCd
+				 document.getElementById('mDitemCodeNm').value = row.mtrNm
+				 document.getElementById('mUnitNm').value = row.unitNm
+				 lotGrid.readData(1,row,true);
+				 lotGrid.refreshLayout();
+			}
+		} else if(ev.columnName == 'calAmt' && mainGrid.getValue(ev.rowKey,'mtrLot') == ""){
 			alert("Lot 번호를 입력해 주세요.")
 			ev.stop();
 		}
@@ -319,22 +336,6 @@ mainGrid.on('editingFinish', function(ev) {
 mainGrid.on('dblclick',function(ev){
 	rowk = ev.rowKey
 	if(rown <= rowk){
-		if(ev.columnName == "mtrLot"){
-			$('#ui-id-2').html('자재별 LOT정보');
-			if(mainGrid.getValue(ev.rowKey, 'mtrNm') == null || mainGrid.getValue(ev.rowKey, 'mtrNm') == ''){
-				toastr["warning"]("자재를 선택해 주세요.")
-			}else if(mainGrid.getValue(ev.rowKey, 'calSectNm') == null || mainGrid.getValue(ev.rowKey, 'calSectNm') == ''){
-				toastr["warning"]("정산 구분을 입력해 주세요.")
-			}else{
-				 let row = mainGrid.getRow(ev.rowKey);
-				 lotDialog.dialog("open");
-				 document.getElementById('mDitemCode').value = row.mtrCd
-				 document.getElementById('mDitemCodeNm').value = row.mtrNm
-				 document.getElementById('mUnitNm').value = row.unitNm
-				 lotGrid.readData(1,row,true);
-				 lotGrid.refreshLayout();
-			}
-		}
 		if(ev.columnName == "mtrNm"){
 			mMtr();
 			$('#ui-id-1').html('자재 검색');
