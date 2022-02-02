@@ -82,9 +82,7 @@ public class MtrInServiceImpl implements MtrInService {
 	@Override
 	public void deleteIn(ModifyVO<MtrInVO> mvo) {
 		for(MtrInVO data : mvo.getDeletedRows()){
-			System.out.println(data);
 	    	inMapper.deleteIn(data);
-	    	System.out.println("1111111111111");
 	    	inMapper.minusOrd(data);
 		};
 	}
