@@ -102,9 +102,9 @@
 	</insert>
 	<insert id="workInsertDtl">
 		insert into pdt_work_instr_dtl (line_no, instr_no,
-		prd_cd,prc_cd ,pdt_cnt, instr_cnt , work_str_date , work_str_time)
+		prd_cd,prc_cd ,pdt_cnt, instr_cnt , work_str_date )
 		values (#{lineNo},#{instrNo},#{prdCd},#{prcCd},#{instrCnt},#{needCnt},
-		to_date(#{workStrDate},'yyyy-mm-dd HH24:MI:SS'),#{workStrTime})
+		to_date(#{workStrDate},'yyyy-mm-dd HH24:MI:SS'))
 	</insert><!--null 포인트 그만...........멈춰 ..............ㅅㅂ............ -->
 	<select id="findWorkSeq"
 		resultType="com.onetouch.web.pdt.work.dao.WorkVO">

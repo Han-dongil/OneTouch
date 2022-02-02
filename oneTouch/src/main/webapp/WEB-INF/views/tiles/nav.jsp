@@ -35,13 +35,13 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/ordList">♡동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/PlanList">♨동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/planListView">★동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkList">♬동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkListView">♣동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/prdPrcList">♠동일쓰ㅋㅋ</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/pdt/movingPrc">♀동일쓰ㅋㅋ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/ordList">♡주문서조회</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/PlanList">♨생산계획관리</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/planListView">★생산계획조회</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkList">♬생산지시관리</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/WorkListView">♣생산지시조회</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/prdPrcList">♠생산공정관리</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/pdt/movingPrc">♀공정이동표</a></li>
               </ul>
             </div>
           </li>
