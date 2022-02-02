@@ -195,11 +195,13 @@
 				<div class="card-body">
 					<h4 class="card-title kioskcardtitle">작업지시 공정라인</h4>
 					<span style="padding-top: 10px;">
-						<label class="labeltext kiosklabel">라인번호</label>&emsp;&nbsp;
-						<select name="lineNo" id="lineNo" class="selectoption"></select><br>
-							
-						<label class="labeltext kiosklabel">공정코드</label>&emsp;&nbsp;
-						<select name="prcCd" id="prcCd" class="selectoption"></select>
+						<form name="selectFrm" id="selectFrm">
+							<label class="labeltext kiosklabel">라인번호</label>&emsp;&nbsp;
+							<select name="lineNo" id="lineNo" class="selectoption"></select><br>
+								
+							<label class="labeltext kiosklabel">공정코드</label>&emsp;&nbsp;
+							<select name="prcCd" id="prcCd" class="selectoption"></select>
+						</form>
 					</span>
 				</div>
 			</div><br>
