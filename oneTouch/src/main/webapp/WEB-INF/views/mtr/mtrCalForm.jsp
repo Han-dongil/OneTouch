@@ -362,22 +362,18 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 	buttons:{
 			"확인":()=>{
 			let rows = lotGrid.getCheckedRows();
-			let year = dt.getFullYear()
-			let month = ('0' + (dt.getMonth()+1)).slice(-2)
-			let day = ('0' + (dt.getDate())).slice(-2)
-			let str = year + '-' + month + '-' + day
-			let calSect = mainGrid.getValue(rowk, 'calSect')
-			let calSectNm = mainGrid.getValue(rowk, 'calSectNm')
+			let calSect = mainGrid.getValue(rowk, 'calSect');
+			let calSectNm = mainGrid.getValue(rowk, 'calSectNm');
 			for(row of rows){
-				row.calDate = str
+				row.calDate = today()
 				row.calSect = calSect
 				row.calSectNm = calSectNm
+				row.calAmt = row.stckCnt
 			}
 			mainGrid.setValue(rowk, 'mtrLot', rows[0].mtrLot)
 			mainGrid.setValue(rowk, 'stckCnt', rows[0].stckCnt)
+			mainGrid.setValue(rowk, 'calAmt', rows[0].calAmt)
 			rows.splice(0,1);
-			console.log("rows")
-			console.log(rows)
 			
 			for(let i=0; i<rows.length; i++){
 				mainGrid.appendRow();
