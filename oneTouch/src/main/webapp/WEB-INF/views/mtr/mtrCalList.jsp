@@ -91,14 +91,18 @@ function lastWeek() {
 document.getElementById('startDate').value = lastWeek();
 document.getElementById('endDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
+
+
+//---------mainGrid---------
 const dataSource = {
-		  api: {
-		    readData: { url: './mtrCalList', method: 'POST' }
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
-var grid = new Grid({
+	api: {
+		readData: { url: './mtrCalList', method: 'POST' }
+	},
+	contentType: 'application/json',
+	initialRequest: false
+};
+
+var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
      scrollX : false,
@@ -176,7 +180,7 @@ var grid = new Grid({
 					height: 40,
 				   	position: 'bottom',
 				   	columnContent: {
-				   		unitNm: {
+				   		mtrLot: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
@@ -196,7 +200,25 @@ var grid = new Grid({
 					}
 				}
    });
-   
+//---------mainGrid 끝---------
+
+
+//---------mainGrid 수정불가 alert---------
+mainGrid.on('dblclick',(ev)=>{
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
+});
+//---------mainGrid 수정불가 alert 끝---------
+
+
+//---------숫자데이터 구분자주는 기능---------
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+//---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------모달 설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -205,33 +227,32 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//---------모달 설정 끝---------
 
-function format(value){
-	value = value * 1;
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-grid.on('dblclick',(ev)=>{
-	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
-})
 
-//조회버튼
-btnFind.addEventListener("click", function(){
-   let a= $("#frm").serializeObject();
-   grid.readData(1,a,true);
-})
-//자재검색모달 row더블클릭 이벤트
+//---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
 	$('#ditemCode').val(param.mtrCd);
 	$('#ditemCodeNm').val(param.mtrNm);
 };
-//자재검색버튼
+//---------자재검색모달 row더블클릭 이벤트 끝---------
+
+
+//---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+//---------자재검색버튼 끝---------
 
 
+//---------조회버튼---------
+btnFind.addEventListener("click", function(){
+   let a= $("#frm").serializeObject();
+   mainGrid.readData(1,a,true);
+});
+//---------조회버튼 끝---------
 </script>
 </body>
 </html>
