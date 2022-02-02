@@ -27,12 +27,9 @@
 	.tui-grid-cell-summary{
 		text-align: right;
 	}
-/* 	.ui-tabs .ui-tabs-nav .ui-tabs-anchor{
-		style: "background-color: #4747A1"
-	}
-	.ui-tabs-active{
-		style: "background-color: #4747A1"
-	} */
+	/* 안전재고수량경고 */
+	.warning{background-color: #F44336}
+	.caution{background-color: #FF9800}
 </style>
 <body>
 	<div class="container">
@@ -261,9 +258,9 @@ const mtrColumns = [{
 					   header: '사용가능수량',
 					   name: 'stckUse',
 					   align: 'right',
-					   validation: {
+					 /*   validation: {
 					        validatorFn: (value, row, columnName) => Number(value) > Number(row['safeStck'])
-					   },
+					   }, */
 					   sortable: true
 					 },
 					 {
@@ -341,6 +338,17 @@ lotGrid.on('dblclick', function(ev) {
 	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
    });
    
+   
+mtrGrid.on('onGridUpdated', function(ev) {
+	for(i=0; i < mtrGrid.getRowCount()-1; i++){
+		if(mtrGrid.getData()[i].stckUse*1 < mtrGrid.getData()[i].safeStck*1){
+			mtrGrid.addRowClassName(i,'warning')
+		}
+		else if(mtrGrid.getData()[i].stckUse*1 < mtrGrid.getData()[i].safeStck*1.5){
+			mtrGrid.addRowClassName(i,'caution')
+		}
+	}
+   });
 mtrGrid.on('dblclick', function(ev) {
 	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
    });
