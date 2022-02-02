@@ -80,6 +80,7 @@
 			RTN_REQ_DATE,
 			MTR_CD,
 			<if test='cmt != null and cmt != ""'>CMT,</if>
+			<if test='empNo != null and empNo != ""'>EMP_NO,</if>
 			RTN_AMT
 			)
 		VALUES(
@@ -88,6 +89,7 @@
 			SYSDATE,
 			#{mtrCd},
 			<if test='cmt != null and cmt != ""'>#{cmt},</if>
+			<if test='empNo != null and empNo != ""'>#{empNo},</if>
 			#{rtnAmt}
 			)
 	</insert>

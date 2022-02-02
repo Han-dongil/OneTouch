@@ -85,11 +85,35 @@
 
 <script type="text/javascript">
 let rowk = -1;
-let dt = new Date();
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastWeek() {
+	let dt = new Date();
+	let day = dt.getDate();
+	dt.setDate(day -7);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastWeek();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
+
 const dataSource = {
 		  api: {
 		    readData: { url: './mtrCalForm', method: 'POST' },
-		  	modifyData: { url: './mtrCalModify', method: 'POST'}
+		  	createData: { url: './mtrCalCreate', method: 'POST'}
 		  },
 		  contentType: 'application/json',
 		  initialRequest: false
@@ -180,7 +204,8 @@ var mainGrid = new Grid({
 				   header: '비고',
 				   name: 'cmt',
 				   align: 'left',
-				   sortable: true
+				   sortable: true,
+				   editor: 'text'
 				 },
 				 {
 				   header: '정산구분',
@@ -190,6 +215,11 @@ var mainGrid = new Grid({
 				 {
 				   header: '단위',
 				   name: 'unit',
+				   hidden: true
+				 },
+				 {
+				   header: '등록자',
+				   name: 'empNo',
 				   hidden: true
 				 }
 				],
@@ -292,14 +322,7 @@ function getModalMtr(param){
 	}
 };
 
-//셀에 오늘날짜 넣는 function
-function today(ev) {
-	let year = dt.getFullYear()
-	let month = ('0' + (dt.getMonth()+1)).slice(-2)
-	let day = ('0' + (dt.getDate())).slice(-2)
-	let str = year + '-' + month + '-' + day
-	mainGrid.setValue(ev, 'calDate', str)
-}
+
 
 //조회버튼
 btnFind.addEventListener("click", function(){
@@ -309,17 +332,18 @@ btnFind.addEventListener("click", function(){
 //저장버튼
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
-	mainGrid.request('modifyData');
+	mainGrid.request('createData');
+	//mainGrid.readData();
 })
 //추가버튼
 btnAdd.addEventListener("click", function(){
-	mainGrid.appendRow();
-	today(mainGrid.getRowCount()-1)
-	
+	mainGrid.appendRow({},{focus:true});
+	mainGrid.setValue(mainGrid.getRowCount()-1, 'calDate', today())
 });
 //삭제버튼
 btnDel.addEventListener("click", function(){
 	mainGrid.removeCheckedRows(true);
+	mainGrid.request('deleteData');
 });
 
 //자재검색버튼
@@ -336,23 +360,21 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 	height: "auto",
 	width: 800,
 	buttons:{
-		"확인":()=>{
+			"확인":()=>{
 			let rows = lotGrid.getCheckedRows();
-			console.log(rows);
 			let year = dt.getFullYear()
 			let month = ('0' + (dt.getMonth()+1)).slice(-2)
 			let day = ('0' + (dt.getDate())).slice(-2)
 			let str = year + '-' + month + '-' + day
 			let calSect = mainGrid.getValue(rowk, 'calSect')
 			let calSectNm = mainGrid.getValue(rowk, 'calSectNm')
-			let stckCnt = mainGrid.getValue(rowk, 'calSectNm')
 			for(row of rows){
 				row.calDate = str
 				row.calSect = calSect
 				row.calSectNm = calSectNm
-				row.stckCnt = stckCnt
 			}
 			mainGrid.setValue(rowk, 'mtrLot', rows[0].mtrLot)
+			mainGrid.setValue(rowk, 'stckCnt', rows[0].stckCnt)
 			rows.splice(0,1);
 			console.log("rows")
 			console.log(rows)

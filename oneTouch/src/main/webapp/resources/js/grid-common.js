@@ -1,4 +1,5 @@
 var Grid = tui.Grid;
+
 Grid.applyTheme('clean', {
 	cell: {
 		normal: {
@@ -16,6 +17,7 @@ Grid.applyTheme('clean', {
 	}
 });
 Grid.setLanguage('ko');
+
 /* Grid.setLanguage('ko', {
   	display: {
         noData: 'No data.',

@@ -11,6 +11,7 @@ public interface MtrInMapper {
 	void insertIn(MtrInVO vo);
 	void deleteIn(MtrInVO vo);
 	void updateIn(MtrInVO vo);
-	void updateOrd(MtrInVO vo);
+	void plusOrd(MtrInVO vo);
+	void minusOrd(MtrInVO vo);
 	void prdNeed(PlanVO vo);
 }

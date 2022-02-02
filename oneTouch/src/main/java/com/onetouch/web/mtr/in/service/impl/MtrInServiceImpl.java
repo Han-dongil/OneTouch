@@ -23,7 +23,6 @@ public class MtrInServiceImpl implements MtrInService {
 	@Autowired MtrLotMapper lotMapper;
 	@Override
 	public List<MtrInVO> selectIn(MtrSearchVO inSearchVO) {
-		System.out.println(inMapper.selectIn(inSearchVO));
 		return inMapper.selectIn(inSearchVO);
 	}
 	
@@ -50,7 +49,7 @@ public class MtrInServiceImpl implements MtrInService {
 				vo.setInNo(in);
 				vo.setStckCnt(vo.getMngAmt());
 				inMapper.insertIn(vo);
-				inMapper.updateOrd(vo);
+				inMapper.plusOrd(vo);
 				
 				
 				inAmt = Integer.parseInt(vo.getInAmt());
@@ -83,7 +82,11 @@ public class MtrInServiceImpl implements MtrInService {
 	@Override
 	public void deleteIn(ModifyVO<MtrInVO> mvo) {
 		for(MtrInVO data : mvo.getDeletedRows()){
-	    	inMapper.deleteIn(data); };
+			System.out.println(data);
+	    	inMapper.deleteIn(data);
+	    	System.out.println("1111111111111");
+	    	inMapper.minusOrd(data);
+		};
 	}
 
 

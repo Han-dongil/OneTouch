@@ -16,4 +16,5 @@ public class MtrCalVO{
 	private String calAmt;
 	private String stckCnt;
 	private String cmt;
+	private String empNo;
 }
