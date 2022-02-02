@@ -90,15 +90,17 @@ document.getElementById('startDate').value = lastWeek();
 document.getElementById('endDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
 
-const dataSource = {
-		  api: {
-		    readData: { url: './mtrInList', method: 'POST' }
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
 
-var grid = new Grid({
+//---------mainGrid---------
+const dataSource = {
+		api: {
+			readData: { url: './mtrInList', method: 'POST' }
+		},
+		contentType: 'application/json',
+		initialRequest: false
+};
+
+var mainGrid = new Grid({
      el : document.getElementById('grid'),
      data : dataSource,
      scrollX : false,
@@ -121,7 +123,8 @@ var grid = new Grid({
 				   header: '자재코드',
 				   name: 'mtrCd',
 				   align: 'center',
-				   sortable: true
+				   sortable: true,
+				   hidden: true
 				 },
 				 {
 				   header: '자재명',
@@ -220,7 +223,25 @@ var grid = new Grid({
 					}
 				}
    });
-   
+//---------mainGrid 끝---------
+
+
+//---------mainGrid 수정불가 컬럼 alert---------
+mainGrid.on('dblclick',(ev)=>{
+	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
+});
+//---------mainGrid 수정불가 컬럼 alert 끝---------
+
+
+//---------숫자데이터 구분자주는 기능---------
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+//---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------모달 설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -229,45 +250,49 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//---------모달 설정 끝---------
 
-function format(value){
-	value = value * 1;
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-grid.on('dblclick',(ev)=>{
-	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
-})
 
-//조회버튼
-btnFind.addEventListener("click", function(){
-   let a= $("#frm").serializeObject();
-   grid.readData(1,a,true);
-})
-//업체검색모달 row더블클릭 이벤트
+//---------업체검색모달 row더블클릭 이벤트---------
 function getModalBas(param){
-			$('#compCd').val(param.dtlCd);
-			$('#compNm').val(param.dtlNm);
-			dialog.dialog("close");
-		};
+	$('#compCd').val(param.dtlCd);
+	$('#compNm').val(param.dtlNm);
+	dialog.dialog("close");
+};
+//---------업체검색모달 row더블클릭 이벤트 끝---------
 		
-//자재검색모달 row더블클릭 이벤트
+		
+//---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
 	$('#ditemCode').val(param.mtrCd);
 	$('#ditemCodeNm').val(param.mtrNm);
 };
-//업체검색버튼
+//---------자재검색모달 row더블클릭 이벤트 끝---------
+
+
+//---------업체검색버튼---------
 btnInCom.addEventListener("click", function(){
 	mBas('MTR_COM');
 	$('#ui-id-1').html('업체 검색');
 });
-//자재검색버튼
+//---------업체검색버튼 끝---------
+
+
+//---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+//---------자재검색버튼 끝---------
 
 
+//---------조회버튼---------
+btnFind.addEventListener("click", function(){
+ let a= $("#frm").serializeObject();
+ mainGrid.readData(1,a,true);
+});
+//---------조회버튼 끝---------
 </script>
 </body>
 </html>

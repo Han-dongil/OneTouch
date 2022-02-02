@@ -63,6 +63,8 @@
 
 <script type="text/javascript">
 let rowk = -1;
+
+
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
 	let year = dt.getFullYear();
@@ -87,14 +89,17 @@ function lastMonth() {
 document.getElementById('startDate').value = lastMonth();
 document.getElementById('endDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
+
+
+//---------mainGrid---------
 const dataSource = {
-		  api: {
-		    readData: { url: './mtrRtnForm', method: 'POST' },
-		  	modifyData: { url: './mtrRtnModify', method: 'POST'}
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
+	api: {
+		readData: { url: './mtrRtnForm', method: 'POST' },
+		modifyData: { url: './mtrRtnModify', method: 'POST'}
+	},
+	contentType: 'application/json',
+	initialRequest: false
+};
 
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -119,7 +124,8 @@ var mainGrid = new Grid({
 				header: '자재코드',
 				name: 'mtrCd',
 				align: 'center',
-				sortable: true
+				sortable: true,
+			   	hidden: true
 				},
 				{
 				header: '자재명',
@@ -155,7 +161,6 @@ var mainGrid = new Grid({
 				header: '불량량',
 				name: 'fltAmt',
 				align: 'right',
-				editor: 'text',
 				sortable: true
 				},
 				{
@@ -163,6 +168,9 @@ var mainGrid = new Grid({
 				name: 'rtnAmt',
 				align: 'right',
 				editor: 'text',
+				 validation: {
+					   required:true
+				   },
 				formatter({value}){
 					   if(value != null){
 					   	return format(value);
@@ -205,6 +213,12 @@ var mainGrid = new Grid({
 								return format(sumResult);
 							}
 						},
+						fltAmt: {
+							template(summary) {
+								var sumResult = (summary.sum);
+								return format(sumResult);
+							}
+						},
 						rtnAmt: {
 								template(summary) {
 									var sumResult = (summary.sum);
@@ -214,8 +228,10 @@ var mainGrid = new Grid({
 					}
 				}
 });
-mainGrid.on('response', function(ev) {
-   });
+//---------mainGrid 끝---------
+
+
+//---------mainGrid 수정불가 alert---------
 mainGrid.on('dblclick',function(ev){
 	if(ev.columnName == "ordDate" ||
 		ev.columnName == "compNm" || 
@@ -228,13 +244,29 @@ mainGrid.on('dblclick',function(ev){
 		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
 	}
 });
+//---------mainGrid 수정불가 alert 끝---------
+
+
+//---------mainGrid 반품량 validation---------
 mainGrid.on('editingFinish',(ev)=>{
 	if(ev.columnName == 'rtnAmt' 
 		&& mainGrid.getValue(ev.rowKey,'rtnAmt') > (mainGrid.getValue(ev.rowKey,'ordAmt') - mainGrid.getValue(ev.rowKey,'inAmt'))){
 		ev.stop();
 		toastr["warning"]("반품량이 너무 많습니다.")
 	}
-})
+});
+//---------mainGrid 반품량 validation 끝---------
+
+
+//---------숫자데이터 구분자주는 기능---------
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+//---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------모달 설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -243,20 +275,27 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//---------모달 설정 끝---------
 
-function format(value){
-	value = value * 1;
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
 
-//업체검색모달 row더블클릭 이벤트
+//---------업체검색모달 row더블클릭 이벤트---------
 function getModalBas(param){
 	$('#compCd').val(param.dtlCd);
 	$('#compNm').val(param.dtlNm);
 	dialog.dialog("close");
 };
+//---------업체검색모달 row더블클릭 이벤트 끝---------
 		
-//자재검색모달 row더블클릭 이벤트
+		
+//---------업체검색버튼---------
+btnInCom.addEventListener("click", function(){
+	mBas('MTR_COM');
+	$('#ui-id-1').html('업체 검색');
+});
+//---------업체검색버튼 끝---------
+
+
+//---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
 	if(rowk >= 0){
@@ -272,40 +311,31 @@ function getModalMtr(param){
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
+//---------자재검색모달 row더블클릭 이벤트 끝---------
 
-//조회버튼
-btnFind.addEventListener("click", function(){
-   let param= $("#frm").serializeObject();
-   mainGrid.readData(1,param,true);
-})
-//저장버튼
-btnSave.addEventListener("click", function(){
-	mainGrid.blur();
-	mainGrid.request('modifyData');
-});
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-	$('#compCd').val(param.dtlCd);
-	$('#compNm').val(param.dtlNm);
-	dialog.dialog("close");
-};
-		
-//자재검색모달 row더블클릭 이벤트
-function getModalMtr(param){
-	dialog.dialog("close");
-	$('#ditemCode').val(param.mtrCd);
-	$('#ditemCodeNm').val(param.mtrNm);
-};
-//업체검색버튼
-btnInCom.addEventListener("click", function(){
-	mBas('MTR_COM');
-	$('#ui-id-1').html('업체 검색');
-});
-//자재검색버튼
+
+//---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+//---------자재검색버튼 끝---------
+
+
+//---------조회버튼---------
+btnFind.addEventListener("click", function(){
+   let param= $("#frm").serializeObject();
+   mainGrid.readData(1,param,true);
+});
+//---------조회버튼 끝---------
+
+
+//---------저장버튼---------
+btnSave.addEventListener("click", function(){
+	mainGrid.blur();
+	mainGrid.request('modifyData');
+});
+//---------저장버튼 끝---------
 </script>
 </body>
 </html>

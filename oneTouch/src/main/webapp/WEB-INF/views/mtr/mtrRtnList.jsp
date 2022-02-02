@@ -87,13 +87,16 @@ function lastWeek() {
 document.getElementById('startDate').value = lastWeek();
 document.getElementById('endDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
+
+
+//---------mainGrid---------
 const dataSource = {
-		  api: {
-		    readData: { url: './mtrRtnList', method: 'POST' }
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
+	api: {
+		readData: { url: './mtrRtnList', method: 'POST' }
+	},
+	contentType: 'application/json',
+	initialRequest: false
+};
 
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -117,7 +120,8 @@ var mainGrid = new Grid({
 				header: '자재코드',
 				name: 'mtrCd',
 				align: 'center',
-				sortable: true
+				sortable: true,
+		   		hidden: true
 				},
 				{
 				header: '자재명',
@@ -193,6 +197,10 @@ var mainGrid = new Grid({
 					}
 				}
 });
+//---------mainGrid 끝---------
+
+
+//---------mainGrid 수정불가 컬럼 alert---------
 mainGrid.on('dblclick',function(ev){
 	if(ev.columnName == "rtnReqDate" ||
 		ev.columnName == "compNm" || 
@@ -206,6 +214,32 @@ mainGrid.on('dblclick',function(ev){
 		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
 	}
 });
+//---------mainGrid 수정불가 컬럼 alert---------
+
+
+//---------합계금액 입력해주는 function---------
+function totCal(){
+	let data;
+	window.setTimeout(()=>{
+		data = mainGrid.getData()
+		for(i=0; i<data.length; i++){
+			let val = data[i].rtnAmt*data[i].unitCost
+			mainGrid.setValue(i,"totCost",val)
+		}
+	},100)
+};
+//---------합계금액 입력해주는 function 끝---------
+
+
+//---------숫자데이터 구분자주는 기능---------
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+//---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------모달 설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -214,67 +248,49 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
-function totCal(){
-	let data;
-	window.setTimeout(()=>{
-		data = mainGrid.getData()
-		for(i=0; i<data.length; i++){
-			let val = data[i].rtnAmt*data[i].unitCost
-			console.log(val)
-			mainGrid.setValue(i,"totCost",val)
-		}
-	},100)
-}
-mainGrid.on("response", function(ev){
-	totCal()
-});
-function format(value){
-	value = value * 1;
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
+//---------모달 설정 끝---------
 
-//업체검색모달 row더블클릭 이벤트
+
+//---------업체검색모달 row더블클릭 이벤트---------
 function getModalBas(param){
 	$('#compCd').val(param.dtlCd);
 	$('#compNm').val(param.dtlNm);
 	dialog.dialog("close");
 };
+//---------업체검색모달 row더블클릭 이벤트 끝---------
 		
-//자재검색모달 row더블클릭 이벤트
-function getModalMtr(param){
-	dialog.dialog("close");
-	$('#ditemCode').val(param.mtrCd);
-	$('#ditemCodeNm').val(param.mtrNm);
-};
-
-//조회버튼
-btnFind.addEventListener("click", function(){
-   let param= $("#frm").serializeObject();
-   mainGrid.readData(1,param,true);
-})
-//업체검색모달 row더블클릭 이벤트
-function getModalBas(param){
-	dialog.dialog("close");
-	$('#compCd').val(param.dtlCd);
-	$('#compNm').val(param.dtlNm);
-};
 		
-//자재검색모달 row더블클릭 이벤트
-function getModalMtr(param){
-	dialog.dialog("close");
-	$('#ditemCode').val(param.mtrCd);
-	$('#ditemCodeNm').val(param.mtrNm);
-};
-//업체검색버튼
+//---------업체검색버튼---------
 btnInCom.addEventListener("click", function(){
 	mBas('MTR_COM');
 	$('#ui-id-1').html('업체 검색');
 });
-//자재검색버튼
+//---------업체검색버튼 끝---------
+
+
+//---------자재검색모달 row더블클릭 이벤트---------
+function getModalMtr(param){
+	dialog.dialog("close");
+	$('#ditemCode').val(param.mtrCd);
+	$('#ditemCodeNm').val(param.mtrNm);
+};
+//---------자재검색모달 row더블클릭 이벤트 끝---------
+
+
+//---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+//---------자재검색버튼 끝---------
+
+
+//---------조회버튼---------
+btnFind.addEventListener("click", function(){
+   let param= $("#frm").serializeObject();
+   mainGrid.readData(1,param,true);
+});
+//---------조회버튼 끝---------
 </script>
 </body>
 </html>

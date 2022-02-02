@@ -77,6 +77,33 @@
 <div id="dialog-form"></div>
 
 <script type="text/javascript">
+//---------포맷에 맞게 날짜 구하는 function---------
+function getDateStr(dt){
+	let year = dt.getFullYear();
+	let month = (dt.getMonth() + 1);
+	let day = dt.getDate();
+	
+	month = (month < 10) ? "0" + String(month) : month;
+	day = (day < 10) ? "0" + String(day) : day;
+	
+	return  year + '-' + month + '-' + day;
+}
+function today() {
+	let dt = new Date();
+	return getDateStr(dt);
+}
+function lastWeek() {
+	let dt = new Date();
+	let day = dt.getDate();
+	dt.setDate(day -7);
+	return getDateStr(dt);
+}
+document.getElementById('startDate').value = lastWeek();
+document.getElementById('endDate').value = today();
+//---------포맷에 맞게 날짜 구하는 function 끝---------
+
+
+//---------DB의 데이터로 자재구분 radio만드는 기능---------
 fetch('mtrStckRadio')
 .then(response=>response.json())
 .then(result=>{
@@ -92,33 +119,45 @@ fetch('mtrStckRadio')
 		label.innerText = result[i].dtlCmt;
 		div.appendChild(input);
 		div.appendChild(label);
-		}
-})
-//Jquery tabs
+	}
+});
+//---------DB의 데이터로 자재구분 radio만드는 기능 끝---------
+
+
+//---------Jquery tabs---------
 $( function() {
     $( "#tabs" ).tabs({
     	activate: function( event, ui ) {
     		if(ui.newTab[0].innerText == '자재별'){
     			mtrGrid.refreshLayout();
-    		} else{
+    		} else {
     			lotGrid.refreshLayout();
-    			
     		}
     	}
     });
-    
-  } );
+});
+//---------Jquery tabs 끝---------
+
+
+//---------lotGrid---------
 const lotDataSource = {
-		  api: {
-		    readData: { url: './lotStckList', method: 'POST' }
-		  },
-		  contentType: 'application/json'
-		};
+	api: {
+		readData: { url: './lotStckList', method: 'POST' }
+	},
+	contentType: 'application/json'
+};
 
 
 const lotColumns = [{
 	   header: '자재코드',
 	   name: 'mtrCd',
+	   align: 'center',
+	   sortable: true,
+	   hidden: true
+	 },
+	 {
+	   header: 'Lot No',
+	   name: 'mtrLot',
 	   align: 'center',
 	   sortable: true
 	 },
@@ -137,12 +176,6 @@ const lotColumns = [{
 	 {
 	   header: '자재구분',
 	   name: 'mtrSectNm',
-	   align: 'center',
-	   sortable: true
-	 },
-	 {
-	   header: 'Lot No',
-	   name: 'mtrLot',
 	   align: 'center',
 	   sortable: true
 	 },
@@ -209,14 +242,21 @@ var lotGrid = new Grid({
 					}
 				}
    });
-window.setTimeout(function(){lotGrid.refreshLayout()}, 200);
+//---------lotGrid 끝---------
+
+
+//---------lotGrid 깨지는거 refresh---------
+window.setTimeout(function(){lotGrid.refreshLayout()}, 300);
+//---------lotGrid 깨지는거 refresh끝---------
    
+
+//---------mtrGrid---------
 const mtrDataSource = {
-		  api: {
-		    readData: { url: './mtrStckList', method: 'POST' }
-		  },
-		  contentType: 'application/json'
-		};
+	api: {
+		readData: { url: './mtrStckList', method: 'POST' }
+	},
+	contentType: 'application/json'
+};
 		
 const mtrColumns = [{
 					   header: '자재코드',
@@ -319,7 +359,10 @@ var mtrGrid = new Grid({
 					}
 				}
    });
-   
+//---------mtrGrid 끝---------
+
+
+//---------자재코드 모달설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -328,17 +371,25 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//---------자재코드 모달설정 끝---------
 
+
+//---------숫자데이터 구분자주는 기능---------
 function format(value){
 	value = value * 1;
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
+};
+//---------숫자데이터 구분자주는 기능 끝---------
 
+
+//---------lotGrid 수정불가 alert---------
 lotGrid.on('dblclick', function(ev) {
 	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
-   });
-   
-   
+});
+//---------lotGrid 수정불가 alert 끝---------
+
+
+//---------mtrGrid 안전재고 근접 수량 표시---------
 mtrGrid.on('onGridUpdated', function(ev) {
 	for(i=0; i < mtrGrid.getRowCount()-1; i++){
 		if(mtrGrid.getData()[i].stckUse*1 < mtrGrid.getData()[i].safeStck*1){
@@ -348,29 +399,41 @@ mtrGrid.on('onGridUpdated', function(ev) {
 			mtrGrid.addRowClassName(i,'caution')
 		}
 	}
-   });
+});
+//---------mtrGrid 안전재고 근접 수량 표시끝---------
+
+
+//---------mtrGrid 수정불가 alert---------
 mtrGrid.on('dblclick', function(ev) {
 	toastr["error"]("변경할 수 없습니다.", "경고입니다.")
-   });
+});
+//---------mtrGrid 수정불가 alert 끝---------
    
+   
+//---------조회 버튼---------
 btnFind.addEventListener("click", function(){
    let a= $("#frm").serializeObject();
    lotGrid.readData(1,a,true);
    mtrGrid.readData(1,a,true);
-})
+});
+//---------조회 버튼 끝---------
 
-//자재검색모달 row더블클릭 이벤트
+
+//---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
 	$('#ditemCode').val(param.mtrCd);
 	$('#ditemCodeNm').val(param.mtrNm);
 };
+//---------자재검색모달 row더블클릭 이벤트 끝---------
 
-//자재검색버튼
+
+//---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
+//---------자재검색버튼 끝---------
 
 
 </script>

@@ -85,6 +85,9 @@
 
 <script type="text/javascript">
 let rowk = -1;
+let rown;
+
+
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
 	let year = dt.getFullYear();
@@ -110,14 +113,16 @@ document.getElementById('startDate').value = lastWeek();
 document.getElementById('endDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
 
+
+//---------mainGrid---------
 const dataSource = {
-		  api: {
-		    readData: { url: './mtrCalForm', method: 'POST' },
-		  	createData: { url: './mtrCalCreate', method: 'POST'}
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		};
+	api: {
+		readData: { url: './mtrCalForm', method: 'POST' },
+		createData: { url: './mtrCalCreate', method: 'POST'}
+	},
+	contentType: 'application/json',
+	initialRequest: false
+};
 
 var mainGrid = new Grid({
      el : document.getElementById('grid'),
@@ -140,6 +145,9 @@ var mainGrid = new Grid({
 					        ]
 					     }
 					},
+					validation: {
+					   required:true
+					},
 				   sortable: true
 				 },
 				 {
@@ -152,7 +160,10 @@ var mainGrid = new Grid({
 						language: 'ko',
 						format: 'yyyy-MM-dd'
 						}
-					 },
+					},
+					validation: {
+						required:true
+					},
 				   sortable: true
 				 },
 				 {
@@ -166,7 +177,10 @@ var mainGrid = new Grid({
 				   header: '자재명',
 				   name: 'mtrNm',
 				   align: 'left',
-				   sortable: true
+				   sortable: true,
+				   validation: {
+					   required:true
+				   }
 				 },
 				 {
 				   header: '단위',
@@ -178,6 +192,10 @@ var mainGrid = new Grid({
 				   header: 'Lot No',
 				   name: 'mtrLot',
 				   align: 'center',
+				   validation: {
+					   required:true
+				   },
+				   editor: 'text',
 				   sortable: true
 				 },
 				 {
@@ -195,6 +213,10 @@ var mainGrid = new Grid({
 					   } else{
 					   	return 0;
 					   }
+				   },
+				   validation: {
+					   dataType: 'number',
+					   required:true
 				   },
 				   align: 'right',
 				   editor: 'text',
@@ -227,11 +249,17 @@ var mainGrid = new Grid({
 					height: 40,
 					position: 'bottom',
 					columnContent: {
-						unitNm: {
+						mtrLot: {
 			                template(summary) {
 			        			return '합 계';
 			                } 
 			            },	
+			            stckCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
 			            calAmt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
@@ -241,6 +269,31 @@ var mainGrid = new Grid({
 					}
 				}
 	});
+//---------mainGrid 끝---------
+
+
+//---------mainGrid row갯수 파악---------
+mainGrid.on('onGridUpdated', function(ev) {
+	rown = mainGrid.getRowCount();
+});
+//---------mainGrid row갯수 파악 끝---------
+
+
+//---------mainGrid LOT번호 입력 alert---------
+mainGrid.on('editingStart', function(ev) {
+	if(rown <= rowk){
+		if(ev.columnName == 'calAmt' && mainGrid.getValue(ev.rowKey,'mtrLot') == ""){
+			alert("Lot 번호를 입력해 주세요.")
+			ev.stop();
+		}
+	} else{
+		ev.stop();
+	}
+});
+//---------mainGrid LOT번호 입력 alert 끝---------
+
+
+//---------mainGrid 정산구분 입력하면 코드도 같이입력 & 출고정산량 validation---------
 mainGrid.on('editingFinish', function(ev) {
 	if(ev.columnName == 'calSectNm'){
 		if(mainGrid.getValue(ev.rowKey,'calSectNm') == '입고정산'){
@@ -248,7 +301,7 @@ mainGrid.on('editingFinish', function(ev) {
 		}else if(mainGrid.getValue(ev.rowKey,'calSectNm') == '출고정산'){
 			mainGrid.setValue(ev.rowKey,'calSect','MTR_CAL002')
 		}
-	}
+	};
 	if(ev.columnName == 'calAmt'){
 		if(mainGrid.getValue(ev.rowKey,'calSectNm') == '출고정산'){
 			if(mainGrid.getValue(ev.rowKey,'calAmt') > mainGrid.getValue(ev.rowKey,'stckCnt')){
@@ -256,40 +309,52 @@ mainGrid.on('editingFinish', function(ev) {
 				ev.stop();
 			}
 		}
-	}
+	};
 	mainGrid.refreshLayout();
-   });
+});
+//---------mainGrid 정산구분 입력하면 코드도 같이입력 & 출고정산량 validation 끝---------
+
+
+//---------mainGrid 기존의 데이터 수정불가---------
 mainGrid.on('dblclick',function(ev){
 	rowk = ev.rowKey
-	if(ev.columnName == "mtrLot"){
-		$('#ui-id-2').html('자재별 LOT정보');
-		if(mainGrid.getValue(ev.rowKey, 'mtrNm') == null || mainGrid.getValue(ev.rowKey, 'mtrNm') == ''){
-			toastr["warning"]("자재를 선택해 주세요.")
-		}else if(mainGrid.getValue(ev.rowKey, 'calSectNm') == null || mainGrid.getValue(ev.rowKey, 'calSectNm') == ''){
-			toastr["warning"]("정산 구분을 입력해 주세요.")
-		}else{
-			 let row = mainGrid.getRow(ev.rowKey);
-			 lotDialog.dialog("open");
-			 document.getElementById('mDitemCode').value = row.mtrCd
-			 document.getElementById('mDitemCodeNm').value = row.mtrNm
-			 document.getElementById('mUnitNm').value = row.unitNm
-			 lotGrid.readData(1,row,true);
-			 lotGrid.refreshLayout();
+	if(rown <= rowk){
+		if(ev.columnName == "mtrLot"){
+			$('#ui-id-2').html('자재별 LOT정보');
+			if(mainGrid.getValue(ev.rowKey, 'mtrNm') == null || mainGrid.getValue(ev.rowKey, 'mtrNm') == ''){
+				toastr["warning"]("자재를 선택해 주세요.")
+			}else if(mainGrid.getValue(ev.rowKey, 'calSectNm') == null || mainGrid.getValue(ev.rowKey, 'calSectNm') == ''){
+				toastr["warning"]("정산 구분을 입력해 주세요.")
+			}else{
+				 let row = mainGrid.getRow(ev.rowKey);
+				 lotDialog.dialog("open");
+				 document.getElementById('mDitemCode').value = row.mtrCd
+				 document.getElementById('mDitemCodeNm').value = row.mtrNm
+				 document.getElementById('mUnitNm').value = row.unitNm
+				 lotGrid.readData(1,row,true);
+				 lotGrid.refreshLayout();
+			}
 		}
-	} 
-	if(ev.columnName == "mtrNm"){
-		mMtr();
-		$('#ui-id-1').html('자재 검색');
+		if(ev.columnName == "mtrNm"){
+			mMtr();
+			$('#ui-id-1').html('자재 검색');
+		}
+	} else {
+		alert("기존의 정산 내역은 수정이 불가능합니다.")
 	}
 });
-mainGrid.on('editingFinish',(ev)=>{
-	/* if(ev.columnName == 'rtnAmt' 
-		&& mainGrid.getValue(ev.rowKey,'rtnAmt') > (mainGrid.getValue(ev.rowKey,'ordAmt') - mainGrid.getValue(ev.rowKey,'inAmt'))){
-		ev.stop();
-		toastr["warning"]("반품량이 너무 많습니다.")
-	} */
-})
+//---------mainGrid 기존의 데이터 수정불가 끝---------
 
+
+//---------숫자데이터 구분자주는 기능---------
+function format(value){
+	value = value * 1;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+//---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------모달 설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
 	autoOpen : false,
@@ -298,13 +363,10 @@ dialog = $( "#dialog-form" ).dialog({
 	height: "auto",
 	width: 500
 });
+//---------모달 설정 끝---------
 
-function format(value){
-	value = value * 1;
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
 
-//자재검색모달 row더블클릭 이벤트
+//---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
 	if(rowk >= 0){
@@ -313,46 +375,16 @@ function getModalMtr(param){
 		mainGrid.setValue(rowk, "mtrNm", param.mtrNm, false);
 		mainGrid.setValue(rowk, "unitNm", param.unitNm, false);
 		mainGrid.setValue(rowk, "unit", param.unit, false);
-		/* mainGrid.setValue(rowk, "compNm", param.compNm, false);
-		mainGrid.setValue(rowk, "mngAmt", param.mngAmt, false); */
 		rowk = -1;
 	} else {
 		$('#ditemCode').val(param.mtrCd);
 		$('#ditemCodeNm').val(param.mtrNm);
 	}
 };
+//---------자재검색모달 row더블클릭 이벤트 끝---------
 
 
-
-//조회버튼
-btnFind.addEventListener("click", function(){
-   let param= $("#frm").serializeObject();
-   mainGrid.readData(1,param,true);
-})
-//저장버튼
-btnSave.addEventListener("click", function(){
-	mainGrid.blur();
-	mainGrid.request('createData');
-	//mainGrid.readData();
-})
-//추가버튼
-btnAdd.addEventListener("click", function(){
-	mainGrid.appendRow({},{focus:true});
-	mainGrid.setValue(mainGrid.getRowCount()-1, 'calDate', today())
-});
-//삭제버튼
-btnDel.addEventListener("click", function(){
-	mainGrid.removeCheckedRows(true);
-	mainGrid.request('deleteData');
-});
-
-//자재검색버튼
-btnMtrCd.addEventListener("click", function(){
-	mMtr();
-	$('#ui-id-1').html('자재 검색');
-});
-
-//lot선택모달 설정
+//---------lot모달 설정---------
 let lotDialog = $( "#dialog-lot" ).dialog({
 	autoOpen : false,
 	modal : true,
@@ -364,6 +396,7 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 			let rows = lotGrid.getCheckedRows();
 			let calSect = mainGrid.getValue(rowk, 'calSect');
 			let calSectNm = mainGrid.getValue(rowk, 'calSectNm');
+			mainGrid.blur();
 			for(row of rows){
 				row.calDate = today()
 				row.calSect = calSect
@@ -376,7 +409,7 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 			rows.splice(0,1);
 			
 			for(let i=0; i<rows.length; i++){
-				mainGrid.appendRow();
+				mainGrid.appendRow({},{focus:true});
 				mainGrid.setRow(mainGrid.getRowCount()-1,rows[i]);
 				//mainGrid.setRow(rowk+i,rows[i]);
 			}
@@ -385,15 +418,17 @@ let lotDialog = $( "#dialog-lot" ).dialog({
 		}
 	}
 });
+//---------lot모달 설정 끝---------
 
-//lot 모달
+
+//---------lotGrid---------
 let lotDataSource = {
-		  api: {
-			  	readData: { url: './mtrLotModal',method: 'POST'}
-		  },
-		  contentType: 'application/json',
-		  initialRequest: false
-		}
+	api: {
+		readData: { url: './mtrLotModal',method: 'POST'}
+	},
+	contentType: 'application/json',
+	initialRequest: false
+};
 
 let lotGrid = new Grid({
 el : document.getElementById('dialog-lot'),
@@ -456,18 +491,56 @@ columns : [
 			}
 			]
 });
+//---------lotGrid 끝---------
+
+
+//---------lotGrid 수정불가 컬럼 alert---------
 lotGrid.on('dblclick',function(ev){
 	if(ev.columnName == "inNo" || ev.columnName == "mtrLot" || ev.columnName == "hldCnt" || ev.columnName == "stckCnt"){
 		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
 	}
 });
-/*
-//조회버튼 in 반품모달
-rtnSearch.addEventListener("click", function(){
-   let param= $("#rtnFrm").serializeObject();
-   rtnGrid.readData(1,param,true);
+//---------lotGrid 수정불가 컬럼 alert 끝---------
+
+
+//---------조회버튼---------
+btnFind.addEventListener("click", function(){
+   let param= $("#frm").serializeObject();
+   mainGrid.readData(1,param,true);
 });
- */
+//---------조회버튼 끝---------
+
+
+//---------저장버튼---------
+btnSave.addEventListener("click", function(){
+	mainGrid.blur();
+	mainGrid.request('createData');
+});
+//---------저장버튼 끝---------
+
+
+//---------추가버튼---------
+btnAdd.addEventListener("click", function(){
+	mainGrid.appendRow({},{focus:true});
+	mainGrid.setValue(mainGrid.getRowCount()-1, 'calDate', today())
+});
+//---------추가버튼 끝---------
+
+
+//---------삭제버튼---------
+btnDel.addEventListener("click", function(){
+	mainGrid.removeCheckedRows(true);
+	mainGrid.request('deleteData');
+});
+//---------삭제버튼 끝---------
+
+
+//---------자재검색버튼---------
+btnMtrCd.addEventListener("click", function(){
+	mMtr();
+	$('#ui-id-1').html('자재 검색');
+});
+//---------자재검색버튼 끝---------
 </script>
 </body>
 </html>
