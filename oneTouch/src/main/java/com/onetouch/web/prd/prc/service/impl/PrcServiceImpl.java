@@ -189,9 +189,13 @@ public class PrcServiceImpl implements PrcService{
 	@Override
 	public List<PrcVO> prcMovingView(PrcVO vo) {
 		int upCheck=mapper.updateCheck();
-		
+		System.out.println("1111");
+		System.out.println(vo);
+		System.out.println(upCheck);
 		while(true) {
-			if(upCheck!=mapper.updateCheck()) {
+			if(upCheck!=(mapper.updateCheck())) {
+				System.out.println("확인좀");
+				System.out.println(mapper.prcMovingView(vo));
 				return mapper.prcMovingView(vo);
 			}
 		}
