@@ -30,5 +30,13 @@ public class MtrCalServiceImpl implements MtrCalService {
 			calMapper.updateCal(mvo.getCreatedRows().get(i));
 		}
 	}
+	@Override
+	public void deleteCal(ModifyVO<MtrCalVO> mvo) {
+		for(int i=0; i<mvo.getDeletedRows().size(); i++) {
+			calMapper.deleteCal(mvo.getDeletedRows().get(i));
+			calMapper.minusCal(mvo.getDeletedRows().get(i));
+		}
+		
+	}
 
 }

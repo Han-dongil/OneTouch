@@ -20,7 +20,7 @@
 		WHERE
 			A.ORD_NO = B.ORD_NO
 		AND
-			(A.FLT_AMT/A.ORD_AMT*100) > 5
+			(A.FLT_AMT/A.ORD_AMT*100) > 0
 		AND
          	NVL(A.CMT,'-') != '반품요청완료'
 		<if test="startDate != null and startDate != ''"> 
@@ -103,65 +103,4 @@
 		AND
 			MTR_CD = #{mtrCd}
 	</update>
-		<!-- SELECT * 
-		FROM MTR_IN A LEFT JOIN ADM_MTR B 
-		ON A.MTR_CD = B.MTR_CD -->
-	<!-- <select id="selectInNo" resultType="int">
-		SELECT 
-			PKG_MAKE_CODE_SEQ.CODE('MTR_IN', 'IN_NO', 'IN_DATE')
-		FROM
-			DUAL
-	</select>
-	입고 테이블에 등록
-	<insert id="insertIn">
-		INSERT INTO MTR_IN (
-			IN_NO,
-			MTR_CD,
-			IN_DATE,
-			ORD_NO,
-			UNIT,
-			IN_AMT,
-			FLT_AMT,
-			UNIT_COST,
-			TOT_COST
-			)
-		VALUES(
-			#{inNo},
-			#{mtrCd},
-			SYSDATE,
-			#{ordNo},
-			#{unit},
-			#{inAmt},
-			#{fltAmt},
-			#{unitCost},
-			(#{unitCost}*#{inAmt})
-			)
-	</insert>
-	입고등록후 발주디테일에 수량업데이트
-	<update id="updateOrd">
-		UPDATE MTR_ORD_DTL
-		SET
-			IN_AMT = (IN_AMT+#{inAmt}),
-			NOTIN_AMT = ((SELECT ORD_AMT FROM MTR_ORD WHERE ORD_NO = #{ordNo})-#{inAmt})
-		WHERE
-			ORD_NO = #{ordNo} AND MTR_CD = #{mtrCd}
-	</update>
-	<update id="updateIn">
-		UPDATE MTR_IN
-		SET
-			MTR_CD = #{mtrCd},
-			UNIT = #{unit},
-			IN_AMT = #{inAmt},
-			FLT_AMT = #{fltAmt},
-			UNIT_COST = #{unitCost},
-			TOT_COST = (#{unitCost}*#{inAmt})
-		WHERE
-			IN_NO = #{inNo}
-	</update>
-	하나씩 삭제
-	<delete id="deleteIn">
-		DELETE 
-		FROM MTR_IN
-		WHERE IN_NO = #{inNo}
-	</delete> -->
 </mapper>

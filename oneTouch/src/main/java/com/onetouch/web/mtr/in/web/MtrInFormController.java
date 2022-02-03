@@ -48,9 +48,9 @@ public class MtrInFormController {
 	//mainGrid modify
 	@ResponseBody
 	@PostMapping("/mtrModify")
-	public int modify(@RequestBody ModifyVO<MtrInVO> mvo){
+	public ModifyVO<MtrInVO> modify(@RequestBody ModifyVO<MtrInVO> mvo){
 		mtrInService.modifyIn(mvo);
-		 return 0;
+		 return mvo;
 	}
 	//mainGrid delete
 	@ResponseBody

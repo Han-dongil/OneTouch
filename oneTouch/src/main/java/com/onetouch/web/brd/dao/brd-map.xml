@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.brd.dao.BrdMapper">
+	<select id="mtrList" resultType="com.onetouch.web.mtr.stck.dao.LotVO">
+		SELECT
+			a.MTR_CD,
+			SUM(a.HLD_CNT) AS HLD_CNT,
+			SUM(a.STCK_CNT) AS MTR_STCK_CNT,
+			b.SAFE_STCK,
+			(SUM(a.STCK_CNT)-SUM(a.HLD_CNT)) AS STCK_USE,
+			b.USE_YN,
+			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(b.UNIT) AS UNIT_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(b.MTR_SECT) AS MTR_SECT_NM
+		FROM
+			MTR_LOT_STCK a, ADM_MTR b, MTR_IN c
+		WHERE
+			a.MTR_CD = b.MTR_CD
+		AND
+			a.IN_NO = c.IN_NO
+		GROUP BY
+            a.MTR_CD, b.SAFE_STCK, b.USE_YN, FN_GET_BAS_DTL_CD_TO_NM(a.MTR_CD),FN_GET_BAS_DTL_CD_TO_NM(b.UNIT), FN_GET_BAS_DTL_CD_TO_NM(b.MTR_SECT)
+		ORDER BY
+			MTR_CD
+	</select>
+	<select id="fctList" resultType="com.onetouch.web.fct.fix.dao.FixVO">
+		SELECT 
+			fix_cd,fct_cd, 
+			req_dt, str_dt, 
+			fin_dt, fix_phs, 
+			fix_cmt, 
+			cnt, 
+			unit_cost, 
+			tot_cost 
+		FROM fct_fix_mng;
+	</select>
+	<select id="pdtList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		
+	</select>
+</mapper>
