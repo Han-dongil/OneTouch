@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,7 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 
 <style>
 hr{
@@ -62,15 +64,12 @@ hr{
 	let mngCnt;
 	let rowk;
 	let modifyList = [];
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
 	
 	//--------그리드 css--------
-	Grid.applyTheme('default',{
+	/* Grid.applyTheme('default',{
 		cell:{
-			/* header:{
-				background:'#eef'
-			} */
 			header: {
 	            background: '#4B49AC',
 	            text: '#fff'
@@ -79,7 +78,7 @@ hr{
 	        	background:'#F5F7FF'
 	        }
 		}
-	})
+	}) */
 	//--------그리드 css 끝--------
 
 	//--------그리드컬럼 선언--------
@@ -217,8 +216,8 @@ hr{
 		data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 500,
-		minBodyHeight: 500
+		bodyHeight: 612,
+		minBodyHeight: 612
 	}); 
 	//--------그리드 그리기 끝--------	
 	

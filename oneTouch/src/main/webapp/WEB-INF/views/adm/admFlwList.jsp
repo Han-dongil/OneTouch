@@ -18,7 +18,7 @@
 
 <style>
 .hr4{
-	margin-top: 0.45rem !important;
+	margin-top: 1.5rem !important;
 }
 .labeltext{
 	width: 80px !important;
@@ -32,7 +32,7 @@
 	width: 80px !important;
 }
 .bascard1{
-	height: 300px;
+	height: 230px;
 }
 .inline{
 	display: inline-block;
@@ -50,14 +50,8 @@
 	/* margin-bottom: -20px !important; */
 	vertical-aline: middle !important;
 }
-.from-check {
-	margin-bottom: 0px !important;
-}
-.form-check .form-check-label input[type="checkbox"] + .input-helper:before {
-	margin-top: 12px !important;
-}
-.form-check-input {
-	margin-top: 12px !important;
+.form-check .form-check-label input[type="checkbox"] + .input-helper:before, .form-check .form-check-label input[type="checkbox"] + .input-helper:after{
+	top: 12px;
 }
 </style>
 
@@ -82,7 +76,7 @@
 				<button type="button" id="btnAdd" class="btn btn-main newalign2">ğС</button>
 			</span>
 			<br><br> -->
-			<hr>
+			<hr class="hr4">
 			<div id="grid1"></div>
 		</div>
 		
@@ -95,7 +89,7 @@
 				<button type="button" id="btnEditPrd" class="btn btn-primary newalign2">수정</button>
 			</span>
 			<br>
-			<hr>
+			<hr class="hr4">
 			<div class="row row1">
 				<div class="col-md-12 grid-margin stretch-card">
 					<div class="card bascard">
@@ -129,7 +123,6 @@
 											<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 											<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
 										</label>
-										
 									</span>
 								</div>
 								
@@ -140,10 +133,6 @@
 									<input type="hidden" id="prdSect" name="prdSect">
 									<input type="hidden" id="mngUnit" name="mngUnit">
 									<input type="hidden" id="prdStd" name="prdStd">
-								</div>
-								
-								<div class="rowdiv">			
-									
 								</div>
 								
 							</form>
@@ -161,7 +150,7 @@
 			</span>
 			
 			<br>
-			<hr>
+			<hr class="hr4">
 			<div id="grid2"></div>
 			
 			<div id="dialog-form" title="title"></div>
@@ -368,16 +357,16 @@
 		el: document.getElementById('grid1'),
 		data: dataSource1,
 		columns: columns1,
-		bodyHeight: 600,
-		minBodyHeight: 600
+		bodyHeight: 616,
+		minBodyHeight: 616
 	});
 	
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		bodyHeight: 200,
-		minBodyHeight: 200,
+		bodyHeight: 287,
+		minBodyHeight: 287,
 		rowHeaders : [ 'checkbox' ]
 	})
 

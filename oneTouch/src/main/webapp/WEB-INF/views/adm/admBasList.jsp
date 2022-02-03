@@ -11,9 +11,10 @@
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
+
 <style type="text/css">
 .bascard{
 	margin-bottom: 10px;
@@ -24,7 +25,9 @@
 .newalign{
 	margin-bottom: 0rem !important;
 }
-
+.hr4{
+	margin-top: 1.5rem !important;
+}
 </style>
 
 </head>
@@ -64,19 +67,21 @@
 		</div>
 		
 		<div class= "col-8">
-			<div class="card">
+			<h4 class="gridtitle">✔상세코드</h4>
+			
+			<!-- <div class="card">
 				<div class="card-body cardtitle">
 					<h4 class="card-title cardtitleh4">상세코드</h4>
 				</div>				
-			</div>
-			<br>
+			</div> 
+			<br>-->
 			<span class="floatright">
 				<button type="button" id="btnAddDtl" class="btn btn-main newalign">추가</button>
 				<button type="button" id="btnDelDtl" class="btn btn-main newalign">삭제</button>
 				<button type="button" id="btnSaveDtl" class="btn btn-primary newalign">저장</button>
 			</span>
-			<br><br>
-			<hr>
+			<br>
+			<hr class="hr4">
 			<div id="grid2"></div>
 			<div id="dialog-form" title="title"></div>
 		</div>
@@ -97,18 +102,18 @@
 	let modifyList1 = [];
 	let modifyList2 = [];
 	let flag = false;
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
 	
 	//--------그리드 css--------
- 	Grid.applyTheme('default',{
+ 	/* Grid.applyTheme('default',{
 		cell:{
 			header:{
 				background: '#4B49AC',
 	            text: '#fff'
 			}
 		}
-	})
+	}) */
 	//--------그리드 css 끝--------
 	
 	//--------그리드컬럼 선언--------
@@ -209,8 +214,8 @@
 		data: dataSource1,
 		rowHeaders : [ 'checkbox' ],
 		columns: columns1,
-		bodyHeight: 400,
-		minBodyHeight: 400
+		bodyHeight: 477,
+		minBodyHeight: 477
 	});
 	
 	const grid2 = new Grid({
@@ -218,8 +223,8 @@
 		data: dataSource2,
 		rowHeaders : [ 'checkbox' ],
 		columns: columns2,
-		bodyHeight: 460,
-		minBodyHeight: 460
+		bodyHeight: 616,
+		minBodyHeight: 616
 	})
 	//--------그리드 그리기 끝--------
 	
