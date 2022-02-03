@@ -16,33 +16,97 @@
 <!-- 토스트그리드 cdn -->
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="${path}/resources/js/function.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
+
+<style>
+.labeltext{
+	width: 80px !important;
+}
+.colline2{
+	margin-left: 100px;
+	width: 90px !important;
+}
+</style>
 </head>
 <body>
-<form id="frm" method="post">
-			<div style="margin-top: 10px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
-				<div>
-					<span>
-							<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
-							<input type="Date" id="fixFrom" value="" name="fixFrom" class="datepicker"> 
-							<label> ~ </label> 
-							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
-						</span>&nbsp;&nbsp;
-						
-						<span>
-							<label class="form-check-label">설비구분</label>
-							<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
-						</span>
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">설비조회</h3>
 				</div>
 			</div>
-			<div style="margin-top: 20px;">
-				<button type="button" id="searcnBtn" class="btn btn-primary mr-2 floatrightbtn" onclick="checkSeach(event)">조회</button>
-				<button type="button" id="resetBtn" class="btn btn-primary mr-2 floatrightbtn">새자료</button>
-				<button type="button" id="excelBtn" class="btn btn-primary mr-2 floatrightbtn">Excel</button>
-				<button type="button" id="printBtn" class="btn btn-primary mr-2 floatrightbtn">인쇄</button>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">설비정보</h4>
+					<form id="frm" method="post">
+						<div class="rowdiv">
+							<span>
+								<label class="labeltext">해당일자</label>&nbsp;&nbsp;
+								<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
+								<label> ~ </label> 
+								<input type="Date" id="fixTo" name="fixTo" class="datepicker">
+							</span>
+							
+							<span>
+								<label class="form-check-label colline2">설비구분</label>
+								<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
+							</span>
+							
+							<span class="floatright">
+								<button type="button" id="resetBtn" class="btn btn-main newalign">초기화</button>
+								<button type="button" id="searcnBtn" class="btn btn-primary newalign" onclick="checkSeach(event)">조회</button>
+								<!-- <button type="button" id="excelBtn" class="btn btn-main newalign">Excel</button>
+								<button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
+							</span>
+						</div>
+					</form>
+				</div>
 			</div>
-		</form>
-			
-		<div style="margin-left:100px; margin-right:100px;margin-bottom:100px " id="grid"></div>
+		</div>
+	</div>
+	<span class="floatright">
+		<button type="button" id="excelBtn" class="btn btn-main newalign">Excel</button>
+		<button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button>
+	</span>
+	<br><br>
+	<hr>
+	<div id="grid"></div>				
+</div>
+
+
+<!-- <form id="frm" method="post">
+	<div style="margin-top: 10px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">
+		<div>
+			<span>
+					<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
+					<input type="Date" id="fixFrom" value="" name="fixFrom" class="datepicker"> 
+					<label> ~ </label> 
+					<input type="Date" id="fixTo" name="fixTo" class="datepicker">
+				</span>&nbsp;&nbsp;
+				
+				<span>
+					<label class="form-check-label">설비구분</label>
+					<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
+				</span>
+		</div>
+	</div>
+	<div style="margin-top: 20px;">
+		<button type="button" id="searcnBtn" class="btn btn-primary mr-2 floatrightbtn" onclick="checkSeach(event)">조회</button>
+		<button type="button" id="resetBtn" class="btn btn-primary mr-2 floatrightbtn">새자료</button>
+		<button type="button" id="excelBtn" class="btn btn-primary mr-2 floatrightbtn">Excel</button>
+		<button type="button" id="printBtn" class="btn btn-primary mr-2 floatrightbtn">인쇄</button>
+	</div>
+</form> 
+	
+<div id="grid"></div>-->
 				
 		
 	<script type="text/javascript">
@@ -51,28 +115,21 @@
 	let grid;
 	let pastDay;//날자변수
 	let todayDay;//날자변수
-   let Grid = tui.Grid;
-   //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
-   Grid.applyTheme('clean', {
-      cell: {
+   	/* let Grid = tui.Grid; */
+   	//테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
+   	/* Grid.applyTheme('clean', {
+		cell: {
     	  header: {
 	            background: '#4B49AC',
 	            text: '#fff'
 	        },
-	        /* evenRow: {
-	        	background:'#F5F7FF'
-	        } */
 			},
 	        row:{
 	        	hover:{
 	          	  background:'#F5F7FF'
 	            }
-	        }
-     /*  //고정칼럼 색상 설정
-      frozenBorder: {
-           border: 'red'
-      } */
-    });
+	        } 
+    });*/
    
    //th 영역
     const columns = [
@@ -80,7 +137,7 @@
     header: '설비코드',
     name: 'fctCd',
     editor: 'text',
-    width:120,
+    /* width:120, */
     align:'center'
   },
   {
@@ -93,7 +150,7 @@
     header: '공정',
     name: 'prcCd',
     editor: 'text',
-    width:70,
+   /*  width:70, */
     align:'center'
   },
   {
@@ -133,14 +190,14 @@
     header: '점검주기',
     name: 'chkProd',
     editor: 'datePicker',
-    width:70,
+   /*  width:70, */
     align:'center'
   },
   {
     header: '총생산량',
     name: 'totPdtAmt',
     editor: 'datePicker',
-    width:70
+   /*  width:70 */
   }/* ,
   {
     header: 'uph생산량',
@@ -224,9 +281,9 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          /* rowHeaders : [ 'checkbox' ], */
-         bodyHeight:600,
-         columns,
-         width:1000
+         bodyHeight: 464,
+         minBodyHeight: 464,
+         columns
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {
               frozenCount: 2, // 3개의 컬럼을 고정하고

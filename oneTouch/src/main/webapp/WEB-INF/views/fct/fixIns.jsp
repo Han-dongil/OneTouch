@@ -14,7 +14,13 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style>
-
+.labeltext{
+	width: 80px !important;
+}
+.colline2{
+	margin-left: 100px;
+	width: 90px !important;
+}
 </style>
 </head>
 <body>
@@ -60,19 +66,18 @@
 									<i class="input-helper"></i>
 								</label>
 							</div>
-						<!-- </div> -->
 						<br>
 						
 						
 						<span>
-							<label class="schCondLabel">해당일자</label>&nbsp;&nbsp;
+							<label class="labeltext">해당일자</label>&nbsp;&nbsp;
 							<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
 							<label> ~ </label> 
 							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
-						</span>&nbsp;&nbsp;
+						</span>
 						
 						<span>
-							<label class="form-check-label">설비구분</label>
+							<label class="form-check-label colline2">설비구분</label>
 							<select id="fctCd" name="fctCd" class="selectoption"></select>
 						</span>
 						
@@ -246,8 +251,8 @@
               frozenCount: 2, // 3개의 컬럼을 고정하고
               frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
             } */
-        bodyHeight: 430,
- 		minBodyHeight: 430
+        bodyHeight: 425,
+ 		minBodyHeight: 425
     });
     grid.on('response', function(ev) {
 	    if(ev.xhr.response ==0 ){
