@@ -150,7 +150,10 @@ function mPrd(){
 		let prdGrid = new Grid({
 			el : document.getElementById('prd_grid'),
 			data : prdData,
-			columns : prdColumns
+			columns : prdColumns,
+			scrollX : false,
+			scrollY : true,
+			bodyHeight: 400
 		});
 		
 		prdGrid.on('dblclick', ev => {

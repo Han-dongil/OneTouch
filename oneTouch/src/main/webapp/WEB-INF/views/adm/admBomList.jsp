@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 <style>
 .labeltext{
 	width: 80px !important;
@@ -108,11 +109,11 @@ hr{
 	let BomCnt = 0;
 	let prdCdVal;
 	let modifyList = [];
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
 	
 	//--------그리드 css--------
-	Grid.applyTheme('striped',{
+	/* Grid.applyTheme('striped',{
 		cell:{
 			header: {
 	            background: '#4B49AC',
@@ -122,7 +123,7 @@ hr{
 	        	background:'#F5F7FF'
 	        }
 		}
-	}) 
+	})  */
 	//--------그리드 css 끝--------
 	
 	//--------제품정보 보여주는 form 기능--------
@@ -138,7 +139,8 @@ hr{
 			autoOpen : false,
 			modal : true,
 			resizable: false,
-			height: "auto",
+			/* height: "auto", */
+			height: 500,
 			width: 800
 		});
 		
@@ -261,8 +263,8 @@ hr{
 		data: dataSource,
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 284,
-		minBodyHeight: 284
+		bodyHeight: 330,
+		minBodyHeight: 330
 	})
 	//--------그리드 그리기 끝--------
 	

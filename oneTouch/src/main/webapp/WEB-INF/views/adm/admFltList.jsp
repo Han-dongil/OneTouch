@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 
 <style>
 hr{
@@ -65,11 +66,11 @@ hr{
 	let rowk;
 	let fltCnt;
 	let modifyList=[];
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
 	
 	//--------그리드 css--------
-	Grid.applyTheme('default',{
+	/* Grid.applyTheme('default',{
 		cell:{
 			header: {
 	            background: '#4B49AC',
@@ -79,7 +80,7 @@ hr{
 	        	background:'#F5F7FF'
 	        }
 		}
-	}) 
+	})  */
 	//--------그리드 css 끝--------
 	
 	//--------그리드컬럼 선언--------
@@ -155,8 +156,8 @@ hr{
 		data: dataSource, 
 		rowHeaders : [ 'checkbox' ],
 		columns,
-		bodyHeight: 450,
-		minBodyHeight: 450
+		bodyHeight: 612,
+		minBodyHeight: 612
 	}); 
 	//--------그리드 그리기 끝--------	
 	

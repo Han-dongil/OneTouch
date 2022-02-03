@@ -13,16 +13,17 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 
 <style>
 hr{
 	margin-top: 0.4rem !important;
 }
 .labeltext{
-	width: 80px !important;
+	width: 120px !important;
 }
 .bascard1{
-	height: 555px;
+	height: 651px;
 }
 .inline{
 	display: inline-block;
@@ -33,6 +34,14 @@ hr{
 }
 .rowdiv{
 	margin-bottom: 15px !important;
+}
+.form-check .form-check-label input[type="checkbox"] + .input-helper:before, .form-check .form-check-label input[type="checkbox"] + .input-helper:after{
+	top: 3px !important;
+	left: -20px !important;
+}
+.mtrFrm{
+	margin-top: 40px;
+	margin-left: 30px;
 }
 </style>
 
@@ -70,8 +79,8 @@ hr{
 			<hr>
 			<div class="card bascard">
 				<div class="card-body bascard1">
-					<h4 class="card-title">기초코드</h4>
-					<form id="mtrFrm" name="mtrFrm" method="post" onsubmit="return false">
+					<!-- <h4 class="card-title">기초코드</h4> -->
+					<form id="mtrFrm" name="mtrFrm" class="mtrFrm" method="post" onsubmit="return false">
 						<div class="rowdiv">
 							<label class="labeltext">자재코드&nbsp;</label>
 							<input id="mtrCd" name="mtrCd" class="inputtext" onkeyup="entermtrCd()">
@@ -121,7 +130,7 @@ hr{
 						</div>
 						
 						<div class="rowdiv">
-							<label class="labeltext colline2">사용여부</label>&emsp;&nbsp;
+							<label class="labeltext">사용여부</label>&emsp;&nbsp;
 							<span class="form-check form-check-flat form-check-primary inline">
 								<label class="form-check-label chkboxalign">
 									<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -181,7 +190,7 @@ hr{
 
 
 <script type="text/javascript">
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	let rowk;
 	let mtrCodeVal;
 	
@@ -189,17 +198,14 @@ hr{
 	document.getElementById('btnEdit').setAttribute('disabled', true);
 	document.getElementById('btnDel').setAttribute('disabled', true);
 	
-	Grid.applyTheme('default',{
+	/* Grid.applyTheme('default',{
 		cell:{
-			/* header:{
-				background:'#eef'
-			} */
 			header: {
 	            background: '#4B49AC',
 	            text: '#fff'
 	        }
 		}
-	})
+	}) */
 	
 	const columns = [{
 		
@@ -265,8 +271,8 @@ hr{
 		el: document.getElementById('grid'),
 		data: dataSource,
 		columns,
-		bodyHeight: 520,
-		minBodyHeight: 520,
+		bodyHeight: 612,
+		minBodyHeight: 612,
 	});
 	
 	grid.on("click", (ev) => {
