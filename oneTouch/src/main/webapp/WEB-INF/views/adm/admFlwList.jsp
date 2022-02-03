@@ -14,10 +14,164 @@
 
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
+
+<style>
+.hr4{
+	margin-top: 0.45rem !important;
+}
+.labeltext{
+	width: 80px !important;
+}
+.colline1{
+	margin-left: 158px;
+	width: 80px !important;
+}
+.colline2{
+	margin-left: 100px;
+	width: 80px !important;
+}
+.bascard1{
+	height: 300px;
+}
+.inline{
+	display: inline-block;
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-botton: 0px !important;
+}
+.rowdiv{
+	margin-bottom: 15px !important;
+}
+.inputtext{
+	margin-left: 20px;
+}
+.row1{
+	/* margin-bottom: -20px !important; */
+	vertical-aline: middle !important;
+}
+.from-check {
+	margin-bottom: 0px !important;
+}
+.form-check .form-check-label input[type="checkbox"] + .input-helper:before {
+	margin-top: 12px !important;
+}
+.form-check-input {
+	margin-top: 12px !important;
+}
+</style>
 
 </head>
 <body>
-<br>
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">제품공정흐름관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="flex row">
+		<div class = "col-4">
+			<h4 class="gridtitle">✔제품목록</h4>
+			<!-- <span class="floatright">
+				<button type="button" id="btnAdd" class="btn btn-main newalign2">ğС</button>
+			</span>
+			<br><br> -->
+			<hr>
+			<div id="grid1"></div>
+		</div>
+		
+		<div class= "col-8">
+			<h4 class="gridtitle">✔제품상세정보</h4>
+			<span class="floatright">
+				<button type="button" id="btnReset"  class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="btnAddPrd" class="btn btn-primary newalign2">등록</button>
+				<button type="button" id="btnDelPrd" class="btn btn-main newalign2">삭제</button>
+				<button type="button" id="btnEditPrd" class="btn btn-primary newalign2">수정</button>
+			</span>
+			<br>
+			<hr>
+			<div class="row row1">
+				<div class="col-md-12 grid-margin stretch-card">
+					<div class="card bascard">
+						<div class="card-body bascard1">
+							<!-- <h4 class="card-title">fǰܼܳdڸ</h4> -->
+							<form id="flwFrm" name="flwFrm" method="post" onsubmit="return false">
+								<div class="rowdiv">
+									<label class="labeltext">제품코드&nbsp;</label>
+									<input id="prdCd" name="prdCd" class="inputtext" readonly>
+									<label class="labeltext colline2">제품명&nbsp;</label>
+									<input id="prdNm" name="prdNm" class="inputtext" readonly>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext">제품규격&nbsp;</label>
+									<select id="prdStdNm" name="prdStd" class="inputtext"></select>
+									<!-- <button type="button" id="btnprdStd" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button> -->
+									<label class="labeltext colline2">관리단위&nbsp;</label>
+									<select id="mngUnitNm" name="mngUnit" class="inputtext"></select>
+									<!-- <button type="button" id="btnmngUnit" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button> -->
+								</div>
+								
+								<div class="rowdiv" style="margin-top: -16px;">
+									<label class="labeltext">제품구분&nbsp;</label>
+									<select id="prdSectNm" name="prdSect" class="inputtext"></select>
+									<!-- <button type="button" id="btnmngUnit" class="btn btn-primary mr-2 minibtn"><i class="icon-search"></i></button> -->
+									
+									<label class="labeltext colline2">사용여부</label>&emsp;&nbsp;
+									<span class="form-check form-check-flat form-check-primary inline">
+										<label class="form-check-label chkboxalign">
+											<!-- 사용여부&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+											<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+										</label>
+										
+									</span>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext">공정라인&nbsp;</label>
+									<input id="ableLineNo" name="ableLineNo" style="width: 610px;" class="inputtext">
+									
+									<input type="hidden" id="prdSect" name="prdSect">
+									<input type="hidden" id="mngUnit" name="mngUnit">
+									<input type="hidden" id="prdStd" name="prdStd">
+								</div>
+								
+								<div class="rowdiv">			
+									
+								</div>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<h4 class="gridtitle">✔공정흐름</h4>
+			<span class="floatright">
+				<button type="button" id="btnFlw" class="btn btn-main newalign2">조회</button>
+				<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+				<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+			</span>
+			
+			<br>
+			<hr>
+			<div id="grid2"></div>
+			
+			<div id="dialog-form" title="title"></div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- <br>
 <h3>[제품공정흐름관리]</h3>
 <hr>
 <div class="flex row">
@@ -41,14 +195,14 @@
 		<label>제품코드&nbsp;</label><input id="prdCd" name="prdCd" onkeyup="enterPrdCd()"><br>
 		<label>제품명&emsp;&nbsp;</label><input id="prdNm" name="prdNm"><br>
 		<label>제품규격&nbsp;</label><select id="prdStdNm" name="prdStd"></select><br>
-			<!-- <button type="button" id="btnprdStd">🔍</button> -->
+			<button type="button" id="btnprdStd">🔍</button>
 		<label>관리단위&nbsp;</label><select id="mngUnitNm" name="mngUnit"></select><br>
-			<!-- <button type="button" id="btnmngUnit">🔍</button> -->
+			<button type="button" id="btnmngUnit">🔍</button>
 		<label>제품구분&nbsp;</label><select id="prdSectNm" name="prdSect"></select><br>
-			<!-- <button type="button" id="btnprdSect">🔍</button> -->
-		<!-- <input type="hidden" id="prdSect" name="prdSect">
+			<button type="button" id="btnprdSect">🔍</button>
+		<input type="hidden" id="prdSect" name="prdSect">
 		<input type="hidden" id="mngUnit" name="mngUnit">
-		<input type="hidden" id="prdStd" name="prdStd"> -->
+		<input type="hidden" id="prdStd" name="prdStd">
 		<label>공정라인&nbsp;</label><input id="ableLineNo" name="ableLineNo" style="width: 500px;"><br>
 		<label>사용여부&nbsp;</label><input id="useYn" name="useYn" type="checkbox" style="width: 20px;">
 	</form>
@@ -63,7 +217,7 @@
 	<div id="grid2"></div>
 	<div id="dialog-form" title="title"></div>
 </div>
-</div>
+</div> -->
 <script type="text/javascript">
 	//--------변수선언--------
 	let prdCode1;
@@ -74,7 +228,7 @@
 	let flwCnt;
 	let lineSplit =[];
 	let modifyList = [];
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
 	
 	//수정,삭제버튼 막아놓기
@@ -82,11 +236,9 @@
 	document.getElementById('btnDelPrd').setAttribute('disabled', true);
 	
 	//--------그리드 css--------
-	Grid.applyTheme('default',{
+	/* Grid.applyTheme('default',{
 		cell:{
-			/* header:{
-				background:'#eef'
-			} */
+			
 			header: {
 	            background: '#4B49AC',
 	            text: '#fff'
@@ -95,7 +247,7 @@
 	        	background:'#F5F7FF'
 	        }
 		}
-	})
+	}) */
 	//--------그리드 css--------
 	
 	const columns1 = [{
@@ -216,16 +368,16 @@
 		el: document.getElementById('grid1'),
 		data: dataSource1,
 		columns: columns1,
-		bodyHeight: 520,
-		minBodyHeight: 520
+		bodyHeight: 600,
+		minBodyHeight: 600
 	});
 	
 	const grid2 = new Grid({
 		el: document.getElementById('grid2'),
 		data: dataSource2,
 		columns: columns2,
-		bodyHeight: 180,
-		minBodyHeight: 180,
+		bodyHeight: 200,
+		minBodyHeight: 200,
 		rowHeaders : [ 'checkbox' ]
 	})
 
