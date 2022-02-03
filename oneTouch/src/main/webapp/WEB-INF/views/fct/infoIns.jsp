@@ -532,7 +532,7 @@
         data:data,  //이름이 같다면 생격가능
         columns:fctColumns,
         bodyHeight: 312,
-       minBodyHeight: 312
+        minBodyHeight: 312
        /* ,width: 800 */
     });
     
