@@ -26,17 +26,83 @@
 <!-- toastr -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 
 <style type="text/css">
-	.red{background-color: red}
-	.blue{background-color: skyblue}
-	.green{background-color: green}
+/* .red{background-color: red}
+.blue{background-color: skyblue}
+.green{background-color: green} */
+.red{background-color: #F3797E}
+.blue{background-color: #7DA0FA}
+.green{background-color: #36b9ad}
+	
+.labeltext{
+	width: 80px !important;
+}
+.colline2{
+	margin-left: 100px;
+	width: 90px !important;
+}
 </style>
 </hel>
 <body>
 
-<div>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">작업수리내역관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">점검관리</h4>
+					<form id="frm" method="post">
+						<div class="rowdiv">
+							<span>
+								<label class="labeltext">해당일자</label>&nbsp;&nbsp;
+								<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
+								<label> ~ </label> 
+								<input type="Date" id="fixTo" name="fixTo" class="datepicker">
+							</span>
+							
+							<span>
+								<label class="form-check-label colline2">설비구분</label>
+								<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
+							</span>
+							
+							<span class="floatright">
+								<button type="button" id="resetBtn" class="btn btn-main newalign">초기화</button>
+								<button type="button" id="searcnBtn" class="btn btn-primary newalign" onclick="checkSeach(event)">조회</button>
+								
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<span class="floatright">
+		<button type="prodChekCompleteBtn" id="btnAdd" class="btn btn-primary newalign2">점검완료등록</button>
+		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
+	</span>
+	<br><br>
+	<hr>
+	<div id="dialog-form" title="점검대상">점검대상 목록</div>
+	<div id="grid"></div>
+</div>
 
+
+
+<!-- <div>
 	<div style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
 		<form id="fixFrm" method="post">
 		<span style="margin-left: 100px;">
@@ -67,19 +133,19 @@
 </div>
 	<div id="dialog-form" title="점검대상">점검대상 목록</div>
 	<div id="grid"></div>
-	
+	 -->
 	
 <script>
 
 
-	let Grid = tui.Grid;
+	/* let Grid = tui.Grid; */
 	let data;
 	let prodCheckObj;	//점검대상인 데이터를 담는 변수
 	let dialog;
 	let checkedRowdata;	//체크 행의 데이터를 저장하는 변수
 	
 	//disabled에 대한 속성 값 추가 
-	Grid.applyTheme('clean',{	
+	/* Grid.applyTheme('clean',{	
         cell: {
             header: {
               background: '#eef'
@@ -88,7 +154,7 @@
           currentRow: {
           	background: '#fee'
           }
-     	}) ; 
+     	}) ;  */
 	
 	 dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
 		autoOpen : false,
@@ -262,7 +328,9 @@
 	    el: document.getElementById('grid'),
 	    data:dataSource,  //이름이 같다면 생격가능
 	    rowHeaders : [ 'checkbox' ],
-	    columns: columns
+	    columns: columns,
+	    bodyHeight: 464,
+        minBodyHeight: 464,
 	 });
    
    //disapbleColumn 컬럼수정을 막는 코드

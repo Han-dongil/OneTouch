@@ -48,7 +48,7 @@
 				<div class="card-body bascard1">
 					<h4 class="card-title">기초코드</h4>
 					<span style="padding-top: 10px;">
-						<label class="schCondLabel">검색</label>&nbsp;&nbsp;
+						<label class="labeltext">검색</label>&nbsp;&nbsp;
 						<input id="basNm" name="basNm" class="inputtext">
 					</span>
 					<span>

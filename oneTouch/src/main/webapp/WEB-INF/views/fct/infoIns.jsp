@@ -24,23 +24,231 @@
 
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
 <style>
-td>input {
-	width: 120px;
-	height: 30px;
-	font-size: 15px;
+.hr4{
+	margin-top: 1.5rem !important;
+}
+.labeltext{
+	width: 100px !important;
 }
 
-td {
-	font-size: 13px;
+.colline1{
+	width: 90px !important;
+}
+.colline2{
+	margin-left: 40px;
+	width: 90px !important;
+}
+.colline3{
+	margin-left: 23px;
+	width: 90px !important;
+}
+.bascard1{
+	height: 280px;
+}
+.inline{
+	display: inline-block;
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-botton: 0px !important;
+}
+.rowdiv{
+	margin-bottom: 15px !important;
+}
+.rowdiv2{
+	margin-top: -15px !important;
+	margin-bottom: 15px !important;
+}
+.inputtext{
+	margin-left: 0px;
+}
+.inputtextsize{
+	width: 160px !important;
+}
+.inline{
+	display: inline-block;
+	margin-left: 0px !important;
+	margin-top: 10px !important;
+	margin-botton: 0px !important;
+}
+.form-check .form-check-label input[type="checkbox"] + .input-helper:before, .form-check .form-check-label input[type="checkbox"] + .input-helper:after{
+	top: 12px;
+	height: 19px !important;
+}
+.btn1{
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+}
+.inlineblock{
+	display: inline-block;
 }
 </style>
 
 </head>
 <body>
+
+<div class="content-wrapper">
 	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">설비정보등록</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="flex row">
+		<div class = "col-3">
+			<h4 class="gridtitle">✔라인정보</h4>
+			<span class="floatright">
+				<button type="button" id='LinebtnClear' onclick=LineClear()  class="btn btn-main btn1 newalign2">초기화</button>
+				<button type="button" id='LinebtnAdd' onclick=LineAdd() class="btn btn-primary btn1 newalign2">등록</button>
+				<button type="button" id='LinebtnDel' onclick=LineDel() class="btn btn-main btn1 newalign2">삭제</button>
+				<button type="button" id='LinebtnEdit' onclick=LineUpt() class="btn btn-primary btn1 newalign2">수정</button>
+			</span>
+			<br>
+			<hr class="hr4">
+			<div class="row row1">
+				<div class="col-md-12 grid-margin stretch-card">
+					<div class="card bascard">
+						<div class="card-body bascard1">
+							<!-- <h4 class="card-title">라인정보</h4> -->
+							<form id="lineForm" onsubmit="return false" method="post">
+								<div class="rowdiv">
+									<label class="labeltext">라인&nbsp;</label>
+									<input type="text" id="lineinput" name="lineNO" class="inputtext" list="l-option" onkeyup="lineenterkey()" value="" style="text-transform: uppercase;" />
+									<datalist id="l-option"></datalist>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext">총생산량&nbsp;</label>
+									<input type="number" id="totPdtAmt" name="totPdtAmt" class="inputtext" value="" />
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext">UPH생산량&nbsp;</label>
+									<input type="number" id="uphPdtAmt" name="uphPdtAmt" class="inputtext" value="" />
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext">담당자&nbsp;</label>
+									<input type="text" id="empNo" name="empNo" class="inputtext" value="" />
+								</div>
+								
+								<div class="rowdiv2">
+									<label class="labeltext">사용여부&nbsp;</label>
+									<span class="form-check form-check-flat form-check-primary inline">
+										<label class="form-check-label chkboxalign">
+											<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+										</label>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="lineGrid"></div>
+		</div>
+		
+		<div class= "col-9">
+			<h4 class="gridtitle">✔설비정보</h4>
+			<span class="floatright">
+				<button type="button" id="btnFctEdit" onclick="fctClear()" class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="btnSave" class="btn btn-primary newalign2">등록</button>
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+				<button type="button" id="btnEdit" class="btn btn-primary newalign2">수정</button>
+			</span>
+			<br>
+			<hr class="hr4">
+			<div class="row row1">
+				<div class="col-md-12 grid-margin stretch-card">
+					<div class="card bascard">
+						<div class="card-body bascard1">
+							<!-- <h4 class="card-title">설비정보</h4> -->
+							<form id="infoFrm" onsubmit="return false" method="post" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-md-8">
+										<div class="rowdiv">
+											<label class="labeltext colline1">설비코드&nbsp;</label>
+											<input type="text" id="fctCd" name="fctCd" value="" oninput="onfctCd(event)" list="fctCd-options" class="inputtext"
+											       onkeyup="fctenterkey()" autocomplete="off" style="text-transform: uppercase;" />
+											<datalist id="fctCd-options"></datalist>
+											
+											<label class="labeltext colline2">설비이름&nbsp;</label>
+											<input type="text" id="fctNm" name="fctNm" value="" class="inputtext"/>
+										</div>
+										
+										<div class="rowdiv">
+											<label class="labeltext colline1">모델명&nbsp;</label>
+											<input type="text" id="fctModel" name="fctModel" value="" autocomplete="off" class="inputtext"/>
+											
+											<label class="labeltext colline2">설비규격&nbsp;</label>
+											<input type="text" id="fctStd" name="fctStd" value="" list="fctStdList" autocomplete="off" class="inputtext"/>
+											<datalist id="fctStdList"></datalist>
+										</div>
+										
+										<div class="rowdiv">
+											<label class="labeltext colline1">라인번호&nbsp;</label>
+											<input id="lineNO" name="lineNO" list="linoNolist" autocomplete="off" class="inputtext"/>
+											<datalist id="linoNolist"></datalist>
+											
+											<label class="labeltext colline2">공정&nbsp;</label>
+											<input type="text" id="prcCd" name="prcCd" list="prcList" value="" autocomplete="off" class="inputtext"/>
+											<datalist id="prcList"></datalist>	
+										</div>
+										
+										<div class="rowdiv">
+											<label class="labeltext colline1">입고일&nbsp;</label>
+											<input type="date" id="inDate" name="inDate" value="" class="inputtext"/>
+											
+											<label class="labeltext colline2">구매금액&nbsp;</label>
+											<input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" autocomplete="off" class="inputtext"/>원	
+										</div>
+										
+										<div class="rowdiv">
+											<label class="labeltext colline1">구입업체&nbsp;</label>
+											<input type="text" id="compCd" name="compCd" value="" list="componyList" autocomplete="off" class="inputtext"/>
+											<datalist id="componyList"></datalist>
+											
+											<label class="labeltext colline2">점검주기&nbsp;</label>
+											<input type="number" id="chkProd" name="chkProd" value="" autocomplete="off" class="inputtext" />
+											<select id="chkProdUnit" name="chkProdUnit" class="inputtext" style="width: 70px;">
+												<option value="Y">년</option>
+												<option value="M">달</option>
+												<option value="W">주</option>
+												<option value="D">일</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<img src="../resources/img/logo.jpg" id="fctImges" style="width: 250px; height: 200px;"> 
+										<input style="margin-bottom: 20px;" type="file" id="fctImgBtn" name="uploadFile" value="" multiple onchange="setThumbnail(event)" />
+										<input type=hidden id="fctImg" value="">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="grid"></div>
+		</div>
+	
+	</div>
+	
+</div>
+<div id="dialog-form"></div>
+<div id="fctGubundialog-form" title="설비구분"></div>
+
+
+
+	<!-- <div class="row">
 		<div class="col-3" style="border-right: 1px solid gray;">
-			<!-- <button type="button" id='LinebtnFind'>라인조회</button> -->
+			<button type="button" id='LinebtnFind'>라인조회</button>
 			<button type="button" id='LinebtnAdd' onclick=LineAdd()>등록</button>
 			<button type="button" id='LinebtnDel' onclick=LineDel()>삭제</button>
 			<button type="button" id='LinebtnEdit' onclick=LineUpt()>수정</button>
@@ -85,7 +293,7 @@ td {
 		</div>
 		<div class="col-9">
 			<div>
-				<!-- <button type="button" id='btnFind'>조회</button> -->
+				<button type="button" id='btnFind'>조회</button>
 				<button type="button" id='btnDel'>삭제</button>
 				<button type="button" id='btnSave'>저장</button>
 				<button type="button" id='btnEdit'>수정</button>
@@ -106,8 +314,8 @@ td {
 								<td>모델명</td>
 								<td><input type="text" id="fctModel" name="fctModel"
 									value="" autocomplete="off" /></td>
-								<!-- <td>사용여부</td>
-                        <td><input type="checkbox" id="useYn" name="useYn" checked="" /></td> -->
+								<td>사용여부</td>
+                        <td><input type="checkbox" id="useYn" name="useYn" checked="" /></td>
 							</tr>
 							<tr>
 								<td>설비규격</td>
@@ -136,11 +344,11 @@ td {
 										id="componyList"></datalist></td>
 							</tr>
 							<tr>
-								<!-- <td>이미지</td>
-                        <td><input type="text" id="FctImg" name="FctImg" value="" /></td> -->
-								<!-- <td>시간당 생산량</td>
+								<td>이미지</td>
+                        <td><input type="text" id="FctImg" name="FctImg" value="" /></td>
+								<td>시간당 생산량</td>
                         <td><input type="text" id="uphPdtAmt" name="uphPdtAmt"
-                           value="" /></td> -->
+                           value="" /></td>
 
 								<td>점검주기</td>
 								<td><input type="number" id="chkProd" name="chkProd"
@@ -157,7 +365,7 @@ td {
 
 							<div class='uploadDiv'>
 								<td></td>
-								<!-- <button id='uploadBtn'>Upload</button> -->
+								<button id='uploadBtn'>Upload</button>
 							</div>
 
 						</div>
@@ -178,8 +386,8 @@ td {
 				<div id="grid"></div>
 			</div>
 		</div>
-		<!-- row -->
-		<div id="fctGubundialog-form" title="설비구분"></div>
+		row
+		<div id="fctGubundialog-form" title="설비구분"></div> -->
 		<script>
    let dialog; 
    let lineStatusVO = {};
@@ -224,9 +432,9 @@ td {
 
    let targetId = [];
    let s = 'd';
-   var Grid = tui.Grid;
+   /* var Grid = tui.Grid; */
    //테마옵션 (선언된 그리드 바로빝에 해주면되고 또는 jsp 파일로 만들어서 넣어도됨)
-   Grid.applyTheme('clean', {   
+   /* Grid.applyTheme('clean', {   
         cell: {
            header: {
                background: '#4B49AC',
@@ -239,7 +447,7 @@ td {
             }
         }
       }
-   );
+   ); */
    
    //th 영역
     let fctColumns = [
@@ -323,9 +531,9 @@ td {
         el: document.getElementById('grid'),
         data:data,  //이름이 같다면 생격가능
         columns:fctColumns,
-        bodyHeight: 600,
-       minBodyHeight: 600,
-       width: 800
+        bodyHeight: 312,
+       minBodyHeight: 312
+       /* ,width: 800 */
     });
     
     
@@ -372,9 +580,9 @@ td {
         el: document.getElementById('lineGrid'),
         data:lineData,  //이름이 같다면 생격가능
         columns:lineColumns,
-        bodyHeight: 600,
-       minBodyHeight: 600,
-       width:250
+        bodyHeight: 312,
+       minBodyHeight: 312
+      /*  ,width:250 */
     });
       
       
