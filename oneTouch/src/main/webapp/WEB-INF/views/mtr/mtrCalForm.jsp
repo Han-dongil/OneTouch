@@ -118,7 +118,8 @@ document.getElementById('endDate').value = today();
 const dataSource = {
 	api: {
 		readData: { url: './mtrCalForm', method: 'POST' },
-		createData: { url: './mtrCalCreate', method: 'POST'}
+		createData: { url: './mtrCalCreate', method: 'POST'},
+		deleteData: { url: './mtrCalDelete', method: 'POST'},
 	},
 	contentType: 'application/json',
 	initialRequest: false
@@ -515,7 +516,16 @@ btnFind.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
+	let param= $("#frm").serializeObject();
 	mainGrid.request('createData');
+	setTimeout(function(){
+		mainGrid.readData(1,param,true);
+	},100);
+	setTimeout(function(){
+		console.log("getRowCount")
+		console.log(mainGrid.getRowCount())
+		mainGrid.focus(mainGrid.getRowCount()-1,'calSectNm')
+	},500);
 });
 //---------저장버튼 끝---------
 
@@ -530,8 +540,12 @@ btnAdd.addEventListener("click", function(){
 
 //---------삭제버튼---------
 btnDel.addEventListener("click", function(){
+	let param= $("#frm").serializeObject();
 	mainGrid.removeCheckedRows(true);
 	mainGrid.request('deleteData');
+	setTimeout(function(){
+		mainGrid.readData(1,param,true);
+	},100);
 });
 //---------삭제버튼 끝---------
 

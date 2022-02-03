@@ -89,4 +89,22 @@
 		WHERE
 			MTR_LOT = #{mtrLot} 
 	</update>
+	
+	<delete id="deleteCal">
+		DELETE 
+		FROM MTR_STCK_CAL 
+		WHERE CAL_NO = #{calNo}
+	</delete>
+	<update id="minusCal">
+		UPDATE MTR_LOT_STCK
+		SET
+			<if test='calSect == "MTR_CAL001"'> 
+				STCK_CNT = STCK_CNT-#{calAmt}				
+			</if>
+			<if test='calSect == "MTR_CAL002"'> 
+				STCK_CNT = STCK_CNT+#{calAmt}				
+			</if>
+		WHERE
+			MTR_LOT = #{mtrLot} 
+	</update>
 </mapper>

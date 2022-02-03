@@ -11,9 +11,6 @@ public interface MtrCalMapper {
 	List<LotVO> selectLot(MtrCalVO mtrCalVO);
 	void insertCal(MtrCalVO mtrCalVO);
 	void updateCal(MtrCalVO mtrCalVO);
-//	void insertIn(MtrInVO vo);
-//	void deleteIn(MtrInVO vo);
-//	void updateIn(MtrInVO vo);
-//	void updateOrd(MtrInVO vo);
-//	void prdNeed(PlanVO vo);
+	void deleteCal(MtrCalVO mtrCalVO);
+	void minusCal(MtrCalVO mtrCalVO);
 }

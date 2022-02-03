@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
 let rowk = -1;
-
+let modifyList = [];
 
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
@@ -385,6 +385,27 @@ mainGrid.on('onGridUpdated', ev => {
 //---------mainGrid row갯수 파악 끝---------
 
 
+//---------mainGrid modify후 focus---------
+mainGrid.on("response", function(ev) {
+	if(JSON.parse(ev.xhr.response).result != true) {
+		let param= $("#frm").serializeObject();
+		mainGrid.readData(1,param,true);
+		setTimeout(function(){
+			for(inNoData of mainGrid.getData()) {
+				if(modifyList[modifyList.length-1] == inNoData.inNo) {
+					mainGrid.focus(inNoData.rowKey, 'inDate', true);
+					break;
+				} else {
+					mainGrid.focus(mainGrid.getRowCount()-1,'inDate',true);
+					break;
+				}
+			}
+		},100);
+	}
+});
+//---------mainGrid modify후 focus 끝---------
+
+
 //---------ordGrid---------
 let ordDataSource = {
 	api: {
@@ -584,6 +605,16 @@ btnDel.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
+	let create = mainGrid.getModifiedRows().createdRows;
+	let update = mainGrid.getModifiedRows().updatedRows;
+	for(let i=0; i<create.length; i++) {
+		modifyList.push(create[i].inNo);
+	}
+	for(let i=0; i<update.length; i++) {
+		modifyList.push(update[i].inNo);
+	 }
+	console.log("modifyList")
+	console.log(modifyList)
 	mainGrid.request('modifyData');
 });
 //---------저장버튼 끝---------

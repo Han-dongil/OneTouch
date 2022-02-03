@@ -11,5 +11,6 @@ public interface MtrCalService {
 	List<MtrCalVO> selectCal(MtrSearchVO inSearchVO);
 	List<LotVO> selectLot(MtrCalVO mtrCalVO);
 	void createCal(ModifyVO<MtrCalVO> mtrCalVO);
+	void deleteCal(ModifyVO<MtrCalVO> mtrCalVO);
 	
 }

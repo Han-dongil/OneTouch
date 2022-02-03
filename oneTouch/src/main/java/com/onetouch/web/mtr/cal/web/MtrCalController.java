@@ -69,11 +69,18 @@ public class MtrCalController {
 		return data;
 	}
 	
-	//mainGrid modifyData
+	//mainGrid createData
 	@ResponseBody
 	@PostMapping("/mtrCalCreate")
-	public int mtrCalModify(@RequestBody ModifyVO<MtrCalVO> mtrCalVO){
+	public int mtrCalCreate(@RequestBody ModifyVO<MtrCalVO> mtrCalVO){
 		mtrCalService.createCal(mtrCalVO);
+		return 0;
+	}
+	//mainGrid deleteData
+	@ResponseBody
+	@PostMapping("/mtrCalDelete")
+	public int mtrCalDelete(@RequestBody ModifyVO<MtrCalVO> mtrCalVO){
+		mtrCalService.deleteCal(mtrCalVO);
 		return 0;
 	}
 }

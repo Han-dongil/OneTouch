@@ -333,7 +333,11 @@ btnFind.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
+	let param= $("#frm").serializeObject();
 	mainGrid.request('modifyData');
+	setTimeout(function(){
+		mainGrid.readData(1,param,true);
+	},100);
 });
 //---------저장버튼 끝---------
 </script>

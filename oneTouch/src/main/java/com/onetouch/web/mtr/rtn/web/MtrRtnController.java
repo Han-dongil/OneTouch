@@ -38,12 +38,12 @@ public class MtrRtnController {
 	}
 	
 	//mainGrid modify
-		@ResponseBody
-		@PostMapping("/mtrRtnModify")
-		public int mtrRtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
-			service.modifyRtn(mvo);
-			 return 0;
-		}
+	@ResponseBody
+	@PostMapping("/mtrRtnModify")
+	public int mtrRtnModify(@RequestBody ModifyVO<MtrRtnVO> mvo){
+		service.modifyRtn(mvo);
+		 return 0;
+	}
 	
 	@RequestMapping("/rtnList")
 	public String rtnList() {
