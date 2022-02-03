@@ -19,7 +19,7 @@
 	
 </select>
 <select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time  
+		select plan_no , line_no , prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm, need_cnt , instr_cnt , work_str_date , work_plan_time  
 		from pdt_plan_dtl 
 		group by plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time
 		having 1=1
@@ -31,7 +31,7 @@
 		</if>
 </select>
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
+	select prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm , cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
 </select>
 <select id="dateCal" resultType="integer">
 	select to_date(#{workEndDate},'yyyy-MM-dd') - to_date(#{workStrDate},'yyyy-MM-dd') from dual
@@ -77,7 +77,7 @@ select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc
 	</delete>
 <!-- 제품명검색해서 로트별 재고보기 -->
 <select id="lotCntSelect" parameterType="com.onetouch.web.pdt.plan.dao.PlanVO" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-    select a.use_amt as useAmt,a.mtrlot as mtrLot , a.stckCnt as stckCnt , a.hldCnt as hldCnt , a.mtrcd as mtrCd , b.prd_cd as prdCd , b.need_cnt*a.use_amt as needCnt 
+    select a.use_amt as useAmt,a.mtrlot as mtrLot , a.stckCnt as stckCnt , a.hldCnt as hldCnt , a.mtrcd as mtrCd , b.prd_cd as prdCd , (select prd_nm from adm_prd where prd_cd = b.prd_cd) as prd_nm , b.need_cnt*a.use_amt as needCnt 
     from (select a.prc_cd as prcCd,a.use_amt as use_amt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prd_cd
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
@@ -157,7 +157,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	select DISTINCT a.line_no
 	from fct_line a join fct_info b
 	on (a.line_no = b.line_no)
-	where fct_phs='N'
+	where fct_phs='비가동'
 	order by 1
 </select>
 

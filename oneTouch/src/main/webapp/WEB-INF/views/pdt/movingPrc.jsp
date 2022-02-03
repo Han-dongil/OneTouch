@@ -177,15 +177,19 @@
 	let v=[]; 
 	//무빙그리드 클릭 
 	movingGrid.on('click',ev=>{
-		if(movingGrid.getValue(ev.rowKey,'instrNo') != v[0]){
+		console.log(ev.rowKey)
+		console.log("뭐지?")
+		if(movingGrid.getValue(ev.rowKey,'mtrLot') != v[0]){
+			console.log("배열초기화")
 			v.length=0;
 		}
-		v.push(movingGrid.getValue(ev.rowKey,'instrNo'));
+		v.push(movingGrid.getValue(ev.rowKey,'mtrLot'));
 		console.log(v);
 		console.log(v.length);
 
 		
-		let searchData=movingGrid.getRow(ev.rowKey);		
+		let searchData=movingGrid.getRow(ev.rowKey);	
+		console.log(searchData)
 		 fetch('prcMovingNonRoop',{
 			method:'POST',
 			headers:{
@@ -197,7 +201,7 @@
 		.then(result=>{
 			movingPrcGrid.resetData(result);
 				console.log(v.length)
-				movingShowFnc(movingGrid.getValue(ev.rowKey,'instrNo'));
+				movingShowFnc(movingGrid.getRow(ev.rowKey));
 		}) 
 		
 		
@@ -215,10 +219,12 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			if(v[0]==ev|| v.length==1 ){
+			console.log(result)
+			if(v[0]==ev.mtrLot || v[0]!=v[1]){
+				console.log("if들어옴")
 				movingPrcGrid.resetData(result);
 				movingShowFnc(ev);
-			}
+			}else{v.length=1}
 			
 			
 			
