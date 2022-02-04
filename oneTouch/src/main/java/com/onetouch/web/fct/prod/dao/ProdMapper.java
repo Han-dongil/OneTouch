@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface ProdMapper {
 	
+	//차기점검일 조회
+	ProdVO selectchkExpectDt(ProdVO prodVO);
 	void insertProd(ProdVO prodVO);
 	void updateProd(ProdVO prodVO);
 	void deleteProd(ProdVO prodVO);

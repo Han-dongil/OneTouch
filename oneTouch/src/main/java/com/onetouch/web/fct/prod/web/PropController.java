@@ -21,18 +21,13 @@ public class PropController {
 	@Autowired ProdService prodservice;
 	
 	
-	/*
-	 * //모달창에서 점검대상 조회
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @PostMapping("prodChekList") public List<ProdVO> list(ProdVO prodVO){
-	 * 
-	 * List<ProdVO> list = new ArrayList<>(); list =
-	 * prodservice.prodCheckSelectList(prodVO);
-	 * System.out.println("점검대상 조회 컨트롤러 성공 "); System.out.println(list); return
-	 * list; }
-	 */
+	//차기점검일 조회
+	@ResponseBody
+	@PostMapping("/selectchkExpectDt")
+	public ProdVO selecteXPECTdT(@RequestBody ProdVO prodVO) {
+		System.out.println("차기점검일 컨트롤러 실행완료");
+		return prodservice.selectchkExpectDt(prodVO);
+	}
 	
 	//삭제, 수정, 등록처리 
 	@ResponseBody
@@ -69,10 +64,9 @@ public class PropController {
 		Map<String, Object> data = new HashMap<>();
 		data.put("result", true);
 		datas.put("contents", prodservice.prodSelect(prodVO));
-		System.out.println("datas 맵 출력");
-		System.out.println(datas);
-		System.out.println("data 맵 출력");
-		System.out.println(data);
+		System.out.println("prodVO chkDt 출력");
+		System.out.println(prodservice.prodSelect(prodVO));
+		
 		data.put("data", datas);
 		return data;
 	}

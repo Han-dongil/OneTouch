@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.onetouch.web.adm.bas.dao.BasDtlVO;
 import com.onetouch.web.adm.bas.dao.BasMapper;
@@ -42,6 +45,34 @@ public class InfoController {
 	@Autowired BasMapper basservice;
 	
 	
+	
+	//엑셀출력
+	@RequestMapping("/fctExcelView.do")
+	public ModelAndView excelView() throws IOException{
+		List<Map<String, Object>> list = infomapper.findFctList();
+		HashMap<String, Object> map = new HashMap<String, Object>(); 
+		
+		
+		
+		 //String[] header = ("설비회사","설비코드","성비 상태");
+		 //map.put("headers", header);
+		 
+		 
+		
+		map.put("filename", "excel_dept");
+		map.put("datas", list);
+		return new ModelAndView("excelView", map);
+	}
+	
+	//공정 시작 설비상태 가동으로 변경
+	@ResponseBody
+	@PostMapping("/updateStringFctPhs")
+	public List<InfoVO> changeStartFctPhs(@RequestBody InfoVO infoVO) {
+		infoservice.updateStartFctPhs();
+		 return infoservice.selectFctInfoAll(infoVO); 
+	}
+	
+	
 	//설비이름 조회
 	@ResponseBody
 	@PostMapping("/selectFctNm")
@@ -57,6 +88,8 @@ public class InfoController {
 	@ResponseBody
 	@GetMapping("/selectTodayDate")
 	public InfoVO selectTodaDate(){
+		System.out.println("날짜가져오는 메서드 ");
+		System.out.println(infoservice.todayDate());
 		return infoservice.todayDate();
 	}
 	//라인 수정

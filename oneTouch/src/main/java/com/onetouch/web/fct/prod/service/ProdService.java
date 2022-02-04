@@ -7,6 +7,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface ProdService {
 
+	ProdVO selectchkExpectDt(ProdVO prodVO);
 	void modify(ModifyVO<ProdVO> mvo);
 	List<ProdVO> prodSelect(ProdVO prodVSO);
 	List<ProdVO> prodCheckSelectList(ProdVO prodVO);

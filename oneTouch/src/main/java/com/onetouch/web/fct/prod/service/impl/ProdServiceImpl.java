@@ -50,4 +50,8 @@ public class ProdServiceImpl implements ProdService {
 		
 		}
 	}
+	@Override
+	public ProdVO selectchkExpectDt(ProdVO prodVO) {
+		return mapper.selectchkExpectDt(prodVO);
+	}
 }

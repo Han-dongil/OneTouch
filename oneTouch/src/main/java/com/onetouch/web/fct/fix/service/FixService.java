@@ -7,8 +7,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 
 public interface FixService {
 
-	
-	void prdPrcMngSelect();
+	void selectprdPrcMngSelect();
 	List<FixVO> fixSelectList(FixVO fixVO);
 	void modify(ModifyVO<FixVO> mvo);
 }

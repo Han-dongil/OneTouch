@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.fct.fix.dao.FixMapper">
 	
+	<!-- 수리완료 하면 설비 상태 대기로 변경 -->
+	<update id="updateChangeFctWait">
+		UPDATE FCT_INFO SET FCT_PHS = '대기' WHERE FCT_CD IN (select FCT_CD from fct_fix_mng WHERE FIX_CD = #{fixCd})
+	</update>
+	<!-- 수리요청할 때 설비 상태를 비동기으로 변경 -->
+	<update id="updateChangeFct">
+		update fct_info  set fct_phs = '비가동' where fct_cd = #{fctCd}
+	</update>
 	
 	<!-- 수리요청할 설비 조회 --> 
 	<select id="prdPrcMngSelect" resultType="com.onetouch.web.fct.fix.dao.FixVO">
@@ -10,7 +18,7 @@
 							(SELECT P.LINE_NO FROM PRD_PRC_MNG P
 							WHERE P.instr_no IN 
 								(SELECT M.instr_no from PRD_PRC_MNG M  where M.now_phs = '라인가동종료')
-								AND work_fin_dt in to_date(sysdate,'yy-MM-dd')-1
+								AND work_fin_dt > to_date(sysdate,'yy-MM-dd')-2
 		GROUP BY P.LINE_NO,P.INSTR_NO
 		HAVING sum(P.flt_cnt) >1)) M LEFT JOIN 
 								(SELECT FCT_CD FROM FCT_FIX_MNG WHERE req_dt > (sysdate -1) AND( FIX_PHS = '수리요청' or FIX_PHS = '수리중' or FIX_PHS = '수리완료') ) P 
@@ -59,6 +67,9 @@
 				str_dt = sysdate,
 			</if>
 			<if test='fixPhs.equals("수리완료")'>
+				cnt = #{cnt},
+				unit_cost = #{unitCost},
+				tot_cost = #{totCost},
 				str_dt = #{strDt},			
 				fin_dt = sysdate,
 				fix_cmt = #{fixCmt},

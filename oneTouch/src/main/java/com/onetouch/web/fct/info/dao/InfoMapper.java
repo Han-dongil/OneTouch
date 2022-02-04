@@ -1,12 +1,17 @@
 package com.onetouch.web.fct.info.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 
 public interface InfoMapper {
 
+	List<Map<String, Object>> findFctList();
+	//공정 시작할 때 설비 상태 가동 변경
+	int updateEndFctPhs();
+	int updateStartFctPhs();
 	//설비이름 조회 
 	InfoVO selectFctNm(InfoVO infoVO);
 	//현재 날자 조회
