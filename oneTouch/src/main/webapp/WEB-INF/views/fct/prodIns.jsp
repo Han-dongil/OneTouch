@@ -29,9 +29,6 @@
 <script src="${path}/resources/js/grid-common.js"></script>
 
 <style type="text/css">
-/* .red{background-color: red}
-.blue{background-color: skyblue}
-.green{background-color: green} */
 .red{background-color: #F3797E}
 .blue{background-color: #7DA0FA}
 .green{background-color: #36b9ad}
@@ -74,12 +71,12 @@
 							
 							<span>
 								<label class="form-check-label colline2">설비구분</label>
-								<select id="checkPrcCd" name="checkPrcCd" class="selectoption"></select>
+								<select id="fctCd" name="fctCd" class="selectoption"></select>
 							</span>
 							
 							<span class="floatright">
 								<button type="button" id="resetBtn" class="btn btn-main newalign">초기화</button>
-								<button type="button" id="searcnBtn" class="btn btn-primary newalign" onclick="checkSeach(event)">조회</button>
+								<button type="button" id="btnFind" class="btn btn-primary newalign">조회</button>
 								
 							</span>
 						</div>
@@ -89,7 +86,7 @@
 		</div>
 	</div>
 	<span class="floatright">
-		<button type="prodChekCompleteBtn" id="btnAdd" class="btn btn-primary newalign2">점검완료등록</button>
+		<button type="button" id="prodChekCompleteBtn" class="btn btn-primary newalign2">점검완료등록</button>
 		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
 		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
@@ -100,40 +97,6 @@
 	<div id="grid"></div>
 </div>
 
-
-
-<!-- <div>
-	<div style="margin-top: 10px; border-top: 2px solid black; border-bottom: 2px solid black; padding: 5px;">
-		<form id="fixFrm" method="post">
-		<span style="margin-left: 100px;">
-			<label>해당일자</label>
-			<input type="Date" id="fixFrom" name="fixFrom"> 
-			<label> ~ </label> 
-			<input type="Date" id="fixTo" name="fixTo">
-		
-		
-			<label>설비구분</label>
-			<select id="fctCd" name="fctCd"></select>
-		
-	</form>
-		<button type="button" id='btnFind'>조회</button>
-		<button type="button" id='btnAdd'>추가</button>
-		<button	type="button" id='btnDel'>삭제</button>
-		<button type="button" id='btnSave'>저장</button>
-		</span>
-		</div>
-		<div>
-		<button style="background: #4b49ac; width: 150px;color: white; height: 80px; "  type="button" id='prodChekCompleteBtn'>
-			점검완료등록
-		</button>
-	</div>
-	
-	
-	
-</div>
-	<div id="dialog-form" title="점검대상">점검대상 목록</div>
-	<div id="grid"></div>
-	 -->
 	
 <script>
 
@@ -144,7 +107,6 @@
 	let dialog;
 	let checkedRowdata;	//체크 행의 데이터를 저장하는 변수
 	
-	//disabled에 대한 속성 값 추가 
 	/* Grid.applyTheme('clean',{	
         cell: {
             header: {
@@ -156,7 +118,7 @@
           }
      	}) ;  */
 	
-	 dialog = $( "#dialog-form" ).dialog({ //<div id="dialog-form" title="title"></div> 같이 가져갈 것  //(이미 있다면 let선언 빼주거나 아니면 dialog 이름 바꿔서 사용)
+	 dialog = $( "#dialog-form" ).dialog({
 		autoOpen : false,
 		modal : true,
 		resizable: true,
@@ -164,8 +126,6 @@
 		width: 1300, //530,  제품모달은 사이즈 530정도로~~
 		modal: true,
 		buttons:{"불러오기":function(){ 
-			console.log('55555555555555555555555555S')
-			console.log(checkedRowdata)
 			var temp = [];
 			for(i=0; i<checkedRowdata.length; i++){
 				temp.push({chkDt:''
