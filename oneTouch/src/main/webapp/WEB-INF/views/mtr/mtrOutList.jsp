@@ -23,12 +23,111 @@
 <script src="${path}/resources/js/toastr-options.js"></script>
 </head>
 <style type="text/css">
-	.tui-grid-cell-summary{
-		text-align: right;
-	}
+.tui-grid-cell-summary{
+	text-align: right;
+}
+.labeltext{
+width: 100px !important;
+}
+.colline2{
+	margin-left: 60px;
+	width: 100px !important;
+}
+.bascard1{
+	height:210px;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+hr{
+	margin-top: -20px;
+}
 </style>
 <body>
-	<div class="container">
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">자재출고조회</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+			<div class="card bascard1">
+				<div class="card-body">
+					<!-- <h4 class="card-title">조회조건</h4> -->
+					<form id="frm" method="post">
+						<div class="rowdiv">
+							<label class="labeltext">해당일자</label>
+							<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+							<label> ~ </label> 
+							<input type="Date" id="endDate" name="endDate" class="datepicker">
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">공정코드</label>
+							<input id="prcCd" name="prcCd" class="inputtext" readonly>
+							<button type="button" id="btnPrcCd" class="btn btn-primary mr-2 minibtn" onclick="inComList()"><i class="icon-search"></i></button>
+							<label class="labeltext colline2">출고공정명</label>
+							<input id="prcNm" name="prcNm" class="inputtext" readonly>
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재코드</label>
+							<input type="text" id="ditemCode" name="ditemCode" class="inputtext" readonly>
+							<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+							<label class="labeltext colline2">자재명</label>
+							<input type="text" id="ditemCodeNm" name="ditemCodeNm" class="inputtext" readonly>
+						</div>
+						
+						<label class="labeltext">자재구분</label>
+						<div class="form-check" style="display:inline-block">
+							<label class="form-check-label schCondLabel" for="request">
+						  		<input type="radio" class="form-check-input" id="mtrRadio" name="mtrSect" value="" checked>
+						  		전체&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="input-helper"></i>
+							</label>
+						</div>
+						                
+						<div class="form-check" style="display:inline-block">
+							<label class="form-check-label schCondLabel" for="fixing">
+						  		<input type="radio" class="form-check-input" id="mtrRadio" name="mtrSect" value="MTR_SECT001">
+						  		원자재&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="input-helper"></i>
+							</label>
+						</div>
+						                
+						<div class="form-check" style="display:inline-block">
+						    <label class="form-check-label schCondLabel" for="completed">
+						  		<input type="radio" class="form-check-input" id="semiRadio" name="mtrSect" value="MTR_SECT002">
+						  		반제품&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="input-helper"></i>
+							</label>
+						</div>
+						
+						<span>
+							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+						</span>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<hr>
+	<div id="grid"></div>
+	<div id="dialog-form"></div>
+</div>
+	
+
+
+
+	<!-- <div class="container">
 		<h3>자재출고 조회</h3>
 		<hr>
 		<form id="frm" method="post">
@@ -70,7 +169,7 @@
 		<hr>
 	</div>
 <div id="grid"></div>
-<div id="dialog-form"></div>
+<div id="dialog-form"></div> -->
 
 <script type="text/javascript">
 //---------포맷에 맞게 날짜 구하는 function---------
@@ -113,7 +212,8 @@ var mainGrid = new Grid({
      data : dataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 400,
+     bodyHeight: 404,
+     minBodyHeight: 404,
      columns : [
 				{
 				   header: '출고번호',
