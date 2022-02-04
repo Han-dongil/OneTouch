@@ -16,18 +16,21 @@ public class StsServiceImpl implements StsService{
 	
 	//자재입고
 	@Override
-	public List<StsVO> mtrInDate() {
-		return mapper.mtrInDate();
-	}
+	public List<StsVO> mtrInDate(StsVO stsvo) {  return mapper.mtrInDate(stsvo);  }
 
 	@Override
-	public List<StsVO> mtrInMonth() {
-		return mapper.mtrInMonth();
-	}
+	public List<StsVO> mtrInMonth(StsVO stsvo) {  return mapper.mtrInMonth(stsvo);  }
 
 	@Override
-	public List<StsVO> mtrInMtr() {
-		return mapper.mtrInMtr();
-	}
+	public List<StsVO> mtrInYear(StsVO stsvo) {  return mapper.mtrInYear(stsvo);  }
+
+	@Override
+	public List<StsVO> mtrInMtrD(StsVO stsvo) {  return mapper.mtrInMtrD(stsvo);  }
+
+	@Override
+	public List<StsVO> mtrInMtrM(StsVO stsvo) {  return mapper.mtrInMtrM(stsvo);  }
+
+	@Override
+	public List<StsVO> mtrInMtrY(StsVO stsvo) {  return mapper.mtrInMtrY(stsvo);  }
 
 }
