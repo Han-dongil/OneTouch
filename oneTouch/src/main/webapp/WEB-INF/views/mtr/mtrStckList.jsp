@@ -24,15 +24,120 @@
 
 </head>
 <style type="text/css">
-	.tui-grid-cell-summary{
-		text-align: right;
-	}
-	/* 안전재고수량경고 */
-	.warning{background-color: orangered}
-	.caution{background-color: gold}
+.tui-grid-cell-summary{
+	text-align: right;
+}
+.labeltext{
+width: 100px !important;
+}
+.colline2{
+	margin-left: 60px;
+	width: 100px !important;
+}
+.bascard1{
+	height:164px;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+hr{
+	margin-top: -20px;
+}
+.checkwidth{
+	width:110px;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #3b3a88 !important;
+    background: #4B49AC !important;
+    font-weight: normal;
+    color: #ffffff;
+}
+/* 안전재고수량경고 */
+.warning{background-color: orangered}
+.caution{background-color: gold}
 </style>
 <body>
-	<div class="container">
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">재고조정조회</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+			<div class="card bascard1">
+				<div class="card-body">
+					<!-- <h4 class="card-title">조회조건</h4> -->
+					<form id="frm" method="post">
+						<div class="rowdiv">
+							<label class="labeltext">입고일자</label>
+							<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+							<label> ~ </label> 
+							<input type="Date" id="endDate" name="endDate" class="datepicker">
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재코드</label>
+							<input type="text" id="ditemCode" name="ditemCode" class="inputtext" readonly>
+							<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+							<label class="labeltext colline2">자재명</label>
+							<input type="text" id="ditemCodeNm" name="ditemCodeNm" class="inputtext" readonly>
+						</div>
+						
+						<div id="mtrRadio" style="display:inline-block">
+							<label class="labeltext">자재구분</label>
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="allRadio">
+							  		<input type="radio" class="form-check-input" id="allRadio" name="mtrSect" value="" checked>
+							  		전체
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<!-- <div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="lotRadio">
+							  		<input type="radio" class="form-check-input" id="lotRadio" name="mtrSect" value="MTR_SECT001">
+							  		원자재
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check checkwidth" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="semiRadio">
+							  		<input type="radio" class="form-check-input" id="semiRadio" name="mtrSect" value="MTR_SECT002">
+							  		반제품
+									<i class="input-helper"></i>
+								</label>
+							</div> -->
+						</div>
+						
+						<span>
+							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+						</span>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="tabs">
+		<ul>
+		  <li><a href="#lotTab">Lot별</a></li>
+		  <li><a href="#mtrTab">자재별</a></li>
+		</ul>
+		<div id="lotTab"></div>
+		<div id="mtrTab"></div>
+	</div>
+	<div id="dialog-form">
+</div>
+
+	<!-- <div class="container">
 		<h3>자재재고 조회</h3>
 		<hr>
 		<form id="frm" method="post">
@@ -54,10 +159,10 @@
 					<label>자재구분</label>
 					<input type="radio" id="allRadio" name="mtrSect" value="" checked>
 					<label for="allRadio">전체</label>
-					<!-- <input type="radio" id="lotRadio" name="mtrSect" value="MTR_SECT001">
+					<input type="radio" id="lotRadio" name="mtrSect" value="MTR_SECT001">
 					<label for="lotRadio">원자재</label>
 					<input type="radio" id="mtrRadio" name="mtrSect" value="MTR_SECT002">
-					<label for="mtrRadio">반제품</label> -->
+					<label for="mtrRadio">반제품</label>
 				</div>
 			</div>
 		</form>
@@ -74,7 +179,7 @@
 		<div id="lotTab"></div>
 		<div id="mtrTab"></div>
 	</div>
-<div id="dialog-form"></div>
+<div id="dialog-form"></div> -->
 
 <script type="text/javascript">
 //---------포맷에 맞게 날짜 구하는 function---------
@@ -104,23 +209,46 @@ document.getElementById('endDate').value = today();
 
 
 //---------DB의 데이터로 자재구분 radio만드는 기능---------
-fetch('mtrStckRadio')
+
+/* fetch('mtrStckRadio')
+.then(response=>response.json())
+.then(result=>{
+   let div = document.getElementById("mtrRadio");
+   for(let i = 0; i < result.length; i++){
+      let input = document.createElement("input");
+      let label = document.createElement("label");
+      input.type = "radio";
+      input.name = "mtrSect";
+      input.id = result[i].dtlCd;
+      input.value = result[i].dtlCd;
+      label.setAttribute("for",result[i].dtlCd);
+      label.innerText = result[i].dtlCmt;
+      div.appendChild(input);
+      div.appendChild(label);
+   }
+});  */
+
+ fetch('mtrStckRadio')
 .then(response=>response.json())
 .then(result=>{
 	let div = document.getElementById("mtrRadio");
+	let indiv = div.innerHTML;
 	for(let i = 0; i < result.length; i++){
-		let input = document.createElement("input");
-		let label = document.createElement("label");
-		input.type = "radio";
-		input.name = "mtrSect";
-		input.id = result[i].dtlCd;
-		input.value = result[i].dtlCd;
-		label.setAttribute("for",result[i].dtlCd);
-		label.innerText = result[i].dtlCmt;
-		div.appendChild(input);
-		div.appendChild(label);
+		
+		indiv += ' <div class="form-check checkwidth" style="display:inline-block"> ';
+		indiv += ' <label class="form-check-label schCondLabel" for="' + result[i].dtlCd + '"> ';
+		indiv += ' <input type="radio" class="form-check-input" id="' + result[i].dtlCd + '" name="mtrSect" value="' + result[i].dtlCd + '"> ';
+		indiv += result[i].dtlNm;
+		indiv += ' <i class="input-helper"></i> '
+		indiv += ' </label> '
+		indiv += ' </div> '
+		
 	}
-});
+	console.log(indiv);
+	
+	div.innerHTML = indiv;
+}); 
+
 //---------DB의 데이터로 자재구분 radio만드는 기능 끝---------
 
 
@@ -210,7 +338,8 @@ var lotGrid = new Grid({
      data : lotDataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 400,
+     bodyHeight: 369,
+     minBodyHeight: 369,
      columns : lotColumns,
 				summary : {
 					height: 40,
@@ -322,7 +451,8 @@ var mtrGrid = new Grid({
      data : mtrDataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 400,
+     bodyHeight: 369,
+     minBodyHeight: 369,
      columns : mtrColumns,
 				summary : {
 					height: 40,

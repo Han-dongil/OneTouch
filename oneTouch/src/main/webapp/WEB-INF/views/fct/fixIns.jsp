@@ -21,6 +21,9 @@
 	margin-left: 100px;
 	width: 90px !important;
 }
+.checkwidth{
+	width:110px;
+}
 </style>
 </head>
 <body>
@@ -43,26 +46,26 @@
 					
 					<form id="fixFrm" method="post">
 						<!-- <div class="form-group"> -->
-							<div class="form-check" style="display:inline-block">
-								<label class="form-check-label schCondLabel" for="request">
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="requestRio">
 							  		<input type="radio" class="form-check-input" id="requestRio" name="fixPhs" value="수리요청" checked>
-							  		수리요청&nbsp;&nbsp;&nbsp;&nbsp;
+							  		수리요청
 									<i class="input-helper"></i>
 								</label>
 							</div>
 							                
-							<div class="form-check" style="display:inline-block">
-								<label class="form-check-label schCondLabel" for="fixing">
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="fixingRio">
 							  		<input type="radio" class="form-check-input" id="fixingRio" name="fixPhs" value="수리중">
-							  		수리중&nbsp;&nbsp;&nbsp;&nbsp;
+							  		수리중
 									<i class="input-helper"></i>
 								</label>
 							</div>
 							                
-							<div class="form-check" style="display:inline-block">
-							    <label class="form-check-label schCondLabel" for="completed">
+							<div class="form-check checkwidth" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="completedRio">
 							  		<input type="radio" class="form-check-input" id="completedRio" name="fixPhs" value="수리완료">
-							  		수리완료&nbsp;&nbsp;&nbsp;&nbsp;
+							  		수리완료
 									<i class="input-helper"></i>
 								</label>
 							</div>

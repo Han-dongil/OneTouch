@@ -42,6 +42,9 @@ width: 100px !important;
 hr{
 	margin-top: -20px;
 }
+.checkwidth{
+	width:110px;
+}
 </style>
 <body>
 
@@ -86,26 +89,26 @@ hr{
 						</div>
 						
 						<label class="labeltext">자재구분</label>
-						<div class="form-check" style="display:inline-block">
-							<label class="form-check-label schCondLabel" for="request">
-						  		<input type="radio" class="form-check-input" id="mtrRadio" name="mtrSect" value="" checked>
-						  		전체&nbsp;&nbsp;&nbsp;&nbsp;
+						<div class="form-check checkwidth" style="display:inline-block">
+							<label class="form-check-label schCondLabel" for="AllRadio">
+						  		<input type="radio" class="form-check-input" id="AllRadio" name="mtrSect" value="" checked>
+						  		전체
 								<i class="input-helper"></i>
 							</label>
 						</div>
 						                
-						<div class="form-check" style="display:inline-block">
-							<label class="form-check-label schCondLabel" for="fixing">
+						<div class="form-check checkwidth" style="display:inline-block">
+							<label class="form-check-label schCondLabel" for="mtrRadio">
 						  		<input type="radio" class="form-check-input" id="mtrRadio" name="mtrSect" value="MTR_SECT001">
-						  		원자재&nbsp;&nbsp;&nbsp;&nbsp;
+						  		원자재
 								<i class="input-helper"></i>
 							</label>
 						</div>
 						                
-						<div class="form-check" style="display:inline-block">
-						    <label class="form-check-label schCondLabel" for="completed">
+						<div class="form-check checkwidth" style="display:inline-block">
+						    <label class="form-check-label schCondLabel" for="semiRadio">
 						  		<input type="radio" class="form-check-input" id="semiRadio" name="mtrSect" value="MTR_SECT002">
-						  		반제품&nbsp;&nbsp;&nbsp;&nbsp;
+						  		반제품
 								<i class="input-helper"></i>
 							</label>
 						</div>
