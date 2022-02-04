@@ -284,8 +284,8 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          /* rowHeaders : [ 'checkbox' ], */
-         bodyHeight: 464,
-         minBodyHeight: 464,
+         bodyHeight: 472,
+         minBodyHeight: 472,
          columns
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {
