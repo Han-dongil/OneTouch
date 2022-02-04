@@ -57,7 +57,7 @@ select {
 	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
-	<button id="delBtn">체크삭제</button>
+	<button id="delBtn">초기화</button>
 	<!-- 	<input id="txtCo"> -->
 	<button id="btnFindCo">주문서조회</button>
 	<button id="safeStckBtn">안전재고 생산계획</button>
@@ -65,16 +65,25 @@ select {
 	<div id="safe-dialog-form" title="안전재고 생산계획">안전재고 계획등록</div>
 	<div class="row">
 		<div id="grid" class="col-12"></div>
-		<div id="insertDtlGrid" class="col-5" style="display:none"></div>
+		<br/>
 	</div>
-	<button id="planGriaAddRow" name="planGriaAddRow">행추가</button>
-	<button id="LotAddRow" name="LotAddRow">자재등록</button>
-	<div id='planGrid'></div>
-	<select id="prcSelect" name="prcSelect">
+	<div class="row">
+		<div id='planGrid' class="col-8"></div>
+		<div id="insertDtlGrid" class="col-4" style="display:block"></div>
+	<br/>
+	</div>
+	<br/>
+		<button id="planGriaAddRow" name="planGriaAddRow">행추가</button> 
+	<br/>
+	<div class="row">
+		<div id="lotDiv" style="display:block" class="col-8"></div>
+		<div id='hidden' class="col-4" style="display:block"></div>
+	</div>
+	<br/>
+		<select id="prcSelect" name="prcSelect">
+	<br/>
 		
 	</select>
-	<div id="lotDiv" style="display:none"></div>
-	<div id='hidden' style="display:none"></div>
 	<script>
 	///////////////////////////////////////////////////////////////////////////////////
 	  class abc{
@@ -482,7 +491,7 @@ class lineEditor{
 		},{
 			header : '계획번호',
 			name : 'planNo',
-			hidden:true
+			hidden:false
 		}];
   	insertDtlGrid= new Grid({
 		el: document.getElementById('insertDtlGrid'),
@@ -590,14 +599,14 @@ class lineEditor{
 		},{
 			header : '사용가능수량',
 			name : 'realCnt',
-			editor : 'text'
+			hidden:true
 		},{
 			header : '출고수량',
 			name : 'hldCnt',
-			editor : 'text'
 		},{
 			header : '사용량',
 			name : 'useAmt',
+			hidden:true
 		},{
 			header : '계획번호',
 			name : 'planNo',
@@ -605,11 +614,11 @@ class lineEditor{
 		},{
 			header : '라인번호',
 			name : 'lineNo',
-			hidden:false
+			hidden:true
 		},{
 			header : '공정코드',
 			name : 'prcCd',
-			hidden:false
+			hidden:true
 		}],
 	});  
 
@@ -937,10 +946,11 @@ class lineEditor{
 				.then(result=>{
 					
 				})
-				grid.resetData([{}]);
-				planGrid.resetData([{}]);
-				insertDtlGrid.resetData([{}]);
-				lotGrid.resetData([{}]);
+				grid.clear();
+				planGrid.clear();
+				insertDtlGrid.clear();
+				lotGrid.clear();
+				insertDtlGrid.clear();
 				disabledDays.length=0;
 			}
 		})
@@ -952,7 +962,11 @@ class lineEditor{
 	})
 	
  	delBtn.addEventListener("click",function(){
-		grid.removeCheckedRows(true);
+		grid.clear()
+		planGrid.clear()
+		lotGrid.clear()
+		hiddenGrid.clear()
+		insertDtlGrid.clear()
 	}) 
 	
  	grid.on("response",function(ev){
@@ -1183,6 +1197,16 @@ function needOrdCd(){
 				insertPrcCd=planGrid.getValue(ev.rowKey,'prcCd');
 				inserMtrLot=ev.rowKey;
 			})
+		let createDate=planGrid.getModifiedRows().createdRows;		
+		let updateData=planGrid.getModifiedRows().updatedRows;
+		for(obj of createDate){
+			obj.prcCd=ev.target.value;
+		}	
+		for(obj of updateData){
+			obj.prcCd=ev.target.value;
+		}	
+		insertDtlGrid.appendRows(createDate);
+		insertDtlGrid.appendRows(updateData);
 	})
 	
 	
@@ -1199,9 +1223,9 @@ function needOrdCd(){
 
 //plan 그리드 행추가
 	planGriaAddRow.addEventListener('click',ev=>{
-		document.getElementById('lotDiv').style='display:none';
+		//document.getElementById('lotDiv').style='display:none';
 		planGrid.appendRow([{}]);
-		planGrid.setValue(planGrid.getData()[planGrid.getRowCount()-1].rowKey,'planNo',grid.getCheckedRows()[0].planNo);
+		planGrid.setValue(planGrid.getData()[planGrid.getRowCount()-1].rowKey,'planNo',grid.getData()[0].planNo);
 		fetch('prdCdFind')
 		.then(response=>response.json())
 		.then(result=>{
@@ -1215,7 +1239,7 @@ function needOrdCd(){
 		})
 	})
 //자재등록
-	LotAddRow.addEventListener('click',ev=>{
+	/* LotAddRow.addEventListener('click',ev=>{
 		let modiData = lotGrid.getModifiedRows().updatedRows;
 		let modiList=[];
 		let prcSelect=document.getElementById('prcSelect');
@@ -1233,6 +1257,23 @@ function needOrdCd(){
 		hiddenGrid.appendRows(modiList);
 		document.getElementById('hidden');
 		
+	}) */
+	lotGrid.on('check',ev=>{
+		let modiData = lotGrid.getModifiedRows().updatedRows;
+		let modiList=[];
+		let prcSelect=document.getElementById('prcSelect');
+		
+		for(obj of modiData){
+			obj.planNo=grid.getData()[0].planNo;
+			obj.lineNo=insertLineNo;
+			obj.prcCd=prcSelect.value;
+			console.log(obj);
+			modiList.push(obj);
+		}
+		let lotData1=lotGrid.getModifiedRows().updatedRows[0];
+		lotData1.planNo=grid.getData()[0].planNo;
+		lotData1.lineNo=planGrid.getData()[0].lineNo;
+		hiddenGrid.appendRows([lotData1]);
 	})
 	
 	</script>

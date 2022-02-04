@@ -401,6 +401,8 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
+			console.log("ddd")
+			console.log(result);
 			if(result.sumFlt!=result.goalCnt){
 				hiddenGrid.setValue(0,'sumFlt',result.sumFlt*1);
 				hiddenGrid.setValue(0,'pdtCnt',result.pdtCnt*1);
@@ -486,15 +488,33 @@
 		})
 	})
 	mainGrid.on("click",ev=>{
-		hiddenGrid.resetData([{}])
-		hiddenGrid.setValue(0,'fltCnt',0);
 		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
-		hiddenGrid.setValue(0,'pdtCnt',0)
+		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
+		//hiddenGrid.setValue(0,'pdtCnt',0)
 		hiddenGrid.setValue(0,'lineNo',document.getElementById('lineNo').value)
 		hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
 		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
-		
 		mainGrid.getRow(ev.rowKey)
+		fetch('selectPrcReal',{
+			method:'POST',
+			headers:{
+				"Content-Type": "application/json",
+			},
+			body:JSON.stringify(hiddenGrid.getData())
+		})
+		.then(response=>response.json())
+		.then(result=>{
+			console.log()
+			hiddenGrid.resetData(result)
+		})
+		//hiddenGrid.resetData([{}])
+		//hiddenGrid.setValue(0,'fltCnt',0);
+		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
+		//hiddenGrid.setValue(0,'pdtCnt',0)
+		hiddenGrid.setValue(0,'lineNo',document.getElementById('lineNo').value)
+		hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
+		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
+		fltCheck();
 	})
 	//불량+버튼
 	fltAdd.addEventListener('click',ev=>{

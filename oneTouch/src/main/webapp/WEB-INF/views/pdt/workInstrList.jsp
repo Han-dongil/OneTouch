@@ -674,12 +674,12 @@ class abc{
 				},
 				body:JSON.stringify(a)
 			})
-			mainGrid.resetData([{}]);
-			modalGrid.resetData([{}]);
-			prcGrid.resetData([{}]);
-			hiddenModalGrid.resetData([{}]);
-			hiddenMainGrid.resetData([{}]);
-			hiddenGrid.resetData([{}]);
+			mainGrid.resetData();
+			modalGrid.resetData();
+			prcGrid.resetData();
+			hiddenModalGrid.resetData();
+			hiddenMainGrid.resetData();
+			hiddenGrid.resetData();
 		})
 		
 		//////////////////////////////////////이벤트/////////////////////////////////////////

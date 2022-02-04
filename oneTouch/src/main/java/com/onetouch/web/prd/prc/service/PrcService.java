@@ -15,4 +15,5 @@ public interface PrcService {
 	void fastStop(PrcVO vo);
 	List<PrcVO> prcMovingView(PrcVO vo);
 	List<PrcVO> movingSearchList(PrcVO vo);
+	List<List<PrcVO>> dashBoardData();
 }
