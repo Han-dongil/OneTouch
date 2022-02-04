@@ -26,6 +26,7 @@ public class PrcMovingController {
 	public String pdtListPage() {
 		return "tiles/pdt/movingPrc";
 	}
+
 	@RequestMapping("test")
 	public String test() {
 		return "tiles/pdt/test";

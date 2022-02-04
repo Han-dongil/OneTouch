@@ -104,7 +104,8 @@
 					 WHERE instr_no=#{instrNo}   and line_no=#{lineNo}  and prc_cd=#{prcCd}),#{pdtCnt})
 	</insert>
 	<insert id="hrdInsert">
-		insert into mtr_lot_stck (MTR_LOT,MTR_CD,STCK_CNT) values(PKG_MAKE_CODE.CODE('HRD','MTR_LOT_STCK','MTR_LOT'),#{prdCd},#{pdtCnt})
+		insert into mtr_lot_stck (MTR_LOT,MTR_CD,STCK_CNT,HLD_CNT) values(PKG_MAKE_CODE.CODE('HRD','MTR_LOT_STCK','MTR_LOT'),(select prd_Cd from pdt_work_instr_dtl
+					 WHERE instr_no=#{instrNo} and line_no=#{lineNo}  and prc_cd=#{prcCd}),#{pdtCnt},0)
 	</insert>
 	<update id="updateFlt"><!--생산량 , 불량량  -->
 		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
@@ -213,4 +214,26 @@
 	<update id="autoUpdate">
 		update prd_prc_mng set pdt_cnt=#{pdtCnt} where instr_no = #{instrNo} and prc_cd=#{prcCd}
 	</update>	
+	
+	
+	<select id="playStartInstr" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select distinct instr_no
+		from prd_prc_mng
+		where to_date(work_str_dt,'yyyy-MM-dd') = to_date(sysdate,'yyyy-MM-dd')
+	</select>
+	
+	<select id="liveInstr" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select a.prc_seq,b.line_no , a.prc_cd , b.goal_cnt , b.pdt_cnt , nvl(b.flt_cnt,0) as fltCnt , b.now_phs
+		from(select prc_seq , prc_cd
+		        from adm_prc_flow
+		        where prd_Cd = (select distinct prd_cd
+		                        from pdt_work_instr_dtl
+		                        where instr_no=#{instrNo} ) ) a join (select *
+		                                                            from prd_prc_mng
+		                                                            where to_date(work_str_dt,'yyyy-MM-dd') = to_date(sysdate,'yyyy-MM-dd')
+		                                                            and instr_no=#{instrNo}) b
+		on a.prc_cd=b.prc_cd
+		order by 1
+		
+	</select>
 </mapper>

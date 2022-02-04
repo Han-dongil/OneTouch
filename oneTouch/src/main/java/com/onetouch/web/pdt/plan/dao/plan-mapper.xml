@@ -85,7 +85,7 @@ select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc
             on(a.prd_cd= b.prd_cd) 
 </select>	
  <select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,(b.stck_cnt-b.hld_cnt) as realCnt,b.hld_cnt as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
+select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,(b.stck_cnt-b.hld_cnt) as realCnt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 

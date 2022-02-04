@@ -39,4 +39,6 @@ public interface PrcMapper {
 	List<PrcVO> autoSelect();
 	int uphFind(PrcVO vo);
 	void autoUpdate(PrcVO vo);
+	List<PrcVO> playStartInstr();
+	List<PrcVO> liveInstr(PrcVO vo);
 }
