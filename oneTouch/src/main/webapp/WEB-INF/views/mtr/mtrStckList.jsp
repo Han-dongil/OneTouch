@@ -28,8 +28,8 @@
 		text-align: right;
 	}
 	/* 안전재고수량경고 */
-	.warning{background-color: #F44336}
-	.caution{background-color: #FF9800}
+	.warning{background-color: orangered}
+	.caution{background-color: gold}
 </style>
 <body>
 	<div class="container">
