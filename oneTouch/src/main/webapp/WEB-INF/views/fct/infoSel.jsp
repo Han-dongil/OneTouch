@@ -26,6 +26,9 @@
 	margin-left: 100px;
 	width: 90px !important;
 }
+.bascard1{
+	height:116px;
+}
 </style>
 </head>
 <body>
@@ -43,7 +46,7 @@
 	
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card">
-			<div class="card">
+			<div class="card bascard1">
 				<div class="card-body">
 					<h4 class="card-title">설비정보</h4>
 					<form id="frm" method="post">

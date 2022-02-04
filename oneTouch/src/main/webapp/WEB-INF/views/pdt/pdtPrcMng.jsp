@@ -173,6 +173,13 @@
 .show > .btn-sub.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgb(165, 189, 252, 0.5);
 }
+.bascard1{
+	height:150px;
+}
+.bascard2{
+	height:420px;
+	margin-bottom: 12px;
+}
 
 /*style에 추가했는데 안 먹혀서 잠시 여기에 있는 것 end*/
 </style>
@@ -190,8 +197,8 @@
 	</div>
 	
 	<div class="row">
-		<div class = "col-5">
-			<div class="card">
+		<div class = "col-4">
+			<div class="card bascard1">
 				<div class="card-body">
 					<h4 class="card-title kioskcardtitle">작업지시 공정라인</h4>
 					<span style="padding-top: 10px;">
@@ -206,11 +213,11 @@
 				</div>
 			</div><br>
 			<div id="prcListGrid"></div>
-			
 		</div>
-		<div class = "col-7">
-			<div class="card">
-				<div class="card-body" style="height: 451px;">
+		
+		<div class = "col-8">
+			<div class="card bascard2">
+				<div class="card-body">
 					<h4 class="card-title kioskcardtitle">공정 가동관리</h4>
 					<!-- <span style="padding-top: 10px;"> -->
 						<div style="vertical-align: center">
@@ -235,7 +242,8 @@
 				</div>
 			</div>
 		</div>
-	</div><br><br>
+	</div>
+	<br>
 	<div id="hiddenGrid"></div>
 
 </div>
@@ -326,8 +334,8 @@
 			  frozenCount :10,
 			  frozenBorderWidth:2
 		  },
-		  bodyHeight: 235,
-		  minBodyHeight: 235
+		  bodyHeight: 208,
+		  minBodyHeight: 208
 	});
 	//main그리드 데이터 
 	function prcGridData(prcVO){
@@ -386,8 +394,8 @@
 			  frozenCount :10,
 			  frozenBorderWidth:2
 		  },
-		  bodyHeight: 235,
-		  minBodyHeight: 235
+		  bodyHeight: 251,
+		  minBodyHeight: 251
 	});
 ///////////////////////////////////////////이벤트리스너///////////////////////////////////////
 	//라인불량 동기화
