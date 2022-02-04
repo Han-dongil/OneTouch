@@ -32,6 +32,13 @@ public class FixServiceImpl implements FixService {
 		}
 		if(mvo.getUpdatedRows() != null) {
 			for(FixVO fixVO : mvo.getUpdatedRows()) {
+				System.out.println("수리완료 할때 이벤트 조회 하기 ");
+				System.out.println(fixVO.getFixPhs());
+				if(fixVO.getFixPhs().equals("수리완료")) {
+					System.out.println("수리완료 성공 수리코드 출력하기");
+					System.out.println(fixVO.getFixCd());
+					fmapper.updateChangeFctWait(fixVO);
+				}
 				fmapper.updateFtc(fixVO);
 			};
 		}
@@ -44,15 +51,19 @@ public class FixServiceImpl implements FixService {
 
 	//생산공정관리 테이블에 수리요청 설비 조회 
 	@Scheduled(fixedDelay = 10000) //10초마다 실행 (실행시간 별도)
-	public void prdPrcMngSelect() {
-		
+	public void selectprdPrcMngSelect() {
+		System.out.println("수리요청");
 		for(FixVO fixVO : fmapper.prdPrcMngSelect()) {
-			System.out.println("수리요청");
-			System.out.println(fixVO.getFctCd());
 			fmapper.insertRequestFixFtc(fixVO);
+			System.out.println("설비 비동기 상태 바꿔주기 ");
+			System.out.println(fixVO.getFctCd());
+			System.out.println(fmapper.updateChangeFct(fixVO));
 		}
 		
 	}
+
+
+	
 
 
 		

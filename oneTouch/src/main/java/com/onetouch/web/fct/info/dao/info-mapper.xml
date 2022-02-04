@@ -4,6 +4,25 @@
 <!-- 작성자 : 박종현 -->
 
 
+<select id="findFctList" resultType="map">
+	select * from fct_info order by fct_cd
+</select>
+<!-- 라인이 종료 될때 설비상태를 대기로 변경 스케줄러로 항상 변경 -->
+<update id="updateEndFctPhs">
+	UPDATE fct_info SET fct_phs = '대기' 
+	WHERE line_no IN (select line_no from prd_prc_mng where instr_no in  (SELECT M.instr_no from PRD_PRC_MNG M  where M.now_phs = '라인가동종료'
+								AND work_fin_dt > to_date(sysdate,'yy-MM-dd')-2)) 
+                                AND prc_cd IN (SELECT prc_cd from prd_prc_mng WHERE instr_no IN  (SELECT M.instr_no from PRD_PRC_MNG M  where M.now_phs = '라인가동종료'
+								AND work_fin_dt > to_date(sysdate,'yy-MM-dd')-2))
+</update>
+<!-- 공정이 시작될때 설비상태 가동으로 변경 스케줄러로 항상 변경 -->
+<update id="updateStartFctPhs">
+	UPDATE fct_info SET fct_phs = '가동' 
+	WHERE line_no IN (select line_no from prd_prc_mng where work_str_dt is not null and work_fin_dt is null) 
+	AND 
+	PRC_CD IN (select prc_cd from prd_prc_mng where work_str_dt is not null and work_fin_dt is null)
+</update>
+
 <!-- 설비이름 조회 -->
 <select id="selectFctNm" resultType="com.onetouch.web.fct.info.dao.InfoVO">
 	select dtl_nm as fctNm from adm_bas_dtl_cd where dtl_cd like '%' || substr(#{fctCd},0,11) || '%'

@@ -7,6 +7,10 @@ import com.onetouch.web.fct.info.dao.InfoVO;
 import com.onetouch.web.fct.info.dao.LineVO;
 
 public interface InfoService {
+
+	
+	//공정 시작 설비상태 가동으로 변경
+	void updateStartFctPhs();
 	//설비 이름 조회
 	InfoVO selectFctNm(InfoVO infoVO);
 	//현재 날자 조회

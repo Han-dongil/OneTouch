@@ -39,12 +39,18 @@ public class InfoVO extends MngVO  {
 	String chkProdUnit;	//점검 주기 날짜 단윈
 	String uploadPath;		//업로드 경로
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	Date fixTo;		//날짜조회	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	Date fixFrom;		//날짜조회
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 * 
+	 * @JsonFormat(pattern = "yyyy-MM-dd")
+	 */
+	String fixTo;		//날짜조회	
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 * 
+	 * @JsonFormat(pattern = "yyyy-MM-dd")
+	 */
+	String fixFrom;		//날짜조회
 	
 	private String fileName;		//원본파일의 이름
 	private String uuid;			//uuid값
