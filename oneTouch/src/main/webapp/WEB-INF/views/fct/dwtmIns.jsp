@@ -23,10 +23,27 @@
 <style type="text/css">
 	.red{
 			background-color:red
+			
 		}
 	.green{
-			background-color:green 
+			background-color:#7DA0FA
+			
 		  }
+	.blue{
+			background-color:#F3797E 
+			
+		}
+		.kioskBtn1{
+			margin: 70px 40px 40px 20px;	
+			width: 170px;
+			height: 170px;
+			font-size: 3rem;
+		}
+		.btn-sub {
+		  color: #fff;
+		  background-color: #7DA0FA;
+		  border-color: #7DA0FA;
+		}
 </style>
 
 </head>
@@ -87,7 +104,7 @@
 				<input style="margin-right: 20px" type="hidden" id="hiddenDwtmDate" name="hiddenDwtmDate"><br>
 				<label style="margin-right: 26px;">작업자</label>
 				<input style="width: 172px;" type="text" id="empNo" name="empNo">
-				<button type="button" id="btndwtmEmp"  style="background:#72BE44" width:50px;>🔍</button><br>
+				<button type="button" id="btndwtmEmp"  style= width:50px;>🔍</button><br>
 				<hr>
 			
 			<div>
@@ -98,14 +115,14 @@
 				<label style="margin-right:10px;">시</label>
 				<input style="width: 45px;" id="dwtmStartMinute" name="dwtmStartMinute">
 				<label style="margin-right:20px;">분</label>
-				<button type="button" id="clickStartBtn" onclick=startTime() style="background: #72BE44;  width: 100px;  height: 100px; font-size:42px;margin-right:10px;">시작</button>	
+				<button type="button"  class="btn btn-sub kioskBtn1" id="clickStartBtn" onclick=startTime() >시작</button>	
 				<input type="hidden" id="strDt" name="strDt">			
 				
 				<input style="width: 45px;" id="dwtmEndTime" name="dwtmEndTime">
 				<label style="margin-right:10px;">시</label>
 				<input style="width: 45px;" id="dwtmEndMinute" name="dwtmEndMinute">
 				<label style="margin-right:10px;">분</label>
-				<button type="button" id="clickEndBtn" onclick=endTime() style="background: red; width: 100px;  height: 100px; font-size:42px;">종료</button><br>
+				<button type="button" id="clickEndBtn" onclick=endTime() class="btn btn-important kioskBtn1">종료</button><br>
 				<input type="hidden" id="finDt" name="finDt">	
 			</span>
 			<hr>
@@ -188,12 +205,11 @@
 	  let fctGrid = new Grid({
 	         el: document.getElementById('fctGridDiv'),
 	         data: data,  //이름이 같다면 생격가능
-	         rowHeaders : [ 'checkbox' ],
 	         columns :fctColumns,
 	         bodyHeight: 600,
 	 		 minBodyHeight: 600,
 	 		columnOptions: {
-	 			 minWidth:50
+	 			 minWidth:40
 	 			 }
 	         });
 		         
@@ -258,21 +274,31 @@
 	//fct그리드 클릭 이벤트
 	fctGrid.on('click', (ev) =>{
 		
-		fctCheckData = data[ev.rowKey];
-		console.log(fctCheckData.fctCd)
 		
-		document.getElementById('fctCd').value = fctCheckData.fctCd;
-		document.getElementById('fctNm').value =fctCheckData.fctNm;
-		document.getElementById('msrCmt').disabled = true;
-		document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-		document.getElementById('dwtmEndTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-		document.getElementById('dwtmEndMinute').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-		document.getElementById('fctCd').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
-		document.getElementById('fctNm').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
-		document.getElementById('dwtmDate').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-		fctGrid.addCellClassName(ev.rowKey,'fctPhs','green')	
-		console.log('ev찍어용')	
-		console.log(ev)	
+		
+		fctCheckData = data[ev.rowKey];
+		console.log('그리드 클릭 이벤트 ')
+		console.log(fctCheckData)
+		if(fctCheckData.fctPhs == '가동'){
+			alert("현재 가동중인 설비이므로 비가동 등록을 할수 없습니다.")
+			cleardetail()
+		}		
+		else if(fctCheckData.fctPhs == '대기'){
+			console.log('N인 비가동 클ㄹ릭')			
+			document.getElementById('fctCd').value = fctCheckData.fctCd;
+			document.getElementById('fctNm').value =fctCheckData.fctNm;
+			document.getElementById('msrCmt').disabled = true;
+			document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('dwtmEndTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('dwtmEndMinute').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('fctCd').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('fctNm').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('dwtmDate').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+			//fctGrid.addCellClassName(ev.rowKey,'fctPhs','green')	
+			console.log('ev찍어용')	
+			console.log(ev)
+		}
+			
 	})
 	
 	dwtmGrid.on('click',(ev)=>{
@@ -438,6 +464,11 @@
   	
   	
 	//설비구분을 SELECT로 선택해서 조회하기 
+	setInterval(function() {
+		fctChekPrcCd()
+		changePhs()
+	}, 10000) 
+	
 	function fctChekPrcCd(){
 		if(rdostatus == 1){
 			fctCheckData = $("#dwtmFctSelectFrm").serializeObject();
@@ -565,12 +596,15 @@
 	function changePhs(){
 		
 		for( object of fctGrid.getData()){
-			console.log(object)
-			if(object.fctPhs == 'Y'){
+			if(object.fctPhs == '가동'){
+				
+				fctGrid.addCellClassName(object.rowKey,'fctPhs','red');
+			}
+			else if(object.fctPhs == '대기'){
 				fctGrid.addCellClassName(object.rowKey,'fctPhs','green');
 			}
-			else if(object.fctPhs == 'N'){
-				fctGrid.addCellClassName(object.rowKey,'fctPhs','red');
+			else if(object.fctPhs == '비가동'){
+				fctGrid.addCellClassName(object.rowKey,'fctPhs','blue');
 			}
 			
 		}

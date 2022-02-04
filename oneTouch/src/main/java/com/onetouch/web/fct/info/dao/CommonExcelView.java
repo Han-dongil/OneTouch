@@ -9,11 +9,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -41,6 +42,34 @@ public class CommonExcelView  extends  AbstractXlsxView {
 
         CellStyle headStyle = workbook.createCellStyle();
         
+        
+        headStyle.setAlignment(CellStyle.ALIGN_CENTER); // 가운데 정렬
+
+     // 테두리 선(좌, 우, 위, 아래)
+        headStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        headStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        headStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        headStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+
+		/*
+		 * headStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+		 * headStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 */
+
+
+
+        
+        // 데이터용 경계 스타일 테두리만 지정
+
+        CellStyle bodyStyle = workbook.createCellStyle();
+        bodyStyle.setBorderTop(CellStyle.BORDER_THIN);
+        bodyStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        bodyStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        bodyStyle.setBorderRight(CellStyle.BORDER_THIN);
+        
+        
+        bodyStyle.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
+        bodyStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         //폰트지정
         Font font = workbook.createFont();
         font.setFontName("맑은고딕");
@@ -52,13 +81,14 @@ public class CommonExcelView  extends  AbstractXlsxView {
         font.setColor(HSSFColor.WHITE.index); //글색
         headStyle.setFont(font);
         
+        bodyStyle.setWrapText(true);	//셀 크기에 맞추 개행
         
         
 
         String file_name =(String) model.get("filename") + System.currentTimeMillis() + ".xlsx";
 		response.setHeader("Content-Disposition", "attachment; filename=\""+ file_name+"\"");
 		//header 출력
-		String[] headers  = (String[])model.get("headers");
+		String[] headers  = {"FCT_CD","FCT_NM","LINE_NO","PRC_CD","FCT_STD","FCT_MODEL","COMP_CD","IN_DATE","PURCH_COST","CHK_PROD","CHK_PROD_UNIT","FCT_PHS","FCT_IMG","UPLOAD_PATH"};
 		if(headers != null) {
 			row = sheet.createRow(rowNum++);
 			int colNum = 0;
