@@ -24,12 +24,86 @@
 
 </head>
 <style type="text/css">
-	.tui-grid-cell-summary{
-		text-align: right;
-	}
+.tui-grid-cell-summary{
+	text-align: right;
+}
+.labeltext{
+width: 100px !important;
+}
+.colline2{
+	margin-left: 60px;
+	width: 100px !important;
+}
+hr{
+	margin-top: -20px;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+.bascard1{
+	height:165px;
+}
 </style>
+
 <body>
-	<div class="container">
+
+<body>
+
+<div class="content-wrapper">
+<div class="row">
+	<div class="col-md-12 grid-margin">
+		<div class="row">
+			<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+				<h3 class="font-weight-bold page-title">자재입고조회</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+		<div class="card bascard1">
+			<div class="card-body">
+				<!-- <h4 class="card-title">조회조건</h4> -->
+				<form id="frm" method="post">
+					<div class="rowdiv">
+						<label class="labeltext">해당일자</label>
+						<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+						<label> ~ </label> 
+						<input type="Date" id="endDate" name="endDate" class="datepicker">
+					</div>
+					
+					<div class="rowdiv">
+						<label class="labeltext">입고업체코드</label>
+						<input id="compCd" name="compCd" class="inputtext" readonly>
+						<button type="button" id="btnInCom" class="btn btn-primary mr-2 minibtn" onclick="inComList()"><i class="icon-search"></i></button>
+						<label class="labeltext colline2">입고업체명</label>
+						<input id="compNm" name="compNm" class="inputtext" readonly>
+					</div>
+					
+					<span class="rowdiv">
+						<label class="labeltext">자재코드</label>
+						<input type="text" id="ditemCode" name="ditemCode" class="inputtext" readonly>
+						<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+						<label class="labeltext colline2">자재명</label>
+						<input type="text" id="ditemCodeNm" name="ditemCodeNm" class="inputtext" readonly>
+					</span>
+					
+					<span>
+						<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+					</span>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<hr>
+<div id="grid"></div>
+<div id="dialog-form"></div>
+
+
+<!-- 	<div class="container">
 		<h3>자재입고 조회</h3>
 		<hr>
 		<form id="frm" method="post">
@@ -62,7 +136,7 @@
 		<hr>
 	</div>
 <div id="grid"></div>
-<div id="dialog-form"></div>
+<div id="dialog-form"></div> -->
 
 <script type="text/javascript">
 //---------포맷에 맞게 날짜 구하는 function---------
@@ -105,7 +179,8 @@ var mainGrid = new Grid({
      data : dataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 400,
+     bodyHeight: 449,
+     minBodyHeight: 449,
      columns : [
 				 {
 				   header: '입고일자',

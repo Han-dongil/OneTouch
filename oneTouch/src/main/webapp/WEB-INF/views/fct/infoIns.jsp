@@ -76,7 +76,7 @@
 	top: 12px;
 	height: 19px !important;
 }
-.btn1{
+.btn1{ 
 	padding-left: 14px !important;
 	padding-right: 14px !important;
 }

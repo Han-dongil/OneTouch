@@ -23,11 +23,92 @@
 <script src="${path}/resources/js/toastr-options.js"></script>
 </head>
 <style type="text/css">
-	.tui-grid-cell-summary{
-		text-align: right;
-	}
+.tui-grid-cell-summary{
+	text-align: right;
+}
+.labeltext{
+width: 100px !important;
+}
+.colline2{
+	margin-left: 60px;
+	width: 100px !important;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+.bascard1{
+	height:165px;
+}
 </style>
 <body>
+<div class="content-wrapper">
+<div class="row">
+	<div class="col-md-12 grid-margin">
+		<div class="row">
+			<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+				<h3 class="font-weight-bold page-title">자재입고관리</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div align="right"> 
+	<button type="button" id="btnOrdFind" class="btn btn-primary newalign2">발주내역조회</button>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+		<div class="card bascard1">
+			<div class="card-body">
+				<!-- <h4 class="card-title">조회조건</h4> -->
+				<form id="frm" method="post">
+					<div class="rowdiv">
+						<label class="labeltext">해당일자</label>
+						<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+						<label> ~ </label> 
+						<input type="Date" id="endDate" name="endDate" class="datepicker">
+					</div>
+					
+					<div class="rowdiv">
+						<label class="labeltext">입고업체코드</label>
+						<input id="compCd" name="compCd" class="inputtext" readonly>
+						<button type="button" id="btnInCom" class="btn btn-primary mr-2 minibtn" onclick="inComList()"><i class="icon-search"></i></button>
+						<label class="labeltext colline2">입고업체명</label>
+						<input id="compNm" name="compNm" class="inputtext" readonly>
+					</div>
+					
+					<span class="rowdiv">
+						<label class="labeltext">자재코드</label>
+						<input type="text" id="ditemCode" name="ditemCode" class="inputtext" readonly>
+						<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+						<label class="labeltext colline2">자재명</label>
+						<input type="text" id="ditemCodeNm" name="ditemCodeNm" class="inputtext" readonly>
+					</span>
+					
+					<span>
+						<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+					</span>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<span class="floatright">
+	<button type="button" id='btnAdd' class="btn btn-main newalign">추가</button>
+	<button	type="button" id='btnDel' class="btn btn-main newalign">삭제</button>
+	<button type="button" id='btnSave' class="btn btn-primary newalign">저장</button> 
+</span>
+<br><br>
+<hr>
+<div id="grid"></div>
+<div id="dialog-form"></div>
+<div id="dialog-ord"></div>
+<div id="dialog-lot"></div>
+			
+<!-- </div>
+	
 	<div class="container">
 		<h3>자재입고 관리</h3>
 		<div align="right">
@@ -69,7 +150,7 @@
 <div id="grid"></div>
 <div id="dialog-form"></div>
 <div id="dialog-ord"></div>
-<div id="dialog-lot"></div>
+<div id="dialog-lot"></div> -->
 
 <script type="text/javascript">
 let rowk = -1;
@@ -115,7 +196,8 @@ let mainGrid = new Grid({
 			},
 	 scrollX : false,
 	 scrollY : true,
-	 bodyHeight: 400,
+	 bodyHeight: 325,
+	 minBodyHeight: 325,
      rowHeaders : [ 'checkbox'],
      columns : [
 				{
