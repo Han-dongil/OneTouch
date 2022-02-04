@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onetouch.web.sts.dao.stsMapper">
+
+	<!-- 자재입고 =====================================-->
+	<!-- 일별 -->
+	<select id="mtrInDate" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT 	 DECODE(GROUPING(IN_DATE),1,'합계',IN_DATE) AS IN_DATE, COUNT(*) AS CNT
+		FROM 	 MTR_IN 
+		WHERE	 IN_DATE BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(IN_DATE) 
+		ORDER BY IN_DATE
+	</select>
+	
+	<!-- 월별 -->
+	<select id="mtrInMonth" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT   NVL(TO_CHAR(IN_DATE, 'YYYY-MM'),'합계') AS IN_DATE, COUNT(*) AS CNT
+		FROM 	 MTR_IN 
+		WHERE 	 TO_CHAR(IN_DATE, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(IN_DATE, 'YYYY-MM'))
+		ORDER BY IN_DATE
+	</select>
+	
+	<!-- 자재별 -->
+	<select id="mtrInMtr" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT   DECODE(GROUPING_ID(MTR_CD, IN_DATE),3,'합계', MTR_CD) AS MTR_CD,
+		         DECODE(GROUPING_ID(MTR_CD, IN_DATE),1, MTR_CD||'소계', IN_DATE) AS IN_DATE,
+		         COUNT(*) AS CNT
+		FROM 	 MTR_IN 
+		WHERE 	 IN_DATE BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(MTR_CD,IN_DATE)
+		ORDER BY MTR_CD
+	</select>
+	
+	<!-- 자재출고 =====================================-->
+	<!-- 일별 -->
+	<!-- 월별 -->
+	<!-- 자재별 -->
+	
+	<!-- 제품생산량 =====================================-->
+	<!-- 일별 -->
+	<!-- 월별 -->
+	<!-- 제품별 -->
+	
+	<!-- 제품불량량 =====================================-->
+	<!-- 일별 -->
+	<!-- 월별 -->
+	<!-- 제품별 -->
+	
+</mapper>
