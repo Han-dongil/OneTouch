@@ -47,7 +47,6 @@
 	<select id="pdtList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select * from prd_prc_mng
 		where to_date(work_str_dt,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
-
 		--select * from pdt_work_instr_dtl
 		--where to_date(work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
 	</select>

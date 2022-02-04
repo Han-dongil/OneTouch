@@ -18,6 +18,7 @@ public class BrdServiceImpl implements BrdService {
 	@Override
 	public List<LotVO> mtrList() {
 		System.out.println(mapper.mtrList());
+		System.out.println("impl");
 		return mapper.mtrList();
 	}
 

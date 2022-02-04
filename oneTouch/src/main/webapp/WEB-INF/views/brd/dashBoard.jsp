@@ -127,25 +127,36 @@
 									<th>자재코드</th>
 									<th>자재명</th>
 									<th>안전재고</th>
-									<th>현재고</th>
+									<th>가용재고</th>
 									<th>상태</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Jacob</td>
-									<td>Jacob</td>
-									<td>Photoshop</td>
-									<td class="text-danger">28.76% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-danger">발주시급</label></td>
-								</tr>
-								<tr>
-									<td>Messsy</td>
-									<td>Messsy</td>
-									<td>Flash</td>
-									<td class="text-danger">21.06% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-warning">수량체크</label></td>
-								</tr>
+								<c:forEach var="mtr" items="${mtrList }">
+								<%-- <c:set var="safeStck" value="${mtr.safeStck}" />
+								<c:set var="stckUse" value="${mtr.stckUse}" />
+								${safeStck }
+								${stckUse } --%>
+										<c:if test="${mtr.safeStck gt mtr.stckUse}">
+										<%-- <c:when test="${mtr.stckUse lt mtr.safeStck}"> --%>
+										<tr>
+											<td>${mtr.mtrCd }</td>
+											<td>${mtr.mtrNm }</td>
+											<td>${mtr.safeStck }</td>
+											<td class="text-danger">${mtr.stckUse }</td>
+											<td><label class="badge badge-danger">발주시급</label></td>
+										</tr>
+										</c:if>
+										<c:if test="${mtr.stckUse lt mtr.safeStck*1.5}">
+										<tr>
+											<td>${mtr.mtrCd }</td>
+											<td>${mtr.mtrNm }</td>
+											<td>${mtr.safeStck }</td>
+											<td class="text-warning">${mtr.stckUse }</td>
+											<td><label class="badge badge-warning">수량체크</label></td>
+										</tr>
+										</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
