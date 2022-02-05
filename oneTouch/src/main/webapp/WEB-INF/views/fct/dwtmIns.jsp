@@ -52,7 +52,6 @@
 <h3>[비가동 관리]</h3>
 <hr>
 <div align="right" style="margin-right: 3%;">
-			<button id="btnSel">조회</button>
 			<button id="btnCle" onclick=cleardetail()>clear</button>
 			<button id="btnSave" onclick=dwtmSave()>저장</button>
 			<button id="btnDel" onclick=dwtmDelete()>삭제</button>
@@ -334,8 +333,8 @@
   			document.getElementById('empNo').disabled = false;
   			document.getElementById('dwtmStartTime').disabled = false;
   			document.getElementById('dwtmStartMinute').disabled = false;
-  			document.getElementById('dwtmEndTime').disabled = false;
-  			document.getElementById('dwtmEndMinute').disabled = false;
+  			document.getElementById('dwtmEndTime').disabled = true;
+  			document.getElementById('dwtmEndMinute').disabled = true;
   			document.getElementById('clickStartBtn').disabled = false;	
   		}
   		else if(e.target.id == 'proceedingDwtm'){
@@ -359,7 +358,7 @@
   		}
   		else{
   			
-  			document.getElementById('clickEndBtn').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
+  			document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('clickStartBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			rdostatus = 0;
   			console.log('232')
@@ -379,6 +378,7 @@
   			document.getElementById('dwtmEndTime').disabled = true;
   			document.getElementById('dwtmEndMinute').disabled = true;
   			document.getElementById('msrCmt').disabled = false;	// 작업 내용 
+  			
   		}
   		
   	});
