@@ -23,8 +23,20 @@
 <link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
 <link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 
+<link rel="stylesheet" href="${path}/resources/jquery-ui/MonthPicker.css">
+<script src="${path}/resources/jquery-ui/jquery.ui.monthpicker.js"></script>
+
+
+
+
+
+
 
 <style>
+.jquerymonpicker, ui-monthpicker{
+	z-index: 1000000 !important;
+	position: absolute !important;
+}
 
 
 /* .jquerydtpicker{
@@ -67,6 +79,15 @@
 		<input type="text" name="datepicker" id="datepicker" class="datepicker jquerydtpicker"/>
 		<button action='' id='selBtn' name='selBtn' onClick='selectDate()'>조회</button>
 		<button type='button' id='delBtn' name='delBtn' onClick='DeleteChecked()'>선택삭제</button>
+		<input type="text" id="month" name="month" class="monthPicker1" class="datepicker jquerydtpicker"/>
+		
+		<br>
+		
+	<!-- <input id="ImageButton" type="text" /> -->
+	<input type="text" id="monthpicker" name="monthpicker" class="monthpicker" class="datepicker jquerymonpicker"/>
+
+		
+
 	</form>
 	
 	<div id='grid'></div>
@@ -100,6 +121,63 @@
 	       
 	   });
 		/* $('.ui-datepicker-trigger').children("img").attr("class", "dtpickerimg"); */
+		
+		
+//------------------------------------------------------------------------------------------------
+		 
+		 
+		 $(document).ready(function()
+		 {
+		     $(".monthPicker1").datepicker({
+		         dateFormat: 'yy-mm',
+		         changeMonth: true,
+		         changeYear: true,
+		         showButtonPanel: true,
+
+		         onClose: function(dateText, inst) {
+		             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+		             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+		             $(this).val($.datepicker.formatDate('yy-mm', new Date(year, month, 1)));
+		         }
+		     });
+
+		     $(".monthPicker1").focus(function () {
+		         $(".ui-datepicker-calendar").hide();
+		         $("#ui-datepicker-div").position({
+		             my: "center top",
+		             at: "center bottom",
+		             of: $(this)
+		         });
+		     });
+		 });
+		
+
+//------------------------------------------------------------------------------------------------
+		
+/* $(document).ready(function() {
+   
+    $("#ImageButton").MonthPicker({
+        Button: '<img class="icon" src="/oneTouch/resources/template/images/cal_lb_sm.png" />'
+    });
+   
+}); */
+
+//------------------------------------------------------------------------------------------------
+
+$("#monthpicker").monthpicker({
+	monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+	,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+	,showOn: "both" 
+	,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
+	,buttonImageOnly: true
+	,changeYear: true
+	,yearRange: 'c-2:c+2'
+	,dateFormat: 'yy-mm'
+});
+		    
+//------------------------------------------------------------------------------------------------
+		
+		
 		
 		//Modal~~~~
 		
