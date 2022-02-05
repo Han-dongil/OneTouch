@@ -246,7 +246,6 @@ public class PrcServiceImpl implements PrcService{
 				mapper.autoUpdate(vo);
 			}
 		}
-		
 	}
 
 	@Override

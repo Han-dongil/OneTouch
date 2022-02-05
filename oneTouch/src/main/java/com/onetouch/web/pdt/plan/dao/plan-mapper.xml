@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.pdt.plan.dao.PlanMapper">
 <select id="list" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select PLAN_NO,DUE_DATE,ORD_SHT_NO,WORK_PROT,PLAN_DATE from pdt_plan
+	select PLAN_NO,to_char(DUE_DATE,'yyyy-MM-dd') dueDate,ORD_SHT_NO,WORK_PROT,to_char(PLAN_DATE,'yyyy-MM-dd') plan_date from pdt_plan
 	where 1=1
 	<if test='nowPhs =="Y"'>
 		and now_phs ='Y'
@@ -19,7 +19,7 @@
 	
 </select>
 <select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select plan_no , line_no , prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm, need_cnt , instr_cnt , work_str_date , work_plan_time  
+		select plan_no , line_no , prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm, need_cnt , instr_cnt , to_char(work_str_date,'yyyy-MM-dd') work_str_date , work_plan_time  
 		from pdt_plan_dtl 
 		group by plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time
 		having 1=1
