@@ -77,8 +77,6 @@
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctFix">🛠수리관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctProd">👀점검관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctDwtmIns">⚙비동기관리</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/fct/UploadFile">업로드 테스트</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/fct/UploadAjax">아작스 업로드 테스트</a></li>
               </ul>
             </div>
           </li>
