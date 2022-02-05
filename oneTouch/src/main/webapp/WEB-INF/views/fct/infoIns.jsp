@@ -547,21 +547,14 @@
   {
 	    header: '사용여부',
 	    name: 'useYn',
-	    editor: {
-	     type: 'radio',
-	     options:{
-	    	 listItems:[
-	    		 {text:'Y', value:'Y'},
-	    		 {text:'N', value:'N'}
-	    	 ]
-	     }
-		}
+	    editor: 'text'
   },
-		{
-			header: '사원',
-		    name: 'empNo',
-		    editor: 'text'
-	  	}    	
+  
+	{
+		header: '사원',
+	    name: 'empNo',
+	    editor: 'text'
+ 	}    	
 	  /* ,
   {
     header: '총생산량',
@@ -1077,7 +1070,7 @@
 		      data: JSON.stringify(lineStatusVO),
 		      contentType: "application/json",
 		      success : function(result){
-		    	  $('#lineNO').append("<option value='d'>전체</option>")
+		    	  //$('#linoNolist').append("<option value='d'>전체</option>")
 		    	  for(d of result){
 		    	  	$('#linoNolist').append("<option value="+d.lineNO+">"+d.lineNO+"</option>")
 		    	  }
