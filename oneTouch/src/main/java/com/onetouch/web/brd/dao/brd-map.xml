@@ -41,7 +41,7 @@
 			        From fct_prod_chk p, fct_info f
 			      WHERE p.fct_cd= f.fct_cd) a
 			   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')
-			   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd')
+			   and chkExpectDt <= to_char(sysdate + 7, 'yyyy-MM-dd')
    	]]>
 	</select>
 	<select id="pdtList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">

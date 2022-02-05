@@ -1,24 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="${path}/resources/js/grid-common.js"></script>
-<script src="${path}/resources/js/modal.js"></script>
-<script src="${path}/resources/js/toastr-options.js"></script>
 <title>Insert title here</title>
 </head>
 <style>
@@ -132,30 +122,23 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="mtr" items="${mtrList }">
-								<%-- <c:set var="safeStck" value="${mtr.safeStck}" />
-								<c:set var="stckUse" value="${mtr.stckUse}" />
-								${safeStck }
-								${stckUse } --%>
-										<c:if test="${mtr.safeStck gt mtr.stckUse}">
-										<%-- <c:when test="${mtr.stckUse lt mtr.safeStck}"> --%>
+								<c:forEach var="warning" items="${listWarning }">
 										<tr>
-											<td>${mtr.mtrCd }</td>
-											<td>${mtr.mtrNm }</td>
-											<td>${mtr.safeStck }</td>
-											<td class="text-danger">${mtr.stckUse }</td>
+											<td>${warning.mtrCd }</td>
+											<td>${warning.mtrNm }</td>
+											<td>${warning.safeStck }</td>
+											<td class="text-danger">${warning.stckUse }</td>
 											<td><label class="badge badge-danger">발주시급</label></td>
 										</tr>
-										</c:if>
-										<c:if test="${mtr.stckUse lt mtr.safeStck*1.5}">
+								</c:forEach>
+								<c:forEach var="caution" items="${listCaution }">
 										<tr>
-											<td>${mtr.mtrCd }</td>
-											<td>${mtr.mtrNm }</td>
-											<td>${mtr.safeStck }</td>
-											<td class="text-warning">${mtr.stckUse }</td>
+											<td>${caution.mtrCd }</td>
+											<td>${caution.mtrNm }</td>
+											<td>${caution.safeStck }</td>
+											<td class="text-warning">${caution.stckUse }</td>
 											<td><label class="badge badge-warning">수량체크</label></td>
 										</tr>
-										</c:if>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -198,6 +181,137 @@
 		</div>
 	</div>
 	</div>
+	<div class="col-6">
+		 <div id="piechart" style="width: 900px; height: 500px;"></div>
+    	<div id="piechart2" style="width: 900px; height: 500px;"></div>
+    	<div id="realPiechart" style="width: 900px; height: 500px;"></div>
+	</div>
 </div>
+
+
+
+    <script type="text/javascript">
+    let i=0;
+
+    function prcView(){
+
+      }
+    prcView()
+      
+      google.charts.load('current', {'packages':['corechart']});
+    function abc(){
+       setTimeout(function(){
+          google.charts.setOnLoadCallback(drawChart);
+          
+       },1000)
+    }
+   abc();
+      function drawChart() {
+         console.log(i)
+          let data ; 
+          let arr=[];
+        var aa =[
+             ['Task', 'Hours per Day'],
+
+              ]; 
+        var bb =[
+             ['Task', 'Hours per Day'],
+
+              ]; 
+        var cc =[
+             ['Task', 'Hours per Day'],
+
+              ]; 
+        
+         fetch('dashBoardData')
+         .then(response=>response.json())
+         .then(result=>{
+            arr.push(['Task', 'Hours per Day'])
+            let fltSum=0;
+            let pdtSum=0;
+            for(obj of result[i]){
+               fltSum+=obj.fltCnt*1;
+               cc.push([obj.prcCd,obj.pdtCnt*1+obj.fltCnt*1])
+               pdtSum+=obj.goalCnt-(obj.pdtCnt*1+obj.fltCnt*1)
+               //console.log(pdtSum)
+            }
+            console.log(cc)
+            cc.push(['잔여진행률',pdtSum])
+            //console.log(fltSum)
+            let pdtCnt=result[i][result[i].length-1].pdtCnt
+            let fltCnt=result[i][result[i].length-1].fltCnt
+            let goalCnt=result[i][result[i].length-1].goalCnt
+            aa.push(['생산량',pdtCnt*1])
+            aa.push(['남은수량',goalCnt*1-(pdtCnt*1+fltSum)])
+            bb.push(['불량률',fltSum])
+            bb.push(['생산량',pdtCnt*1])
+            /* for(obj of result[i]){
+               let a=[obj.prcCd, obj.pdtCnt*1];
+               aa.push(a)   
+               
+            } */
+            return result;
+         })
+         .then(x=>{
+            pdtData = google.visualization.arrayToDataTable(aa);
+              var pdtOptions = {
+                title:x[i][x[i].length-1].lineNo +' 라인 생산현황',
+                pieHole:0.5,
+               // pieSliceText : 'label',
+                pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                 legend: 'none',
+                 pieStartAngle: 100,
+              };
+            fltData = google.visualization.arrayToDataTable(bb);
+              var fltOptions = {
+                title:x[i][x[i].length-1].lineNo + ' 라인 불량현황',
+                pieHole:0.5,
+               // pieSliceText : 'label',
+                pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                 legend: 'none',
+                 pieStartAngle: 100,
+              };
+            realPdtData = google.visualization.arrayToDataTable(cc);
+              var realPdtOptions = {
+                title:x[i][x[i].length-1].lineNo + ' 라인 진행률',
+                pieHole:0.5,
+                pieSliceText : 'label',
+                pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                 legend: 'none',
+                 pieStartAngle: 100,
+              };
+
+              var pdtChart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+              pdtChart.draw(pdtData, pdtOptions);
+
+              var fltChart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+              fltChart.draw(fltData, fltOptions);
+              
+              var realPdtChart = new google.visualization.PieChart(document.getElementById('realPiechart'));
+
+              realPdtChart.draw(realPdtData, realPdtOptions);
+              i++;
+              aa.length=0;
+              bb.length=0;
+              if (i==x.length){
+                 i=0;
+              }
+              abc();
+         })
+      /* var a = 
+             ['Sleeps',    7];
+      aa.push(a); */
+
+      }
+    </script>
+
 </body>
 </html>
