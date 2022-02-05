@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onetouch.web.sts.dao.stsMapper">
+<mapper namespace="com.onetouch.web.sts.dao.StsMapper">
 
 	<!-- 자재입고량 mtrIn =====================================-->
 	<!-- 일별 -->
@@ -55,7 +55,7 @@
 		FROM 	 MTR_IN 
 		WHERE 	 IN_DATE BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,TO_CHAR(IN_DATE, 'YYYY/MM'))
-		ORDER BY MTR_CD;
+		ORDER BY MTR_CD
 	</select>
 	
 	<!-- 자재별, 연도별 -->
@@ -66,7 +66,7 @@
 		FROM 	 MTR_IN 
 		WHERE 	 IN_DATE BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,TO_CHAR(IN_DATE, 'YYYY'))
-		ORDER BY MTR_CD;
+		ORDER BY MTR_CD
 	</select>
 	
 	<!-- 자재출고량 mtrOut =====================================-->
