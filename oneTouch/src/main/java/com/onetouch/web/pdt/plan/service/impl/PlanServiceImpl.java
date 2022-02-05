@@ -197,8 +197,20 @@ public class PlanServiceImpl implements PlanService {
 	}
 	@Override
 	public List<PlanVO> slectDate(PlanVO vo) {
-		System.out.println("11"+mapper.slectDate(vo));		
 		return mapper.slectDate(vo);
+	}
+	@Override
+	public List<PlanVO> planDateCal(PlanVO vo) {
+		int date=mapper.strDateEndDateMinus(vo);
+		List<PlanVO> list=new ArrayList<>();
+		for(int i=0; i<=date ;i++) {
+			vo.setDate(i);
+			PlanVO a=mapper.dateArr(vo);
+			PlanVO vo2=new PlanVO();
+			vo2.setWorkStrDate(a.getWorkStrDate());
+			list.add(vo2);
+		}
+		return list;
 	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기

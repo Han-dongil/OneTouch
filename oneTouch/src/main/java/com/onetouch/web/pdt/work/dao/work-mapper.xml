@@ -95,10 +95,9 @@
 	</select>
 	<insert id="workInsert">
 		insert into pdt_work_instr (instr_no , plan_no ,
-		work_prot, instr_date , pdt_fin_date ,now_phs)
+		work_prot, instr_date , now_phs)
 		values
-		(PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no',
-		'pdt_fin_date'),#{planNo},#{workProt},to_date(#{instrDate},'yyyy-mm-dd HH24:MI:SS'),to_date(#{pdtFinDate},'yyyy-mm-dd HH24:MI:SS') ,'N')
+		(PKG_MAKE_CODE.CODE('PWO','pdt_work_instr','instr_no'),#{planNo},#{workProt},to_date(#{instrDate},'yyyy-mm-dd HH24:MI:SS') ,'N')
 	</insert>
 	<insert id="workInsertDtl">
 		insert into pdt_work_instr_dtl (line_no, instr_no,

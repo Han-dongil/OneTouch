@@ -24,4 +24,5 @@ public interface PlanService {
 	List<InfoVO> prcLineFine(PlanVO vo);
 	List<PlanVO> safeStckView();
 	List<PlanVO> slectDate(PlanVO vo);
+	List<PlanVO> planDateCal(PlanVO vo);
 }

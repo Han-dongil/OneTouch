@@ -24,6 +24,7 @@ public class PlanVO extends LotVO {
 	private String nowPhs;
 	private String prdCd1;
 	private String prdNm;
+	private String upd;
 	//bom 테이블 컬럼
 	private String useAmt;
 	private String mtrLot;

@@ -27,5 +27,7 @@ public interface PlanMapper {
 	List<PlanVO> slectDate(PlanVO vo);
 	List<PlanVO> useFct();
 	List<PlanVO> lineUphFind(List<PlanVO> list);
+	int strDateEndDateMinus(PlanVO vo);
+	PlanVO dateArr(PlanVO vo);
 	
 }

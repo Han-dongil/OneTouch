@@ -66,16 +66,9 @@ public class WorkServiceImpl implements WorkService {
 		System.out.println("seq"+seqVo);
 		if(map.get("planData")!=null) {
 			for(WorkVO vo : map.get("planData") ) {
+				System.out.println(vo);
 				mapper.workInsert(vo);
-				if((mapper.finalWorkStrDateFind(vo).getWorkStrDate()).equals(vo.getWorkStrDate()))
-				{
-					vo.setNowPhs("Y");
-					System.out.println("막날");
-				}
-				else {
-					vo.setNowPhs("P");
-					System.out.println("막날x");
-				}
+				vo.setNowPhs("Y");
 				planMapper.planCheck(vo);
 			}
 		}
@@ -83,6 +76,7 @@ public class WorkServiceImpl implements WorkService {
 			for(WorkVO vo : map.get("detailData")) {
 				System.out.println(vo.getInstrNo());
 				vo.setPdtCnt(vo.getNeedCnt());
+				System.out.println("aaaaaaaaaaaa");
 				mapper.workInsertDtl(vo);
 			}
 		}

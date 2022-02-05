@@ -42,7 +42,7 @@
 	on(a.prc_cd = b.prc_cd)
 	order by 1,3 -->
 select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc_cd as prcCd 
-                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , b.hld_cnt as hldCnt ,b.stck_cnt as stckCnt , b.stck_cnt - b.hld_cnt as realCnt
+                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , 0 as hldCnt ,b.stck_cnt as stckCnt , b.stck_cnt - b.hld_cnt as realCnt
                             from used_mtr_lot a join mtr_lot_stck b
                             on (a.mtr_lot = b.mtr_lot)
                             where a.instr_no = #{planNo} and a.prc_cd=#{prcCd}
@@ -144,7 +144,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 </select>
 
 <select id="slectDate" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select a.line_no , a.uph_pdt_amt*24-instr_cnt uphPdtAmt , b.work_str_date
+	select a.line_no , a.uph_pdt_amt*24-instr_cnt uphPdtAmt , b.work_str_date , a.uph_pdt_amt*24 upd
 	from fct_line a join (select  line_no ,  work_str_date , sum(instr_cnt) instr_cnt from (    
 	                        select distinct plan_no , line_no , work_str_date , instr_cnt from pdt_plan_dtl)
 	                        group by  line_no , work_str_date) b
@@ -169,4 +169,11 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	</foreach>
 </select>
 
+<select id="strDateEndDateMinus" resultType="int">	
+	select to_date(#{workEndDate},'yyyy-MM-dd')-to_date(#{workStrDate},'yyyy-MM-dd') from dual
+</select>
+
+<select id="dateArr" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select (to_date(#{workStrDate},'yyyy-MM-dd')+to_number(#{date})) as workStrDate from dual
+</select>
 </mapper>
