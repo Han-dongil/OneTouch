@@ -24,9 +24,13 @@
 <body>
 	
 	<button type="button" id="planModal" name="planModal">생산계획조회</button>
-<!-- 	<button type="button" id="rowAdd" name="rowAdd">행추가</button> -->
+	<button type="button" id="modifyBtn" name="modifyBtn">저장</button>
+	<button type="button" id="resetGrid">초기화</button>
 	<div id="workGrid"></div>
-	<div id="prcDtlGrid"></div>
+	<div class="row">
+		<div id="prcDtlGrid" class="col-9"></div>
+		<div id="hiddenGrid" style="display:block" class="col-3"></div>
+	</div>
 	<div id="plan-dialog-form" title="생산계획조회">
 		<div>생산계획 조회</div>
 		<select id="planCheck">
@@ -36,12 +40,8 @@
 		<button id="modalSearchBtn" name="modalSearchBtn">조회</button>
 	</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
-	<div id="hiddenGrid" style="display:block"></div>
-	<div id="hiddenMainDiv" style="display:block"></div>
-	<div id="hiddenModalMain" style="display:block"></div>
-	<button type="button" id="modifyBtn" name="modifyBtn">저장</button>
-	<button type="button" id="addRow">행추가</button>
-	<button type="button" id="resetGrid">초기화</button>
+	<div id="hiddenMainDiv" style="display:none"></div>
+	<div id="hiddenModalMain" style="display:none"></div>
 	
 	
 	<script>
@@ -198,7 +198,7 @@ class abc{
 		const mainColumns = [
 			{
 				header : '제품코드',
-				name : 'prcCd'
+				name : 'prdCd'
 			}
 /* 			{
 	    	header: '제품코드',
@@ -232,6 +232,7 @@ class abc{
 		},{
 			header : '계획일자',
 			name : 'planDate',
+			hidden : true
 		},{
 			header : '라인번호',
 			name : 'lineNo',
@@ -264,7 +265,6 @@ class abc{
 		let mainGrid = new Grid({
 			  el: document.getElementById('workGrid'),
 			  data:mainDataSource,
-			  rowHeaders:['checkbox'],
 			  columns:mainColumns,
 			  columnOptions: {
 				  frozenCount :10,
@@ -290,7 +290,7 @@ class abc{
 		{
 			header : '라인번호',
 			name : 'lineNo',
-			
+			hidden : true
 		},{
 			header : '공정코드',
 			name : 'prcCd',
@@ -320,11 +320,12 @@ class abc{
 			hidden : false,
 		},{
 			header : '지시번호',
-			name : 'instrNo'
+			name : 'instrNo',
+			hidden : true
 		},{
 			header : '지시일자',
 			name : 'instrDate',
-			hidden : false
+			hidden : true
 		}];
  		
 		//그리드 생성
@@ -461,42 +462,43 @@ class abc{
 			{
 				header : '라인번호',
 				name : 'lineNo',
+				hidden : true
 				
 			},{
 				header : '공정코드',
 				name : 'prcCd',
-				hidden : false
+				hidden : true
 			},{
 				header : '자재코드',
 				name : 'mtrCd',
-				hidden : false
+				hidden : true
 			},{
 				header : 'Lot번호',
 				name : 'mtrLot',
 				hidden : false
 			},{
-				header : '홀딩수량',
+				header : '사용수량',
 				name : 'hldCnt',
 				hidden : false,
 		  		editor : 'text'
 			},{
 				header : '재고수량',
 				name : 'stckCnt',
-				hidden : false
+				hidden : true
 			},{
 				header : '지시번호',
-				name : 'instrNo'
+				name : 'instrNo',
+				hidden : true
 			},{
 				header : '지시일자',
 				name : 'instrDate',
-				hidden : false
+				hidden : true
 			}];
  		
 		//그리드 생성
 		let hiddenGrid = new Grid({
 			  el: document.getElementById('hiddenGrid'),
 			  data:hiddenDataSource,
-			  rowHeaders:['checkbox'],
 			  columns:hiddenColumns,
 			  columnOptions: {
 				  frozenCount :11,
@@ -569,10 +571,27 @@ class abc{
 					mainGrid.uncheck(i);
 				}
 			} */
+			let instrNo;
 			console.log(ev.rowKey)
-			hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey));
+			if(hiddenMainGrid.getData().length==0){
+				hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey));
+			}else{
+				let i =0;
+				for(obj of hiddenMainGrid.getData()){
+					if(obj.prcCd==mainGrid.getRow(ev.rowKey).prcCd){
+						i=1;
+					}
+				}
+				if(i==0){
+					hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey))
+				}
+			}
+			
+			
+			
 			instrDate=mainGrid.getValue(mainGrid.getRow(ev.rowKey),'instrDate')			
-			let instrNo=mainGrid.getValue(mainGrid.getRow(ev.rowKey),'instrNo')
+			instrNo=mainGrid.getValue(mainGrid.getRow(ev.rowKey),'instrNo')
+			
 			fetch('planDtlPrc',{
 				method:'POST',
 				headers:{
@@ -589,20 +608,36 @@ class abc{
 					obj.instrNo=instrNo;
 					datas.push(obj)
 				}
-				if(mainGrid.getCheckedRows().length==1){
+				let i
+				if(prcGrid.getData().length==0){
+					prcGrid.appendRows(datas);	
+				}
+				for(obj of prcGrid.getData()){
+					i = 0;
+					if(obj.prcCd==mainGrid.getRow(ev.rowKey).prcCd){
+						i=1;
+					}
+					
+				}
+				if(i==0){					
+					prcGrid.appendRows(datas);	
+				}
+				/* if(mainGrid.getCheckedRows().length==1){
 					prcGrid.resetData(datas);
 					//mainGrid.uncheck(mainGrid.getRow(mainGrid.getCheckedRowKeys()[0]))
 				}
 				else{
 					prcGrid.appendRows(datas);
-				}
+				} */
 				
 			})
 		})
 		
 		
+		
 		//메인2그리드 누르면 자재정보
 		prcGrid.on("click",ev=>{
+			
 			console.log("dddd")
 			console.log(prcGrid.getRow(ev.rowKey))
 			prcGrid.setValue(0,'instrDate',selectInstrDate);
@@ -650,6 +685,7 @@ class abc{
 		})
 		
 		prcGrid.on('check',ev=>{
+			prcGrid.blur();
 			console.log(prcGrid.getCheckedRows());
 			hiddenGrid.appendRows(prcGrid.getCheckedRows())
 
@@ -823,20 +859,14 @@ class abc{
  }
 		});
 		
-		
-		
-		
-		addRow.addEventListener("click",ev=>{
-			mainColumns[0].editor.options.listItems[i]={text:obj.prdCd,value:obj.prdCd}
-			mainGrid.appendRow();
-			mainGrid.disableColumn('planDtlNo')
-			mainGrid.enableColumn('planDtlNo')
-		})
 		resetGrid.addEventListener("click",ev=>{
+			mainGrid.clear();
+			modalGrid.clear();
+			prcGrid.clear();
+			hiddenModalGrid.clear();
+			hiddenMainGrid.clear();
+			hiddenGrid.clear();
 			
-			for(i=0;i<mainGrid.getData().length;i++){
-				mainGrid.removeRow(i);
-			}
 		})
 ////////lPad ////////
 function lpad(str,padLen,padStr){

@@ -19,9 +19,9 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+<%-- <link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
 <link rel="stylesheet" href="${path}/resources/jquery-ui/images">
-</head>
+ --%></head>
 <style>
 #abc {
 	display: none;
@@ -49,10 +49,10 @@ select {
 }
 </style>
 <body>
-	<label for="checkedY">지시완료</label>
+<!-- 	<label for="checkedY">지시완료</label>
 	<input type="radio" id="checkedY" name="phs" value="Y">
 	<label for="checkedN">미지시</label>
-	<input type="radio" id="checkedN" name="phs" value="N">
+	<input type="radio" id="checkedN" name="phs" value="N"> -->
 	
 	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
 	<button id="addBtn">계획추가</button>
@@ -400,7 +400,7 @@ class lineEditor{
 	          type:abc
 	        }
 	      },{
-		    	header: '종료날자',
+		    	header: '종료날짜',
 		        name: 'workEndDate',
 		        align:'center',
 		        editor:{
