@@ -27,7 +27,7 @@
 	width: 90px !important;
 }
 .bascard1{
-	height:116px;
+	height:80px;
 }
 </style>
 </head>
@@ -48,7 +48,7 @@
 		<div class="col-md-12 grid-margin stretch-card">
 			<div class="card bascard1">
 				<div class="card-body">
-					<h4 class="card-title">설비정보</h4>
+					<!-- <h4 class="card-title">설비정보</h4> -->
 					<form id="frm" method="post">
 						<div class="rowdiv">
 							<span>
@@ -284,8 +284,8 @@
          el: document.getElementById('grid'),
          data:data,  //이름이 같다면 생격가능
          /* rowHeaders : [ 'checkbox' ], */
-         bodyHeight: 472,
-         minBodyHeight: 472,
+         bodyHeight: 509,
+         minBodyHeight: 509,
          columns
          //고정컬럼 (스크롤이 움직여도 고정되서 보인다)
          /* columnOptions: {
