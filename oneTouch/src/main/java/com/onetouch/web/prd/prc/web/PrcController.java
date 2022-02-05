@@ -25,10 +25,6 @@ public class PrcController {
 	public String pdtListPage() {
 		return "tiles/pdt/pdtPrcMng";
 	}
-	@RequestMapping("dashBoard")
-	public String dashBoardData() {
-		return "tiles/pdt/ttest";
-	}
 	@ResponseBody
 	@GetMapping("lineList")
 	public List<PrcVO> lineList(){
