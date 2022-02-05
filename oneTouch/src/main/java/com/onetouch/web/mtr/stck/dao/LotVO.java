@@ -4,23 +4,23 @@ import lombok.Data;
 
 @Data
 public class LotVO {
-	private String mtrLot;
-	private String hldCnt;
-	private String mtrCd;
-	private String stckCnt;
-	private String calAmt;
-	private String cmt;
-	private String inNo;
-	private String inDate;
-	private String mngAmt;
-	private String inAmt;
-	private String seq;
-	private String mtrNm;
-	private String unitNm;
-	private String mtrSectNm;
-	private String mtrStckCnt;
-	private String safeStck;
-	private String useYn;
-	private String unit;
-	private String stckUse;
+	public String mtrLot;
+	public String hldCnt;
+	public String mtrCd;
+	public String stckCnt;
+	public String calAmt;
+	public String cmt;
+	public String inNo;
+	public String inDate;
+	public String mngAmt;
+	public String inAmt;
+	public String seq;
+	public String mtrNm;
+	public String unitNm;
+	public String mtrSectNm;
+	public String mtrStckCnt;
+	public String safeStck;
+	public String useYn;
+	public String unit;
+	public String stckUse;
 }
