@@ -54,9 +54,9 @@ display: none; /* 화살표 없애기 for IE10, 11*/
 }
 /*datepicker버튼*/
 .ui-datepicker-trigger{
-	padding: 2.9px 5px 4.5px 5px !important;   
+	/* padding: 2.9px 5px 4.5px 5px !important;   
 	border-radius: 8px !important;
 	background-color: #7DA0FA !important;
 	border-color: #7DA0FA !important;
-	border-style: solid;
+	border-style: solid; */
 }
