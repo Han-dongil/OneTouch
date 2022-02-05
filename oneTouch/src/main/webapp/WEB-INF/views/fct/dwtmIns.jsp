@@ -100,7 +100,7 @@
 			<div class="row row1">
 				<div class="col-md-12 grid-margin stretch-card">
 					<div class="card bascard1">
-						<div class="card-body bascard1">
+						<div class="card-body">
 						
 							<label class="labeltext labeltext1">자재구분</label>
 							<div class="form-check checkwidth" style="display:inline-block">
@@ -205,7 +205,6 @@
 										<option value="수리">수리</option>
 										<option value="대기">대기</option>
 									</select>
-									
 								</div>
 								
 								<div class="rowdiv">
@@ -319,7 +318,7 @@
 
 $(function() {
     //input을 datepicker로 선언
-    $("#datepicker").datepicker({
+    $(".jquerydtpicker").datepicker({
         dateFormat: 'yy-mm-dd' //달력 날짜 형태
         ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
         ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
@@ -339,7 +338,7 @@ $(function() {
     });                    
     
     //초기값을 오늘 날짜로 설정해줘야 합니다.
-    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    $('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
     	       
 });
 
