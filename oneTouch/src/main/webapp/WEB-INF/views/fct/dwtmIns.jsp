@@ -20,36 +20,211 @@
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/function.js"></script>
 
+<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
+
 <style type="text/css">
-	.red{
-			background-color:red
-			
-		}
-	.green{
-			background-color:#7DA0FA
-			
-		  }
-	.blue{
-			background-color:#F3797E 
-			
-		}
-		.kioskBtn1{
-			margin: 70px 40px 40px 20px;	
-			width: 170px;
-			height: 170px;
-			font-size: 3rem;
-		}
-		.btn-sub {
-		  color: #fff;
-		  background-color: #7DA0FA;
-		  border-color: #7DA0FA;
-		}
+.red{
+		background-color:red
+		
+	}
+.green{
+		background-color:#7DA0FA
+		
+	  }
+.blue{
+		background-color:#F3797E 
+		
+}
+.labeltext1{
+	width: 100px !important;
+}
+.inputsize{
+	width: 45px;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+.colline1{
+	margin-left: 20px;
+	width: 90px !important;
+}
+.colline2{
+	margin-left: 40px;
+	width: 90px !important;
+}
+.colline3{
+	width: 30px;
+}
+.bascard1{
+	height: 120px;
+}
+.bascard2{
+	height: 667px;
+}
+.kioskBtn1{
+	margin: 70px 40px 40px 20px;	
+	width: 170px;
+	height: 170px;
+	font-size: 3rem;
+}
+.btn-sub {
+	color: #fff;
+	background-color: #7DA0FA;
+	border-color: #7DA0FA;
+}
+.addmiargin{
+	margin-left: 20px;
+}
 </style>
 
 </head>
 <body>
 
-<h3>[비가동 관리]</h3>
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">비가동관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex row">
+		<div class = "col-5">
+			<h4 class="gridtitle">✔설비상태</h4>
+			<br>
+			<hr>
+			<div class="row row1">
+				<div class="col-md-12 grid-margin stretch-card">
+					<div class="card bascard1">
+						<div class="card-body bascard1">
+						
+							<label class="labeltext labeltext1">자재구분</label>
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="fctSelectRdo">
+							  		<input type="radio" class="form-check-input" id="fctSelectRdo" name="dwtmRao" value="" checked>
+							  		동기
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="proceedingDwtm">
+							  		<input type="radio" class="form-check-input" id="proceedingDwtm" name="dwtmRao">
+							  		비동기
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check checkwidth" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="dwtmFctSelectRdo">
+							  		<input type="radio" class="form-check-input" id="dwtmFctSelectRdo" name="dwtmRao">
+							  		비동기이력
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							
+							<div class="rowdiv">
+								<label class="labeltext labeltext1">설비구분&nbsp;</label>
+								<select id="checkPrcCd" name="checkPrcCd" class="inputtext" onclick=fctChekPrcCd()></select>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="fctGridDiv"></div>
+			<div id="dwtmFctGridDiv"></div>
+			
+		</div>
+		
+		<div class = "col-7">
+			<h4 class="gridtitle">✔비가동등록</h4>
+			<span class="floatright">
+				<button type="button" id='btnCle' onclick=cleardetail()  class="btn btn-main btn1 newalign2">초기화</button>
+				<button type="button" id='btnDel' onclick=dwtmSave() class="btn btn-main btn1 newalign2">삭제</button>
+				<button type="button" id='btnSave' onclick=dwtmDelete() class="btn btn-primary btn1 newalign2">저장</button>
+			</span>
+			<br>
+			<hr>
+			<div class="row row1">
+				<div class="col-md-12 grid-margin stretch-card">
+					<div class="card bascard2">
+						<div class="card-body bascard2">
+							<form id="flwFrm" name="flwFrm" method="post">
+								<div class="rowdiv">
+									<label class="labeltext colline1">설비코드</label>
+									<input type="text" id="fctCd" name="fctCd" class="inputtext" readonly>
+									<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+									<label class="labeltext colline2">설비명</label>
+									<input type="text" id="fctNm" name="fctNm" class="inputtext" readonly>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext colline1">비가동코드</label>
+									<input type="text" id="dwtmCd" name="dwtmCd" class="inputtext" readonly>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext colline1">입력일자</label>
+									<input type="text" name="dwtmDate" id="dwtmDate" class="datepicker jquerydtpicker"/>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext colline1">작업자</label>
+									<input type="text" id="empNo" name="empNo" class="inputtext">
+									<button type="button" id="btndwtmEmp" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+								</div>
+								
+								<div class="rowdiv blockdiv">
+									<span>
+										<input id="dwtmStartTime" name="dwtmStartTime" class="inputtext inputsize addmiargin">
+										<label class="labeltext colline3">시</label>
+										<input id="dwtmStartMinute" name="dwtmStartMinute" class="inputtext inputsize">
+										<label class="labeltext colline3">분</label>
+										<button type="button" id="clickStartBtn" onclick=startTime() class="btn btn-sub kioskBtn1">시작</button>	
+										<input type="hidden" id="strDt" name="strDt">			
+										
+										<input id="dwtmEndTime" name="dwtmEndTime" class="inputtext inputsize">
+										<label class="labeltext colline3">시</label>
+										<input id="dwtmEndMinute" name="dwtmEndMinute" class="inputtext inputsize">
+										<label class="labeltext colline3">분</label>
+										<button type="button" id="clickEndBtn" onclick=endTime() class="btn btn-important kioskBtn1">종료</button><br>
+										<input type="hidden" id="finDt" name="finDt">	
+									</span>
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext colline1">비가동사유</label>
+									<select id="msrMtt" name="msrMtt" class="inputtext inputsize1">
+										<option value="점검">점검</option>
+										<option value="수리">수리</option>
+										<option value="대기">대기</option>
+									</select>
+									
+								</div>
+								
+								<div class="rowdiv">
+									<label class="labeltext colline1">작업내용</label>
+									<input type="textarea" id="msrCmt" name="msrCmt" class="inputtext" style="width:360px; height:100px;">
+								</div>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- <h3>[비가동 관리]</h3>
 <hr>
 <div align="right" style="margin-right: 3%;">
 			<button id="btnCle" onclick=cleardetail()>clear</button>
@@ -138,8 +313,35 @@
 		
 	
 	</div>
-</div>
+</div> -->
+
 <script>
+
+$(function() {
+    //input을 datepicker로 선언
+    $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "/oneTouch/resources/template/images/cal_w_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: false //버튼 이미지만 깔끔하게 보이게함
+        //,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+    });                    
+    
+    //초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    	       
+});
 
 	let Grid = tui.Grid;
 	let data;	
@@ -205,8 +407,8 @@
 	         el: document.getElementById('fctGridDiv'),
 	         data: data,  //이름이 같다면 생격가능
 	         columns :fctColumns,
-	         bodyHeight: 600,
-	 		 minBodyHeight: 600,
+	         bodyHeight: 480,
+	 		 minBodyHeight: 480,
 	 		columnOptions: {
 	 			 minWidth:40
 	 			 }

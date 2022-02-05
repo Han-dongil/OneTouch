@@ -24,6 +24,9 @@
 .checkwidth{
 	width:110px;
 }
+.bascard1{
+	height:121px;
+}
 </style>
 </head>
 <body>
@@ -33,19 +36,20 @@
 		<div class="col-md-12 grid-margin">
 			<div class="row">
 				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
-					<h3 class="font-weight-bold page-title">작업수리내역관리</h3>
+					<h3 class="font-weight-bold page-title">수리내역관리</h3>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
-			<div class="card">
+			<div class="card bascard1">
 				<div class="card-body">
-					<h4 class="card-title">조회조건</h4>
+					<!-- <h4 class="card-title">조회조건</h4> -->
 					
 					<form id="fixFrm" method="post">
 						<!-- <div class="form-group"> -->
+							<label class="labeltext">작업구분</label>
 							<div class="form-check checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="requestRio">
 							  		<input type="radio" class="form-check-input" id="requestRio" name="fixPhs" value="수리요청" checked>
@@ -73,7 +77,7 @@
 						
 						
 						<span>
-							<label class="labeltext">해당일자</label>&nbsp;&nbsp;
+							<label class="labeltext">해당일자</label>
 							<input type="Date" id="fixFrom" name="fixFrom" class="datepicker"> 
 							<label> ~ </label> 
 							<input type="Date" id="fixTo" name="fixTo" class="datepicker">
@@ -254,8 +258,8 @@
               frozenCount: 2, // 3개의 컬럼을 고정하고
               frozenBorderWidth: 3 // 고정 컬럼의 경계선 너비를 3px로 한다.
             } */
-        bodyHeight: 425,
- 		minBodyHeight: 425
+        bodyHeight: 468,
+ 		minBodyHeight: 468
     });
     grid.on('response', function(ev) {
 	    if(ev.xhr.response ==0 ){

@@ -40,6 +40,9 @@
 	margin-left: 100px;
 	width: 90px !important;
 }
+.bascard1{
+	height:80px;
+}
 </style>
 </hel>
 <body>
@@ -49,7 +52,7 @@
 		<div class="col-md-12 grid-margin">
 			<div class="row">
 				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
-					<h3 class="font-weight-bold page-title">작업수리내역관리</h3>
+					<h3 class="font-weight-bold page-title">정기점검관리</h3>
 				</div>
 			</div>
 		</div>
@@ -57,9 +60,9 @@
 	
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card">
-			<div class="card">
+			<div class="card bascard1">
 				<div class="card-body">
-					<h4 class="card-title">점검관리</h4>
+					<!-- <h4 class="card-title">점검관리</h4> -->
 					<form id="frm" method="post">
 						<div class="rowdiv">
 							<span>
@@ -289,8 +292,8 @@
 	    data:dataSource,  //이름이 같다면 생격가능
 	    rowHeaders : [ 'checkbox' ],
 	    columns: columns,
-	    bodyHeight: 464,
-        minBodyHeight: 464,
+	    bodyHeight: 509,
+        minBodyHeight: 509,
 	 });
    
    //disapbleColumn 컬럼수정을 막는 코드
