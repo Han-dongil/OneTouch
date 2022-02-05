@@ -33,10 +33,6 @@
 
 
 <style>
-.jquerymonpicker, ui-monthpicker{
-	z-index: 1000000 !important;
-	position: absolute !important;
-}
 
 
 /* .jquerydtpicker{
