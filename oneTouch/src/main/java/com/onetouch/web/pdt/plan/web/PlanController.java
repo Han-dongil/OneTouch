@@ -150,6 +150,11 @@ public class PlanController {
 	public List<PlanVO> slectDate(@RequestBody PlanVO vo){
 		return service.slectDate(vo);
 	}
+	@ResponseBody
+	@PostMapping("planDateCal")
+	public List<PlanVO> planDateCal(@RequestBody PlanVO vo){
+		return service.planDateCal(vo);
+	}
 	
 }
 

@@ -27,7 +27,6 @@
 <!-- 	<button type="button" id="rowAdd" name="rowAdd">행추가</button> -->
 	<div id="workGrid"></div>
 	<div id="prcDtlGrid"></div>
-	<button type="button" id="workAddBtn" name="workAddBtn">소요자재등록</button>
 	<div id="plan-dialog-form" title="생산계획조회">
 		<div>생산계획 조회</div>
 		<select id="planCheck">
@@ -37,10 +36,10 @@
 		<button id="modalSearchBtn" name="modalSearchBtn">조회</button>
 	</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
-	<div id="hiddenGrid" style="display:none"></div>
-	<div id="hiddenMainDiv" style="display:none"></div>
-	<div id="hiddenModalMain" style="display:none"></div>
-	<button type="button" id="modifyBtn" name="modifyBtn">지시등록</button>
+	<div id="hiddenGrid" style="display:block"></div>
+	<div id="hiddenMainDiv" style="display:block"></div>
+	<div id="hiddenModalMain" style="display:block"></div>
+	<button type="button" id="modifyBtn" name="modifyBtn">저장</button>
 	<button type="button" id="addRow">행추가</button>
 	<button type="button" id="resetGrid">초기화</button>
 	
@@ -196,7 +195,12 @@ class abc{
 				contentType:'application/json'
 			} 
 		//메인 그리드 컬럼 설정	
-		const mainColumns = [{
+		const mainColumns = [
+			{
+				header : '제품코드',
+				name : 'prcCd'
+			}
+/* 			{
 	    	header: '제품코드',
 	        name: 'prdCd',
 	        align:'center',
@@ -210,7 +214,8 @@ class abc{
 	        rederer:{
 	          type:abc
 	        }
-	      },{
+	      } */
+		,{
 			header : '계획번호',
 			name : 'planNo'
 		},{
@@ -223,12 +228,10 @@ class abc{
 		},{
 			header : '작업우선순위',
 			name : 'workProt',
-			editor : 'text',
 			hidden:true
 		},{
 			header : '계획일자',
 			name : 'planDate',
-			editor:'datePicker'
 		},{
 			header : '라인번호',
 			name : 'lineNo',
@@ -236,23 +239,20 @@ class abc{
 		},{
 			header : '공정번호',
 			name : 'prcCd',
-			editor : 'text'
 		},{
 			header : '필요수량',
 			name : 'needCnt',
-			editor : 'text'
 		},{
 			header : '지시수량',
 			name : 'instrCnt',
-			editor : 'text'
 		},{
 			header : '작업지시일',
 			name : 'instrDate',
-			editor:'datePicker'
 		},{
 			header : '지시완료일',
 			name : 'pdtFinDate',
-			editor:'datePicker'
+			editor:'datePicker',
+			hidden:true
 		},{
 			header : '지시타임',
 			name : 'workStrTime',
@@ -367,7 +367,8 @@ class abc{
 		},{
 			header : '지시완료일',
 			name : 'pdtFinDate',
-			editor:'datePicker'
+			editor:'datePicker',
+			hidden : true
 		}];
  		
 		//그리드 생성
@@ -516,7 +517,6 @@ class abc{
 					modalGrid.setValue(ev.rowKey,'instrNo',x[0].instrNo)
 					for(let obj of x){
 						obj.instrDate=selectInstrDate;
-						obj.pdtFinDate=finDateSave;
 						obj.instrNo=abc+lpad(def,4,"0");
 						console.log(obj.instrNo)
 					}
@@ -528,6 +528,7 @@ class abc{
 					}
 				})
 			}
+			
 		})
 		modalGrid.on('check',ev=>{
 			console.log("aaaaaaaaaaaaaa")
@@ -535,7 +536,6 @@ class abc{
 			modalGrid.blur();
 			
 			selectInstrDate=modalGrid.getValue(ev.rowKey,'instrDate')			
-			let finDateSave=modalGrid.getValue(ev.rowKey,'pdtFinDate')	
 			console.log(modalGrid.getValue(ev.rowKey,'planNo'));
 			let planNo=modalGrid.getValue(ev.rowKey,'planNo')
 			fetch('planDtlList/'+planNo)
@@ -548,7 +548,6 @@ class abc{
 				let def=startInstrNo.substr(11,15)
 				for(let obj of x){
 					obj.instrDate=selectInstrDate;
-					obj.pdtFinDate=finDateSave;
 					obj.instrNo=abc+lpad(def,4,"0");
 					console.log(obj.instrNo)
 				}
@@ -561,22 +560,25 @@ class abc{
 					hiddenModalGrid.appendRows(modalGrid.getCheckedRows())
 				}
 			})
+			modalDialog.dialog('close');
+			
 		})
-		mainGrid.on('check',ev=>{
-			for(i=0;i<mainGrid.getData().length;i++){
+		mainGrid.on('click',ev=>{
+			/* for(i=0;i<mainGrid.getData().length;i++){
 				if(i!=ev.rowKey){
 					mainGrid.uncheck(i);
 				}
-			}
-			hiddenMainGrid.appendRows(mainGrid.getCheckedRows());
-			instrDate=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrDate')			
-			let instrNo=mainGrid.getValue(mainGrid.getCheckedRows()[0],'instrNo')
+			} */
+			console.log(ev.rowKey)
+			hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey));
+			instrDate=mainGrid.getValue(mainGrid.getRow(ev.rowKey),'instrDate')			
+			let instrNo=mainGrid.getValue(mainGrid.getRow(ev.rowKey),'instrNo')
 			fetch('planDtlPrc',{
 				method:'POST',
 				headers:{
 					"Content-Type": "application/json",
 				},
-				body:JSON.stringify(mainGrid.getCheckedRows())
+				body:JSON.stringify(mainGrid.getRow(ev.rowKey))
 			})
 			.then(response=>response.json())
 			.then(result=>{
@@ -647,7 +649,7 @@ class abc{
 			}
 		})
 		
-		workAddBtn.addEventListener('click',ev=>{
+		prcGrid.on('check',ev=>{
 			console.log(prcGrid.getCheckedRows());
 			hiddenGrid.appendRows(prcGrid.getCheckedRows())
 
@@ -674,16 +676,16 @@ class abc{
 				},
 				body:JSON.stringify(a)
 			})
-			mainGrid.resetData();
-			modalGrid.resetData();
-			prcGrid.resetData();
-			hiddenModalGrid.resetData();
-			hiddenMainGrid.resetData();
-			hiddenGrid.resetData();
+			mainGrid.clear();
+			modalGrid.clear();
+			prcGrid.clear();
+			hiddenModalGrid.clear();
+			hiddenMainGrid.clear();
+			hiddenGrid.clear();
 		})
 		
 		//////////////////////////////////////이벤트/////////////////////////////////////////
-		mainGrid.on("click",ev=>{
+		/* mainGrid.on("click",ev=>{
 			if(ev.columnName=='prdCd'){
 				fetch('prdCdFind')
 				.then(response=>response.json())
@@ -701,7 +703,7 @@ class abc{
 				})
 			}
 			
-		})
+		}) */
 		//모달에 플랜리스트 보여주기
 		function planListSelect(){
 			fetch('./modalPlanList/'+document.getElementById('planCheck').value)
@@ -748,7 +750,8 @@ class abc{
 		},{
 			header : '지시완료일',
 			name : 'pdtFinDate',
-			editor:'datePicker'
+			editor:'datePicker',
+			hidden : true
 		}];
 		let hiddenModalGrid = new Grid({
 			  el: document.getElementById('hiddenModalMain'),
@@ -807,11 +810,12 @@ class abc{
 				name : 'instrDate'
 			},{
 				header : '지시완료일',
-				name : 'pdtFinDate'
+				name : 'pdtFinDate',
+				hidden : true
 			},{
 				header : '지시타임',
 				name : 'workStrTime',
-				hidden : false
+				hidden : true
 			}],
 		 columnOptions: {
 		  frozenCount :11,
