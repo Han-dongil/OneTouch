@@ -81,12 +81,4 @@ public class PrcController {
 		service.fastStop(list.get(0));
 	}
 	
-	@ResponseBody
-	@GetMapping("dashBoardData")
-	public List<List<PrcVO>> dashBoardPrc(){
-		
-		return service.dashBoardData();
-	}
-	
-	
 }
