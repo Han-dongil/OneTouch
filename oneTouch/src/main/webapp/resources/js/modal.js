@@ -262,6 +262,7 @@ function mBas(basCd){
 		url : '../modalBasList',
 		method : 'POST',
 		data : 'basCd=' + basCd,
+		async : false,
 		success : function(result){
 			basData = result;
 		}
