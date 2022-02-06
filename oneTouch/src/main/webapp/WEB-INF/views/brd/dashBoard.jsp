@@ -34,7 +34,7 @@
 		<div class="col-lg-12 stretch-card"  style="display:inline-block">
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">일일 생산계획</h4>
+					<h4 class="card-title">일일 생산현황</h4>
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>

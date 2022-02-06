@@ -21,11 +21,6 @@ public class BrdController {
 	@Autowired BrdService brdService;
 	@Autowired PrcService prcService;
 	
-//	@RequestMapping("/dashBoard")
-//	public String dashBoard() {
-//		return "tiles/brd/dashBoard";
-//	}
-	
 	@RequestMapping("/dashBoard")
 	public String brdList(Model model){
 		List<LotVO> mtrList = new ArrayList<>();
@@ -46,7 +41,6 @@ public class BrdController {
 		List<PrcVO> pdtList = new ArrayList<>();
 		pdtList = brdService.pdtList();
 		
-		System.out.println(pdtList);
 		List<PrcVO> before = new ArrayList<>();
 		List<PrcVO> progress = new ArrayList<>();
 		List<PrcVO> done = new ArrayList<>();
@@ -60,8 +54,6 @@ public class BrdController {
 				progress.add(pdtList.get(i));
 			}
 		};
-		
-		System.out.println(done);
 		
 		model.addAttribute("listWarning", listWarning);
 		model.addAttribute("listCaution", listCaution);

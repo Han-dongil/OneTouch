@@ -611,13 +611,8 @@ let ordDialog = $( "#dialog-ord" ).dialog({
 //---------업체검색모달 row더블클릭 이벤트---------
 //메인의 input박스 채우는거랑, 모달속 input박스채우는거 구분
 function getModalBas(param,ev){
-	if(ev.id == "InCom"){
-		$('#mCompCd').val(param.dtlCd);
-		$('#mCompNm').val(param.dtlNm);
-	} else if(ev.id == "btnInCom"){
 		$('#compCd').val(param.dtlCd);
 		$('#compNm').val(param.dtlNm);
-	}
 		dialog.dialog("close");
 };
 //---------업체검색모달 row더블클릭 이벤트 끝---------

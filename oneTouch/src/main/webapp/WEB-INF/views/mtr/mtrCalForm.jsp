@@ -107,6 +107,9 @@ hr{
 						
 						<span>
 							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+							<button type="button" id="btnSave">저장</button>
+							<button type="button" id="btnAdd">추가</button>
+							<button type="button" id="btnDel">삭제</button>
 						</span>
 					</form>
 				</div>
