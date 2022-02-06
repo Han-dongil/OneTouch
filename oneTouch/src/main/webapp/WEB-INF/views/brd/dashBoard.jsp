@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -27,8 +28,9 @@
 	}
 </style>
 <body>
+<div class="content-wrapper">
 	<div class="row">
-		<div class="col-6">
+		<div class="col-6 grid-margin">
 		<div class="col-lg-12 stretch-card"  style="display:inline-block">
 			<div class="card">
 				<div class="card-body">
@@ -39,73 +41,61 @@
 								<tr>
 									<th>라인</th>
 									<th>제품명</th>
-									<th>생산수량</th>
+									<th>생산수량</th> 
 									<th>불량량</th>
 									<th>상태</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>GLASS01</td>
-									<td>PRD001</td>
-									<td>1000</td>
-									<td class="text-danger">28.76% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-danger">생산대기</label></td>
-								</tr>
-								<tr>
-									<td>Dave</td>
-									<td>53275535</td>
-									<td>Photoshop</td>
-									<td class="text-success">98.05% <i class="ti-arrow-up"></i></td>
-									<td><label class="badge badge-warning">생산중</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
-								<tr>
-									<td>John</td>
-									<td>Premier</td>
-									<td>Photoshop</td>
-									<td class="text-danger">35.00% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-info">생산완료</label></td>
-								</tr>
+								<c:forEach var="bef" items="${before }">
+										<tr>
+											<td>${bef.lineNo }</td>
+											<td>${bef.prdNm }</td>
+											<td>0</td>
+											<td>0</td>
+											<td><label class="badge badge-danger">생산대기</label></td>
+										</tr>
+								</c:forEach>
+								<c:forEach var="pro" items="${progress }">
+										<tr>
+											<td>${pro.lineNo }</td>
+											<td>${pro.prdNm }</td>
+											<td>${pro.pdtCnt }</td>
+											<c:choose>
+												<c:when test="${pro.fltCnt > 0 }">
+													<td class="text-danger">${pro.fltCnt }</td>
+												</c:when>
+												<c:when test="${pro.fltCnt eq null }">
+													<td>-</td>
+												</c:when>
+											</c:choose>
+											<td><label class="badge badge-warning">생산중</label></td>
+										</tr>
+								</c:forEach>
+								<c:forEach var="don" items="${done }">
+										<tr>
+											<td>${don.lineNo }</td>
+											<td>${don.prdNm }</td>
+											<td>${don.pdtCnt }</td>
+											<c:choose>
+												<c:when test="${don.fltCnt > 0 }">
+													<td class="text-danger">${don.fltCnt }</td>
+												</c:when>
+												<c:when test="${don.fltCnt eq null }">
+													<td class="text-success">0</td>
+												</c:when>
+											</c:choose>
+											<td><label class="badge badge-info">생산완료</label></td>
+										</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
+			</div>
+			<br>
+			<br>
 			<div class="col-lg-12 stretch-card"  style="display:inline-block">
 			<div class="card">
 				<div class="card-body">
@@ -114,8 +104,8 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>자재코드</th>
 									<th>자재명</th>
+									<th>단위</th>
 									<th>안전재고</th>
 									<th>가용재고</th>
 									<th>상태</th>
@@ -124,8 +114,8 @@
 							<tbody>
 								<c:forEach var="warning" items="${listWarning }">
 										<tr>
-											<td>${warning.mtrCd }</td>
 											<td>${warning.mtrNm }</td>
+											<td>${warning.unitNm }</td>
 											<td>${warning.safeStck }</td>
 											<td class="text-danger">${warning.stckUse }</td>
 											<td><label class="badge badge-danger">발주시급</label></td>
@@ -133,8 +123,8 @@
 								</c:forEach>
 								<c:forEach var="caution" items="${listCaution }">
 										<tr>
-											<td>${caution.mtrCd }</td>
 											<td>${caution.mtrNm }</td>
+											<td>${caution.unitNm }</td>
 											<td>${caution.safeStck }</td>
 											<td class="text-warning">${caution.stckUse }</td>
 											<td><label class="badge badge-warning">수량체크</label></td>
@@ -146,6 +136,8 @@
 				</div>
 			</div>
 			</div>
+			<br>
+			<br>
 			<div class="col-lg-12 stretch-card" style="display:inline-block">
 			<div class="card">
 				<div class="card-body">
@@ -154,25 +146,40 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>설비코드</th>
 									<th>설비명</th>
-									<th>점검일</th>
+									<th>점검완료일</th>
+									<th>차기점검일</th>
 									<th>D-day</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Jacob</td>
-									<td>유리접합용가압오븐</td>
-									<td class="text-danger">28.76% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-danger">D-Day</label></td>
-								</tr>
-								<tr>
-									<td>Messsy</td>
-									<td>Flash</td>
-									<td class="text-danger">21.06% <i class="ti-arrow-down"></i></td>
-									<td><label class="badge badge-warning">D-7</label></td>
-								</tr>
+								<c:forEach var="fct" items="${fctList }">
+									<c:choose>
+										<c:when test="${fct.dayDiff < 2 }">
+											<tr>
+												<td>${fct.fctNm }</td>
+												<td><fmt:formatDate value="${fct.chkDt }" pattern="yyyy-MM-dd" /></td>
+												<td class="text-danger">${fct.chkExpectDt }</td>
+												<c:choose>
+													<c:when test="${fct.dayDiff == 0 }">
+														<td><label class="badge badge-danger">D-day</label></td>
+													</c:when>
+													<c:otherwise>
+														<td><label class="badge badge-danger">D-${fct.dayDiff }</label></td>
+													</c:otherwise>
+												</c:choose>
+											</tr>
+										</c:when>
+										<c:when test="${fct.dayDiff < 8 }">
+											<tr>
+												<td>${fct.fctNm }</td>
+												<td><fmt:formatDate value="${fct.chkDt }" pattern="yyyy-MM-dd" /></td>
+												<td class="text-warning">${fct.chkExpectDt }</td>
+												<td><label class="badge badge-warning">D-${fct.dayDiff }</label></td>
+											</tr>
+										</c:when>
+									</c:choose>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -180,14 +187,13 @@
 			</div>
 		</div>
 	</div>
-	</div>
 	<div class="col-6">
 		 <div id="piechart" style="width: 900px; height: 500px;"></div>
     	<div id="piechart2" style="width: 900px; height: 500px;"></div>
     	<div id="realPiechart" style="width: 900px; height: 500px;"></div>
 	</div>
 </div>
-
+</div>
 
 
     <script type="text/javascript">
