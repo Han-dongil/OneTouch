@@ -322,7 +322,8 @@
 				name : 'instrNo'
 			},{
 				header : '작업타임',
-				name : 'workStrTime'
+				name : 'workStrTime',
+				hidden:true
 			},{
 				header : '목표수량',
 				name : 'goalCnt'
@@ -496,6 +497,7 @@
 		})
 	})
 	mainGrid.on("click",ev=>{
+		hiddenGrid.resetData([{}])
 		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
 		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
 		//hiddenGrid.setValue(0,'pdtCnt',0)
@@ -503,6 +505,10 @@
 		hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
 		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
 		mainGrid.getRow(ev.rowKey)
+		
+
+		
+		
 		fetch('selectPrcReal',{
 			method:'POST',
 			headers:{
@@ -512,16 +518,19 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			console.log()
-			hiddenGrid.resetData(result)
+			console.log(result)
+			hiddenGrid.resetData([result])
 		})
-		//hiddenGrid.resetData([{}])
-		//hiddenGrid.setValue(0,'fltCnt',0);
-		hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
-		//hiddenGrid.setValue(0,'pdtCnt',0)
-		hiddenGrid.setValue(0,'lineNo',document.getElementById('lineNo').value)
-		hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
-		hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
+		.then(()=>{
+			//hiddenGrid.resetData([{}])
+			//hiddenGrid.setValue(0,'fltCnt',0);
+			hiddenGrid.setValue(0,'instrNo',mainGrid.getValue(ev.rowKey,'instrNo'))
+			//hiddenGrid.setValue(0,'pdtCnt',0)
+			hiddenGrid.setValue(0,'lineNo',document.getElementById('lineNo').value)
+			hiddenGrid.setValue(0,'prcCd',document.getElementById('prcCd').value)
+			hiddenGrid.setValue(0,'goalCnt',mainGrid.getValue(ev.rowKey,'goalCnt'))
+			
+		})
 		fltCheck();
 	})
 	//불량+버튼

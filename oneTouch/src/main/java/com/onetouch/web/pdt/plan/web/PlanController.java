@@ -155,6 +155,11 @@ public class PlanController {
 	public List<PlanVO> planDateCal(@RequestBody PlanVO vo){
 		return service.planDateCal(vo);
 	}
+	@ResponseBody
+	@GetMapping("updFind")
+	public PlanVO updFind(@PathVariable String lineNo){
+		return service.updFind(lineNo);
+	}
 	
 }
 

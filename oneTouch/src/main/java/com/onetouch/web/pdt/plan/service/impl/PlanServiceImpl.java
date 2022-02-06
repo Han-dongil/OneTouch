@@ -212,6 +212,11 @@ public class PlanServiceImpl implements PlanService {
 		}
 		return list;
 	}
+	@Override
+	public PlanVO updFind(String lineNo) {
+		
+		return mapper.updFind(lineNo);
+	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기
 }

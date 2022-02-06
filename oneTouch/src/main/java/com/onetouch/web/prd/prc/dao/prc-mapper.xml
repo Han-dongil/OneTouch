@@ -19,7 +19,7 @@
 	</select>
 	<select id="prdPrcList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select p.instr_no, p.work_str_time,p.work_str_date,p.goalCnt goalCnt, p.prc_seq
-		from pdt_work_instr a join (select p.instr_no, p.work_str_time,p.work_str_date,p.instr_cnt goalCnt, f.prc_seq
+		from pdt_work_instr a join (select p.instr_no, p.work_str_time,p.work_str_date,p.pdt_cnt goalCnt, f.prc_seq
 				from pdt_work_instr_dtl p, 
 				    (select a.prd_cd, a.prd_nm, a.prd_std, a.mng_unit, a.prd_sect, a.able_line_no, a.use_yn,    b.prc_cd, b.prc_seq, b.work_cmt, b.std_load, b.unit_cost, b.lead_time
 				     from adm_prd a join adm_prc_flow b
@@ -111,7 +111,7 @@
 		update prd_prc_mng set flt_cnt = #{fltCnt} where instr_no=#{instrNo} AND line_no=#{lineNo} And prc_cd=#{prcCd}
 	</update>
 	<select id="realFlt" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select instr_no,flt_cnt,prc_cd,nvl(pdt_cnt,0) pdt_cnt ,nvl((select sum(flt_cnt) 
+		select now_phs,work_str_dt,instr_no,nvl(flt_cnt,0) fltCnt,prc_cd,nvl(pdt_cnt,0) pdt_cnt ,nvl((select sum(flt_cnt) 
                                     from prd_prc_mng
                                     where instr_no=#{instrNo}
                                     group by instr_no),0) as sumFlt
