@@ -176,4 +176,8 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 <select id="dateArr" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select (to_date(#{workStrDate},'yyyy-MM-dd')+to_number(#{date})) as workStrDate from dual
 </select>
+<select id="updFind" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select uph_pdt_amt*24 as upd from fct_line
+	where line_no = #{lineNo}
+</select>
 </mapper>

@@ -64,6 +64,15 @@
 	</select>
 	<select id="planList"
 		resultType="com.onetouch.web.pdt.work.dao.WorkVO">
+<!-- 				select DISTINCT *
+		from ((select a.plan_no , a.ord_sht_no , a.due_date , a.work_prot , a.plan_date , a.now_phs ,b.work_str_date
+		        from pdt_plan a join pdt_plan_dtl b
+		        on a.plan_no=b.plan_no
+		      )) a left join (select * from pdt_work_instr
+		                                                          ) b
+		on a.plan_no = b.plan_no
+		where 1=1 -->
+		
 		select DISTINCT *
 		from ((select a.plan_no , a.ord_sht_no , a.due_date , a.work_prot , a.plan_date , a.now_phs ,b.work_str_date
 		        from pdt_plan a join pdt_plan_dtl b
@@ -72,7 +81,7 @@
 		                                                          where to_date(instr_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')) b
 		on a.plan_no = b.plan_no
 		where 1=1
-		
+		 
 <!-- 		<if test='ordDate!=""'>
 			and to_char(ord_date,'yyyy-MM-dd')=#{ordDate}
 		</if> -->

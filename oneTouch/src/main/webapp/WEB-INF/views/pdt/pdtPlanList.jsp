@@ -945,26 +945,31 @@ class lineEditor{
 						return x;
 					}
 					});
-				for(a of uniqueDate){
-					let object={}
-					object.uphPdtAmt=result[0].upd;
-					object.workStrDate=a;
-					result.push(object);
-				}
-				result=result.sort((a,b)=>{
-					return a.workStrDate<b.workStrDate ? -1:1;
-				})
-				console.log(result);
-				for(obj of result){//생산가능수량
-					//시작~끝  
-					for(date of dateResult){  //날짜~  
-						if(obj.uphPdtAmt*1<planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt')*1 && obj.workStrDate==date.workStrDate){
-							obj.uphPdtAmt//그날생산수량
-							obj.workStrDate//해당일
-							msg +=(obj.workStrDate).substring(0,10)+'일의 생산 가능수량은' +obj.uphPdtAmt+'개입니다\n'
+				fetch('updFind/'+planGrid.getData()[0].rowKey,'lineNo')
+				.then(response=>response.json())
+				.then(result=>{
+					let upd=result.upd;
+					for(a of uniqueDate){
+						let object={}
+						object.uphPdtAmt=upd;
+						object.workStrDate=a;
+						result.push(object);
+					}
+					result=result.sort((a,b)=>{
+						return a.workStrDate<b.workStrDate ? -1:1;
+					})
+					console.log(result);
+					for(obj of result){//생산가능수량
+						//시작~끝  
+						for(date of dateResult){  //날짜~  
+							if(obj.uphPdtAmt*1<planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt')*1 && obj.workStrDate==date.workStrDate){
+								obj.uphPdtAmt//그날생산수량
+								obj.workStrDate//해당일
+								msg +=(obj.workStrDate).substring(0,10)+'일의 생산 가능수량은' +obj.uphPdtAmt+'개입니다\n'
+							}
 						}
 					}
-				}
+				})
 				return msg;
 			})
 			.then(msg=>{
@@ -1317,7 +1322,7 @@ function needOrdCd(){
 		})
 	})
 
-	lotGrid.on('check',ev=>{
+	lotGrid.on('editingFinish',ev=>{
 		let modiData = lotGrid.getModifiedRows().updatedRows;
 		let modiList=[];
 		let prcSelect=document.getElementById('prcSelect');
@@ -1329,7 +1334,7 @@ function needOrdCd(){
 			console.log(obj);
 			modiList.push(obj);
 		}
-		let lotData1=lotGrid.getModifiedRows().updatedRows[0];
+		let lotData1=lotGrid.getRow(ev.rowKey);
 		lotData1.planNo=grid.getData()[0].planNo;
 		lotData1.lineNo=planGrid.getData()[0].lineNo;
 		hiddenGrid.appendRows([lotData1]);

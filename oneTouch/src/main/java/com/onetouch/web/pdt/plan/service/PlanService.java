@@ -25,4 +25,5 @@ public interface PlanService {
 	List<PlanVO> safeStckView();
 	List<PlanVO> slectDate(PlanVO vo);
 	List<PlanVO> planDateCal(PlanVO vo);
+	PlanVO updFind(String lineNo);
 }

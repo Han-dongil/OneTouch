@@ -571,18 +571,19 @@ class abc{
 					mainGrid.uncheck(i);
 				}
 			} */
+			console.log(mainGrid.getRow(ev.rowKey).prcCd)
 			let instrNo;
 			console.log(ev.rowKey)
 			if(hiddenMainGrid.getData().length==0){
 				hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey));
 			}else{
-				let i =0;
+				let z =0;
 				for(obj of hiddenMainGrid.getData()){
 					if(obj.prcCd==mainGrid.getRow(ev.rowKey).prcCd){
-						i=1;
+						z=1;
 					}
 				}
-				if(i==0){
+				if(z==0){
 					hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey))
 				}
 			}
@@ -612,11 +613,14 @@ class abc{
 				if(prcGrid.getData().length==0){
 					prcGrid.appendRows(datas);	
 				}
-				for(obj of prcGrid.getData()){
-					i = 0;
-					if(obj.prcCd==mainGrid.getRow(ev.rowKey).prcCd){
-						i=1;
-					}
+				i = 0;
+				console.log(prcGrid.getData())
+				console.log()
+				for(obj of datas){
+					for(lot of prcGrid.getData())
+						if(obj.mtrLot==lot.mtrLot){
+							i=1;
+						}
 					
 				}
 				if(i==0){					
