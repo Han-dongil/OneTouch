@@ -350,7 +350,7 @@ const mtrColumns = [{
 					 {
 					   header: '자재명',
 					   name: 'mtrNm',
-					   align: 'center',
+					   align: 'left',
 					   sortable: true
 					 },
 					 {
@@ -476,7 +476,7 @@ const lotColumns = [{
 	 {
 	   header: '자재명',
 	   name: 'mtrNm',
-	   align: 'center',
+	   align: 'left',
 	   sortable: true
 	 },
 	 {
