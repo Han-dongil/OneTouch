@@ -54,7 +54,7 @@ select {
 	<label for="checkedN">미지시</label>
 	<input type="radio" id="checkedN" name="phs" value="N"> -->
 	
-	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
+<!-- 	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button> -->
 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
 	<button id="delBtn">초기화</button>
