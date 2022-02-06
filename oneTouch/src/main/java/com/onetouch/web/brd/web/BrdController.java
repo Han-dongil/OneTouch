@@ -62,12 +62,11 @@ public class BrdController {
 		model.addAttribute("done", done);
 		model.addAttribute("fctList", brdService.fctList());
 		return "tiles/brd/dashBoard";
+		}
+	
+	@ResponseBody
+	@GetMapping("dashBoardData")
+	public List<List<PrcVO>> dashBoardPrc(){
+	return prcService.dashBoardData();
 	}
-	
-		@ResponseBody
-	   @GetMapping("dashBoardData")
-	   public List<List<PrcVO>> dashBoardPrc(){
-		return prcService.dashBoardData();
-	   }
-	
 }
