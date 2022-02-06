@@ -176,10 +176,14 @@ public class PlanServiceImpl implements PlanService {
 				
 			}
 		}
-		
+		System.out.println("111");
 		System.out.println(list);
-		for(int i=0 ; i< list3.size();i++) {
-			list.remove(i);
+		System.out.println("222");
+		System.out.println(list2);
+		for(int i=0 ; i< list.size();i++) {
+			for(int k=0 ; k<list2.size(); k++) {
+				list.remove(list2.get(k));
+			}
 		}
 		System.out.println("aaaaaa");
 		list=mapper.lineUphFind(list);

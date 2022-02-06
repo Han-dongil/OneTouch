@@ -266,6 +266,9 @@ class abc{
 			  el: document.getElementById('workGrid'),
 			  data:mainDataSource,
 			  columns:mainColumns,
+			  scrollY:true,
+			  minBodyHeight : 250,
+			  bodyHeight : 250,
 			  columnOptions: {
 				  frozenCount :10,
 				  frozenBorderWidth:2
@@ -332,8 +335,10 @@ class abc{
 		let prcGrid = new Grid({
 			  el: document.getElementById('prcDtlGrid'),
 			  data:prcDataSource,
-			  rowHeaders:['checkbox'],
 			  columns:prcColumns,
+			  scrollY:true,
+			  minBodyHeight : 250,
+			  bodyHeight : 250,
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
@@ -378,6 +383,9 @@ class abc{
 			  data:modalDataSource,
 			  rowHeaders:['checkbox'],
 			  columns:modalColumns,
+			  scrollY:true,
+			  minBodyHeight : 250,
+			  bodyHeight : 250,
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
@@ -500,6 +508,9 @@ class abc{
 			  el: document.getElementById('hiddenGrid'),
 			  data:hiddenDataSource,
 			  columns:hiddenColumns,
+			  scrollY:true,
+			  minBodyHeight : 250,
+			  bodyHeight : 250,
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
@@ -571,6 +582,7 @@ class abc{
 					mainGrid.uncheck(i);
 				}
 			} */
+			prcGrid.clear();
 			console.log(mainGrid.getRow(ev.rowKey).prcCd)
 			let instrNo;
 			console.log(ev.rowKey)
@@ -587,6 +599,7 @@ class abc{
 					hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey))
 				}
 			}
+
 			
 			
 			
@@ -688,10 +701,10 @@ class abc{
 			}
 		})
 		
-		prcGrid.on('check',ev=>{
+		prcGrid.on('editingFinish',ev=>{
 			prcGrid.blur();
 			console.log(prcGrid.getCheckedRows());
-			hiddenGrid.appendRows(prcGrid.getCheckedRows())
+			hiddenGrid.appendRows([prcGrid.getRow(ev.rowKey)])
 
 		})
 		modifyBtn.addEventListener('click',ev=>{
@@ -808,7 +821,6 @@ class abc{
 		hiddenMainGrid = new Grid({
 		 el: document.getElementById('hiddenMainDiv'),
 		 data:null,
-		 rowHeaders:['checkbox'],
 		 columns:[{
 				header : '계획번호',
 				name : 'planNo',
