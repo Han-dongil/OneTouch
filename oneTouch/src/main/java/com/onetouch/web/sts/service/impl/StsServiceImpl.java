@@ -33,4 +33,22 @@ public class StsServiceImpl implements StsService{
 	@Override
 	public List<StsVO> mtrInMtrY(StsVO stsvo) {  return mapper.mtrInMtrY(stsvo);  }
 
+	@Override
+	public List<StsVO> pdtDate(StsVO stsvo) {  return mapper.pdtDate(stsvo);  }
+
+	@Override
+	public List<StsVO> pdtMonth(StsVO stsvo) {  return mapper.pdtMonth(stsvo);  }
+
+	@Override
+	public List<StsVO> pdtYear(StsVO stsvo) {  return mapper.pdtYear(stsvo);  }
+
+	@Override
+	public List<StsVO> pdtPrdD(StsVO stsvo) {  return mapper.pdtPrdD(stsvo);  }
+
+	@Override
+	public List<StsVO> pdtPrdM(StsVO stsvo) {  return mapper.pdtPrdM(stsvo);  }
+
+	@Override
+	public List<StsVO> pdtPrdY(StsVO stsvo) {  return mapper.pdtPrdY(stsvo);  }
+
 }
