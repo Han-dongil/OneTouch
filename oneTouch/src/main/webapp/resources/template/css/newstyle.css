@@ -1,10 +1,11 @@
 .datepicker:focus,
-.selectoption:focus {
+.selectoption:focus,
+.monthpicker:focus{
 	box-shadow: none !important;
 	outline: none !important; 
 }
 
-.datepicker, .selectoption, .inputtext{
+.datepicker, .selectoption, .inputtext, .monthpicker{
 	color: #495057 !important;
 	background-color: #fdfdff !important;
 	border: 1px solid #ced4da !important;
@@ -16,7 +17,8 @@
 
 .datepicker:focus,
 .selectoption:focus,
-.inputtext:focus {
+.inputtext:focus,
+.monthpicker:focus{
 	background-color: #fefeff !important;
 	border-color: #95a0f4 !important;
 }

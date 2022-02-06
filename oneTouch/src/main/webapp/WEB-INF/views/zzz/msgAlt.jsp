@@ -80,7 +80,7 @@
 		<br>
 		
 	<!-- <input id="ImageButton" type="text" /> -->
-	<input type="text" id="monthpicker" name="monthpicker" class="monthpicker" class="datepicker jquerymonpicker"/>
+	<input type="text" id="monthpicker" name="monthpicker" class="monthpicker" class="monthpicker jquerymonpicker"/>
 
 		
 
@@ -111,7 +111,7 @@
 	           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 	       });                    
 	       
-	       //초기값을 오늘 날짜로 설정해줘야 합니다.
+	       //초기값을 오늘 날짜로 설정해줘야 합니다.  //디폴트값 셋팅
 	       $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
 	       	       
 	       
@@ -170,6 +170,8 @@ $("#monthpicker").monthpicker({
 	,yearRange: 'c-2:c+2'
 	,dateFormat: 'yy-mm'
 });
+
+$('#monthpicker').monthpicker('setDate', 'today'); //디폴트값 셋팅
 		    
 //------------------------------------------------------------------------------------------------
 		
