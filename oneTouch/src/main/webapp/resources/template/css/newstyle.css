@@ -1,11 +1,10 @@
 .datepicker:focus,
-.selectoption:focus,
-input:focus {
+.selectoption:focus {
 	box-shadow: none !important;
 	outline: none !important; 
 }
 
-.datepicker, .selectoption, .inputtext, input{
+.datepicker, .selectoption, .inputtext{
 	color: #495057 !important;
 	background-color: #fdfdff !important;
 	border: 1px solid #ced4da !important;
@@ -17,8 +16,7 @@ input:focus {
 
 .datepicker:focus,
 .selectoption:focus,
-.inputtext:focus,
-input:focus {
+.inputtext:focus {
 	background-color: #fefeff !important;
 	border-color: #95a0f4 !important;
 }
