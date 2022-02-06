@@ -947,6 +947,12 @@ class lineEditor{
 	
 	addBtn.addEventListener("click",function(){
 		grid.appendRow({})
+		fetch('planNoFind')
+ 		.then(response=>response.json())
+ 		.then(result=>{
+ 			grid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey  ,'planNo',result.planNo);
+ 		})
+		
 		grid.resetOriginData();
 	})
 	
@@ -989,14 +995,15 @@ class lineEditor{
 						return x;
 					}
 					});
-				fetch('updFind/'+planGrid.getData()[0].rowKey,'lineNo')
+				fetch('updFind/'+planGrid.getData()[0].lineNo)
 				.then(response=>response.json())
-				.then(result=>{
-					let upd=result.upd;
+				.then(x=>{
+					let upd=x.upd;
 					for(a of uniqueDate){
 						let object={}
 						object.uphPdtAmt=upd;
 						object.workStrDate=a;
+						console.log(object);
 						result.push(object);
 					}
 					result=result.sort((a,b)=>{
@@ -1013,41 +1020,41 @@ class lineEditor{
 							}
 						}
 					}
+					return msg;
 				})
-				return msg;
-			})
-			.then(msg=>{
-				if(msg!=''){
-					
-					alert(msg);
-				}
-				else{
-					let planInsertData={};
-					planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
-					planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
-					planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
-					
-					
-					fetch('planDtlInsert',{
-						method:'POST',
-						headers:{
-							"Content-Type": "application/json",
-						},
-						body:JSON.stringify(planInsertData)
-					})
-					.then(response=>response.json())
-					.then(result=>{
+				.then(msg=>{
+					if(msg!=''){
 						
-					})
-					grid.clear();
-					planGrid.clear();
-					insertDtlGrid.clear();
-					lotGrid.clear();
-					insertDtlGrid.clear();
-					hiddenGrid.clear();
-					disabledDays.length=0;
-				}
-				
+						alert(msg);
+					}
+					else{
+						let planInsertData={};
+						planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
+						planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
+						planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
+						
+						
+						fetch('planDtlInsert',{
+							method:'POST',
+							headers:{
+								"Content-Type": "application/json",
+							},
+							body:JSON.stringify(planInsertData)
+						})
+						.then(response=>response.json())
+						.then(result=>{
+							alert("계획등록 완료!")
+						})
+/* 						grid.clear();
+						planGrid.clear();
+						insertDtlGrid.clear();
+						lotGrid.clear();
+						insertDtlGrid.clear();
+						hiddenGrid.clear(); */
+						disabledDays.length=0;
+					}
+					
+				})
 			})
 		})
 		
@@ -1177,7 +1184,10 @@ function needOrdCd(){
 	//그리드 생성
 	safeGrid = new Grid({
 		el: document.getElementById('safe-dialog-form'),
-		data:null,
+		data:null,		
+		scrollY:true,
+		minBodyHeight : 150,
+		bodyHeight : 350,
 		columns:[{
 			header : '제품코드',
 			name : 'prdCd',

@@ -48,10 +48,11 @@ display: none; /* 화살표 없애기 for IE10, 11*/
 
 /*yhs 추가*/
 /*화면가장위레이어*/
-.jquerydtpicker{
+.jquerydtpicker , .ui-datepicker{
 	z-index: 1000000 !important;
 	position: relative;
 }
+
 /*datepicker버튼*/
 .ui-datepicker-trigger{
 	/* padding: 2.9px 5px 4.5px 5px !important;   

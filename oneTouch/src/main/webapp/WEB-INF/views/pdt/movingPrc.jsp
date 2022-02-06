@@ -224,7 +224,7 @@
 				console.log("if들어옴")
 				movingPrcGrid.resetData(result);
 				movingShowFnc(ev);
-			}else{v.length=1}
+			}else{v.length=1||result.length==0}
 			
 			
 			

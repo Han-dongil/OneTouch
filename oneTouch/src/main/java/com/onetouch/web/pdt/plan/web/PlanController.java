@@ -156,7 +156,7 @@ public class PlanController {
 		return service.planDateCal(vo);
 	}
 	@ResponseBody
-	@GetMapping("updFind")
+	@GetMapping("updFind/{lineNo}")
 	public PlanVO updFind(@PathVariable String lineNo){
 		return service.updFind(lineNo);
 	}

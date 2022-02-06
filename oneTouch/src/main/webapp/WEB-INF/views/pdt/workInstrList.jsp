@@ -1,5 +1,7 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +44,8 @@
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
 	<div id="hiddenMainDiv" style="display:none"></div>
 	<div id="hiddenModalMain" style="display:none"></div>
-	
+	<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+	<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 	
 	<script>
 		let main2Grid;
@@ -54,7 +57,7 @@
 		let selectInstrDate;
 		let hiddenMainGrid;
 		let mainHiddenDiv=document.getElementById('hiddenMainDiv');
-/////////////////////////////////////////////////////////////////////////
+		
 class abc{
   constructor(props){
     const { grid ,rowKey , columnInfo,value} =props;
@@ -198,7 +201,8 @@ class abc{
 		const mainColumns = [
 			{
 				header : '제품코드',
-				name : 'prdCd'
+				name : 'prdCd',
+		        align:'center',
 			}
 /* 			{
 	    	header: '제품코드',
@@ -217,42 +221,51 @@ class abc{
 	      } */
 		,{
 			header : '계획번호',
-			name : 'planNo'
+			name : 'planNo',
+	        align:'center',
 		},{
 			header : '지시번호',
-			name : 'instrNo' 
+			name : 'instrNo' ,
+	        align:'center',
 		},{
 			header : '납기일자',
 			name : 'dueDate',
-			editor:'datePicker'
+	        align:'center',
 		},{
 			header : '작업우선순위',
 			name : 'workProt',
+	        align:'center',
 			hidden:true
 		},{
 			header : '계획일자',
 			name : 'planDate',
-			hidden : true
+			hidden : true,
+	        align:'center',
 		},{
 			header : '라인번호',
 			name : 'lineNo',
-			editor:'text'
+	        align:'center',
 		},{
 			header : '공정번호',
 			name : 'prcCd',
+	        align:'center',
 		},{
 			header : '필요수량',
 			name : 'needCnt',
+	        align:'right',
 		},{
 			header : '지시수량',
 			name : 'instrCnt',
+	        align:'right',
 		},{
 			header : '작업지시일',
 			name : 'instrDate',
+	        align:'center',
 		},{
 			header : '지시완료일',
 			name : 'pdtFinDate',
 			editor:'datePicker',
+	        align:'center',
 			hidden:true
 		},{
 			header : '지시타임',
@@ -293,41 +306,50 @@ class abc{
 		{
 			header : '라인번호',
 			name : 'lineNo',
-			hidden : true
+			hidden : true,
+	        align:'center',
 		},{
 			header : '공정코드',
 			name : 'prcCd',
-			hidden : false
+			hidden : false,
+	        align:'center',
 			
 		},{
 			header : '자재코드',
 			name : 'mtrCd',
-			hidden : false
+			hidden : false,
+	        align:'center',
 		},{
 			header : 'Lot번호',
 			name : 'mtrLot',
-			hidden : false
+			hidden : false,
+	        align:'center',
 		},{
 			header : '사용수량',
 			name : 'hldCnt',
 			hidden : false,
-	  		editor : 'text'
+	  		editor : 'text',
+	        align:'right',
 		},{
 			header : '재고수량',
 			name : 'stckCnt',
 			hidden : false,
-			editor : 'text'
+			editor : 'text',
+	        align:'right',
 		},{
 			header : '사용가능수량',
 			name : 'realCnt',
 			hidden : false,
+	        align:'right',
 		},{
 			header : '지시번호',
 			name : 'instrNo',
+	        align:'center',
 			hidden : true
 		},{
 			header : '지시일자',
 			name : 'instrDate',
+	        align:'center',
 			hidden : true
 		}];
  		
@@ -359,21 +381,35 @@ class abc{
 		//모달 그리드 컬럼 설정	
 		let modalColumns = [{
 			header : '지시번호',
-			name : 'instrNo'
+			name : 'instrNo',
+	        align:'center',
 		},{
 			header : '계획번호',
-			name : 'planNo'
+			name : 'planNo',
+	        align:'center',
 		},{
 			header : '작업우선순위',
-			name : 'workProt'
+			name : 'workProt',
+	        align:'center',
 		},{
-			header : '작업지시일',
-			name : 'instrDate',
-			editor:'datePicker'
-		},{
+	    	header: '작업지시일',
+	        name: 'instrDate',
+	        align:'center',
+	        editor:{
+	          type:dateEditor,
+	          options:{
+	            listItems:[
+	            ]
+	          }
+	        },
+	        rederer:{
+	          type:abc
+	        }
+	      },{
 			header : '지시완료일',
 			name : 'pdtFinDate',
 			editor:'datePicker',
+	        align:'center',
 			hidden : true
 		}];
  		
@@ -470,36 +506,44 @@ class abc{
 			{
 				header : '라인번호',
 				name : 'lineNo',
-				hidden : true
+				hidden : true,
+		        align:'center',
 				
 			},{
 				header : '공정코드',
 				name : 'prcCd',
-				hidden : true
+				hidden : true,
+		        align:'center',
 			},{
 				header : '자재코드',
 				name : 'mtrCd',
-				hidden : true
+				hidden : true,
+		        align:'center',
 			},{
 				header : 'Lot번호',
 				name : 'mtrLot',
+		        align:'center',
 				hidden : false
 			},{
 				header : '사용수량',
 				name : 'hldCnt',
 				hidden : false,
+		        align:'right',
 		  		editor : 'text'
 			},{
 				header : '재고수량',
 				name : 'stckCnt',
+		        align:'right',
 				hidden : true
 			},{
 				header : '지시번호',
 				name : 'instrNo',
+		        align:'center',
 				hidden : true
 			},{
 				header : '지시일자',
 				name : 'instrDate',
+		        align:'center',
 				hidden : true
 			}];
  		
@@ -540,6 +584,32 @@ class abc{
 						mainGrid.appendRows(x);
 					}
 				})
+			}
+			if(ev.columnName=='instrDate'){
+				$( function() {
+	 			    $( "#datepicker" ).datepicker({
+	 			      dateFormat:"yy-mm-dd",
+	 			      regional:"ko",
+	 	              dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	                 ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	                 ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	                 ,changeYear: true //option값 년 선택 가능
+	                 ,changeMonth: true //option값  월 선택 가능                
+	                 ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+	                 //,buttonText: "선택" //버튼 호버 텍스트              
+	                 ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	                 ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	                 ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	                 ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	                 ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+	                 ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+	                 ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
+	 			    /*  ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
+			    	,buttonImageOnly: true */
+
+	 			    });
+	 			  } );
+				
 			}
 			
 		})
@@ -582,10 +652,10 @@ class abc{
 					mainGrid.uncheck(i);
 				}
 			} */
-			prcGrid.clear();
 			console.log(mainGrid.getRow(ev.rowKey).prcCd)
 			let instrNo;
 			console.log(ev.rowKey)
+			prcGrid.clear();
 			if(hiddenMainGrid.getData().length==0){
 				hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey));
 			}else{
@@ -599,7 +669,6 @@ class abc{
 					hiddenMainGrid.appendRow(mainGrid.getRow(ev.rowKey))
 				}
 			}
-
 			
 			
 			
@@ -703,8 +772,15 @@ class abc{
 		
 		prcGrid.on('editingFinish',ev=>{
 			prcGrid.blur();
-			console.log(prcGrid.getCheckedRows());
-			hiddenGrid.appendRows([prcGrid.getRow(ev.rowKey)])
+			let i=0;
+			for(obj of hiddenGrid.getData()){
+				if(obj.mtrLot==prcGrid.getRow(ev.rowKey).mtrLot){
+					i=1;
+				}
+			}
+			if(i==0){
+				hiddenGrid.appendRows([prcGrid.getRow(ev.rowKey)])
+			}
 
 		})
 		modifyBtn.addEventListener('click',ev=>{
@@ -728,6 +804,9 @@ class abc{
 					"Content-Type": "application/json",
 				},
 				body:JSON.stringify(a)
+			})
+			.then(()=>{
+				alert("지시완료")
 			})
 			mainGrid.clear();
 			modalGrid.clear();
@@ -789,21 +868,26 @@ class abc{
 				//그리드 생성
 		let hiddenModalColumns = [{
 			header : '지시번호',
-			name : 'instrNo'
+			name : 'instrNo',
+	        align:'center',
 		},{
 			header : '계획번호',
-			name : 'planNo'
+			name : 'planNo',
+	        align:'center',
 		},{
 			header : '작업우선순위',
-			name : 'workProt'
+			name : 'workProt',
+	        align:'center',
 		},{
 			header : '작업지시일',
 			name : 'instrDate',
-			editor:'datePicker'
+			editor:'datePicker',
+	        align:'center',
 		},{
 			header : '지시완료일',
 			name : 'pdtFinDate',
 			editor:'datePicker',
+	        align:'center',
 			hidden : true
 		}];
 		let hiddenModalGrid = new Grid({
@@ -821,52 +905,66 @@ class abc{
 		hiddenMainGrid = new Grid({
 		 el: document.getElementById('hiddenMainDiv'),
 		 data:null,
+		 rowHeaders:['checkbox'],
 		 columns:[{
 				header : '계획번호',
 				name : 'planNo',
+		        align:'center',
 				
 			},{
 				header : '지시번호',
-				name : 'instrNo'
+				name : 'instrNo',
+		        align:'center',
 			},{
 				header : '납기일자',
-				name : 'dueDate'
+				name : 'dueDate',
+		        align:'center',
 			},{
 				header : '작업우선순위',
 				name : 'workProt',
 				editor : 'text',
+		        align:'center',
 			    validation : {
 			    	required : false
 			    },
 			},{
 				header : '계획일자',
-				name : 'planDate'
+				name : 'planDate',
+		        align:'center',
 			},{
 				header : '제품번호',
-				name : 'prdCd'
+				name : 'prdCd',
+		        align:'center',
 			},{
 				header : '라인번호',
 				name : 'lineNo',
-				editor:'text'
+				editor:'text',
+		        align:'center',
 			},{
 				header : '공정번호',
-				name : 'prcCd'
+				name : 'prcCd',
+		        align:'center',
 			},{
 				header : '필요수량',
-				name : 'needCnt'
+				name : 'needCnt',
+		        align:'right',
 			},{
 				header : '지시수량',
-				name : 'instrCnt'
+				name : 'instrCnt',
+		        align:'right',
 			},{
 				header : '작업지시일',
-				name : 'instrDate'
+				name : 'instrDate',
+		        align:'center',
 			},{
 				header : '지시완료일',
 				name : 'pdtFinDate',
+		        align:'center',
 				hidden : true
 			},{
 				header : '지시타임',
 				name : 'workStrTime',
+		        align:'center',	
 				hidden : true
 			}],
 		 columnOptions: {
