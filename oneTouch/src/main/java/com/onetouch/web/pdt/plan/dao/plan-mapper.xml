@@ -89,6 +89,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 
+            and b.stck_cnt-b.hld_cnt>0
 
 </select> 
 <insert id="planDtlInsert">

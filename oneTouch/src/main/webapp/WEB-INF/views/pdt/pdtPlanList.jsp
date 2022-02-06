@@ -1207,6 +1207,7 @@ function needOrdCd(){
 	 		.then(response=>response.json())
 	 		.then(result=>{
 	 			i=0
+	 			planColumns[1].editor.options.listItems.length=0;
 	 			for(obj of result){
 		 			planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
 					i++;	 				
