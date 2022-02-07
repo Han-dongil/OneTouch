@@ -50,13 +50,6 @@ public class InfoController {
 			List<Map<String, Object>> list = infomapper.findFctList();
 			HashMap<String, Object> map = new HashMap<String, Object>(); 
 			
-			
-			
-			 //String[] header = ("설비회사","설비코드","성비 상태");
-			 //map.put("headers", header);
-			 
-			 
-			
 			map.put("filename", "excel_dept");
 			map.put("datas", list);
 			return new ModelAndView("excelView", map);

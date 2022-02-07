@@ -32,6 +32,7 @@ public class MtrInListController {
 	//엑셀출력
 			@RequestMapping("/MtrExcelView.do")
 			public ModelAndView excelView() throws IOException{
+				System.out.println("통신완료");
 				List<Map<String, Object>> list = Mmapper.selectExcelIn();
 				HashMap<String, Object> map = new HashMap<String, Object>(); 
 				System.out.println("리스트 보여주기");
