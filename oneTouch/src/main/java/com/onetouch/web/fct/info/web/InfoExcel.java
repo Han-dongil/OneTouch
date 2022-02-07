@@ -28,15 +28,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.onetouch.web.fct.info.dao.InfoMapper;
 import com.onetouch.web.fct.info.dao.InfoVO;
-
+@RequestMapping("/fct")
 @Controller
 public class InfoExcel {
 
 	@Autowired
 	InfoMapper infoMapper;
 	
-	@RequestMapping("/fct/ExcelCreate.do")
-	public void ExcelCreate(HttpServletResponse response, InfoVO infoVO)throws IOException{
+	@RequestMapping("/ExcelCreate.do")
+	public String ExcelCreate(HttpServletResponse response, InfoVO infoVO)throws IOException{
 		//엑셀 wookbook 생성 / 엑셀 스타일 및 글꼴 설정
 		response.setCharacterEncoding("utf-8");
 		
@@ -154,6 +154,6 @@ public class InfoExcel {
 		
 		//
 		
+		return "tiles/fct/infoSel"; 
 	}
-	
 }

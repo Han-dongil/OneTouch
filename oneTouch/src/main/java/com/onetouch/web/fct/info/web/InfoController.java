@@ -46,6 +46,12 @@ public class InfoController {
 	
 	
 	
+	//설비가 등록된 라인
+	@ResponseBody
+	@PostMapping("/selectFctLineNo")
+	public LineVO selectFctLineNo(@RequestBody LineVO lineVO) {
+		return infoservice.selectLineNo(lineVO);
+	}
 	
 	
 	//공정 시작 설비상태 가동으로 변경

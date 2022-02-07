@@ -76,6 +76,10 @@
 .addmiargin{
 	margin-left: 20px;
 }
+.checkwidth{
+   width:110px;
+}
+
 </style>
 
 </head>
@@ -94,6 +98,7 @@
 
 	<div class="flex row">
 		<div class = "col-5">
+		<form id="dwtmFctSelectFrm" method="POST">
 			<h4 class="gridtitle">✔설비상태</h4>
 			<br>
 			<hr>
@@ -131,12 +136,12 @@
 								<label class="labeltext labeltext1">설비구분&nbsp;</label>
 								<select id="checkPrcCd" name="checkPrcCd" class="inputtext" onclick=fctChekPrcCd()></select>
 							</div>
-						
+		
 						</div>
 					</div>
 				</div>
 			</div>
-			
+		</form>	
 			<div id="fctGridDiv"></div>
 			<div id="dwtmFctGridDiv"></div>
 			
@@ -211,7 +216,6 @@
 									<label class="labeltext colline1">작업내용</label>
 									<input type="textarea" id="msrCmt" name="msrCmt" class="inputtext" style="width:360px; height:100px;">
 								</div>
-								
 							</form>
 						</div>
 					</div>
@@ -220,99 +224,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-<!-- <h3>[비가동 관리]</h3>
-<hr>
-<div align="right" style="margin-right: 3%;">
-			<button id="btnCle" onclick=cleardetail()>clear</button>
-			<button id="btnSave" onclick=dwtmSave()>저장</button>
-			<button id="btnDel" onclick=dwtmDelete()>삭제</button>
-			<hr>
-		</div>
-<div class="flex row">
-	
-	<div class = "col-6">
-		<form id="dwtmFctSelectFrm" method="POST">
-			<span>
-				<label style="font-size: 30px; color: mediumblue; margin-right: 30px">✔설비</label>
-				
-				<label for="fctSelectRdo">비동기 등록
-					<input type="radio" id="fctSelectRdo" name="dwtmRao" checked >
-				</label>
-				<label for="proceedingDwtm">비동기 중인 설비
-					<input type="radio" id="proceedingDwtm" name="dwtmRao">
-				</label>
-				<label for="dwtmFctSelectRdo">비동기 이력
-					<input type="radio" id="dwtmFctSelectRdo" name="dwtmRao">
-				</label>
-				<hr>
-			</span>
-				<label>설비구분</label>
-				<select id="checkPrcCd" name="checkPrcCd" onclick=fctChekPrcCd()></select>
-				<hr>
-			
-			
-		</form>
-		<div id="fctGridDiv"></div>
-		<div id="dwtmFctGridDiv"></div>
-		<br>
-	</div>
-	<div class= "col-6">
-		<form id="flwFrm" name="flwFrm" method="post">
-			<span>
-				<label style="font-size: 30px; color: mediumblue;">✔상세코드</label><br>
-				<label>설비코드</label>
-				<input id='fctCd' name='fctCd'>
-				<label>&nbsp;&nbsp;설비명</label>
-				<input id='fctNm' name='fctNm'>
-				<hr>
-			</span>
-			<label>비가동<br>이력번호&nbsp;</label><input style="width: 172px;" id="dwtmCd" name="dwtmCd" readonly><br>
-			<hr>
-			
-				<label style="margin-right: 10px;">입력일자</label>
-				<input style="margin-right: 20px" type="date" id="dwtmDate" name="dwtmDate">
-				<input style="margin-right: 20px" type="hidden" id="hiddenDwtmDate" name="hiddenDwtmDate"><br>
-				<label style="margin-right: 26px;">작업자</label>
-				<input style="width: 172px;" type="text" id="empNo" name="empNo">
-				<button type="button" id="btndwtmEmp"  style= width:50px;>🔍</button><br>
-				<hr>
-			
-			<div>
-				<label>비가동시간</label><br>
-			</div>
-			<span>
-				<input style="width: 45px;" id="dwtmStartTime" name="dwtmStartTime">
-				<label style="margin-right:10px;">시</label>
-				<input style="width: 45px;" id="dwtmStartMinute" name="dwtmStartMinute">
-				<label style="margin-right:20px;">분</label>
-				<button type="button"  class="btn btn-sub kioskBtn1" id="clickStartBtn" onclick=startTime() >시작</button>	
-				<input type="hidden" id="strDt" name="strDt">			
-				
-				<input style="width: 45px;" id="dwtmEndTime" name="dwtmEndTime">
-				<label style="margin-right:10px;">시</label>
-				<input style="width: 45px;" id="dwtmEndMinute" name="dwtmEndMinute">
-				<label style="margin-right:10px;">분</label>
-				<button type="button" id="clickEndBtn" onclick=endTime() class="btn btn-important kioskBtn1">종료</button><br>
-				<input type="hidden" id="finDt" name="finDt">	
-			</span>
-			<hr>
-			<label >비가동사유</label>
-			<select style="width: 100px;" id="msrMtt" name="msrMtt" >
-				<option value="점검">점검</option>
-				<option value="수리">수리</option>
-				<option value="대기">대기</option>
-			</select>
-			<hr>
-			<label>작업내용</label>
-			<input type="textarea" id="msrCmt" name="msrCmt" style="width:360px; height:100px;">
-		</form>
-		
-	
-	</div>
-</div> -->
 
 <script>
 
@@ -325,8 +236,8 @@ $(function() {
         ,changeYear: true //option값 년 선택 가능
         ,changeMonth: true //option값  월 선택 가능                
         ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-        ,buttonImage: "/oneTouch/resources/template/images/cal_w_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-        ,buttonImageOnly: false //버튼 이미지만 깔끔하게 보이게함
+        ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
         //,buttonText: "선택" //버튼 호버 텍스트              
         ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
         ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
@@ -384,6 +295,7 @@ $(function() {
 				header: '사용공정',
 				name: 'prcCd',
 				editor: 'text',
+			    align:'center'
 			},
 			{
 				header: '공정이름',
@@ -436,9 +348,11 @@ $(function() {
 				editor: 'text',
 			},
 			{
-				header: '비동기 상태',
+				header: '상태',
 				name: 'msrMtt',
 				editor: 'text',
+				width:40,
+			    align:'center'
 			}
 		]
 		
@@ -454,23 +368,7 @@ $(function() {
 	 			 minWidth:50
 	 			 }
 	         });
-		 // 설비 리스튼ajax 요청
-		  
-		 
-	//공정 코드 조회 ajax 요청 select 부분에 담아서 보여주기 
-	/* $.ajax({
-		url:'./admMngList',
-		dataType: 'json',
-		async : false
-	}).done(function(datas){
-		let list = datas.data.contents;
-		console.log(list)
-		$('#checkPrcCd').append("<option value='d'>전체</option>")
-		  for(let contentss of list){
-			$('#checkPrcCd').append("<option value="+contentss.prcCd+">"+contentss.prcNm+"</option>")
-		}  
-	})  */
-	
+		
 	//fct그리드 클릭 이벤트
 	fctGrid.on('click', (ev) =>{
 		
@@ -494,7 +392,10 @@ $(function() {
 			document.getElementById('fctCd').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
 			document.getElementById('fctNm').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
 			document.getElementById('dwtmDate').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
-			//fctGrid.addCellClassName(ev.rowKey,'fctPhs','green')	
+			document.getElementById('dwtmStartTime').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('dwtmStartMinute').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
+			document.getElementById('clickStartBtn').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
+			
 			console.log('ev찍어용')	
 			console.log(ev)
 		}
@@ -516,11 +417,13 @@ $(function() {
 		document.getElementById('dwtmStartMinute').value = dwtmCheckData.dwtmStartMinute;
 		document.getElementById('dwtmEndTime').value = dwtmCheckData.dwtmEndTime;
 		document.getElementById('dwtmEndMinute').value = dwtmCheckData.dwtmEndMinute;
+		document.getElementById('dwtmDate').value = dwtmCheckData.strDt.substr(0,10);
 		
 	})
 	 //라디오 클릭하면 값 가져오기 
   	$("input[name='dwtmRao']:radio").change(function (e) {
   		if(e.target.id == 'fctSelectRdo'){
+  			cleardetail()
   			rdostatus = 1;
   			document.getElementById("dwtmFctGridDiv").style = 'display:none';
   			document.getElementById("fctGridDiv").style = 'display:block';
@@ -533,12 +436,14 @@ $(function() {
   			document.getElementById('dwtmDate').disabled = false;
   			document.getElementById('empNo').disabled = false;
   			document.getElementById('dwtmStartTime').disabled = false;
+  			document.getElementById('dwtmStartTime').disabled = false;
   			document.getElementById('dwtmStartMinute').disabled = false;
   			document.getElementById('dwtmEndTime').disabled = true;
   			document.getElementById('dwtmEndMinute').disabled = true;
   			document.getElementById('clickStartBtn').disabled = false;	
   		}
   		else if(e.target.id == 'proceedingDwtm'){
+  			cleardetail()
   			document.getElementById('dwtmStartTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('dwtmStartMinute').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('clickEndBtn').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
@@ -558,7 +463,7 @@ $(function() {
   			
   		}
   		else{
-  			
+  			cleardetail()
   			document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('clickStartBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
   			rdostatus = 0;
@@ -673,6 +578,7 @@ $(function() {
 	function fctChekPrcCd(){
 		if(rdostatus == 1){
 			fctCheckData = $("#dwtmFctSelectFrm").serializeObject();
+			console.log(fctCheckData)
 			 $.ajax({
 				  url:'./list1',	//나중에 이거 대신에 컨트롤러 요청하면 됨 
 				  method: 'POST',
@@ -813,12 +719,28 @@ $(function() {
 		
 		
 	}
+	//처음 페이지 보일 때 비가동 등록에 input 박스 전부 비활성화 하기 
+	function iptdisabled(){
+		//document.getElementById('fctCd').disabled = true;
+		//document.getElementById('fctNm').disabled = true;
+		document.getElementById('msrCmt').disabled = true;
+		document.getElementById('fctCd').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('fctNm').readOnly = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('dwtmDate').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		
+		document.getElementById('dwtmStartTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('dwtmStartMinute').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('clickStartBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('dwtmEndTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('dwtmEndMinute').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+		document.getElementById('msrCmt').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
+	}
 	
 	fctChekPrcCd();	//페이지 접속후 기본으로 설비를 보여주는 그리드 출력하는 함수
 	document.getElementById("dwtmFctGridDiv").style = 'display:none';
-	
 	changePhs()	//설비 상태 값을 이용한 색 주는 함수
-
+	iptdisabled()
 
 	
 	

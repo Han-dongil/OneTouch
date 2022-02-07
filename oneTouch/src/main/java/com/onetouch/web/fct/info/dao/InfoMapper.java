@@ -8,6 +8,7 @@ import com.onetouch.web.pdt.plan.dao.PlanVO;
 
 public interface InfoMapper {
 
+	LineVO selectLineNo(LineVO lineVO);
 	List<Map<String, Object>> findFctList();
 	//공정 시작할 때 설비 상태 가동 변경
 	int updateEndFctPhs();

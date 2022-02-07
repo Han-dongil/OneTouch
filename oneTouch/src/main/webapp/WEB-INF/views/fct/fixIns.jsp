@@ -98,7 +98,7 @@
 	</div>
 	
 	<span class="floatright">
-		<button type="button" id='btnAdd' class="btn btn-main newalign">추가</button>
+		<!-- <button type="button" id='btnAdd' class="btn btn-main newalign">추가</button> -->
 		<button	type="button" id='btnDel' class="btn btn-main newalign">삭제</button>
 		<button type="button" id='btnSave' class="btn btn-primary newalign">저장</button> 
 	</span>
@@ -175,20 +175,17 @@
 	    header: '수리요청일',
 	    name: 'reqDt',
 	    editor: 'text',
-	    editor: 'text',
     	sortable: true
 	  },
 	  {
 	    header: '수리시작일',
 	    name: 'strDt',
-	    editor: 'text',
 	    editor: 'datePicker',
     	sortable: true
 	  },
 	  {
 		    header: '수리완료일',
 		    name: 'finDt',
-		    editor: 'text',
 		    editor: 'datePicker',
 	    	sortable: true
 	  },
@@ -196,7 +193,8 @@
 		    header: '수리사항',
 		    name: 'fixCmt',
 		    editor: 'text',
-		    sortable: true
+		    sortable: true,
+		     align:'center'
 	  },
 	  {
 			header : '설비수리상태',
@@ -210,22 +208,29 @@
 			          { text: '수리완료', value: '수리완료'}
 			        ]
 			     }
-			}
+			},
+		     align:'center'
 	  },
 	  {
 		    header: '수량',
 		    name: 'cnt',
-		    sortable: true
+		    editor: 'text',
+		    sortable: true,
+		     align:'right'
 	  },
 	  {
 		    header: '단가',
 		    name: 'unitCost',
-		    sortable: true
+		    editor: 'text',
+		    sortable: true,
+		     align:'right'
 	  },
 	  {
-		    header: '단가',
-		    name: 'unitCost',
-		    sortable: true
+		    header: '총합계',
+		    name: 'totCost',
+		    editor: 'text',
+		    sortable: true,
+		     align:'right'
 	  },
 	  {
 		    header: '수리코드',
@@ -244,6 +249,8 @@
   		
   		
   	})
+  	
+  	
 	
   
 	   
@@ -278,7 +285,20 @@
 		}
     
     
-   
+    //수량컬럼 입려후 이벤트 처리 
+    grid.on('editingFinish', function(ev){
+    	if(ev.columnName == 'unitCost'){
+    		console.log('수량 컬럼 입력 후 이벤트 동장 성공')
+    		let cntValue = grid.getValue(ev.rowKey,'unitCost');
+    		let unitValue = grid.getValue(ev.rowKey,'cnt');
+    		grid.setValue(ev.rowKey,'totCost',cntValue*unitValue,true)
+    		console.log(cntValue * unitValue)
+    		
+    	}
+    	
+    })
+    
+    
     btnFind.addEventListener("click", function(){
     	checkRdo();
     	//
@@ -286,6 +306,7 @@
    
 	   btnDel.addEventListener("click", function(){
 		   grid.removeCheckedRows(true);
+		   grid.request('modifyData');
 	   });
 	   
 	   btnSave.addEventListener("click", function(){
@@ -293,12 +314,7 @@
  			grid.request('modifyData');
 	   });
 	   
-	   //등록버튼
-	   btnAdd.addEventListener("click", function() {
-			grid.appendRow({})
-	   });	
-	  
-	   checkRdo();
+      checkRdo();
 	
 	  	
 	  	

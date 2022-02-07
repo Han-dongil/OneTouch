@@ -65,7 +65,7 @@ public class PropController {
 		data.put("result", true);
 		datas.put("contents", prodservice.prodSelect(prodVO));
 		System.out.println("prodVO chkDt 출력");
-		System.out.println(prodservice.prodSelect(prodVO));
+		System.out.println(prodVO);
 		
 		data.put("data", datas);
 		return data;

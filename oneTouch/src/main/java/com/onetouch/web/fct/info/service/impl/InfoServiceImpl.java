@@ -94,6 +94,12 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 
+	@Override
+	public LineVO selectLineNo(LineVO lineVO) {
+		return mapper.selectLineNo(lineVO);
+	}
+
+
 
 
 

@@ -63,7 +63,7 @@
 			<div class="card bascard1">
 				<div class="card-body">
 					<!-- <h4 class="card-title">점검관리</h4> -->
-					<form id="frm" method="post">
+					<form id="fixFrm" method="post">
 						<div class="rowdiv">
 							<span>
 								<label class="labeltext">해당일자</label>&nbsp;&nbsp;
@@ -78,7 +78,7 @@
 							</span>
 							
 							<span class="floatright">
-								<button type="button" id="resetBtn" class="btn btn-main newalign">초기화</button>
+								<button type="button" id="resetBtn" onclick=prodclear()  class="btn btn-main newalign">초기화</button>
 								<button type="button" id="btnFind" class="btn btn-primary newalign">조회</button>
 								
 							</span>
@@ -211,7 +211,7 @@
 	    validation : {
 	    	required : true
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '설비이름',
@@ -229,7 +229,7 @@
 	    validation : {
 	    	required : true
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '차기점검일',
@@ -238,7 +238,7 @@
 	    validation : {
 	    	required : true
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '점검주기',
@@ -247,7 +247,7 @@
 	    validation : {
 	    	required : true
 	    },
-	    align:'left'
+	    align:'right'
   },
   {
 	    header: '점검주기단위',
@@ -256,7 +256,7 @@
 	    validation : {
 	    	required : true
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '판정',
@@ -265,7 +265,7 @@
 	    validation : {
 	    	required : false
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '조치사항',
@@ -274,7 +274,7 @@
 	    validation : {
 	    	required : false
 	    },
-	    align:'left'
+	    align:'center'
   },
   {
 	    header: '조치내역',
@@ -332,33 +332,39 @@
 		    header: '정기점검이력번호',
 		    name: 'prodChkNo',
 		    editor: 'text',
-		    width: 200
+		    width: 200,
+		     align:'center'
 	  },
 	  {
 		    header: '설비이름',
 		    name: 'fctNm',
-		    editor: 'text'
+		    editor: 'text',
+		    align:'left'
 	  },
 	  {
 		    header: '설비코드',
 		    name: 'fctCd',
 		    editor: 'text',
-		    width: 200
+		    width: 200,
+		     align:'center'
 	  },
 	  {
 		    header: '점검일자',
 		    name: 'chkDt',
-		    editor: 'text'
+		    editor: 'text',
+		    align:'center'
 	  },
 	  {
 		    header: '차기점검일',
 		    name: 'chkExpectDt',
-		    editor: 'text'
+		    editor: 'text',
+		    align:'center'
 	  },
 	  {
 		    header: '남은 점검일수',
 		    name: 'dayDiff',
-		    editor: 'text'
+		    editor: 'text',
+		    align:'center'
 		    
 	  }
     ]
@@ -446,8 +452,11 @@
 	 
    // 조회를 하기 위한 조건데이터를 form직렬화를 시켜서 json 타입으로 readData로 넘겨주는 함수 
    function checkRdo(){
+	   
 	   let checkFormdata = $("#fixFrm").serializeObject();
-    	mainGrid.readData(1,checkFormdata, true);
+	   console.log('fixFrm출력하기')
+	   console.log(checkFormdata)
+	   mainGrid.readData(1,checkFormdata, true);
     	
     	
 	}
@@ -478,14 +487,16 @@
 			dataType: 'json',
 			async : false
 		}).done(function(datas){
-			console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-			console.log(datas)
 			$('#fctCd').append("<option value='d'>전체</option>")
 			for(let data of datas){
 				$('#fctCd').append("<option value="+data.dtlCd+">"+data.dtlNm+"</option>")
 			}
 		}) 
 	   
+		function prodclear(){
+			console.log('초기화')
+			mainGrid.clear()
+	 }
 		
 </script>
 </body>
