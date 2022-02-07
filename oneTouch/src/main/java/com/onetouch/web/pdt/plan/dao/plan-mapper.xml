@@ -11,29 +11,29 @@
 		and now_phs ='N'
 	</if>
  	<if test='startDate!="" and startDate!=null'>
-		and due_date>#{startDate}
+		and due_date>=#{startDate}
 	</if>
  	<if test='endDate!="" and endDate!=null'>
-		and #{endDate}>due_date
+		and #{endDate}>=due_date
 	</if>  
 	
 </select>
 <select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select plan_no , line_no , prd_cd , need_cnt , instr_cnt , to_char(work_str_date,'yyyy-MM-dd') work_str_date , work_plan_time  
-		from pdt_plan_dtl 
-		group by plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time
-		having 1=1
+		select distinct a.plan_no , a.line_no , a.prd_cd , a.need_cnt , a.instr_cnt  , a.work_plan_time ,to_char(b.plan_date,'yyyy-MM-dd') work_str_date
+		from pdt_plan_dtl a join pdt_plan b
+		on a.plan_no = b.plan_no
+		where 1=1
 		<if test='planNo!="" and planNo!=null'>
-			and plan_no=#{planNo}
+			and a.plan_no=#{planNo}
 		</if>
 		<if test='prdCd!="" and prdCd!=null' >
-			and prd_cd like '%'||#{prdCd}||'%'
+			and a.prd_cd like '%'||#{prdCd}||'%'
 		</if>
 	 	<if test='startDate!="" and startDate!=null'>
-			and work_str_date>#{startDate}
+			and b.plan_date>=#{startDate}
 		</if>
 	 	<if test='endDate!="" and endDate!=null'>
-			and #{endDate}>work_str_date
+			and #{endDate}>=b.plan_date
 		</if>  
 		order by work_str_date
 </select>
@@ -97,6 +97,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 
             and b.stck_cnt-b.hld_cnt>0
+            order by b.mtr_cd
 
 </select> 
 <insert id="planDtlInsert">

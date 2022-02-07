@@ -33,10 +33,11 @@
 		<label for="checkedN">미지시</label>
 		<input type="radio" id="checkedY" name="nowPhs" value="Y">
 		<label for="checkedY">지시완료</label>
-		<button type="button" id="findPlan" name="findPlan">계획서 조회</button>
+		<button type="button" id="searchBtn" name="searchBtn">조회</button>
+		<!-- <button type="button" id="findPlan" name="findPlan">계획서 조회</button> -->
 		<br>
 		제품코드<input type="text" id="prdCd" name="prdCd">
-		<button type="button" id="prdPlan" name="prdPlan">제품별 조회</button>
+		<!-- <button type="button" id="prdPlan" name="prdPlan">제품별 조회</button> -->
 	</form>
 	<div id="plan-dialog-form" title="계획서 조회">계획서 조회
 		<div id="modalGrid"></div>
@@ -186,7 +187,44 @@
 	});
 	
 	//////////////////////////////이벤트리스너/////////////////////////////////
-	findPlan.addEventListener("click",ev=>{
+	searchBtn.addEventListener('click',ev=>{
+		
+		if(document.getElementById('prdCd').value!=''){
+			console.log("ifff")
+			let searchData=$('#planSearchFrm').serializeObject();
+			searchData.planNo='';
+			fetch('planDtlList',{
+					method:'POST',
+					headers:{
+					"Content-Type": "application/json",
+				},
+				body:JSON.stringify(searchData)
+			})
+			.then(response=>response.json())
+			.then(result=>{
+				mainGrid.resetData(result);
+			})
+		}
+		else{
+			console.log("elseeee")
+			planDialog.dialog("open");
+			modalGrid.refreshLayout();
+			//계획서 조회
+			let searchData=$('#planSearchFrm').serializeObject();
+			fetch('planSearchList',{
+					method:'POST',
+					headers:{
+					"Content-Type": "application/json",
+				},
+				body:JSON.stringify(searchData)
+			})
+			.then(response=>response.json())
+			.then(result=>{
+				modalGrid.resetData(result);
+			})
+		}
+	})
+	/* findPlan.addEventListener("click",ev=>{
 		planDialog.dialog("open");
 		modalGrid.refreshLayout();
 		//계획서 조회
@@ -218,7 +256,7 @@
 		.then(result=>{
 			mainGrid.resetData(result);
 		})
-	})
+	}) */
 	//모달 계획서 클릭시 디테일 메인에띄움
 	modalGrid.on('click',ev=>{
 		fetch('./planDtlList',{

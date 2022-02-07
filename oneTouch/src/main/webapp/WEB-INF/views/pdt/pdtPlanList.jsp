@@ -92,6 +92,7 @@ select {
 		
 	</select>
 	<script>
+	let planGridRowKey;
 	///////////////////////////////////////////////////////////////////////////////////
 	  class abc{
   constructor(props){
@@ -719,20 +720,27 @@ class lineEditor{
 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
 	 	planGrid.on('editingFinish',ev=>{
 			if(ev.columnName=='needCnt'){
-				planGridNeedCnt=planGrid.getData()[0].needCnt
+				planGridNeedCnt=planGrid.getRow(ev.rowKey).needCnt
 			}
 	 		//plan 그리드 
 	 		//라인번호 선택하면 공정코드가져옴
 	 		if(ev.columnName=='lineNo'){
+	 			planGridRowKey=ev.rowKey;
 				disabledDays.length=0;
  				insertLineNo=planGrid.getValue(ev.rowKey,'lineNo');
 	 			fetch('lotLineFind/'+planGrid.getValue(ev.rowKey,'lineNo'))
 	 			.then(response=>response.json())
 	 			.then(result=>{
-
+	 				planGridNeedCnt=planGrid.getRow(ev.rowKey).needCnt;
 	 				let i=0;
  					planColumns[2].editor.options.listItems.length=0;
  					$('#prcSelect').empty();
+ 					let prcSelect=document.getElementById('prcSelect');
+ 					prcSelect.setAttribute('data-id',planGrid.getValue(ev.rowKey,'prdCd'));
+					let optionTag=document.createElement('option');
+					optionTag.value='--공정선택--';
+					optionTag.innerHTML='--공정선택--';
+					prcSelect.appendChild(optionTag);
 	 				for(obj of result){
 	 					let prcSelect=document.getElementById('prcSelect');
 	 					prcSelect.setAttribute('data-id',planGrid.getValue(ev.rowKey,'prdCd'));
@@ -963,6 +971,32 @@ class lineEditor{
  		.then(result=>{
 			grid.setValue(grid.getData()[0].rowKey,'planNo',result.planNo);
  		})
+ 		.then(()=>{
+ 			 fetch('ordShtSelect/'+grid.getValue(0,'ordShtNo'))
+  			 .then(response=>response.json())
+  			 .then(result=>{
+  				 console.log(result)
+  				 return result;
+  			 })
+  			 .then(x=>{
+  				planGrid.resetData(x)
+  				for(let i=0 ; i< x.length ; i++){
+					planGrid.setValue(i,'planNo',grid.getData()[0].planNo);
+  				}
+						 
+ 					 fetch('prdCdFind')
+					.then(response=>response.json())
+					.then(result=>{
+						 planColumns[0].editor.options.listItems.length=0;
+						 for(let obj of result){
+							planColumns[0].editor.options.listItems.push({text:obj.prdNm,value:obj.prdCd})
+						 }
+  							 
+					})
+					
+  			 })
+ 			
+ 		})
 		dialog.dialog('close');
 	}
 	
@@ -1185,7 +1219,7 @@ function needOrdCd(){
 	let safeDialog = $( "#safe-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
-		buttons:{"save":function(){alert("save")}}
+		//buttons:{"save":function(){alert("save")}}
 	});
 	
 	
@@ -1313,44 +1347,49 @@ function needOrdCd(){
 	prcSelect.addEventListener('change',ev=>{
 		lotDiv.style="display:block";
 		lotGrid.refreshLayout();
-		fetch("lotCdFind/"+ev.target.getAttribute('data-id')+'/'+ev.target.value)
-			.then(response=>response.json())
-			.then(result=>{
-				lotGrid.resetData(result);
-				insertPrcCd=planGrid.getValue(ev.rowKey,'prcCd');
-				inserMtrLot=ev.rowKey;
-				return result;
-			}).then(()=>{
-				let createData=planGrid.getModifiedRows().createdRows;		
-				let updateData=planGrid.getModifiedRows().updatedRows;
-				for(obj of createData){
-					obj.prcCd=ev.target.value;
-				}	
-				for(obj of updateData){
-					obj.prcCd=ev.target.value;
-				}	
-				let i =0;
-				let result;
-				if(createData!=''){
-					result=createData
-				}else{
-					result=updateData
-				}
-				for(obj of result){
+		if(ev.target.value!='라인선택'){
+			fetch("lotCdFind/"+ev.target.getAttribute('data-id')+'/'+ev.target.value)
+				.then(response=>response.json())
+				.then(result=>{
+					lotGrid.resetData(result);
+					insertPrcCd=planGrid.getValue(ev.rowKey,'prcCd');
+					inserMtrLot=ev.rowKey;
+					return result;
+				}).then(()=>{
+					let createData=planGrid.getModifiedRows().createdRows;		
+					let updateData=planGrid.getModifiedRows().updatedRows;
+					for(obj of createData){
+						obj.prcCd=ev.target.value;
+					}	
+					for(obj of updateData){
+						obj.prcCd=ev.target.value;
+					}	
+					let i =0;
+					let result;
+					if(createData!=''){
+						result=createData
+					}else{
+						result=updateData
+					}
+					console.log("aaaaaaaaaaaaaaaaa")
+					console.log(planGrid.getRow(planGridRowKey))
+					let planData =planGrid.getRow(planGridRowKey);
+					planData.prcCd=ev.target.value;
+					console.log(insertDtlGrid.getData())
 					for(a of insertDtlGrid.getData()){
-						if(obj.prcCd==a.prcCd){
+						if(planData.prcCd==a.prcCd&&planData.prdCd==a.prdCd){
 							i=1;
 						}
 						
 					}
-				}
-				if(i==0){
-					insertDtlGrid.appendRows(updateData);
-					insertDtlGrid.appendRows(createData);
-					lotGridUseAmt=lotGrid.getData()[0].useAmt;
-				}
-				
-			})
+					if(i==0){
+						insertDtlGrid.appendRow(planData);
+						lotGridUseAmt=lotGrid.getData()[0].useAmt;
+					}
+					
+				})
+			
+		}
 	})
 	
 	
@@ -1368,35 +1407,7 @@ function needOrdCd(){
 //plan 그리드 행추가
 	planGriaAddRow.addEventListener('click',ev=>{
 		if(grid.getValue(0,'ordShtNo')!='null'){
-  			 fetch('ordShtSelect/'+grid.getValue(0,'ordShtNo'))
-  			 .then(response=>response.json())
-  			 .then(result=>{
-  				 console.log(result)
-  				 return result;
-  			 })
-  			 .then(x=>{
-  				 if( (grid.getData()[grid.getRowCount()-1].ordShtNo)){
-	    				 if( (grid.getData()[grid.getRowCount()-1].ordShtNo).substring(0,3)=='ORD'){
-	    					 planGrid.resetData(x);
-	    				 }
-	    				 else{
-		    				 planGrid.resetData([grid.getRow(ev.rowKey)]);
-	    				 }
-  				 }
-					 for(let i=0 ; i<x.length;i++){
-  					 planGrid.setValue(i,'planNo',grid.getData()[0].planNo);
-						 
-					 }
- 					 fetch('prdCdFind')
-					.then(response=>response.json())
-					.then(result=>{
-						 planColumns[0].editor.options.listItems.length=0;
-						 for(let obj of result){
-							planColumns[0].editor.options.listItems.push({text:obj.prdNm,value:obj.prdCd})
-						 }
-  							 
-					})
-  			 })
+  			
   		 }
 		
 		
@@ -1435,7 +1446,17 @@ function needOrdCd(){
 		let lotData1=lotGrid.getRow(ev.rowKey);
 		lotData1.planNo=grid.getData()[0].planNo;
 		lotData1.lineNo=planGrid.getData()[0].lineNo;
-		hiddenGrid.appendRows([lotData1]);
+		let i = 0;
+		for(obj of hiddenGrid.getData()){
+			if(lotData1.mtrLot == obj.mtrLot && lotData1.prdCd == obj.prdCd){
+				i=1
+			}
+		}
+		console.log("여기")
+		console.log(lotData1)
+		if(i==0){
+			hiddenGrid.appendRows([lotData1]);
+		}
 	})
 	
 	</script>

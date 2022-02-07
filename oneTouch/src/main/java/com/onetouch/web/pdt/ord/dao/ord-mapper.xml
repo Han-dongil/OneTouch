@@ -3,14 +3,14 @@
 <mapper namespace="com.onetouch.web.pdt.ord.dao.OrdMapper">
 
 <select id="list" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
-	select ord_sht_no , to_char(due_date,'yyyy-MM-dd') due_date , comp_cd , ord_date ,(case when now_phs='Y' then '계획완료' else '미계획' end) now_phs , cmt from pdt_ord_sht
+	select ord_sht_no , to_char(due_date,'yyyy-MM-dd') due_date , comp_cd , to_char(ord_date,'yyyy-MM-dd') ord_date ,(case when now_phs='Y' then '계획완료' else '미계획' end) now_phs , cmt from pdt_ord_sht
 	where 1=1
 	<if test="nowPhs =='' or nowPhs==null" >
 		And now_phs = 'N'
 	</if>
 </select>
 <select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
-	select ord_sht_no , due_date , comp_cd , ord_date , (case when now_phs='Y' then '계획완료' else '미계획' end) now_phs , cmt from pdt_ord_sht where 1=1
+	select ord_sht_no , to_char(due_date,'yyyy-MM-dd') due_date , comp_cd , to_char(ord_date,'yyyy-MM-dd') ord_date , (case when now_phs='Y' then '계획완료' else '미계획' end) now_phs , cmt from pdt_ord_sht where 1=1
 	<if test="ordDate!='' and ordDate!=null">
 		and to_char(ord_date,'yyyy-MM-dd')=#{ordDate} 
 	</if> 
