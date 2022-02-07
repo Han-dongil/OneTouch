@@ -84,6 +84,8 @@ public class PrcServiceImpl implements PrcService{
 		int flowMin=100;
 		PrcVO vo100 = new PrcVO();
 		vo100=vo;
+		System.out.println("111111111111111111");
+		System.out.println(vo100);
 		// flow min max 구하는 for문
 		for(PrcVO resultVo: list) {
 			System.out.println(resultVo);
@@ -125,6 +127,7 @@ public class PrcServiceImpl implements PrcService{
 			mapper.endUpdate(vo100); //시간업데이트
 			vo=mapper.endTimeSelect(vo100);
 			//lot 번호 부여
+			
 			System.out.println(vo100);
 			String sect=mapper.sectSelect(vo100);
 			System.out.println(sect);
@@ -144,6 +147,8 @@ public class PrcServiceImpl implements PrcService{
 			}
 			System.out.println(vo100);
 			mapper.planPhsUpdate(vo100);
+			System.out.println("ㄴㄴ.");
+			System.out.println(vo100.getLineNo().substring(0,7));
 			vo.setMsg("라인가동 종료!!.");
 			return vo;
 		}
@@ -248,6 +253,7 @@ public class PrcServiceImpl implements PrcService{
 		System.out.println(list);
 		for(PrcVO vo : list) {
 			if(Integer.parseInt(vo.getGoalCnt())>Integer.parseInt(vo.getPdtCnt())) {
+				
 				int uph=mapper.uphFind(vo);
 				System.out.println(uph);
 				System.out.println(vo.getPdtCnt());

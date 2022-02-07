@@ -56,7 +56,7 @@
  		on(a.prc_Cd=b.prc_cd AND a.prd_cd=b.prd_cd)                        
 	</select>
 	<insert id="defaultInsert">
-		insert into prd_prc_mng (instr_no , line_no ,prc_cd , goal_cnt) values (#{instrNo},#{lineNo},#{prcCd},#{instrCnt})
+		insert into prd_prc_mng (instr_no , line_no ,prc_cd , goal_cnt) values (#{instrNo},#{lineNo},#{prcCd},#{pdtCnt})
 	</insert>
 	<update id="startUpdate">
 		update prd_prc_mng set

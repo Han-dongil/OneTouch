@@ -119,7 +119,7 @@ public class PlanController {
 	
 	@ResponseBody
 	@GetMapping("lotLineFind/{lineNo}")
-	public List<InfoVO> prcLineFind(@PathVariable String lineNo,PlanVO vo){
+	public List<PlanVO> prcLineFind(@PathVariable String lineNo,PlanVO vo){
 		vo.setLineNo(lineNo);
 		
 		
