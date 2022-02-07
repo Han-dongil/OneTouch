@@ -46,8 +46,13 @@
 	z-index: 2;
 }
 select {
-	width:100px;
-	height: 30px;
+	right : 2px;
+	width:103%;
+	height: 39px;
+}
+#prcSelect {
+	width:150px;
+	height: 39px;
 }
 </style>
 <body>
@@ -313,7 +318,8 @@ class lineEditor{
 	////////////////////////////////////////////////////////////////////////////////////
 	
 	//document.getElementsClassName('tui-select-box-placeholder')
-	
+	let planGridNeedCnt=0;
+	let lotGridUseAmt=0;      
 	let lotGrid;
   	let lotData;
 	let selectTag;
@@ -590,7 +596,8 @@ class lineEditor{
 		header : '필요수량',
 		name : 'needCnt',
 		hidden:true
-	}];
+	}
+  ];
 
 	//그리드 생성
 	grid = new Grid({
@@ -688,8 +695,20 @@ class lineEditor{
 			header : '계획번호',
 			name : 'planNo',
 			align: 'right',
-			hidden:false
-		}],
+			hidden:true
+		}
+	   ]
+			,summary : {
+		        height: 40,
+		        position: 'bottom',
+		        columnContent: {
+		        	hldCnt: {
+		               template(summary) {
+		            	   let needLotCnt=planGridNeedCnt*lotGridUseAmt-summary.sum*1
+		            	   return "필요수량 : "+planGridNeedCnt*lotGridUseAmt+'<br/>부족수량 : '+needLotCnt;
+		               }
+		           }}
+		}
 	});
 	
 	//document.getElementById('lotDiv').style="display:block"; //lot 그리드 히든풀기
@@ -699,7 +718,9 @@ class lineEditor{
 	
 	// 계획추가 그리드 셀렉트옵션 선택시 이벤트
 	 	planGrid.on('editingFinish',ev=>{
-
+			if(ev.columnName=='needCnt'){
+				planGridNeedCnt=planGrid.getData()[0].needCnt
+			}
 	 		//plan 그리드 
 	 		//라인번호 선택하면 공정코드가져옴
 	 		if(ev.columnName=='lineNo'){
@@ -1092,6 +1113,7 @@ function needLotCnt(abcde){
 		.then(response=>response.json())
 		.then(result=>{
 			lotGrid.resetData(result);
+			
 		})
 	}
 //제품코드로 공정조회
@@ -1325,6 +1347,7 @@ function needOrdCd(){
 				if(i==0){
 					insertDtlGrid.appendRows(updateData);
 					insertDtlGrid.appendRows(createData);
+					lotGridUseAmt=lotGrid.getData()[0].useAmt;
 				}
 				
 			})

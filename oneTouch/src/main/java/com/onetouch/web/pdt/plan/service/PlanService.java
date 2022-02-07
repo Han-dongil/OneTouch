@@ -21,7 +21,7 @@ public interface PlanService {
 	void addInsertPlan (Map<String,List<PlanVO>> map);
 	List<PlanVO> addPlanLotSelect(PlanVO vo);
 	List<PlanVO> findLineNo(String prdCd);
-	List<InfoVO> prcLineFine(PlanVO vo);
+	List<PlanVO> prcLineFine(PlanVO vo);
 	List<PlanVO> safeStckView();
 	List<PlanVO> slectDate(PlanVO vo);
 	List<PlanVO> planDateCal(PlanVO vo);

@@ -89,6 +89,7 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 
+            and b.stck_cnt-b.hld_cnt>0
 
 </select> 
 <insert id="planDtlInsert">
@@ -179,5 +180,11 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 <select id="updFind" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select uph_pdt_amt*24 as upd from fct_line
 	where line_no = #{lineNo}
+</select>
+<select id="lineNoAndSeqFind" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+	select distinct b.prc_cd ,b.prc_seq , (select prc_nm from adm_prc_mng where prc_cd = b.prc_cd) prc_nm
+	from (select prd_cd from adm_prd where able_line_no like '%'||#{lineNo}||'%') a join adm_prc_flow b
+	on a.prd_cd = b.prd_cd
+	order by b.prc_seq
 </select>
 </mapper>

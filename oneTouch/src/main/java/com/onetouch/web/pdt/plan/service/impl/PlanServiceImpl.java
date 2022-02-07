@@ -191,9 +191,9 @@ public class PlanServiceImpl implements PlanService {
 		return list;
 	}
 	@Override
-	public List<InfoVO> prcLineFine(PlanVO vo) {
-		System.out.println("여기"+infoMapper.selectprcCd(vo));
-		return infoMapper.selectprcCd(vo);
+	public List<PlanVO> prcLineFine(PlanVO vo) {
+		System.out.println("여기"+mapper.lineNoAndSeqFind(vo));
+		return mapper.lineNoAndSeqFind(vo);
 	}
 	@Override
 	public List<PlanVO> safeStckView() {

@@ -410,9 +410,10 @@
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			console.log("ddd")
-			console.log(result);
-			if(result.sumFlt!=result.goalCnt){
+			console.log("dddddd")
+			console.log(result.prcCd)
+			console.log(hiddenGrid.getRow(0).prcCd)
+			if(result.sumFlt!=result.goalCnt&&result.prcCd==hiddenGrid.getRow(0).prcCd){
 				hiddenGrid.setValue(0,'sumFlt',result.sumFlt*1);
 				hiddenGrid.setValue(0,'pdtCnt',result.pdtCnt*1);
 				console.log(result)
