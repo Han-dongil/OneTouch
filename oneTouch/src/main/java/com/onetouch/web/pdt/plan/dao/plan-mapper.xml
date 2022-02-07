@@ -19,7 +19,7 @@
 	
 </select>
 <select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-		select plan_no , line_no , prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm, need_cnt , instr_cnt , to_char(work_str_date,'yyyy-MM-dd') work_str_date , work_plan_time  
+		select plan_no , line_no , prd_cd , need_cnt , instr_cnt , to_char(work_str_date,'yyyy-MM-dd') work_str_date , work_plan_time  
 		from pdt_plan_dtl 
 		group by plan_no , line_no , prd_cd, need_cnt , instr_cnt , work_str_date , work_plan_time
 		having 1=1
@@ -29,6 +29,13 @@
 		<if test='prdCd!="" and prdCd!=null' >
 			and prd_cd like '%'||#{prdCd}||'%'
 		</if>
+	 	<if test='startDate!="" and startDate!=null'>
+			and work_str_date>#{startDate}
+		</if>
+	 	<if test='endDate!="" and endDate!=null'>
+			and #{endDate}>work_str_date
+		</if>  
+		order by work_str_date
 </select>
 <select id="selectDtl" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 	select prd_cd , (select prd_nm from adm_prd where prd_cd = prd_cd) as prd_nm , cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}
