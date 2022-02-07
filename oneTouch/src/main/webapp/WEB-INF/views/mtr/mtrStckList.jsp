@@ -52,6 +52,7 @@ hr{
     font-weight: normal;
     color: #ffffff;
 }
+
 /* 안전재고수량경고 */
 .warning{background-color: orangered}
 .caution{background-color: gold}
@@ -181,6 +182,7 @@ hr{
 		<ul>
 		  <li><a href="#mtrTab">자재별</a></li>
 		  <li><a href="#lotTab">Lot별</a></li>
+		  <li><button class="btn btn-main mr-2 floatrightbtn">버튼</button></li>
 		</ul>
 		<div id="mtrTab"></div>
 		<div id="lotTab"></div>

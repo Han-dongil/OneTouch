@@ -80,14 +80,9 @@
 	<update id="plusOrd">
 		UPDATE MTR_ORD_DTL
 		SET
-			IN_AMT = (NVL(IN_AMT,0)+#{inAmt}),
-			FLT_AMT = (NVL(FLT_AMT,0)+#{fltAmt}),
-			NOTIN_AMT = ((SELECT 
-								ORD_AMT FROM MTR_ORD_DTL 
-							WHERE 
-								ORD_NO = #{ordNo}
-							AND
-								MTR_CD = #{mtrCd})
+			IN_AMT = (NVL(IN_AMT,0)+NVL(#{inAmt},0)),
+			FLT_AMT = (NVL(FLT_AMT,0)+NVL(#{fltAmt},0)),
+			NOTIN_AMT = (#{notinAmt}
 						-(NVL(IN_AMT,0)+#{inAmt})
 						-(NVL(FLT_AMT,0)+#{fltAmt}))
 		WHERE
@@ -101,9 +96,9 @@
 			MTR_CD = #{mtrCd},
 			UNIT = #{unit},
 			IN_AMT = #{inAmt},
-			FLT_AMT = #{fltAmt},
-			UNIT_COST = #{unitCost},
-			TOT_COST = (#{unitCost}*#{inAmt})
+			<if test='fltAmt != null and fltAmt != ""'>FLT_AMT = #{fltAmt},</if>
+			<if test='unitCost != null and unitCost != ""'>UNIT_COST = #{unitCost},
+														TOT_COST = (#{unitCost}*#{inAmt})</if>
 		WHERE
 			IN_NO = #{inNo}
 	</update>
@@ -119,7 +114,7 @@
 		SET
 			IN_AMT = (NVL(IN_AMT,0)-NVL(#{inAmt},0)),
 			<if test='fltAmt =! null and fltAmt =! ""'>
-				FLT_AMT = (NVL(FLT_AMT,0)-#{fltAmt}),
+				FLT_AMT = (NVL(FLT_AMT,0)-NVL(#{fltAmt},0),
 			</if>
 			NOTIN_AMT = NOTIN_AMT
 						+NVL(#{inAmt},0)
