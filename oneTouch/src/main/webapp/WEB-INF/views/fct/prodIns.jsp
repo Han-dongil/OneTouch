@@ -90,7 +90,6 @@
 	</div>
 	<span class="floatright">
 		<button type="button" id="prodChekCompleteBtn" class="btn btn-primary newalign2">점검완료등록</button>
-		<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
 		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
 	</span>
@@ -387,13 +386,6 @@
    btnDel.addEventListener("click", function(){
 	   mainGrid.removeCheckedRows(true);
    });
-	   
-	   
-   
-   btnAdd.addEventListener("click", function() {
-		mainGrid.appendRow({})
-   });	
-   
 
    btnSave.addEventListener("click", function() {
 	    mainGrid.blur();	//커서 빼주는 거 ?
