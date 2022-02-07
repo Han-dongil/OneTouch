@@ -53,7 +53,7 @@ hr{
 	
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card">
-			<div class="card bascard1">
+			<div class="card bascard1"> 
 				<div class="card-body">
 					<form name="frm" id="frm">
 						<div class="rowdiv">
