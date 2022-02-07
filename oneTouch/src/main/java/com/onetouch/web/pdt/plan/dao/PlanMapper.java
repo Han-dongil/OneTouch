@@ -29,5 +29,6 @@ public interface PlanMapper {
 	List<PlanVO> lineUphFind(List<PlanVO> list);
 	int strDateEndDateMinus(PlanVO vo);
 	PlanVO dateArr(PlanVO vo);
+	PlanVO updFind(String lineNo);
 	
 }

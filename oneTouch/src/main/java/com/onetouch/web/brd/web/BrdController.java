@@ -21,14 +21,8 @@ public class BrdController {
 	@Autowired BrdService brdService;
 	@Autowired PrcService prcService;
 	
-//	@RequestMapping("/dashBoard")
-//	public String dashBoard() {
-//		return "tiles/brd/dashBoard";
-//	}
-	
 	@RequestMapping("/dashBoard")
 	public String brdList(Model model){
-		System.out.println(brdService.mtrList());
 		List<LotVO> mtrList = new ArrayList<>();
 		mtrList = brdService.mtrList();
 		
@@ -43,17 +37,36 @@ public class BrdController {
 			}
 		};
 		
+		
+		List<PrcVO> pdtList = new ArrayList<>();
+		pdtList = brdService.pdtList();
+		
+		List<PrcVO> before = new ArrayList<>();
+		List<PrcVO> progress = new ArrayList<>();
+		List<PrcVO> done = new ArrayList<>();
+		
+		for(int i = 0; i < pdtList.size(); i++) {
+			if(pdtList.get(i).getGoalCnt() == null ) {
+				before.add(pdtList.get(i));
+			} else if(pdtList.get(i).getNowPhs().equals("라인가동종료")) {
+				done.add(pdtList.get(i));
+			} else if(pdtList.get(i).getNowPhs() == "가동중"){
+				progress.add(pdtList.get(i));
+			}
+		};
+		
 		model.addAttribute("listWarning", listWarning);
 		model.addAttribute("listCaution", listCaution);
+		model.addAttribute("before", before);
+		model.addAttribute("progress", progress);
+		model.addAttribute("done", done);
 		model.addAttribute("fctList", brdService.fctList());
-		model.addAttribute("pdtList", brdService.pdtList());
 		return "tiles/brd/dashBoard";
+		}
+	
+	@ResponseBody
+	@GetMapping("dashBoardData")
+	public List<List<PrcVO>> dashBoardPrc(){
+	return prcService.dashBoardData();
 	}
-	
-		@ResponseBody
-	   @GetMapping("dashBoardData")
-	   public List<List<PrcVO>> dashBoardPrc(){
-		return prcService.dashBoardData();
-	   }
-	
 }

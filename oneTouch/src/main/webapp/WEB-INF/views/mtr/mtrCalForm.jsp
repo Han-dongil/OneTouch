@@ -105,8 +105,11 @@ hr{
 							</label>
 						</div>
 						
-						<span>
-							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+						<span  class="floatright">
+							<button type="button" id="btnFind" class="btn btn-primary newalign">조회</button>
+							<button type="button" id="btnAdd" class="btn btn-main newalign">추가</button>
+							<button type="button" id="btnDel" class="btn btn-main newalign">삭제</button>
+							<button type="button" id="btnSave" class="btn btn-primary newalign">저장</button>
 						</span>
 					</form>
 				</div>
@@ -645,6 +648,7 @@ btnDel.addEventListener("click", function(){
 
 //---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
+	console.log("AAAAAAAAAAAAAAAA")
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });

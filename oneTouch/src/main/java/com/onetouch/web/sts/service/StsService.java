@@ -13,4 +13,15 @@ public interface StsService {
 	List<StsVO> mtrInMtrD(StsVO stsvo);
 	List<StsVO> mtrInMtrM(StsVO stsvo);
 	List<StsVO> mtrInMtrY(StsVO stsvo);
+	
+	//자재출고
+	//제품생산
+	List<StsVO> pdtDate(StsVO stsvo);
+	List<StsVO> pdtMonth(StsVO stsvo);
+	List<StsVO> pdtYear(StsVO stsvo);
+	List<StsVO> pdtPrdD(StsVO stsvo);
+	List<StsVO> pdtPrdM(StsVO stsvo);
+	List<StsVO> pdtPrdY(StsVO stsvo);
+	
+	//제품불량
 }

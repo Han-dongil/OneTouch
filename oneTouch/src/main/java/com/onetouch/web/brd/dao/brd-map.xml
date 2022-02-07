@@ -45,9 +45,30 @@
    	]]>
 	</select>
 	<select id="pdtList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select * from prd_prc_mng
-		where to_date(work_str_dt,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
-		--select * from pdt_work_instr_dtl
-		--where to_date(work_str_date,'yyyy-MM-dd')=to_date(sysdate,'yyyy-MM-dd')
+		select 
+			b.instr_no, 
+			b.line_no, 
+			b.prd_cd, 
+			c.prd_nm, 
+			a.goal_cnt, 
+			a.pdt_cnt, 
+			(select sum(x.flt_cnt) from prd_prc_mng x where x.instr_no=a.instr_no group by x.instr_no) as flt_cnt, 
+			a.now_phs
+		from 
+			prd_prc_mng a, pdt_work_instr_dtl b, adm_prd c
+		where 
+			a.instr_no(+) = b.instr_no
+		and 
+			a.line_no(+) = b.line_no
+		and 
+			a.prc_cd(+) = b.prc_cd
+		and 
+			b.prd_cd = c.prd_cd
+		--and to_char(a.work_str_dt, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') 
+		--오늘날짜 가져올 때 사용 지금은 없어서 주석처리 해둠
+		and 
+			(b.prc_cd, b.prd_cd) in (select prc_cd, prd_cd from adm_prc_flow where (prd_cd, prc_seq) in (select prd_cd, max(prc_seq) as prc_cd from adm_prc_flow  group by prd_cd))
+		order by 
+			instr_no
 	</select>
 </mapper>

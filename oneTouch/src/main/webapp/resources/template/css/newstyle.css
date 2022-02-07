@@ -1,24 +1,26 @@
 .datepicker:focus,
-.selectoption:focus {
+.selectoption:focus,
+.monthpicker:focus{
 	box-shadow: none !important;
-	outline: none; 
+	outline: none !important; 
 }
 
-.datepicker, .selectoption, .inputtext{
-	color: #495057;
-	background-color: #fdfdff;
-	border: 1px solid #ced4da;
-  	border-color: #e4e6fc; 
-  	border-radius: 3px;
-	height: 34px;
-	width: 200px;
+.datepicker, .selectoption, .inputtext, .monthpicker{
+	color: #495057 !important;
+	background-color: #fdfdff !important;
+	border: 1px solid #ced4da !important;
+  	border-color: #e4e6fc !important;
+  	border-radius: 3px !important;
+	height: 34px !important;
+	width: 200px !important;
 }
 
 .datepicker:focus,
 .selectoption:focus,
-.inputtext:focus {
-	background-color: #fefeff;
-	border-color: #95a0f4;
+.inputtext:focus,
+.monthpicker:focus{
+	background-color: #fefeff !important;
+	border-color: #95a0f4 !important;
 }
 
 .schCondLabel{

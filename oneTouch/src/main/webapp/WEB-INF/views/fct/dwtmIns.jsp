@@ -40,7 +40,7 @@
 	width: 100px !important;
 }
 .inputsize{
-	width: 45px;
+	width: 45px !important;
 }
 .rowdiv{
 	margin-bottom: 10px !important;
@@ -77,7 +77,8 @@
 	margin-left: 20px;
 }
 .checkwidth{
-   width:110px;
+
+	width:110px;
 }
 
 </style>
@@ -108,7 +109,7 @@
 						<div class="card-body">
 						
 							<label class="labeltext labeltext1">자재구분</label>
-							<div class="form-check checkwidth" style="display:inline-block">
+							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="fctSelectRdo">
 							  		<input type="radio" class="form-check-input" id="fctSelectRdo" name="dwtmRao" value="" checked>
 							  		동기
@@ -116,7 +117,7 @@
 								</label>
 							</div>
 							                
-							<div class="form-check checkwidth" style="display:inline-block">
+							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="proceedingDwtm">
 							  		<input type="radio" class="form-check-input" id="proceedingDwtm" name="dwtmRao">
 							  		비동기
@@ -124,7 +125,7 @@
 								</label>
 							</div>
 							                
-							<div class="form-check checkwidth" style="display:inline-block">
+							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 							    <label class="form-check-label schCondLabel" for="dwtmFctSelectRdo">
 							  		<input type="radio" class="form-check-input" id="dwtmFctSelectRdo" name="dwtmRao">
 							  		비동기이력

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<c:set var="path" value="${pageContext.request.contextPath}"/>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,12 +51,12 @@ select {
 }
 </style>
 <body>
-	<label for="checkedY">지시완료</label>
+<!-- 	<label for="checkedY">지시완료</label>
 	<input type="radio" id="checkedY" name="phs" value="Y">
 	<label for="checkedN">미지시</label>
-	<input type="radio" id="checkedN" name="phs" value="N">
+	<input type="radio" id="checkedN" name="phs" value="N"> -->
 	
-	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button>
+<!-- 	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button> -->
 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
 	<button id="delBtn">초기화</button>
@@ -95,7 +97,7 @@ select {
 
     for(let i =0 ; i< data.length ; i++){
       let opt = document.createElement('option');
-      opt.innerText=data[i].text;
+      opt.innerText=data[i].text; 
       opt.value=data[i].value;
       if(opt.value==value){
         opt.selected=true;
@@ -400,7 +402,7 @@ class lineEditor{
 	          type:abc
 	        }
 	      },{
-		    	header: '종료날자',
+		    	header: '종료날짜',
 		        name: 'workEndDate',
 		        align:'center',
 		        editor:{
@@ -431,10 +433,12 @@ class lineEditor{
       },{
 			header : '필요수량',
 			name : 'needCnt',
+			align: 'right',
 		 		editor : 'text'
 		},{
 			header : '일별지시수량',
 			name : 'instrCnt',
+			align: 'right',
 		 		editor : 'text'
 		}
 /* 		,{
@@ -460,29 +464,36 @@ class lineEditor{
   	let insertDtlColumns = [  	{
 			header : '제품코드',
 			name : 'prdCd',
+			align: 'center',
 		},{
 			header : '라인번호',
 			name : 'lineNo',
+			align: 'center',
 		},{
 			header : '공정코드',
 			name : 'prcCd',
+			align: 'center',
 		},{
 			header : '필요수량',
 			name : 'needCnt',
+			align: 'right',
 			hidden:true
 		},{
 			header : '지시수량',
 			name : 'instrCnt',
+			align: 'right',
 			hidden:true
 		},{
 			header : '시작날자',
 			name : 'workStrDate',
 			editor:'datePicker',
+			align: 'center',
 			hidden:true
 		},{
 			header : '종료날자',
 			name : 'workEndDate',
 			editor:'datePicker',
+			align: 'center',
 			hidden:true
 		},{
 			header : '작업시간',
@@ -496,7 +507,9 @@ class lineEditor{
   	insertDtlGrid= new Grid({
 		el: document.getElementById('insertDtlGrid'),
 		data:null,
-		rowHeaders:['checkbox'],
+		scrollY:true,
+		minBodyHeight : 150,
+		bodyHeight : 150,
 		columns:insertDtlColumns
 	});	
 
@@ -539,10 +552,12 @@ class lineEditor{
   //그리드 컬럼 설정	
 	const columns = [{
 		header : '계획번호',
-		name : 'planNo'
+		name : 'planNo',
+		align: 'center',
 	},{
 		header : '주문번호',
 		name : 'ordShtNo',
+		align: 'center',
 	},{
     	header: '납기일자',
         name: 'dueDate',
@@ -565,6 +580,7 @@ class lineEditor{
 		header : '계획일자',
 		name : 'planDate',
 		editor:'datePicker',
+		align: 'center',
 		hidden:true
 	},{
 		header : '제품코드',
@@ -588,20 +604,26 @@ class lineEditor{
  	hiddenGrid = new Grid({
 		el: document.getElementById('hidden'),
 		data:null,
-		rowHeaders:['checkbox'],
+		scrollY:true,
+		minBodyHeight : 325,
+		bodyHeight : 325,
 		columns:[{
 			header : '자재코드',
-			name : 'mtrCd'
+			name : 'mtrCd',
+			align: 'center',
 		},{
 			header : '자재로트',
 			name : 'mtrLot',
+			align: 'center',
 		},{
 			header : '사용가능수량',
 			name : 'realCnt',
+			align: 'right',
 			hidden:true
 		},{
 			header : '출고수량',
 			name : 'hldCnt',
+			align: 'right',
 		},{
 			header : '사용량',
 			name : 'useAmt',
@@ -609,14 +631,17 @@ class lineEditor{
 		},{
 			header : '계획번호',
 			name : 'planNo',
+			align: 'center',
 			hidden:false
 		},{
 			header : '라인번호',
 			name : 'lineNo',
+			align: 'center',
 			hidden:true
 		},{
 			header : '공정코드',
 			name : 'prcCd',
+			align: 'center',
 			hidden:true
 		}],
 	});  
@@ -624,6 +649,9 @@ class lineEditor{
 	planGrid= new Grid({
 		el: document.getElementById('planGrid'),
 		data:null,
+		scrollY:true,
+		minBodyHeight : 150,
+		bodyHeight : 150,
 		columns:planColumns
 	});	
 	
@@ -631,27 +659,35 @@ class lineEditor{
 	lotGrid = new Grid({
 		el: document.getElementById('lotDiv'),
 		data:null,
-		rowHeaders:['checkbox'],
+		scrollY:true,
+		minBodyHeight : 325,
+		bodyHeight : 325,
 		columns:[{
 			header : '자재코드',
-			name : 'mtrCd'
+			name : 'mtrCd',
+			align: 'center',
 		},{
 			header : '자재로트',
 			name : 'mtrLot',
+			align: 'center',
 		},{
 			header : '사용가능수량',
 			name : 'realCnt',
-			editor : 'text'
+			editor : 'text',
+			align: 'right',
 		},{
 			header : '출고수량',
 			name : 'hldCnt',
-			editor : 'text'
+			editor : 'text',
+			align: 'right',
 		},{
 			header : '사용량',
 			name : 'useAmt',
+			align: 'right',
 		},{
 			header : '계획번호',
 			name : 'planNo',
+			align: 'right',
 			hidden:false
 		}],
 	});
@@ -784,35 +820,43 @@ class lineEditor{
   ///////////////////////////////////자재lot그리드 useAmt
   		const lotColumns = [{
   			header : '자재코드',
-  			name : 'mtrCd'
+  			name : 'mtrCd',
+			align: 'center',
   		},{
   			header : 'LOT번호',
   			name : 'mtrLot'
   		},{
   			header : '재고수량',
-  			name : 'stckCnt'
+  			name : 'stckCnt',
+			align: 'right',
   		},{
   			header : '홀딩수량',
   			name : 'hldCnt',
-  	  		editor : 'text'
+  	  		editor : 'text',
+			align: 'right',
   		},{
   			header : '지시수량',
   			name : 'instrCnt',
-  	  		editor : 'text'
+  	  		editor : 'text',
+			align: 'right',
   		},{
   			header : '필요수량',
   			name : 'needCnt',
+			align: 'right',
   		},{
   			header : '계획번호',
   			name : 'planNo',
+			align: 'center',
   			hidden:false
   		},{
   			header : '상품번호',
   			name : 'prdCd',
+			align: 'center',
   			hidden:false
   		},{
   			header : '공정코드',
   			name : 'prcCd',
+			align: 'center',
   			hidden:false
   		}];
   		
@@ -903,6 +947,12 @@ class lineEditor{
 	
 	addBtn.addEventListener("click",function(){
 		grid.appendRow({})
+		fetch('planNoFind')
+ 		.then(response=>response.json())
+ 		.then(result=>{
+ 			grid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey  ,'planNo',result.planNo);
+ 		})
+		
 		grid.resetOriginData();
 	})
 	
@@ -945,60 +995,66 @@ class lineEditor{
 						return x;
 					}
 					});
-				for(a of uniqueDate){
-					let object={}
-					object.uphPdtAmt=result[0].upd;
-					object.workStrDate=a;
-					result.push(object);
-				}
-				result=result.sort((a,b)=>{
-					return a.workStrDate<b.workStrDate ? -1:1;
-				})
-				console.log(result);
-				for(obj of result){//생산가능수량
-					//시작~끝  
-					for(date of dateResult){  //날짜~  
-						if(obj.uphPdtAmt*1<planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt')*1 && obj.workStrDate==date.workStrDate){
-							obj.uphPdtAmt//그날생산수량
-							obj.workStrDate//해당일
-							msg +=(obj.workStrDate).substring(0,10)+'일의 생산 가능수량은' +obj.uphPdtAmt+'개입니다\n'
+				fetch('updFind/'+planGrid.getData()[0].lineNo)
+				.then(response=>response.json())
+				.then(x=>{
+					let upd=x.upd;
+					for(a of uniqueDate){
+						let object={}
+						object.uphPdtAmt=upd;
+						object.workStrDate=a;
+						console.log(object);
+						result.push(object);
+					}
+					result=result.sort((a,b)=>{
+						return a.workStrDate<b.workStrDate ? -1:1;
+					})
+					console.log(result);
+					for(obj of result){//생산가능수량
+						//시작~끝  
+						for(date of dateResult){  //날짜~  
+							if(obj.uphPdtAmt*1<planGrid.getValue(planGrid.getData()[0].rowKey,'instrCnt')*1 && obj.workStrDate==date.workStrDate){
+								obj.uphPdtAmt//그날생산수량
+								obj.workStrDate//해당일
+								msg +=(obj.workStrDate).substring(0,10)+'일의 생산 가능수량은' +obj.uphPdtAmt+'개입니다\n'
+							}
 						}
 					}
-				}
-				return msg;
-			})
-			.then(msg=>{
-				if(msg!=''){
-					
-					alert(msg);
-				}
-				else{
-					let planInsertData={};
-					planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
-					planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
-					planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
-					
-					
-					fetch('planDtlInsert',{
-						method:'POST',
-						headers:{
-							"Content-Type": "application/json",
-						},
-						body:JSON.stringify(planInsertData)
-					})
-					.then(response=>response.json())
-					.then(result=>{
+					return msg;
+				})
+				.then(msg=>{
+					if(msg!=''){
 						
-					})
-					grid.clear();
-					planGrid.clear();
-					insertDtlGrid.clear();
-					lotGrid.clear();
-					insertDtlGrid.clear();
-					hiddenGrid.clear();
-					disabledDays.length=0;
-				}
-				
+						alert(msg);
+					}
+					else{
+						let planInsertData={};
+						planInsertData.plan=grid.getData();     //메인그리드 생산계획 데이터
+						planInsertData.detail=insertDtlGrid.getData(); //플랜그리드 디테일 데이터
+						planInsertData.lot=hiddenGrid.getData();					//히든그리드 자재정보 데이터
+						
+						
+						fetch('planDtlInsert',{
+							method:'POST',
+							headers:{
+								"Content-Type": "application/json",
+							},
+							body:JSON.stringify(planInsertData)
+						})
+						.then(response=>response.json())
+						.then(result=>{
+							alert("계획등록 완료!")
+						})
+/* 						grid.clear();
+						planGrid.clear();
+						insertDtlGrid.clear();
+						lotGrid.clear();
+						insertDtlGrid.clear();
+						hiddenGrid.clear(); */
+						disabledDays.length=0;
+					}
+					
+				})
 			})
 		})
 		
@@ -1128,13 +1184,18 @@ function needOrdCd(){
 	//그리드 생성
 	safeGrid = new Grid({
 		el: document.getElementById('safe-dialog-form'),
-		data:null,
+		data:null,		
+		scrollY:true,
+		minBodyHeight : 150,
+		bodyHeight : 350,
 		columns:[{
 			header : '제품코드',
-			name : 'prdCd'
+			name : 'prdCd',
+			align: 'center',
 		},{
 			header : '필요수량',
 			name : 'needCnt',
+			align: 'right',
 		}],
 	}); 
 	safeGrid.on('click',ev=>{
@@ -1179,8 +1240,6 @@ function needOrdCd(){
                  ,changeYear: true //option값 년 선택 가능
                  ,changeMonth: true //option값  월 선택 가능                
                  ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-                 ,buttonImage: "/oneTouch/resources/template/images/cal_w_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-                 ,buttonImageOnly: false //버튼 이미지만 깔끔하게 보이게함
                  //,buttonText: "선택" //버튼 호버 텍스트              
                  ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
                  ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
@@ -1190,8 +1249,8 @@ function needOrdCd(){
                  ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
                  ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
  			     ,beforeShowDay: disableAllTheseDays
- 			     ,buttonImage: "/oneTouch/resources/template/images/cal_w_sm.png"
-		    	,buttonImageOnly: false
+ 			    /*  ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
+		    	,buttonImageOnly: true */
 
  			    });
  			  } );
@@ -1202,6 +1261,7 @@ function needOrdCd(){
 	 		.then(response=>response.json())
 	 		.then(result=>{
 	 			i=0
+	 			planColumns[1].editor.options.listItems.length=0;
 	 			for(obj of result){
 		 			planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
 					i++;	 				
@@ -1237,17 +1297,37 @@ function needOrdCd(){
 				lotGrid.resetData(result);
 				insertPrcCd=planGrid.getValue(ev.rowKey,'prcCd');
 				inserMtrLot=ev.rowKey;
+				return result;
+			}).then(()=>{
+				let createData=planGrid.getModifiedRows().createdRows;		
+				let updateData=planGrid.getModifiedRows().updatedRows;
+				for(obj of createData){
+					obj.prcCd=ev.target.value;
+				}	
+				for(obj of updateData){
+					obj.prcCd=ev.target.value;
+				}	
+				let i =0;
+				let result;
+				if(createData!=''){
+					result=createData
+				}else{
+					result=updateData
+				}
+				for(obj of result){
+					for(a of insertDtlGrid.getData()){
+						if(obj.prcCd==a.prcCd){
+							i=1;
+						}
+						
+					}
+				}
+				if(i==0){
+					insertDtlGrid.appendRows(updateData);
+					insertDtlGrid.appendRows(createData);
+				}
+				
 			})
-		let createDate=planGrid.getModifiedRows().createdRows;		
-		let updateData=planGrid.getModifiedRows().updatedRows;
-		for(obj of createDate){
-			obj.prcCd=ev.target.value;
-		}	
-		for(obj of updateData){
-			obj.prcCd=ev.target.value;
-		}	
-		insertDtlGrid.appendRows(createDate);
-		insertDtlGrid.appendRows(updateData);
 	})
 	
 	
@@ -1317,7 +1397,7 @@ function needOrdCd(){
 		})
 	})
 
-	lotGrid.on('check',ev=>{
+	lotGrid.on('editingFinish',ev=>{
 		let modiData = lotGrid.getModifiedRows().updatedRows;
 		let modiList=[];
 		let prcSelect=document.getElementById('prcSelect');
@@ -1329,7 +1409,7 @@ function needOrdCd(){
 			console.log(obj);
 			modiList.push(obj);
 		}
-		let lotData1=lotGrid.getModifiedRows().updatedRows[0];
+		let lotData1=lotGrid.getRow(ev.rowKey);
 		lotData1.planNo=grid.getData()[0].planNo;
 		lotData1.lineNo=planGrid.getData()[0].lineNo;
 		hiddenGrid.appendRows([lotData1]);

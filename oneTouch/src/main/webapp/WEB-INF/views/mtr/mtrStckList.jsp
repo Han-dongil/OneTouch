@@ -63,7 +63,7 @@ hr{
 		<div class="col-md-12 grid-margin">
 			<div class="row">
 				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
-					<h3 class="font-weight-bold page-title">재고조정조회</h3>
+					<h3 class="font-weight-bold page-title">재고조회</h3>
 				</div>
 			</div>
 		</div>
@@ -72,14 +72,14 @@ hr{
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
 			<div class="card bascard1">
-				<div class="card-body">
+				<div class="card-body" id="mtrCard">
 					<!-- <h4 class="card-title">조회조건</h4> -->
-					<form id="frm" method="post">
+					<form id="frmMtr" method="post">
 						<div class="rowdiv">
-							<label class="labeltext">입고일자</label>
-							<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+							<!-- <label class="labeltext">입고일자</label>
+							<input type="Date" id="startDate" name="startDate" class="datepicker" readonly> 
 							<label> ~ </label> 
-							<input type="Date" id="endDate" name="endDate" class="datepicker">
+							<input type="Date" id="endDate" name="endDate" class="datepicker" readonly> -->
 						</div>
 						
 						<div class="rowdiv">
@@ -116,9 +116,60 @@ hr{
 								</label>
 							</div> -->
 						</div>
+						<div>
+							<span>
+								<button type="button" id="btnMtrFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+							</span>
+						</div>
+					</form>
+				</div>
+				<div class="card-body" id="lotCard" style="display:none">
+					<!-- <h4 class="card-title">조회조건</h4> -->
+					<form id="frmLot" method="post">
+						<div class="rowdiv">
+							<label class="labeltext">입고일자</label>
+							<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+							<label> ~ </label> 
+							<input type="Date" id="endDate" name="endDate" class="datepicker">
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">자재코드</label>
+							<input type="text" id="ditemCode2" name="ditemCode" class="inputtext" readonly>
+							<button type="button" id="btnMtrCd2" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
+							<label class="labeltext colline2">자재명</label>
+							<input type="text" id="ditemCodeNm2" name="ditemCodeNm" class="inputtext" readonly>
+						</div>
+						
+						<div id="lotRadio" style="display:inline-block">
+							<label class="labeltext">자재구분</label>
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="allRadio">
+							  		<input type="radio" class="form-check-input" id="allRadio" name="mtrSect" value="" checked>
+							  		전체
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<!-- <div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="lotRadio">
+							  		<input type="radio" class="form-check-input" id="lotRadio" name="mtrSect" value="MTR_SECT001">
+							  		원자재
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							                
+							<div class="form-check checkwidth" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="semiRadio">
+							  		<input type="radio" class="form-check-input" id="semiRadio" name="mtrSect" value="MTR_SECT002">
+							  		반제품
+									<i class="input-helper"></i>
+								</label>
+							</div> -->
+						</div>
 						
 						<span>
-							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+							<button type="button" id="btnLotFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
 						</span>
 					</form>
 				</div>
@@ -128,15 +179,15 @@ hr{
 	
 	<div id="tabs">
 		<ul>
-		  <li><a href="#lotTab">Lot별</a></li>
 		  <li><a href="#mtrTab">자재별</a></li>
+		  <li><a href="#lotTab">Lot별</a></li>
 		</ul>
-		<div id="lotTab"></div>
 		<div id="mtrTab"></div>
+		<div id="lotTab"></div>
 	</div>
 	<div id="dialog-form">
 </div>
-
+</div>
 	<!-- <div class="container">
 		<h3>자재재고 조회</h3>
 		<hr>
@@ -231,22 +282,29 @@ document.getElementById('endDate').value = today();
  fetch('mtrStckRadio')
 .then(response=>response.json())
 .then(result=>{
-	let div = document.getElementById("mtrRadio");
-	let indiv = div.innerHTML;
+	let mtrDiv = document.getElementById("mtrRadio");
+	let lotDiv = document.getElementById("lotRadio");
+	let mtrIndiv = mtrDiv.innerHTML;
+	let lotIndiv = lotDiv.innerHTML;
 	for(let i = 0; i < result.length; i++){
+		mtrIndiv += ' <div class="form-check checkwidth" style="display:inline-block"> ';
+		mtrIndiv += ' <label class="form-check-label schCondLabel" for="' + result[i].dtlCd + '"> ';
+		mtrIndiv += ' <input type="radio" class="form-check-input" id="' + result[i].dtlCd + '" name="mtrSect" value="' + result[i].dtlCd + '"> ';
+		mtrIndiv += result[i].dtlNm;
+		mtrIndiv += ' <i class="input-helper"></i> '
+		mtrIndiv += ' </label> '
+		mtrIndiv += ' </div> '
 		
-		indiv += ' <div class="form-check checkwidth" style="display:inline-block"> ';
-		indiv += ' <label class="form-check-label schCondLabel" for="' + result[i].dtlCd + '"> ';
-		indiv += ' <input type="radio" class="form-check-input" id="' + result[i].dtlCd + '" name="mtrSect" value="' + result[i].dtlCd + '"> ';
-		indiv += result[i].dtlNm;
-		indiv += ' <i class="input-helper"></i> '
-		indiv += ' </label> '
-		indiv += ' </div> '
-		
+		lotIndiv += ' <div class="form-check checkwidth" style="display:inline-block"> ';
+		lotIndiv += ' <label class="form-check-label schCondLabel" for="' + result[i].dtlCd + '"> ';
+		lotIndiv += ' <input type="radio" class="form-check-input" id="' + result[i].dtlCd + '" name="mtrSect" value="' + result[i].dtlCd + '"> ';
+		lotIndiv += result[i].dtlNm;
+		lotIndiv += ' <i class="input-helper"></i> '
+		lotIndiv += ' </label> '
+		lotIndiv += ' </div> '
 	}
-	console.log(indiv);
-	
-	div.innerHTML = indiv;
+	mtrDiv.innerHTML = mtrIndiv;
+	lotDiv.innerHTML = lotIndiv;
 }); 
 
 //---------DB의 데이터로 자재구분 radio만드는 기능 끝---------
@@ -256,128 +314,24 @@ document.getElementById('endDate').value = today();
 $( function() {
     $( "#tabs" ).tabs({
     	activate: function( event, ui ) {
-    		if(ui.newTab[0].innerText == '자재별'){
-    			mtrGrid.refreshLayout();
-    		} else {
+    		if(ui.newTab[0].innerText == 'Lot별'){
+    			console.log("Lot별")
+    			//document.getElementById('frmLot').submit();
+    			document.getElementById('lotCard').setAttribute("style","display:block");
+    			document.getElementById('mtrCard').setAttribute("style","display:none");
     			lotGrid.refreshLayout();
+    		} else if(ui.newTab[0].innerText == '자재별'){
+    			console.log("자재별")
+    			document.getElementById('lotCard').setAttribute("style","display:none");
+    			document.getElementById('mtrCard').setAttribute("style","display:block");
+    			//document.getElementById('frmMtr').submit();
+    			mtrGrid.refreshLayout();
     		}
     	}
     });
 });
 //---------Jquery tabs 끝---------
 
-
-//---------lotGrid---------
-const lotDataSource = {
-	api: {
-		readData: { url: './lotStckList', method: 'POST' }
-	},
-	contentType: 'application/json'
-};
-
-
-const lotColumns = [{
-	   header: '자재코드',
-	   name: 'mtrCd',
-	   align: 'center',
-	   sortable: true,
-	   hidden: true
-	 },
-	 {
-	   header: 'Lot No',
-	   name: 'mtrLot',
-	   align: 'center',
-	   sortable: true
-	 },
-	 {
-	   header: '자재명',
-	   name: 'mtrNm',
-	   align: 'center',
-	   sortable: true
-	 },
-	 {
-	   header: '단위명',
-	   name: 'unitNm',
-	   align: 'center',
-	   sortable: true
-	 },
-	 {
-	   header: '자재구분',
-	   name: 'mtrSectNm',
-	   align: 'center',
-	   sortable: true
-	 },
-	 {
-	   header: '홀딩수량',
-	   name: 'hldCnt',
-	   align: 'right',
-	   sortable: true
-	 },
-	 {
-	   header: '현재고',
-	   name: 'stckCnt',
-	   align: 'right',
-	   sortable: true
-	 },
-	 {
-	   header: '사용가능수량',
-	   name: 'stckUse',
-	   align: 'right',
-	   sortable: true
-	 },
-	 {
-	   header: '비고',
-	   name: 'cmt',
-	   align: 'left',
-	   sortable: true
-	 }
-	]
-	
-var lotGrid = new Grid({
-     el : document.getElementById('lotTab'),
-     data : lotDataSource,
-     scrollX : false,
-     scrollY : true,
-     bodyHeight: 369,
-     minBodyHeight: 369,
-     columns : lotColumns,
-				summary : {
-					height: 40,
-				   	position: 'bottom',
-				   	columnContent: {
-				   		mtrLot: {
-			                template(summary) {
-			        			return '합 계';
-			                } 
-			            },	
-			            hldCnt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            stckCnt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            stckUse: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            }
-					}
-				}
-   });
-//---------lotGrid 끝---------
-
-
-//---------lotGrid 깨지는거 refresh---------
-window.setTimeout(function(){lotGrid.refreshLayout()}, 300);
-//---------lotGrid 깨지는거 refresh끝---------
-   
 
 //---------mtrGrid---------
 const mtrDataSource = {
@@ -396,7 +350,7 @@ const mtrColumns = [{
 					 {
 					   header: '자재명',
 					   name: 'mtrNm',
-					   align: 'center',
+					   align: 'left',
 					   sortable: true
 					 },
 					 {
@@ -492,6 +446,118 @@ var mtrGrid = new Grid({
 //---------mtrGrid 끝---------
 
 
+//---------mtrGrid 깨지는거 refresh---------
+window.setTimeout(function(){mtrGrid.refreshLayout()}, 300);
+//---------mtrGrid 깨지는거 refresh끝---------
+   
+   
+//---------lotGrid---------
+const lotDataSource = {
+	api: {
+		readData: { url: './lotStckList', method: 'POST' }
+	},
+	contentType: 'application/json'
+};
+
+
+const lotColumns = [{
+	   header: '자재코드',
+	   name: 'mtrCd',
+	   align: 'center',
+	   sortable: true,
+	   hidden: true
+	 },
+	 {
+	   header: 'Lot No',
+	   name: 'mtrLot',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '자재명',
+	   name: 'mtrNm',
+	   align: 'left',
+	   sortable: true
+	 },
+	 {
+	   header: '단위명',
+	   name: 'unitNm',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '자재구분',
+	   name: 'mtrSectNm',
+	   align: 'center',
+	   sortable: true
+	 },
+	 {
+	   header: '홀딩수량',
+	   name: 'hldCnt',
+	   align: 'right',
+	   sortable: true
+	 },
+	 {
+	   header: '현재고',
+	   name: 'stckCnt',
+	   align: 'right',
+	   sortable: true
+	 },
+	 {
+	   header: '사용가능수량',
+	   name: 'stckUse',
+	   align: 'right',
+	   sortable: true
+	 },
+	 {
+	   header: '비고',
+	   name: 'cmt',
+	   align: 'left',
+	   sortable: true
+	 }
+	]
+	
+var lotGrid = new Grid({
+     el : document.getElementById('lotTab'),
+     data : lotDataSource,
+     scrollX : false,
+     scrollY : true,
+     bodyHeight: 369,
+     minBodyHeight: 369,
+     columns : lotColumns,
+				summary : {
+					height: 40,
+				   	position: 'bottom',
+				   	columnContent: {
+				   		mtrLot: {
+			                template(summary) {
+			        			return '합 계';
+			                } 
+			            },	
+			            hldCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            stckCnt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            stckUse: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            }
+					}
+				}
+   });
+//---------lotGrid 끝---------
+
+
 //---------자재코드 모달설정---------
 let dialog;
 dialog = $( "#dialog-form" ).dialog({
@@ -540,26 +606,41 @@ mtrGrid.on('dblclick', function(ev) {
 //---------mtrGrid 수정불가 alert 끝---------
    
    
-//---------조회 버튼---------
-btnFind.addEventListener("click", function(){
-   let a= $("#frm").serializeObject();
-   lotGrid.readData(1,a,true);
+//---------mtr 조회 버튼---------
+btnMtrFind.addEventListener("click", function(){
+   let a= $("#frmMtr").serializeObject();
    mtrGrid.readData(1,a,true);
 });
-//---------조회 버튼 끝---------
+//---------mtr 조회 버튼 끝---------
+
+
+//---------lot 조회 버튼---------
+btnLotFind.addEventListener("click", function(){
+   let a= $("#frmLot").serializeObject();
+   lotGrid.readData(1,a,true);
+});
+//---------lot 조회 버튼 끝---------
 
 
 //---------자재검색모달 row더블클릭 이벤트---------
 function getModalMtr(param){
 	dialog.dialog("close");
-	$('#ditemCode').val(param.mtrCd);
-	$('#ditemCodeNm').val(param.mtrNm);
+	$('.ditemCode').val(param.mtrCd);
+	$('.ditemCodeNm').val(param.mtrNm);
 };
 //---------자재검색모달 row더블클릭 이벤트 끝---------
 
 
 //---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
+	mMtr();
+	$('#ui-id-1').html('자재 검색');
+});
+//---------자재검색버튼 끝---------
+
+
+//---------자재검색버튼---------
+btnMtrCd2.addEventListener("click", function(){
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });
