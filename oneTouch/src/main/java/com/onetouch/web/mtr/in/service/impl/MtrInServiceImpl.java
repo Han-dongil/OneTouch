@@ -48,9 +48,15 @@ public class MtrInServiceImpl implements MtrInService {
 				vo = mvo.getCreatedRows().get(i);
 				vo.setInNo(in);
 				vo.setStckCnt(vo.getMngAmt());
+				if(vo.getFltAmt() == null || vo.getFltAmt() == "") {
+					vo.setFltAmt("0");
+				}
+				System.out.println("notInAmt");
+				System.out.println(vo.getNotinAmt());
+				System.out.println("fltAmt");
+				System.out.println(vo.getFltAmt());
 				inMapper.insertIn(vo);
 				inMapper.plusOrd(vo);
-				
 				
 				inAmt = Integer.parseInt(vo.getInAmt());
 				mngAmt = Integer.parseInt(vo.getMngAmt());
