@@ -76,12 +76,12 @@ select fct_cd , fct_nm , line_no ,prc_cd,(select FN_GET_PRC_CD_TO_NM(prc_cd) fro
 		<if test='checkPrcCd != "d" and checkPrcCd != null'>
 			and  substr(f.fct_cd,1,11) = #{checkPrcCd}
 		</if>
-		<if test="fixTo != null">
+		<if test="fixTo != null and fixTo != ''">
 			<![CDATA[
 				AND f.in_date <= #{fixTo}
 			]]>
 		</if>
-		<if test="fixFrom != null">
+		<if test="fixFrom != null and fixFrom != ''">
 			<![CDATA[
 				AND f.in_date >= #{fixFrom}
 			]]>

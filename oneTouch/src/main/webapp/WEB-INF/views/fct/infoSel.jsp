@@ -77,7 +77,7 @@
 	</div>
 	<span class="floatright">
 		<form action="./fctExcelView.do">
-			<button type="sumit" id="excelBtn" onclick=excel() class="btn btn-main newalign">Excel</button>
+			<button type="sumit" id="excelBtn" class="btn btn-main newalign">Excel</button>
 		</form>
 		<!-- <button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
 	</span>
@@ -346,30 +346,8 @@
        btnFind.addEventListener("click", function(){
     	   //grid.;
        })  */
-       function excel(){
-		alert("c드라이브 temp폴더 엑셀 등록이 완료 되었습니다.")
-	}
-       function todayDate(){
-			let to;
-			let from;
-			fetch('./selectTodayDate')
-			.then(response=>response.json())
-			.then(result=>{
-				from= result.fixFrom.substr(0,10)
-				to= result.fixTo.substr(0,10)
-				
-				console.log('todayDate 함수 호출')
-				console.log(from)
-				console.log(to)
-			}).then(x=>{
-       			document.getElementById('fixFrom').value = from;
-       			document.getElementById('fixTo').value = to;
-       			checkSeach();
-				
-			})
-			
-		}
-       	todayDate()
+   
+       
 		
        	resetBtn.addEventListener("click", function(){
        		if(!confirm("초기화하시겠습니까?")){
@@ -377,7 +355,7 @@
        		}
        		grid.clear()
        	})
-      
+      checkSeach()
       
 </script>
 </body>
