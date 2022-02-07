@@ -179,10 +179,14 @@ hr{
 	</div>
 	
 	<div id="tabs">
-		<ul>
+		<ul style="background:white">
 		  <li><a href="#mtrTab">자재별</a></li>
 		  <li><a href="#lotTab">Lot별</a></li>
-		  <li><button class="btn btn-main mr-2 floatrightbtn">버튼</button></li>
+		  
+		  <li style="top:5px; float:right;">
+		  	<button id = "mtrBtn" onclick=mtr() class="btn btn-main mr-2 floatrightbtn">excel</button>
+		  	<button id="lotBtn" onclick=lot() class="btn btn-main mr-2 floatrightbtn">excel</button>
+		  </li>
 		</ul>
 		<div id="mtrTab"></div>
 		<div id="lotTab"></div>
@@ -235,6 +239,15 @@ hr{
 <div id="dialog-form"></div> -->
 
 <script type="text/javascript">
+//mtr 엑셀
+function mtr(){
+	console.log('mtr출력')
+	window.location.href='./mtrExcelTwoView.do';
+}
+//lot 엑셀
+function lot(){
+	window.location.href='./MtrExcelView.do';
+}
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
 	let year = dt.getFullYear();
@@ -319,10 +332,16 @@ $( function() {
     		if(ui.newTab[0].innerText == 'Lot별'){
     			console.log("Lot별")
     			//document.getElementById('frmLot').submit();
+    			document.getElementById('mtrBtn').setAttribute("style", "display:none");//종현
+    			document.getElementById('lotBtn').setAttribute("style", "display:block");//종현
+    			
     			document.getElementById('lotCard').setAttribute("style","display:block");
     			document.getElementById('mtrCard').setAttribute("style","display:none");
     			lotGrid.refreshLayout();
     		} else if(ui.newTab[0].innerText == '자재별'){
+    			document.getElementById('mtrBtn').setAttribute("style", "display:block");//종현
+    			document.getElementById('lotBtn').setAttribute("style", "display:none");//종현
+    			
     			console.log("자재별")
     			document.getElementById('lotCard').setAttribute("style","display:none");
     			document.getElementById('mtrCard').setAttribute("style","display:block");
@@ -333,7 +352,8 @@ $( function() {
     });
 });
 //---------Jquery tabs 끝---------
-
+document.getElementById('mtrBtn').setAttribute("style", "display:block");//종현
+document.getElementById('lotBtn').setAttribute("style", "display:none");//종현
 
 //---------mtrGrid---------
 const mtrDataSource = {
