@@ -27,12 +27,12 @@
 	<form id="planSearchFrm" name="planSearchFrm">
 		계획일자<input type="text" id="startDate" name="startDate" class="datepicker"> ~
 		<input type="text" id="endDate" name="endDate" class="datepicker"> 
-		<input type="radio" id="checkedN" name="nowPhs" value="N" checked>
+		<input type="radio" id="checked" name="nowPhs" value="" checked>
+		<label for="checked">전체</label>
+		<input type="radio" id="checkedN" name="nowPhs" value="N">
 		<label for="checkedN">미지시</label>
 		<input type="radio" id="checkedY" name="nowPhs" value="Y">
 		<label for="checkedY">지시완료</label>
-		<input type="radio" id="checked" name="nowPhs" value="">
-		<label for="checked">전체</label>
 		<button type="button" id="findPlan" name="findPlan">계획서 조회</button>
 		<br>
 		제품코드<input type="text" id="prdCd" name="prdCd">
@@ -116,8 +116,10 @@
 	modalGrid = new Grid({
 		  el: document.getElementById('modalGrid'),
 		  data: null,
-		  rowHeaders:['checkbox'],
 		  columns:modalColumns,
+	      scrollY:true,
+		  minBodyHeight : 150,
+		  bodyHeight : 150,
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
@@ -158,13 +160,16 @@
 		name : 'workPlanTime',
  		editor : 'text',
         align:'center',
+        hidden:true
 	}];
 	//메인그리드 생성
 	mainGrid = new Grid({
 		  el: document.getElementById('mainGrid'),
 		  data: null,
-		  rowHeaders:['checkbox'],
 		  columns:mainColumns,
+	      scrollY:true,
+		  minBodyHeight : 250,
+		  bodyHeight : 250,
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
@@ -175,9 +180,9 @@
 	planDialog = $( "#plan-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
-		height: 500,
-		width: 1000,
-		buttons:{"save":function(){alert("save")}}
+		height: 280,
+		width: 400,
+		//buttons:{"save":function(){alert("save")}}
 	});
 	
 	//////////////////////////////이벤트리스너/////////////////////////////////
