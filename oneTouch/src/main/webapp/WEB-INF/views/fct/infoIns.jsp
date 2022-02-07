@@ -25,6 +25,8 @@
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 <script src="${path}/resources/js/grid-common.js"></script>
+<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 <style>
 .hr4{
 	margin-top: 1.5rem !important;
@@ -37,11 +39,11 @@
 	width: 90px !important;
 }
 .colline2{
-	margin-left: 40px;
+	margin-left: 56px;
 	width: 90px !important;
 }
 .colline3{
-	margin-left: 23px;
+	margin-left: 30px;
 	width: 90px !important;
 }
 .bascard1{
@@ -82,6 +84,9 @@
 }
 .inlineblock{
 	display: inline-block;
+}
+.inputselect{
+	width: 60px !important;
 }
 </style>
 
@@ -202,9 +207,9 @@
 										
 										<div class="rowdiv">
 											<label class="labeltext colline1">입고일&nbsp;</label>
-											<input type="date" id="inDate" name="inDate" value="" class="inputtext"/>
+											<input type="text" id="inDate" name="inDate" value="" class="datepicker jquerydtpicker"/>
 											
-											<label class="labeltext colline2">구매금액&nbsp;</label>
+											<label class="labeltext colline3">구매금액&nbsp;</label>
 											<input type="text" id="purchCost" name="purchCost" onkeyup="inputNumberFormat(this)" value="" autocomplete="off" class="inputtext"/>원	
 										</div>
 										
@@ -215,7 +220,7 @@
 											
 											<label class="labeltext colline2">점검주기&nbsp;</label>
 											<input type="number" id="chkProd" name="chkProd" value="" autocomplete="off" class="inputtext" />
-											<select id="chkProdUnit" name="chkProdUnit" class="inputtext" style="width: 70px;">
+											<select id="chkProdUnit" name="chkProdUnit" class="inputtext inputselect" >
 												<option value="Y">년</option>
 												<option value="M">달</option>
 												<option value="W">주</option>
@@ -388,7 +393,34 @@
 		</div>
 		row
 		<div id="fctGubundialog-form" title="설비구분"></div> -->
-		<script>
+<script>
+
+$(function() {
+    //input을 datepicker로 선언
+    $(".jquerydtpicker").datepicker({
+        dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        //,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+    });                    
+    
+    //초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    	       
+});
+
    let dialog; 
    let lineStatusVO = {};
    
