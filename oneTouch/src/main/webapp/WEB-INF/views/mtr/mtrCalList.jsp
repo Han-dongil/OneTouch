@@ -35,7 +35,7 @@ width: 100px !important;
 	width: 100px !important;
 }
 .bascard1{
-	height:164px;
+	height:170px;
 }
 .rowdiv{
 	margin-bottom: 10px !important;
@@ -106,8 +106,8 @@ hr{
 							</label>
 						</div>
 						
-						<span>
-							<button type="button" id="btnFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+						<span  class="floatright">
+							<button type="button" id="btnFind" class="btn btn-primary mr-2">조회</button>
 						</span>
 					</form>
 				</div>
@@ -199,8 +199,8 @@ var mainGrid = new Grid({
      data : dataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 450,
-     minBodyHeight: 450,
+     bodyHeight: 444,
+     minBodyHeight: 444,
      columns : [
 				 {
 				   header: '정산번호',

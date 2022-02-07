@@ -34,7 +34,7 @@ width: 100px !important;
 	width: 100px !important;
 }
 .bascard1{
-	height:164px;
+	height:170px;
 }
 .rowdiv{
 	margin-bottom: 10px !important;
@@ -106,10 +106,10 @@ hr{
 						</div>
 						
 						<span  class="floatright">
-							<button type="button" id="btnFind" class="btn btn-primary newalign">조회</button>
-							<button type="button" id="btnAdd" class="btn btn-main newalign">추가</button>
-							<button type="button" id="btnDel" class="btn btn-main newalign">삭제</button>
-							<button type="button" id="btnSave" class="btn btn-primary newalign">저장</button>
+							<button type="button" id="btnFind" class="btn btn-primary mr-2 newalign">조회</button>
+							<button type="button" id="btnAdd" class="btn btn-main mr-2 newalign">추가</button>
+							<button type="button" id="btnDel" class="btn btn-main mr-2 newalign">삭제</button>
+							<button type="button" id="btnSave" class="btn btn-primary mr-2 newalign">저장</button>
 						</span>
 					</form>
 				</div>
@@ -225,8 +225,8 @@ var mainGrid = new Grid({
      data : dataSource,
      scrollX : false,
      scrollY : true,
-     bodyHeight: 450,
-     minBodyHeight: 450,
+     bodyHeight: 444,
+     minBodyHeight: 444,
      rowHeaders : [ 'checkbox'],
      columns : [
 				 {
