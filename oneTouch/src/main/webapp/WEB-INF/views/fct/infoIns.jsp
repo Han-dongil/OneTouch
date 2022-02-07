@@ -103,7 +103,7 @@
 		<div class = "col-3">
 			<h4 class="gridtitle">✔라인정보</h4>
 			<span class="floatright">
-				<button type="button" id='LinebtnClear' onclick=LineClear()  class="btn btn-main btn1 newalign2">초기화</button>
+				<button type="button" id='LinebtnClear' class="btn btn-main btn1 newalign2">초기화</button>
 				<button type="button" id='LinebtnAdd' onclick=LineAdd() class="btn btn-primary btn1 newalign2">등록</button>
 				<button type="button" id='LinebtnDel' onclick=LineDel() class="btn btn-main btn1 newalign2">삭제</button>
 				<button type="button" id='LinebtnEdit' onclick=LineUpt() class="btn btn-primary btn1 newalign2">수정</button>
@@ -156,7 +156,7 @@
 		<div class= "col-9">
 			<h4 class="gridtitle">✔설비정보</h4>
 			<span class="floatright">
-				<button type="button" id="btnFctEdit" onclick="fctClear()" class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="btnFctEdit" class="btn btn-main newalign2">초기화</button>
 				<button type="button" id="btnSave" class="btn btn-primary newalign2">등록</button>
 				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 				<button type="button" id="btnEdit" class="btn btn-primary newalign2">수정</button>
@@ -577,10 +577,7 @@
        minBodyHeight: 312
       /*  ,width:250 */
     });
-      
-      
-      
-      
+  
        //설비 조회
         $.ajax({
            url:'./list1',   //나중에 이거 대신에 컨트롤러 요청하면 됨 
@@ -589,9 +586,7 @@
            contentType: "application/json",
            async : false               //동기 = 절차적 
         }).done(function(datas){
-             console.log('조회 테스트')
-            console.log(datas)
-            data = datas;
+             data = datas;
              fctGrid.resetData(data);
              fctGrid.refreshLayout();
         })
@@ -685,7 +680,7 @@
        
        btnDel.addEventListener("click", function(){
     	   let del = $('#infoFrm').serializeObject();
-    	   console.log(del)
+    	   alert(del.fctCd+"삭제되었습니다")
           //삭제 아작스 처리
              $.ajax({
                 url: "./deleteInfo",
@@ -726,7 +721,7 @@
         btnSave.addEventListener("click", function(){
 			//설비코드 input에서 값을 
         	
-           
+           alert("코드가 등록되었습니다")
          console.log('콤마 없애기 ')
          console.log(document.getElementById("purchCost").value)
          let commaVal = document.getElementById("purchCost").value;
@@ -734,13 +729,11 @@
          str = str.replace('\,','')
          console.log(str)
          document.getElementById("purchCost").value=str;
-         
+        
          let infoForm = document.getElementById('infoFrm')
          var formData = new FormData(infoForm);
-         
           //등록아작스 
            $.ajax({
-                
                 url: "./infoInsert",
                 processData: false,
                 contentType: false,
@@ -749,7 +742,6 @@
                 data:formData,
                 dataType:'Json',
                 success:function(result){
-                	
                 	 $.ajax({
                          url:'./list1',   //나중에 이거 대신에 컨트롤러 요청하면 됨 
                          method: 'POST',
@@ -757,11 +749,9 @@
                          contentType: "application/json",
                          async : false               //동기 = 절차적 
                       }).done(function(datas){
-                           console.log('조회 테스트')
-                          console.log(datas)
                           data = datas;
-                           fctGrid.resetData(data);
-                           fctGrid.refreshLayout();
+                          fctGrid.resetData(data);
+                          fctGrid.refreshLayout();
                       })
                    
                    
@@ -795,7 +785,7 @@
     
        //수정 아작스 
        btnEdit.addEventListener("click", function(){
-          
+		 alert("수정되었습니다")          
          let infoForm = document.getElementById('infoFrm');
          let formData = new FormData(infoForm);
          console.log('업데이트')
@@ -960,6 +950,7 @@
 				console.log(lineData)
 				if(lineCode == lineData.lineNO){
 					LineGrid.focus(lineData.rowKey,'lineNO',true)
+					alert(lineData.lineNO+"등록되었습니다")
 				}
 			}		   
 	   })
@@ -1017,6 +1008,21 @@
 		document.getElementById('fctImges').value = '';
 		document.getElementById('fctImges').setAttribute("src", '../resources/img/logo.jpg');
    }
+	
+	//라인초기화 
+	document.getElementById('btnFctEdit').addEventListener('click', function(){
+		if(!confirm("초기화하시겠습니까?")){
+			return;
+		}
+		fctClear();
+	})
+	
+	document.getElementById('LinebtnClear').addEventListener('click',function(){
+		if(!confirm("초기화하시겠습니까?")){
+			return;
+		}
+		LineClear();
+	})
 	
 	document.getElementById('useYn').addEventListener('click',function(event){
 		let checkValue = document.getElementById('useYn').checked;

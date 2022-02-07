@@ -76,7 +76,7 @@
 		</div>
 	</div>
 	<span class="floatright">
-		<form action="./ExcelCreate.do">
+		<form action="./fctExcelView.do">
 			<button type="sumit" id="excelBtn" onclick=excel() class="btn btn-main newalign">Excel</button>
 		</form>
 		<!-- <button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
