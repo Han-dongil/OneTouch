@@ -23,11 +23,15 @@
 <script src="${path}/resources/jquery-ui/jquery.ui.monthpicker.js"></script>
 
 </head>
+<style>
+	.cntDtl {background-color : peachpuff;}
+	.cntAll {background-color : lightsalmon;}
+</style>
 <body>
 <br>
 <h3>통계</h3>
 <hr>
-<div id="tabs">
+<div id="tabs" style="width : 650px;">
 	<ul>
 	  <li><a href="#mtrInTab">자재입고량</a></li>
 	  <li><a href="#mtrOutTab">자재출고량</a></li>
@@ -35,7 +39,7 @@
 	  <li><a href="#fltCntTab">제품불량량</a></li>
 	</ul>
 	<br>
-	&nbsp;
+	&nbsp;&nbsp;
 	<select id=selectSts>
 		<option>일별</option>
 		<option>월별</option>
@@ -46,7 +50,7 @@
 	</select>
 	<br><br>
 	<form id="stsDateFrm">
-		<div id="dateOnly">&nbsp;
+		<div id="dateOnly">&nbsp;&nbsp;
 			<label>해당일자</label>
 			<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker">&nbsp;
 			<label> ~ </label>&nbsp;
@@ -55,7 +59,7 @@
 		</div>
 	</form>
 	<form id="stsMonthFrm">
-		<div id="monthOnly">&nbsp;
+		<div id="monthOnly">&nbsp;&nbsp;
 			<label>해당일자</label>
 			<!-- <input type="text" id="startDate2" name="startDate" class="monthpicker" class="monthpicker jquerymonpicker"/> -->
 			<input type="text" id="startDate2" name="startDate" class="monthpicker" class="datepicker jquerymonpicker"/>&nbsp;
@@ -65,7 +69,7 @@
 		</div>
 	</form>
 	<form id="stsYearFrm">
-		<div id="yearOnly">&nbsp;
+		<div id="yearOnly">&nbsp;&nbsp;
 			<label>해당일자</label>&nbsp;
 			<select id="startDate3" name="startDate">
 				<option>2018</option>
@@ -287,8 +291,9 @@ let btnFind1 = document.getElementsByClassName('btnFind')[0];
 let btnFind2 = document.getElementsByClassName('btnFind')[1];
 let btnFind3 = document.getElementsByClassName('btnFind')[2];
 function btnFindFunc() {
-	if(flag == 1) {
+	if(flag == 1) { //자재입고량
 		if(selectSts.value == "일별") {
+			console.log($("#stsDateFrm").serializeObject())
 			mtrInGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
 		} else if(selectSts.value == "월별") {
 			mtrInGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
@@ -301,6 +306,21 @@ function btnFindFunc() {
 		} else if(selectSts.value == "자재별,연도별") {
 			mtrInGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
 		}
+		window.setTimeout(
+			function() {
+				for(mtrInData of mtrInGrid.getData()) {
+					if(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').indexOf("합계") == 6 ||
+					   mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').indexOf("합계") == 6) {
+						console.log("1")
+						mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntAll');
+					} else if(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').indexOf("소계") == 8 ||
+							  mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').indexOf("소계") == 8) {
+								console.log("2")
+								mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntDtl');
+					}
+				}				
+			}
+		,200)
 	} else if(flag == 3) {
 		if(selectSts.value == "일별") {
 			pdtCntGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
@@ -481,7 +501,9 @@ selectSts.addEventListener("change", function(){
 //---------fltCntGrid---------
 //---------fltCntGrid 끝---------
 
-
+for(mtrInData of mtrInGrid.getData()) {
+	console.log(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').contain("합계"))
+}
 
 
 //---------Grid 깨지는거 refresh---------

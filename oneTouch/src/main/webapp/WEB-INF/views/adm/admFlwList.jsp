@@ -98,9 +98,9 @@
 							<form id="flwFrm" name="flwFrm" method="post" onsubmit="return false">
 								<div class="rowdiv">
 									<label class="labeltext">제품코드&nbsp;</label>
-									<input id="prdCd" name="prdCd" class="inputtext" readonly>
+									<input id="prdCd" name="prdCd" class="inputtext" onkeyup="enterPrdCd()">
 									<label class="labeltext colline2">제품명&nbsp;</label>
-									<input id="prdNm" name="prdNm" class="inputtext" readonly>
+									<input id="prdNm" name="prdNm" class="inputtext">
 								</div>
 								
 								<div class="rowdiv">
@@ -143,7 +143,7 @@
 			
 			<h4 class="gridtitle">✔공정흐름</h4>
 			<span class="floatright">
-				<button type="button" id="btnFlw" class="btn btn-main newalign2">조회</button>
+				<!-- <button type="button" id="btnFlw" class="btn btn-main newalign2">조회</button> -->
 				<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
 				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 				<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
@@ -284,6 +284,7 @@
 	{
 		header : '제품코드',
 		name : 'prdCd',
+		hidden : true
 	},
 	{
 		header : '공정코드',
@@ -301,6 +302,8 @@
 	}).done(function(datas){
 		for(data of datas) {
 			$('#prdStdNm').append("<option value="+data.prdStd+">"+data.prdStdNm+"</option>")
+			//페이지 로드할때 셀렉트 모두 빈칸으로 만들기
+			document.getElementById('prdStdNm').value = '';
 		}
 	});
 	
@@ -312,6 +315,8 @@
 	}).done(function(datas){
 		for(data of datas) {
 			$('#mngUnitNm').append("<option value="+data.mngUnit+">"+data.mngUnitNm+"</option>")
+			//페이지 로드할때 셀렉트 모두 빈칸으로 만들기
+			document.getElementById('mngUnitNm').value = '';
 		}
 	});
 	
@@ -323,8 +328,15 @@
 	}).done(function(datas){
 		for(data of datas) {
 			$('#prdSectNm').append("<option value="+data.prdSect+">"+data.prdSectNm+"</option>")
+			//페이지 로드할때 셀렉트 모두 빈칸으로 만들기
+			document.getElementById('prdSectNm').value = '';
 		}
 	});
+
+	
+	
+	
+	
 	
 	var dataSource1 = {
 			api: {
@@ -451,26 +463,24 @@
 		btnSave.addEventListener("click", function() {
 			grid2.blur();
 			rowk = grid2.getRowCount();
-			if(flwCnt <= rowk) {
-				for(i=flwCnt; i<grid2.getRowCount(); i++) {
-					if(grid2.getRow(i).prcSeq == '') {
-						alert("공정순서는 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).prcNm == '') {
-						alert("공정명은 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).stdLoad == '') {
-						alert("기준부하율은 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).unitCost == '') {
-						alert("단가는 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).leadTime == '') {
-						alert("LEAD타임은 필수입력칸입니다!!");
-						return;
-					}
-				}			
-			}
+			for(i=0; i<rowk; i++) {
+				if(grid2.getRow(i).prcSeq == '') {
+					alert("공정순서는 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).prcNm == '') {
+					alert("공정명은 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).stdLoad == '') {
+					alert("기준부하율은 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).unitCost == '') {
+					alert("단가는 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).leadTime == '') {
+					alert("LEAD타임은 필수입력칸입니다!!");
+					return;
+				}
+			}			
 			let create = grid2.getModifiedRows().createdRows;
 			let update = grid2.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -667,16 +677,13 @@
 			document.getElementById('mngUnitNm').value = '';
 			document.getElementById('prdSectNm').value = '';
 			document.getElementById('ableLineNo').value = '';
-/* 			document.getElementById('prdStd').value = '';
-			document.getElementById('mngUnit').value = '';
-			document.getElementById('prdSect').value = ''; */
 			document.getElementById('prdCd').readOnly = false;
 			document.getElementById('useYn').checked = false;
 			grid2.clear();
 			document.getElementById('btnAddPrd').disabled = undefined;
 			document.getElementById('btnEditPrd').setAttribute('disabled', true);
 			document.getElementById('btnDelPrd').setAttribute('disabled', true);
-		}
+	}
 		
 		//삭제버튼
 		btnDelPrd.addEventListener("click", function() {
@@ -705,9 +712,11 @@
 		
 		//제품검색 엔터키
 		function enterPrdCd() {
+			
 			prdCodeVal = document.getElementById('prdCd').value;
 			if(window.event.keyCode == 13){
-				console.log('엔터키 이벤트 성공')
+				console.log('엔터키 이벤트 성공')	
+				let flag = true
 				for(prdCdData of grid1.getData()) {
 					if(prdCdData.prdCd == prdCodeVal) {
 						document.getElementById('prdCd').value = prdCdData.prdCd;
@@ -725,10 +734,21 @@
 						document.getElementById('btnAddPrd').setAttribute('disabled', true);
 						document.getElementById('btnEditPrd').disabled = undefined;	
 						document.getElementById('btnDelPrd').disabled = undefined;	
+						
+						document.getElementById('prdCd').readOnly = true;
+						flag = true;
+						break;
+					} else {
+						flag = false;
 					}
+				}
+				if(flag == false){
+					alert("등록가능한 제품코드입니다");
 				}
 			}
 		}
+		
+		
 		
 	/*제품 끝*/
 

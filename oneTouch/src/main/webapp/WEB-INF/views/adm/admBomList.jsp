@@ -109,23 +109,8 @@ hr{
 	let BomCnt = 0;
 	let prdCdVal;
 	let modifyList = [];
-	/* let Grid = tui.Grid; */
 	//--------변수선언 끝--------
-	
-	//--------그리드 css--------
-	/* Grid.applyTheme('striped',{
-		cell:{
-			header: {
-	            background: '#4B49AC',
-	            text: '#fff'
-	        },
-	        evenRow: {
-	        	background:'#F5F7FF'
-	        }
-		}
-	})  */
-	//--------그리드 css 끝--------
-	
+		
 	//--------제품정보 보여주는 form 기능--------
 		//제품코드옆의 돋보기 누르면
 		btnPrdCd.addEventListener("click", function() {
@@ -139,9 +124,8 @@ hr{
 			autoOpen : false,
 			modal : true,
 			resizable: false,
-			/* height: "auto", */
-			height: 500,
-			width: 800
+			//height: 550,
+			width:  900
 		});
 		
 		//제품코드 눌렀을때 나오는 모달에서 더블클릭했을때 실행되는 함수
@@ -350,38 +334,36 @@ hr{
 			mainGrid.blur();
 			//필수입력
 			rowk = mainGrid.getRowCount();
-			if(BomCnt <= rowk) {
-				for(i=BomCnt; i<rowk; i++) {
-					if(mainGrid.getRow(i).mtrCd == '') {
-						alert("자재코드는 필수입력칸입니다!!");
-						return;
-					} else if(mainGrid.getRow(i).mtrNm == '') {
-						alert("자재명은 필수입력칸입니다!!");
-						return;
-					} else if(mainGrid.getRow(i).useAmt == '') {
-						alert("사용량은 필수입력칸입니다!!");
-						return;
-					} else if(mainGrid.getRow(i).ordChk == '') {
-						alert("발주는 필수입력칸입니다!!");
-						return;
-					} else if(mainGrid.getRow(i).pdtChk == '') {
-						alert("생산은 필수입력칸입니다!!");
-						return;
-					} else if(mainGrid.getRow(i).prcNm == '') {
-						alert("사용공정명은 필수입력칸입니다!!");
-						return;
-					}
+			for(i=0; i<rowk; i++) {
+				if(mainGrid.getRow(i).mtrCd == '') {
+					alert("자재코드는 필수입력칸입니다!!");
+					return;
+				} else if(mainGrid.getRow(i).mtrNm == '') {
+					alert("자재명은 필수입력칸입니다!!");
+					return;
+				} else if(mainGrid.getRow(i).useAmt == '') {
+					alert("사용량은 필수입력칸입니다!!");
+					return;
+				} else if(mainGrid.getRow(i).ordChk == '') {
+					alert("발주는 필수입력칸입니다!!");
+					return;
+				} else if(mainGrid.getRow(i).pdtChk == '') {
+					alert("생산은 필수입력칸입니다!!");
+					return;
+				} else if(mainGrid.getRow(i).prcNm == '') {
+					alert("사용공정명은 필수입력칸입니다!!");
+					return;
 				}
-				let create = mainGrid.getModifiedRows().createdRows;
-				let update = mainGrid.getModifiedRows().updatedRows;
-				for(let i=0; i<create.length; i++) {
-					modifyList.push(create[i].mtrCd);
-				}
-				for(let i=0; i<update.length; i++) {
-					modifyList.push(update[i].mtrCd);
-				}
-				mainGrid.request('modifyData');
 			}
+			let create = mainGrid.getModifiedRows().createdRows;
+			let update = mainGrid.getModifiedRows().updatedRows;
+			for(let i=0; i<create.length; i++) {
+				modifyList.push(create[i].mtrCd);
+			}
+			for(let i=0; i<update.length; i++) {
+				modifyList.push(update[i].mtrCd);
+			}
+			mainGrid.request('modifyData');
 		})
 			
 		//초기화버튼

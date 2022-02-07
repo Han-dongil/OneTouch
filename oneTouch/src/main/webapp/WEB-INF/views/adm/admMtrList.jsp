@@ -227,6 +227,7 @@ hr{
 	}).done(function(datas){
 		for(data of datas) {
 			$('#stdNm').append("<option value="+data.std+">"+data.stdNm+"</option>")
+			document.getElementById('stdNm').value = '';
 		}
 	});
 	
@@ -239,6 +240,7 @@ hr{
 		console.log(datas)
 		for(data of datas) {
 			$('#unitNm').append("<option value="+data.mngUnit+">"+data.mngUnitNm+"</option>")
+			document.getElementById('unitNm').value = '';
 		}
 	});
 	
@@ -250,6 +252,7 @@ hr{
 	}).done(function(datas){
 		for(data of datas) {
 			$('#mtrSectNm').append("<option value="+data.mtrSect+">"+data.mtrSectNm+"</option>")
+			document.getElementById('mtrSectNm').value = '';
 		}
 	});
 	
@@ -509,6 +512,7 @@ hr{
 		mtrCodeVal = document.getElementById('mtrCd').value;
 		if(window.event.keyCode == 13){
 			console.log('엔터키 이벤트 성공')
+			let flag = true
 			for(mtrCdData of grid.getData()) {
 				if(mtrCdData.mtrCd == mtrCodeVal) {
 					document.getElementById('mtrCd').value = mtrCdData.mtrCd;
@@ -529,10 +533,18 @@ hr{
 					document.getElementById('btnAdd').setAttribute('disabled', true);
 					document.getElementById('btnEdit').disabled = undefined;	
 					document.getElementById('btnDel').disabled = undefined;	
+					flag = true;
+					break;
+				} else {
+					flag = false;
 				}
+			}
+			if(flag == false){
+				alert("등록가능한 자재코드입니다");
 			}
 		}
 	}
+	
 	
 </script>
 </body>
