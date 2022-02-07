@@ -57,7 +57,7 @@ hr{
 				<div class="card-body">
 					<form name="frm" id="frm">
 						<div class="rowdiv">
-							<label class="labeltext">해당일자</label>
+							<label class="labeltext">주문일자</label>
 							<input type="text" id="inputDate" name="ordDate" class="datepicker jquerydtpicker"/>
 						</div>
 						
