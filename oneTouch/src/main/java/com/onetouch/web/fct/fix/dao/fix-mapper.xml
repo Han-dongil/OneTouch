@@ -52,12 +52,14 @@
 				AND substr(fct_cd,1,11) = #{fctCd}
 			]]>
 		</if>
+		order by req_dt desc
 	</select>
 	
 	<delete id="deleteFtc">
 		DELETE
 		FROM fct_fix_mng
-		WHERE fix_cd = #{fixCd}
+		WHERE fix_cd = #{fixCd} 
+		
 	</delete>
 	
 	<update id="updateFtc">

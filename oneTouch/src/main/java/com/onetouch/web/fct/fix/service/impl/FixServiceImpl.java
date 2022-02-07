@@ -44,6 +44,7 @@ public class FixServiceImpl implements FixService {
 		}
 		if(mvo.getDeletedRows() != null) {
 			for(FixVO fixVO : mvo.getDeletedRows()) {
+				System.out.println("삭제 수리요청 완료 테스트 성공");
 				fmapper.deleteFtc(fixVO);
 			};
 		}

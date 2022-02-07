@@ -3,7 +3,9 @@
 <mapper namespace="com.onetouch.web.fct.info.dao.InfoMapper">
 <!-- 작성자 : 박종현 -->
 
-
+<select id="selectLineNo" resultType="com.onetouch.web.fct.info.dao.LineVO">
+	select COUNT(*) as lineCnt from fct_info where line_no = #{lineNO}
+</select>
 <select id="findFctList" resultType="map">
 	select * from fct_info order by fct_cd
 </select>

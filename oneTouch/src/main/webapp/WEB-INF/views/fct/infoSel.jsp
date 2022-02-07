@@ -76,8 +76,10 @@
 		</div>
 	</div>
 	<span class="floatright">
-		<button type="button" id="excelBtn" class="btn btn-main newalign">Excel</button>
-		<button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button>
+		<form action="./ExcelCreate.do">
+			<button type="sumit" id="excelBtn" onclick=excel() class="btn btn-main newalign">Excel</button>
+		</form>
+		<!-- <button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
 	</span>
 	<br><br>
 	<hr>
@@ -140,7 +142,6 @@
     header: '설비코드',
     name: 'fctCd',
     editor: 'text',
-    /* width:120, */
     align:'center'
   },
   {
@@ -181,13 +182,14 @@
   {     //날짜(데이터피커) cdn 받아서 넣었다
      headet: '입고일',
      name: 'inDate',
-     editor: 'datePicker'
+     editor: 'datePicker',
+     align:'center'
   },
   {
     header: '구매금액',
     name: 'purchCost',
     editor: 'text',
-    align:'center'
+    align:'right'
   },
   {
     header: '점검주기',
@@ -199,19 +201,9 @@
   {
     header: '총생산량',
     name: 'totPdtAmt',
-    editor: 'datePicker',
-   /*  width:70 */
-  }/* ,
-  {
-    header: 'uph생산량',
-    name: 'uphPdtAmt',
-    editor: 'datePicker'
-  },
-  {
-    header: '사번',
-    name: 'empNo',
-    editor: 'datePicker'
-  } */
+    editor: 'text',
+    align:'right'
+  }
     ]
 	let data;
     let dataVO;
@@ -354,7 +346,9 @@
        btnFind.addEventListener("click", function(){
     	   //grid.;
        })  */
-       
+       function excel(){
+		alert("c드라이브 temp폴더 엑셀 등록이 완료 되었습니다.")
+	}
        function todayDate(){
 			let to;
 			let from;
@@ -377,6 +371,13 @@
 		}
        	todayDate()
 		
+       	resetBtn.addEventListener("click", function(){
+       		if(!confirm("초기화하시겠습니까?")){
+       			return;
+       		}
+       		grid.clear()
+       	})
+      
       
 </script>
 </body>

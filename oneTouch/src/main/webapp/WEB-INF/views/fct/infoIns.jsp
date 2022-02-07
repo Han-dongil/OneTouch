@@ -141,7 +141,7 @@
 									<label class="labeltext">사용여부&nbsp;</label>
 									<span class="form-check form-check-flat form-check-primary inline">
 										<label class="form-check-label chkboxalign">
-											<input id="useYn" name="useYn" type="checkbox" class="form-check-input" readonly>
+											<input id="useYn" name="useYn" type="checkbox" class="form-check-input" >
 										</label>
 									</span>
 								</div>
@@ -644,17 +644,7 @@
       document.getElementById('useYn').checked = (lineVO.useYn=='Y')?true:false;
       document.getElementById('useYn').value = lineVO.useYn;
       document.getElementById('empNo').value = lineVO.empNo;
-      
-      
-      
-      document.getElementById('useYn').addEventListener('click', function(event){
-    	  console.log(lineVO.useYn)
-    	  if(lineVO.useYn == 'Y'){
-	    	  alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
-	    	  document.getElementById('useYn').checked = true;
-	    	  
-    	  }
-      })
+     
    })
     
    //라인 찾는 아작스 
@@ -1036,16 +1026,59 @@
 		else{
 			document.getElementById('useYn').value= 'N';
 		}
-		console.log(event.target.value)
+		console.log(document.getElementById('useYn').value)
 		
 		
-	})
+	  if(document.getElementById('useYn').value == 'Y'){
+		  let lineData;
+	    		  console.log('사용여부가 있을 때 클릭 ')
+		    	  //alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
+		    	  //document.getElementById('useYn').checked = true;
+		    	  
+	    	  }else if(document.getElementById('useYn').value == 'N'){
+	    		  console.log(' 사용하는 라인이 없는지 확인해봐야함   ')
+	    		  console.log('라인번호 출력하기')
+	    		  
+	    		  console.log(document.getElementById('lineinput').value)
+	    		  let lineFrmData = $('#lineForm').serializeObject();
+	    		  console.log('라인 출력하기')
+	    		  console.log(lineFrmData)
+	    		  fetch('./selectFctLineNo',{
+	    			  method:'POST',
+	    			  headers:{
+	    				  "Content-Type": "application/json",
+	    			  },
+	    			  body:JSON.stringify(lineFrmData)
+	    		  })
+	    		  .then(response=>response.json())
+	    		  .then(result=>{
+	    			  console.log('설비 포함 라인 조회 ')
+	    			  console.log(result.lineCnt)
+	    			  lineData = result;
+	    			  
+	    		  })
+	    		  .then(x=>{
+	    			  if(lineData.lineCnt > 0){
+	    				  console.log('라인이 등록된 설비')
+						  let lineCode = document.getElementById('lineinput').value;
+	    				  alert(lineCode+"라인의 등록된 설비부터 해제하여주십시요");
+	    				  document.getElementById('useYn').checked = true;
+	    			  }
+	    		  })
+	    	
+	    	  }
+			
+			
+		})
 	
 	//라인 수정 
 	function LineUpt(){
 		console.log('수정버튼 클릭 이벤트')
 		let lineInput =$("#lineForm").serializeObject();
 		console.log('폼태그 값 시리얼 라이즈')
+		if(lineInput.useYn==null){
+			lineInput.useYn = 'N';
+		}
 		fetch('./LineUpdate',{
 			method:'POST',
 			headers:{

@@ -12,4 +12,5 @@ public class LineVO {
 	String empNo;		//사원번호
 	//설비 등록 input에서 클릭 했을 때는 사용중인 라인만 보기 위한 조건변수
 	String fctLineChek;	
+	int lineCnt;	//설비가 등록된 라인의 개수를 담는 변수
 }

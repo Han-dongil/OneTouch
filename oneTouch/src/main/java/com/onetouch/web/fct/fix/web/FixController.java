@@ -58,7 +58,7 @@ public class FixController {
     @PostMapping("/fctModifyData")
     public int modify(@RequestBody ModifyVO<FixVO> mvo) {
     	System.out.println("컨트롤러 값 보여주기 ^^^^^^^^^^^^^^^^^^^^^^^");
-    	System.out.println(mvo.getUpdatedRows().get(0).getFixCd());
+    	//System.out.println(mvo.getUpdatedRows().get(0).getFixCd());
     	fservice.modify(mvo);
     	
     	return 0; 

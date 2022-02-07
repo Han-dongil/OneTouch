@@ -8,7 +8,8 @@ import com.onetouch.web.fct.info.dao.LineVO;
 
 public interface InfoService {
 
-	
+	//설비가 등록된 라인을 조회
+	LineVO selectLineNo(LineVO lineVO);
 	//공정 시작 설비상태 가동으로 변경
 	void updateStartFctPhs();
 	//설비 이름 조회
