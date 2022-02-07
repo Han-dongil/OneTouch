@@ -20,13 +20,16 @@
 	margin-bottom: 10px;
 }
 .bascard1{
-	height: 125px;
+	height: 115px;
 }
 .newalign{
 	margin-bottom: 0rem !important;
 }
 .hr4{
 	margin-top: 1.5rem !important;
+}
+.floatright1{
+	margin-top: 5px;
 }
 </style>
 
@@ -56,7 +59,7 @@
 					</span>
 				</div>
 			</div>
-			<span class="floatright">
+			<span class="floatright floatright1">
 				<button type="button" id="btnAddBas" class="btn btn-main newalign">추가</button>
 				<button type="button" id="btnDelBas" class="btn btn-main newalign">삭제</button>
 				<button type="button" id="btnSaveBas" class="btn btn-primary newalign">저장</button>
@@ -214,8 +217,8 @@
 		data: dataSource1,
 		rowHeaders : [ 'checkbox' ],
 		columns: columns1,
-		bodyHeight: 477,
-		minBodyHeight: 477
+		bodyHeight: 488,
+		minBodyHeight: 488
 	});
 	
 	const grid2 = new Grid({
