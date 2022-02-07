@@ -97,7 +97,11 @@ hr{
 			</div>
 		</div>
 	</div>
-		
+		<span class="floatright">
+		<form action="./MtrExcelView.do">
+			<button type="sumit" id="excelBtn" class="btn btn-main newalign">Excel</button>
+		</form>
+	</span>
 	<hr>
 	<div id="grid"></div>
 	<div id="dialog-form"></div>

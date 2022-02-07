@@ -72,6 +72,7 @@
 	</beans:bean>
 	<!-- 종현 엑셀 -->
 	<beans:bean id = "excelView" class="com.onetouch.web.fct.info.dao.CommonExcelView" ></beans:bean>
+	<beans:bean id = "mtrExcelView" class="com.onetouch.web.mtr.in.dao.MtrlnExcelView" ></beans:bean>
 	
 	
 
