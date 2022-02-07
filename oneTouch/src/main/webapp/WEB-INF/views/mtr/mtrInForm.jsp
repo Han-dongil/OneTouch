@@ -374,7 +374,7 @@ let mainGrid = new Grid({
 			            },
 			            unitCost: {
 			                template(summary){
-			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
+			        			return "MIN: "+format(summary.min)+"<br>"+"MAX: "+format(summary.max);
 			                } 
 			            },
 			            totCost: {
@@ -400,13 +400,11 @@ function format(value){
 //---------합계금액 입력해주는 function---------
 function totCal(){
 	let data;
-	window.setTimeout(()=>{
 		data = mainGrid.getData()
 		for(i=0; i<data.length; i++){
 			let val = data[i].inAmt*data[i].unitCost
 			mainGrid.setValue(i,"totCost",val)
 		}
-	},100)
 };
 //---------합계금액 입력해주는 function 끝---------
 
@@ -654,10 +652,10 @@ btnMtrCd.addEventListener("click", function(){
 });
 //---------자재검색버튼 끝---------
 
-
 //---------추가버튼---------
 btnAdd.addEventListener("click", function(){
-	mainGrid.appendRow({},{focus:true});
+	mainGrid.appendRow({'mtrNm':''},
+						 {focus:true});
 	mainGrid.setValue(mainGrid.getRowCount()-1, 'inDate', today())
 });
 //---------추가버튼 끝---------
@@ -682,6 +680,22 @@ btnDel.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
+	
+	 rowk = mainGrid.getRowCount();
+     
+     for(i=0; i<rowk; i++) {
+        if(mainGrid.getRow(i).mtrNm == '') {
+           alert("자재명은 필수입력칸입니다!!");
+           return;
+        } else if(mainGrid.getRow(i).inAmt == 0) {
+           alert("입고량은 필수입력칸입니다!!");
+           return;
+        } else if(mainGrid.getRow(i).unitCost == 0) {
+           alert("입고량은 필수입력칸입니다!!");
+           return;
+        }
+     }  
+	
 	let create = mainGrid.getModifiedRows().createdRows;
 	let update = mainGrid.getModifiedRows().updatedRows;
 	for(let i=0; i<create.length; i++) {

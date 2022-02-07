@@ -287,7 +287,7 @@ var mainGrid = new Grid({
 			            },
 			            unitCost: {
 			                template(summary){
-			        			return "MIN: "+summary.min+"<br>"+"MAX: "+summary.max;
+			        			return "MIN: "+format(summary.min)+"<br>"+"MAX: "+format(summary.max);
 			                } 
 			            },
 			            totCost: {

@@ -120,6 +120,15 @@ hr{
 	<hr>
 	<div id="grid"></div>
 	<div id="dialog-form"></div>
+	<div id="dialog-lot">
+		<label>자재코드</label>
+		<input type="text" id="mDitemCode" name="ditemCode" disabled="disabled">
+		<br>
+		<label>자재명</label>&nbsp;&nbsp;&nbsp;
+		<input type="text" id="mDitemCodeNm" name="ditemCodeNm" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>단위</label>
+		<input type="text" id="mUnitNm" name="unitNm" disabled="disabled">
+	</div>
 </div>
 
 
@@ -180,7 +189,7 @@ hr{
 
 <script type="text/javascript">
 let rowk = -1;
-let rown;
+let rown = -1;
 
 
 //---------포맷에 맞게 날짜 구하는 function---------
@@ -214,7 +223,7 @@ const dataSource = {
 	api: {
 		readData: { url: './mtrCalForm', method: 'POST' },
 		createData: { url: './mtrCalCreate', method: 'POST'},
-		deleteData: { url: './mtrCalDelete', method: 'POST'},
+		deleteData: { url: './mtrCalDelete', method: 'POST'}
 	},
 	contentType: 'application/json',
 	initialRequest: false
@@ -590,6 +599,21 @@ columns : [
 			]
 });
 //---------lotGrid 끝---------
+
+//***************************************************************************************************
+//---------lotGrid (mainGrid에 있는 데이터 제거)---------
+lotGrid.on('onGridUpdated', ev => {
+	let datas = mainGrid.getData();
+	let rows = lotGrid.getData();
+		for(i=rown; i<mainGrid.getRowCount(); i++){
+			for(row of rows){
+				if(datas[i].mtrLot == row.mtrLot){
+					lotGrid.removeRow(row.rowKey)
+				}
+			}
+		}
+});
+//---------lotGrid (mainGrid에 있는 데이터 제거) 끝---------
 
 
 //---------lotGrid 수정불가 컬럼 alert---------
