@@ -130,10 +130,15 @@
 		buttons:{"불러오기":function(){ 
 			var temp = [];
 			for(i=0; i<checkedRowdata.length; i++){
-				temp.push({chkDt:''
-					       ,chkExpectDt:''
+				console.log(checkedRowdata)
+				temp.push({
+							chkProd:checkedRowdata[i].chkProd
+						   ,chkProdUnit:checkedRowdata[i].chkProdUnit
+						   ,chkDt:checkedRowdata[i].chkDt
+						   ,prodChkNo:checkedRowdata[i].prodChkNo
+					       ,chkExpectDt:checkedRowdata[i].chkExpectDt
 					       ,fctCd:checkedRowdata[i].fctCd
-					       ,chkRslt:''
+					       ,chkRslt:checkedRowdata[i].chkRslt
 					       ,fctNm:checkedRowdata[i].fctNm
 						   ,msrMtt:''		   
 						   ,msrCmt:''})

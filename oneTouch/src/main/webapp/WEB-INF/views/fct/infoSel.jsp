@@ -79,7 +79,6 @@
 		<form action="./fctExcelView.do">
 			<button type="sumit" id="excelBtn" class="btn btn-main newalign">Excel</button>
 		</form>
-		<!-- <button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
 	</span>
 	<br><br>
 	<hr>

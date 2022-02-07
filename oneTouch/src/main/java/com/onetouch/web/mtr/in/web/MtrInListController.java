@@ -1,7 +1,9 @@
 
 package com.onetouch.web.mtr.in.web;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.onetouch.web.mtr.in.dao.MtrInMapper;
 import com.onetouch.web.mtr.in.dao.MtrSearchVO;
 import com.onetouch.web.mtr.in.service.MtrInService;
 @RequestMapping("/mtr")
@@ -18,11 +22,25 @@ import com.onetouch.web.mtr.in.service.MtrInService;
 public class MtrInListController {
 
 	@Autowired MtrInService service;
+	@Autowired MtrInMapper Mmapper;
 	
 	@RequestMapping("/inList")
 	public String inForm() {
 		return "tiles/mtr/mtrInList";
 	}
+	
+	//엑셀출력
+			@RequestMapping("/MtrExcelView.do")
+			public ModelAndView excelView() throws IOException{
+				List<Map<String, Object>> list = Mmapper.selectExcelIn();
+				HashMap<String, Object> map = new HashMap<String, Object>(); 
+				System.out.println("리스트 보여주기");
+				System.out.println(list );
+				map.put("filename", "excel_dept");
+				map.put("datas", list);
+				return new ModelAndView("mtrExcelView", map);
+			}
+	
 	
 	//조건조회 grid
 	@ResponseBody

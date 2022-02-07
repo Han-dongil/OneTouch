@@ -59,7 +59,9 @@ where p.fct_cd = #{fctCd}
 			            when f.chk_prod_unit = 'M' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), f.chk_prod), 'yyyy-MM-dd')
 			            when f.chk_prod_unit = 'W' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + (f.chk_prod * 7), 'yyyy-MM-dd')
 			            when f.chk_prod_unit = 'D' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + f.chk_prod, 'yyyy-MM-dd')
-			           end as chkExpectDt
+			           end as chkExpectDt,
+			           chk_prod,
+                       chk_prod_Unit
 			        From fct_prod_chk p, fct_info f
 			      WHERE p.fct_cd= f.fct_cd) a
 			   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')

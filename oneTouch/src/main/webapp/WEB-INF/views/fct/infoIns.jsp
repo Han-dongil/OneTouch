@@ -139,7 +139,10 @@
 								
 								<div class="rowdiv">
 									<label class="labeltext">담당자&nbsp;</label>
-									<input type="text" id="empNo" name="empNo" class="inputtext" value="" />
+									<input type="text" id="empNo" list="emplist" autocomplete="off" name="empNo" class="inputtext" value="" />
+									<datalist id="emplist" >
+										<option value="설비사원">설비사원</option>
+									</datalist>
 								</div>
 								
 								<div class="rowdiv2">

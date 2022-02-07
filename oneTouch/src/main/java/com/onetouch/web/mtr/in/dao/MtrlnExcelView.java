@@ -1,4 +1,4 @@
-package com.onetouch.web.fct.info.dao;
+package com.onetouch.web.mtr.in.dao;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,16 +24,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 @Component
-public class CommonExcelView  extends  AbstractXlsxView {
+public class MtrlnExcelView  extends  AbstractXlsxView {
 
-	private static final Logger LOGGER  = LoggerFactory.getLogger(CommonExcelView.class);
+	private static final Logger LOGGER  = LoggerFactory.getLogger(MtrlnExcelView.class);
 	
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 
-		Sheet sheet = workbook.createSheet("Datatypes in Java");
+		Sheet sheet = workbook.createSheet("MtrlnExcel");
 		Row row;
 		Cell cell;
         int rowNum = 0;
@@ -41,6 +41,8 @@ public class CommonExcelView  extends  AbstractXlsxView {
         // 테이블 헤더용 스타일
 
         CellStyle cs = workbook.createCellStyle();
+        
+        
         
      
         
@@ -55,22 +57,20 @@ public class CommonExcelView  extends  AbstractXlsxView {
 		cs.setFont(f2);
         
 		//헤더명 영어로 배열에 담기(수정필요)
-				String[] headers  = {"FCT_CD","FCT_NM","LINE_NO","PRC_CD","FCT_STD","FCT_MODEL","COMP_CD","IN_DATE","PURCH_COST","CHK_PROD","CHK_PROD_UNIT","FCT_PHS","FCT_IMG","UPLOAD_PATH"};
+				String[] headers  = {"IN_NO","IN_DATE","MTR_CD","MTR_NM","UNIT_NM","COMP_NM","ORD_NO","FLT_AMT","IN_AMT","UNIT_COST","TOT_COST"};
 				Map<String, String> headerMap = new HashMap<>();
-				headerMap.put("FCT_CD", "설비코드");
-				headerMap.put("FCT_NM", "설비이름");
-				headerMap.put("LINE_NO", "라인번호");
-				headerMap.put("PRC_CD", "공정코드");
-				headerMap.put("FCT_STD", "설비규격");
-				headerMap.put("FCT_MODEL", "설비모델코드");
-				headerMap.put("COMP_CD", "설비 판매회사");
-				headerMap.put("IN_DATE", "입고일");
-				headerMap.put("PURCH_COST", "설비금액");
-				headerMap.put("CHK_PROD", "정기점검");
-				headerMap.put("CHK_PROD_UNIT", "정기점검단위");
-				headerMap.put("FCT_PHS", "설비상태");
-				headerMap.put("FCT_IMG", "설비이미지");
-				headerMap.put("UPLOAD_PATH", "이미지경로");
+				headerMap.put("IN_NO", "입고번호");
+				headerMap.put("IN_DATE", "입고일자");
+				headerMap.put("MTR_CD", "자재코드");
+				headerMap.put("MTR_NM", "자재명");
+				headerMap.put("UNIT_NM", "단위");
+				headerMap.put("COMP_NM", "업체");
+				headerMap.put("ORD_NO", "발주번호");
+				headerMap.put("FLT_AMT", "불량량");
+				headerMap.put("IN_AMT", "입고량");
+				headerMap.put("UNIT_COST", "단가");
+				headerMap.put("TOT_COST", "총금액");
+				
 
         String file_name =(String) model.get("filename") + System.currentTimeMillis() + ".xlsx";
 		response.setHeader("Content-Disposition", "attachment; filename=\""+ file_name+"\"");
@@ -90,7 +90,7 @@ public class CommonExcelView  extends  AbstractXlsxView {
 		}
 		
 		//body 출력
-        List<Map<String, Object>> list  = (List<Map<String, Object>>)model.get("datas");
+        List<Map<String, Object>> list  =   (List<Map<String, Object>>) model.get("datas");
         if(headers != null) {
         	for (Map<String, Object> map : list) {
         		row = sheet.createRow(rowNum++);
@@ -102,7 +102,6 @@ public class CommonExcelView  extends  AbstractXlsxView {
  					sheet.autoSizeColumn(colCnt++);
  					if(field == null) {
  						field = "";
- 						System.out.println(header);
  					}
  					
  					if (field instanceof String) {
