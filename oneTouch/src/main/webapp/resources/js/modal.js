@@ -126,7 +126,12 @@ function mPrd(){
 			},
 			{
 				header: '제품규격',
-				name: 'prdStd'
+				name: 'prdStdNm'
+			},
+			{
+				header: '제품규격',
+				name: 'prdStd',
+				hidden: true
 			},
 			{
 				header: '관리단위코드',
@@ -139,11 +144,17 @@ function mPrd(){
 			},
 			{
 				header: '가능라인',
-				name: 'ableLineNo'
+				name: 'ableLineNo',
+				width: 300
 			},
 			{
 				header: '제품구분',
-				name: 'prdSect'
+				name: 'prdSectNm'
+			},
+			{
+				header: '제품구분',
+				name: 'prdSect',
+				hidden: true
 			}
 		];
 		
@@ -153,7 +164,7 @@ function mPrd(){
 			columns : prdColumns,
 			scrollX : false,
 			scrollY : true,
-			bodyHeight: 400
+			bodyHeight: 500
 		});
 		
 		prdGrid.on('dblclick', ev => {

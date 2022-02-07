@@ -196,36 +196,34 @@ hr{
 		btnSave.addEventListener("click", function() {
 			grid.blur();
 			rowk = grid.getRowCount();
-			if(fltCnt <= rowk) {
-				for(i=fltCnt; i<rowk; i++) {
-					if(grid.getRow(i).fltNm == '') {
-						alert("불량명은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).fltMtt == '') {
-						alert("불량내역은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).fltSect == '') {
-						alert("불량구분은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).prcNm == '') {
-						alert("발생공정명은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).seq == '') {
-						alert("표시순서는 필수입력칸입니다!!");
-						return;
-					} 
-				}
-				let create = grid.getModifiedRows().createdRows;
-				let update = grid.getModifiedRows().updatedRows;
-				for(let i=0; i<create.length; i++) {
-					modifyList.push(create[i].fltCd);
-				}
-				for(let i=0; i<update.length; i++) {
-					modifyList.push(update[i].fltCd);
-				}
-				console.log(modifyList);
-				grid.request('modifyData');
+			for(i=0; i<rowk; i++) {
+				if(grid.getRow(i).fltNm == '') {
+					alert("불량명은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).fltMtt == '') {
+					alert("불량내역은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).fltSect == '') {
+					alert("불량구분은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).prcNm == '') {
+					alert("발생공정명은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).seq == '') {
+					alert("표시순서는 필수입력칸입니다!!");
+					return;
+				} 
 			}
+			let create = grid.getModifiedRows().createdRows;
+			let update = grid.getModifiedRows().updatedRows;
+			for(let i=0; i<create.length; i++) {
+				modifyList.push(create[i].fltCd);
+			}
+			for(let i=0; i<update.length; i++) {
+				modifyList.push(update[i].fltCd);
+			}
+			console.log(modifyList);
+			grid.request('modifyData');
 		})
 		
 		//모달설정

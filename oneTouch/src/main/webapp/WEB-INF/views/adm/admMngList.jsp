@@ -147,13 +147,12 @@ hr{
 		{
 			header : '공정구분코드',
 			name : 'prcSect',
-			
+			hidden: true	
 		},
 		{
 			header : '단위구분코드',
 			name : 'mngUnit',
-			hidden : true,
-			
+			hidden: true			
 		}];
 	//--------그리드컬럼 선언 끝--------
 	
@@ -258,36 +257,39 @@ hr{
 			grid.blur();
 			rowk = grid.getRowCount();
 			if(mngCnt <= rowk) {
-				for(let i=mngCnt; i<rowk; i++) {
+				for(let i=mngCnt; i<rowk; i++) {		
 					for(let j=0; j<mngCnt; j++) {
 						if(grid.getRow(j).prcCd == grid.getRow(i).prcCd) {
 							alert("이미 존재하는 공정코드입니다.");
+							return;
 						}
 					}
-					if(grid.getRow(i).prcCd == '') {
-						alert("공정코드는 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).prcNm == '') {
-						alert("공정명은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).mngUnitNm == '') {
-						alert("단위 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).pdtDay == '') {
-						alert("생산일수는 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).prcSectNm == '') {
-						alert("공정구분은 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).seq == '') {
-						alert("표시순서는 필수입력칸입니다!!");
-						return;
-					} else if(grid.getRow(i).useYn == '') {
-						alert("사용여부는 필수입력칸입니다!!");
-						return;
-					}
-					
 				}
+			}
+			for(let i=0; i<rowk; i++) {			
+				if(grid.getRow(i).prcCd == '') {
+					alert("공정코드는 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).prcNm == '') {
+					alert("공정명은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).mngUnitNm == '') {
+					alert("단위 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).pdtDay == '') {
+					alert("생산일수는 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).prcSectNm == '') {
+					alert("공정구분은 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).seq == '') {
+					alert("표시순서는 필수입력칸입니다!!");
+					return;
+				} else if(grid.getRow(i).useYn == '') {
+					alert("사용여부는 필수입력칸입니다!!");
+					return;
+				}
+				
 			}
 			let create = grid.getModifiedRows().createdRows;
 			let update = grid.getModifiedRows().updatedRows;
@@ -325,11 +327,12 @@ hr{
 		})
 		
 		//수정할때 단위 선택하면 단위구분코드도 히든컬럼에 들어가게 하기
-		grid.on("afterChange", (ev) => {
+		grid.on("editingFinish", (ev) => {
 			if(ev.columnName == 'mngUnitNm') {
 				for(i=0; i<unitLists.length; i++) {
 					if(unitLists[i].mngUnitNm == grid.getValue(ev.rowKey,'mngUnitNm')) {
 						value3 = unitLists[i].mngUnit
+						console.log(value3)
 					}
 				}
 				grid.setValue(ev.rowKey, 'mngUnit', value3, false );

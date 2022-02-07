@@ -301,15 +301,13 @@
 		btnSaveBas.addEventListener("click", function() {
 			grid1.blur();
 			rowk = grid1.getRowCount();
-			if(basAllCnt <= rowk) {
-				for(i=basAllCnt; i<rowk; i++) {
-					if(grid1.getRow(i).basCd == '') {
-						alert("기초코드는 필수입력칸입니다!!");
-						return;
-					} else if(grid1.getRow(i).basNm == '') {
-						alert("기초코드명은 필수입력칸입니다!!");
-						return;
-					}
+			for(i=0; i<rowk; i++) {
+				if(grid1.getRow(i).basCd == '') {
+					alert("기초코드는 필수입력칸입니다!!");
+					return;
+				} else if(grid1.getRow(i).basNm == '') {
+					alert("기초코드명은 필수입력칸입니다!!");
+					return;
 				}
 			}
 			let create = grid1.getModifiedRows().createdRows;
@@ -386,23 +384,21 @@
 		btnSaveDtl.addEventListener("click", function() {
 			grid2.blur();
 			rowk = grid2.getRowCount();
-			if(basDtlCnt <= rowk) {
-				for(i=basDtlCnt; i<grid2.getRowCount(); i++) {
-					if(grid2.getRow(i).dtlCd == '') {
-						alert("상세코드는 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).dtlNm == '') {
-						alert("상세코드명은 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).seq == '') {
-						alert("표시순서는 필수입력칸입니다!!");
-						return;
-					} else if(grid2.getRow(i).useYn == '') {
-						alert("사용여부는 필수입력칸입니다!!");
-						return;
-					}
-				}			
-			}
+			for(i=0; i<rowk; i++) {
+				if(grid2.getRow(i).dtlCd == '') {
+					alert("상세코드는 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).dtlNm == '') {
+					alert("상세코드명은 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).seq == '') {
+					alert("표시순서는 필수입력칸입니다!!");
+					return;
+				} else if(grid2.getRow(i).useYn == '') {
+					alert("사용여부는 필수입력칸입니다!!");
+					return;
+				}
+			}			
 			let create = grid2.getModifiedRows().createdRows;
 			let update = grid2.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
