@@ -565,7 +565,7 @@ class abc{
 			if(ev.columnName=='instrNo'){
 				let planNo=modalGrid.getValue(ev.rowKey,'planNo')
 				
-				console.log(planNo)
+				/* console.log(planNo)
 				fetch('planDtlList/'+planNo)
 				.then(response=>response.json())
 				.then(x=>{
@@ -582,7 +582,7 @@ class abc{
 					else{
 						mainGrid.appendRows(x);
 					}
-				})
+				}) */
 			}
 			if(ev.columnName=='instrDate'){
 				$( function() {
@@ -714,7 +714,7 @@ class abc{
 				else{
 					prcGrid.appendRows(datas);
 				} */
-				needCnt=mainGrid.getValue(0,'needCnt')
+				needCnt=mainGrid.getValue(0,'instrCnt')
 				if(mainGrid.getData().length!=0){
 					useAmt=prcGrid.getValue(0,'useAmt')
 				}
