@@ -22,10 +22,68 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="${path}/resources/template/json.min.js"></script>
+<script src="${path}/resources/js/grid-common.js"></script>
+<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 </head>
 <body>
+
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">생산지시관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-	<button type="button" id="planModal" name="planModal">생산계획조회</button>
+	<div class="flex row">
+		<div class = "col-12">
+			<h4 class="gridtitle">✔생산지시</h4>
+			<span class="floatright">
+				<button type="button" id="resetGrid"  name="resetGrid" class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="planModal" name="planModal" class="btn btn-primary newalign2">생산계획조회</button>
+				<button type="button" id="modifyBtn" name="modifyBtn" class="btn btn-primary newalign2">저장</button>
+			</span>
+			<br>
+			<hr class="hr4">
+			<div id="workGrid"></div>
+		</div>
+	</div>
+	<br>
+	<div class="flex row">
+		<div class = "col-9">
+			<h4 class="gridtitle">✔공정자재</h4>
+			<hr class="hr4">
+			<div id="prcDtlGrid"></div>
+		</div>
+		
+		<div class = "col-3">
+			<h4 class="gridtitle">✔자재지시</h4>
+			<hr class="hr4">
+			<div id="hiddenGrid"></div>
+		</div>
+	</div>
+	
+	<div id="plan-dialog-form" title="생산계획조회">
+		<div>생산계획 조회</div>
+ 		<select id="planCheck" style="display:none">
+			<option value="N">미지시</option>
+			<option value="Y">지시완료</option>
+		</select>
+		<button id="modalSearchBtn" name="modalSearchBtn">조회</button>
+	</div> 
+	
+	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
+	<div id="hiddenMainDiv" style="display:none"></div>
+	<div id="hiddenModalMain" style="display:none"></div>
+</div>
+
+	
+	<!-- <button type="button" id="planModal" name="planModal">생산계획조회</button>
 	<button type="button" id="modifyBtn" name="modifyBtn">저장</button>
 	<button type="button" id="resetGrid">초기화</button>
 	<div id="workGrid"></div>
@@ -43,15 +101,14 @@
 	</div>
 	<div id="date-dialog-form" title="생산지시일정">생산지시 일정선택</div>
 	<div id="hiddenMainDiv" style="display:none"></div>
-	<div id="hiddenModalMain" style="display:none"></div>
-	<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
-	<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
+	<div id="hiddenModalMain" style="display:none"></div> -->
+	
 	
 	<script>
 		let useAmt = 0;
 		let needCnt =0;
 		let main2Grid;
-		let Grid = tui.Grid;
+		/* let Grid = tui.Grid; */
 		let planAll ;
 		let prcResult;
 		let selectPlanDtlNo;
@@ -174,7 +231,7 @@ class abc{
 		//메인그리드 설정
 		//생산계획 조회 모달 그리드
 		//그리드 테마적용
-		Grid.applyTheme('striped',{
+		/* Grid.applyTheme('striped',{
 			cell:{
 				header:{
 					background:'#eef'
@@ -183,7 +240,7 @@ class abc{
 					background:'#fee'
 				}
 			}
-		})
+		}) */
 		Grid.setLanguage('ki',{
 			net:{
 				noDataToModify:'필수입력사항을 입력해주세요'
@@ -282,8 +339,8 @@ class abc{
 			  data:mainDataSource,
 			  columns:mainColumns,
 			  scrollY:true,
-			  minBodyHeight : 250,
-			  bodyHeight : 250,
+			  minBodyHeight : 234,
+			  bodyHeight : 234,
 			  columnOptions: {
 				  frozenCount :10,
 				  frozenBorderWidth:2
@@ -365,8 +422,8 @@ class abc{
 			  data:prcDataSource,
 			  columns:prcColumns,
 			  scrollY:true,
-			  minBodyHeight : 250,
-			  bodyHeight : 250,
+			  minBodyHeight : 235,
+			  bodyHeight : 235,
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
@@ -552,8 +609,8 @@ class abc{
 			  data:hiddenDataSource,
 			  columns:hiddenColumns,
 			  scrollY:true,
-			  minBodyHeight : 250,
-			  bodyHeight : 250,
+			  minBodyHeight : 275,
+			  bodyHeight : 275,
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
@@ -589,7 +646,7 @@ class abc{
 	 			    $( "#datepicker" ).datepicker({
 	 			      dateFormat:"yy-mm-dd",
 	 			      regional:"ko",
-	 	              dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	 	             /*  dateFormat: 'yy-mm-dd' //달력 날짜 형태
 	                 ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
 	                 ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
 	                 ,changeYear: true //option값 년 선택 가능
@@ -605,7 +662,7 @@ class abc{
 	                 ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
 	 			    /*  ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
 			    	,buttonImageOnly: true */
-
+ 
 	 			    });
 	 			  } );
 				

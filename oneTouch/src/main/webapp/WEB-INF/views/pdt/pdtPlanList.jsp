@@ -23,6 +23,7 @@
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
 <link rel="stylesheet" href="${path}/resources/jquery-ui/images">
+<script src="${path}/resources/js/grid-common.js"></script>
 </head>
 <style>
 #abc {
@@ -36,7 +37,7 @@
 	z-index: 9;
 }
 
-#inAbc {
+/* #inAbc {
 	background-color: beige;
 	width: 70%;
 	height: 1000px;
@@ -44,28 +45,95 @@
 	top: 10%;
 	position: absolute;
 	z-index: 2;
-}
-select {
+} */
+/* select {
 	right : 2px;
 	width:103%;
 	height: 39px;
-}
+} */
 #prcSelect {
-	width:150px;
-	height: 39px;
+	/* width:150px;
+	height: 39px; */
+	position: relative;
+	top: 5px;
 }
 </style>
 <body>
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">생산계획관리</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="flex row">
+		<div class = "col-12">
+			<h4 class="gridtitle">✔생산계획</h4>
+			<span class="floatright">
+				<button type="button" id="delBtn"  name ="delBtn" class="btn btn-main newalign2">초기화</button>
+				<button type="button" id="addBtn"  name ="addBtn" class="btn btn-primary newalign2">계획추가</button>
+				<button type="button" id="btnFindCo"  name ="btnFindCo" class="btn btn-primary newalign2">주문서조회</button>
+				<button type="button" id="safeStckBtn"  name ="safeStckBtn" class="btn btn-primary newalign2">안전재고 생산계획</button>
+				<button type="button" id="saveBtn"  name ="saveBtn" class="btn btn-primary newalign2">저장</button>
+			</span>
+			<div id="dialog-form" title="주문서조회"></div>
+	        <div id="safe-dialog-form" title="안전재고 생산계획"></div>
+			<br>
+			<hr class="hr4">
+			<div id="grid"></div>
+		</div>
+	</div>
+	<br>
+	<div class="flex row">
+		<div class = "col-8">
+			<h4 class="gridtitle">✔제품</h4>
+			<span class="floatright">
+				<button type="button" id="planGriaAddRow" name="planGriaAddRow" class="btn btn-main newalign2">행추가</button> 
+				<select id="prcSelect" name="prcSelect" class="inputtext"></select>
+			</span>
+			<br>
+			<hr class="hr4">
+			<div id=planGrid></div>
+		</div>
+		
+		<div class = "col-4">
+			<h4 class="gridtitle">✔제품계획</h4>
+			<hr class="hr4">
+			<div id="insertDtlGrid"></div>
+		</div>
+	</div>
+	<br>
+	<div class="flex row">
+		<div class = "col-8">
+			<h4 class="gridtitle">✔사용가능자재</h4>
+			<hr class="hr4">
+			<div id="lotDiv"></div>
+		</div>
+		
+		<div class = "col-4">
+			<h4 class="gridtitle">✔자재계획</h4>
+			<hr class="hr4">
+			<div id="hidden"></div>
+		</div>
+	</div>
+	
+</div>
+
 <!-- 	<label for="checkedY">지시완료</label>
 	<input type="radio" id="checkedY" name="phs" value="Y">
 	<label for="checkedN">미지시</label>
 	<input type="radio" id="checkedN" name="phs" value="N"> -->
 	
 <!-- 	<button action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()">조회</button> -->
-	<button id="addBtn">계획추가</button>
+<!-- 	<button id="addBtn">계획추가</button>
 	<button id="saveBtn">저장</button>
 	<button id="delBtn">초기화</button>
-	<!-- 	<input id="txtCo"> -->
+		<input id="txtCo">
 	<button id="btnFindCo">주문서조회</button>
 	<button id="safeStckBtn">안전재고 생산계획</button>
 	<div id="dialog-form" title="주문서조회">미확인 주문서 목록</div>
@@ -90,232 +158,223 @@ select {
 		<select id="prcSelect" name="prcSelect">
 	<br/>
 		
-	</select>
-	<script>
+	</select> -->
+	
+<script>
 	let planGridRowKey;
 	///////////////////////////////////////////////////////////////////////////////////
-	  class abc{
-  constructor(props){
-    const { grid ,rowKey , columnInfo,value} =props;
-    const el = document.createElement('select');
+	class abc{
+		constructor(props){
+			const { grid ,rowKey , columnInfo,value} =props;
+			const el = document.createElement('select');
+			
+			let data = props.columnInfo.editor.options.listItems;
+			
+			for(let i =0 ; i< data.length ; i++){
+				let opt = document.createElement('option');
+				opt.innerText=data[i].text; 
+				opt.value=data[i].value;
+				if(opt.value==value){
+				  opt.selected=true;
+				}
+				el.append(opt);
+			}
+			el.addEventListener('click',ev=>{
+				ev.stopPropagation();
+				console.log("aaa");
+			})
+			  
+			this.el=el;
+			  
+		}
+		
+		getElement(){
+			return this.el;
+		}
+		
+		render(props){
+			this.el.value=String(props.value);
+		}
+	}
 
-    let data = props.columnInfo.editor.options.listItems;
-
-    for(let i =0 ; i< data.length ; i++){
-      let opt = document.createElement('option');
-      opt.innerText=data[i].text; 
-      opt.value=data[i].value;
-      if(opt.value==value){
-        opt.selected=true;
-      }
-      el.append(opt);
-    }
-    el.addEventListener('click',ev=>{
-      ev.stopPropagation();
-      console.log("aaa");
-    })
-    
-    this.el=el;
-    
-  }
-
-  getElement(){
-    return this.el;
-  }
-
-  render(props){
-    this.el.value=String(props.value);
-
-  }
-
-}
-
-class abcEditor{
-  constructor(props){
-    let{grid,rowKet,columnInfo,value}=props;
-    let el=document.createElement('div');
-    let select = document.createElement('select');
-    select.setAttribute('onChange','planGridBlur()')
-    let data = props.columnInfo.editor.options.listItems;
-
-    for(let i=0 ; i<data.length ; i++){
-      let opt=document.createElement('option');
-      opt.innerText=data[i].text;
-      opt.value=data[i].value;
-      if(opt.value==value){
-        opt.selected=true;
-      }
-      select.append(opt);
-    }
-    el.append(select);
-
-    select.addEventListener('click',ev=>{
-      ev.stopPropagation();
-    })
-    el.align='center'
-    
-    this.el=el;
-    this.select = select;
-
-  }
-
-  getElement(){
-    return this.el;
-
-  }
-
-  getValue(){
-    return this.select.value;
-  }
-
-}
-class lineEditor{
-	  constructor(props){
-	    let{grid,rowKet,columnInfo,value}=props;
-	    let el=document.createElement('div');
-	    let select = document.createElement('select');
-		select.setAttribute('onChange','planGridBlur()')
-		select.id='planSelectTag'
-	    let data = props.columnInfo.editor.options.listItems;
-
-	    for(let i=0 ; i<data.length ; i++){
-	      let opt=document.createElement('option');
-	      opt.innerText=data[i].text;
-	      opt.value=data[i].value;
-	      if(opt.value==value){
-	        opt.selected=true;
-	      }
-	      select.append(opt);
-	    }
-	    el.append(select);
-
-	    select.addEventListener('click',ev=>{
-	      ev.stopPropagation();
-	    })
-	    el.align='center'
-	    
-	    this.el=el;
-	    this.select = select;
-
-	  }
-
-	  getElement(){
-	    return this.el;
-
-	  }
-
-	  getValue(){
-	    return this.select.value;
-	  }
-
+	class abcEditor{
+		constructor(props){
+			let{grid,rowKet,columnInfo,value}=props;
+			let el=document.createElement('div');
+			let select = document.createElement('select');
+			select.setAttribute('onChange','planGridBlur()')
+			let data = props.columnInfo.editor.options.listItems;
+		
+			for(let i=0 ; i<data.length ; i++){
+				let opt=document.createElement('option');
+				opt.innerText=data[i].text;
+				opt.value=data[i].value;
+				if(opt.value==value){
+					opt.selected=true;
+				}
+				select.append(opt);
+			}
+			el.append(select);
+		
+			select.addEventListener('click',ev=>{
+				ev.stopPropagation();
+			})
+			el.align='center'
+		  
+			this.el=el;
+			this.select = select;
+		
+		}
+		
+		getElement(){
+			return this.el;
+		}
+		
+		getValue(){
+			return this.select.value;
+		}
+	
+	}
+	
+	class lineEditor{
+		constructor(props){
+			let{grid,rowKet,columnInfo,value}=props;
+			let el=document.createElement('div');
+			let select = document.createElement('select');
+			select.setAttribute('onChange','planGridBlur()')
+			select.id='planSelectTag'
+			let data = props.columnInfo.editor.options.listItems;
+	
+			for(let i=0 ; i<data.length ; i++){
+				let opt=document.createElement('option');
+				opt.innerText=data[i].text;
+				opt.value=data[i].value;
+				if(opt.value==value){
+					opt.selected=true;
+				}
+				select.append(opt);
+			}
+	   		el.append(select);
+	
+			select.addEventListener('click',ev=>{
+				ev.stopPropagation();
+			})
+			el.align='center'
+	   
+			this.el=el;
+			this.select = select;
+		}
+	
+		getElement(){
+			return this.el;
+		}
+	
+		getValue(){
+			return this.select.value;
+		}
 	}  
+	
 	class prcEditor{
-		  constructor(props){
-			    let{grid,rowKet,columnInfo,value}=props;
-			    let el=document.createElement('div');
-			    let select = document.createElement('select');
-
-			    let data = props.columnInfo.editor.options.listItems;
-
-			    for(let i=0 ; i<data.length ; i++){
-			      let opt=document.createElement('option');
-			      opt.innerText=data[i].text;
-			      opt.value=data[i].value;
-			      if(opt.value==value){
-			        opt.selected=true;
-			      }
-			      select.append(opt);
-			    }
-			    el.append(select);
-
-			    select.addEventListener('click',ev=>{
-			      ev.stopPropagation();
-			    })
-			    el.align='center'
-			    
-			    this.el=el;
-			    this.select = select;
-
-			  }
-
-			  getElement(){
-			    return this.el;
-
-			  }
-
-			  getValue(){
-			    return this.select.value;
-			  }
-
-			} 
+		constructor(props){
+			let{grid,rowKet,columnInfo,value}=props;
+			let el=document.createElement('div');
+			let select = document.createElement('select');
+			
+			let data = props.columnInfo.editor.options.listItems;
+			
+			for(let i=0 ; i<data.length ; i++){
+				let opt=document.createElement('option');
+				opt.innerText=data[i].text;
+				opt.value=data[i].value;
+				if(opt.value==value){
+					opt.selected=true;
+				}
+				select.append(opt);
+			}
+			el.append(select);
+			
+			select.addEventListener('click',ev=>{
+				ev.stopPropagation();
+			})
+			el.align='center'
+		  
+			this.el=el;
+			this.select = select;
+		}
+		
+		getElement(){
+			return this.el;
+		}
+		
+		getValue(){
+			return this.select.value;
+		}
+	} 
 	
 	class dateEditor{
-	    constructor(props){
-	      let{grid,rowKet,columnInfo,value}=props;
-	      let el=document.createElement('div');
-	      let select = document.createElement('input');
-	      select.type="text";
-	      select.class="calander";
-	      select.id="datepicker";
-
-	      let data = props.columnInfo.editor.options.listItems;
-
-	      el.append(select);
-
-	      select.addEventListener('click',ev=>{
-	        ev.stopPropagation();
-	      })
-	      el.align='center'
-	      
-	      this.el=el;
-	      this.select = select;
-
-	    }
-
-	    getElement(){
-	      return this.el;
-
-	    }
-
-	    getValue(){
-	      return this.select.value;
-	    }
-
-	  }
+		constructor(props){
+			let{grid,rowKet,columnInfo,value}=props;
+			let el=document.createElement('div');
+			let select = document.createElement('input');
+			select.type="text";
+			select.class="calander";
+			select.id="datepicker";
+			
+			let data = props.columnInfo.editor.options.listItems;
+			
+			el.append(select);
+			
+			select.addEventListener('click',ev=>{
+				ev.stopPropagation();
+			})
+			el.align='center'
+			
+			this.el=el;
+			this.select = select;	
+		}
+		
+		getElement(){
+			return this.el;
+		}
+		
+		getValue(){
+			return this.select.value;
+		}
+	
+	}
  
 	class dueDateEditor{
-	    constructor(props){
-	      let{grid,rowKet,columnInfo,value}=props;
-	      let el=document.createElement('div');
-	      let select = document.createElement('input');
-	      select.type="text";
-	      select.class="calander";
-	      select.id="datepicker1";
-
-	      let data = props.columnInfo.editor.options.listItems;
-
-	      el.append(select);
-
-	      select.addEventListener('click',ev=>{
-	        ev.stopPropagation();
-	      })
-	      el.align='center'
-	      
-	      this.el=el;
-	      this.select = select;
-
-	    }
-
-	    getElement(){
-	      return this.el;
-
-	    }
-
-	    getValue(){
-	      return this.select.value;
-	    }
-
-	  }
+		constructor(props){
+			let{grid,rowKet,columnInfo,value}=props;
+			let el=document.createElement('div');
+			let select = document.createElement('input');
+			select.type="text";
+			select.class="calander";
+			select.id="datepicker1";
+			
+			let data = props.columnInfo.editor.options.listItems;
+		
+			el.append(select);
+			
+			select.addEventListener('click',ev=>{
+				ev.stopPropagation();
+			})
+			el.align='center'
+		  
+			this.el=el;
+			this.select = select;
+		
+		}
+		
+		getElement(){
+			return this.el;
+		}
+		
+		getValue(){
+			return this.select.value;
+		}
+	
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////
 	
@@ -327,7 +386,7 @@ class lineEditor{
 	let selectTag;
 	let inGridData;
 	let porObj;
-  	let Grid = tui.Grid;
+  	/* let Grid = tui.Grid; */
   	let modalDataSource;
   	let gridSelect;
   	let lotDiv = document.getElementById('lotDiv');
@@ -356,7 +415,7 @@ class lineEditor{
   	
 /////////////////////////////////////그리드///////////////////////////////////////  	
 	//그리드 테마적용
-	Grid.applyTheme('striped',{
+	/* Grid.applyTheme('striped',{
 		cell:{
 			header:{
 				background:'#eef'
@@ -365,7 +424,7 @@ class lineEditor{
 				background:'#fee'
 			}
 		}
-	})
+	}) */
   	//생산계획모달 (주문서x)메인그리드
   	let planColumns = [  	{
     	header: '제품코드',
@@ -516,8 +575,8 @@ class lineEditor{
 		el: document.getElementById('insertDtlGrid'),
 		data:null,
 		scrollY:true,
-		minBodyHeight : 150,
-		bodyHeight : 150,
+		minBodyHeight : 120,
+		bodyHeight : 120,
 		columns:insertDtlColumns
 	});	
 
@@ -605,6 +664,8 @@ class lineEditor{
 		el: document.getElementById('grid'),
 		data:dataSource,
 		columns,
+		minBodyHeight : 104,
+		bodyHeight : 104,
 	});  
 
 	//자재 hidden grid
@@ -613,8 +674,8 @@ class lineEditor{
 		el: document.getElementById('hidden'),
 		data:null,
 		scrollY:true,
-		minBodyHeight : 325,
-		bodyHeight : 325,
+		minBodyHeight : 170,
+		bodyHeight : 170,
 		columns:[{
 			header : '자재코드',
 			name : 'mtrCd',
@@ -658,8 +719,8 @@ class lineEditor{
 		el: document.getElementById('planGrid'),
 		data:null,
 		scrollY:true,
-		minBodyHeight : 150,
-		bodyHeight : 150,
+		minBodyHeight : 120,
+		bodyHeight : 120,
 		columns:planColumns
 	});	
 	
@@ -668,8 +729,8 @@ class lineEditor{
 		el: document.getElementById('lotDiv'),
 		data:null,
 		scrollY:true,
-		minBodyHeight : 325,
-		bodyHeight : 325,
+		minBodyHeight : 130,
+		bodyHeight : 130,
 		columns:[{
 			header : '자재코드',
 			name : 'mtrCd',
@@ -1238,25 +1299,9 @@ function needOrdCd(){
  			//////////////////////////////////
  			$( function() {
  			    $( "#datepicker" ).datepicker({
- 			      dateFormat:"yy-mm-dd",
- 			      regional:"ko",
- 	              dateFormat: 'yy-mm-dd' //달력 날짜 형태
-                 ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-                 ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
-                 ,changeYear: true //option값 년 선택 가능
-                 ,changeMonth: true //option값  월 선택 가능                
-                 ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-                 //,buttonText: "선택" //버튼 호버 텍스트              
-                 ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
-                 ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
-                 ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
-                 ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
-                 ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
-                 ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-                 ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
- 			     ,beforeShowDay: disableAllTheseDays
- 			    /*  ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
-		    	,buttonImageOnly: true */
+ 			    	dateFormat:"yy-mm-dd",
+ 	  			      regional:"ko",
+ 	  			     // beforeShowDay: disableAllTheseDays
 
  			    });
  			  } );

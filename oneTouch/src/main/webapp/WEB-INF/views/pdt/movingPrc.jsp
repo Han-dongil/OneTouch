@@ -19,13 +19,117 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="${path}/resources/js/grid-common.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
 <link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 
+<style>
+.labeltext{
+width: 100px !important;
+}
+.colline2{
+	margin-left: 60px;
+	width: 100px !important;
+}
+.bascard1{
+	height:176px;
+}
+.rowdiv{
+	margin-bottom: 10px !important;
+}
+.checkwidth{
+	width:110px;
+}
+.row1{
+	margin-top: -25px;
+}
+</style>
+
 </head>
 <body>
-<form id="prcMove" name="prcMove">
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-md-12 grid-margin">
+			<div class="row">
+				<div class="col-12 col-xl-8 mb-4 mb-xl-0">
+					<h3 class="font-weight-bold page-title">생산계획조회</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
+			<div class="card bascard1">
+				<div class="card-body">
+					<!-- <h4 class="card-title">조회조건</h4> -->
+					<form id="prcMove" name="prcMove">
+						<div class="rowdiv">
+							<label class="labeltext">계획일자</label>
+							<input type="text" id="startDate" name="startDate" class="datepicker">
+							<label> ~ </label> 
+							<input type="text" id="endDate" name="endDate" class="datepicker">
+						</div>
+						
+						<div class="rowdiv">
+							<label class="labeltext">지시상태</label>
+							<div class="form-check checkwidth" style="display:inline-block">
+							    <label class="form-check-label schCondLabel" for="checkedY">
+							  		<input type="radio" class="form-check-input" id="checkedY" name="prcCheck" value="Y" checked>
+							  		지시완료
+									<i class="input-helper"></i>
+								</label>
+							</div>
+							
+							<div class="form-check checkwidth" style="display:inline-block">
+								<label class="form-check-label schCondLabel" for="checkedN">
+							  		<input type="radio" class="form-check-input" id="checkedN" name="prcCheck" value="N">
+							  		미지시
+									<i class="input-helper"></i>
+								</label>
+							</div>
+						</div>
+						
+						<div class="rowdiv" style="display:inline-block">
+							<label class="labeltext">자재LOT</label>
+							<input id="mtrLot" name="mtrLot" class="inputtext" readonly>
+						</div>
+						
+						<span>
+							<button type="button" id="searchBtn" name="searchBtn" class="btn btn-primary mr-2 floatrightbtn">조회</button>
+						</span>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="flex row row1">
+		<div class = "col-12">
+		<h4 class="gridtitle">✔????</h4>
+			<hr>
+			<div id="grid"></div>
+		</div>
+	</div>
+	<br>
+	<div class="flex row">
+		<div class = "col-4">
+			<h4 class="gridtitle">✔?????</h4>
+			<hr>
+			<div id="movingGrid"></div>
+		</div>
+		
+		<div class = "col-8">
+			<h4 class="gridtitle">✔공정결과</h4>
+			<hr>
+			<div id="movingPrcGrid"></div>
+		</div>
+	</div>
+</div>
+
+<!-- <form id="prcMove" name="prcMove">
 	작업일자<input type="text" id="startDate" name="startDate" class="datepicker">~ 
 	<input type="text" id="endDate" name="endDate" class="datepicker"> 
 	<label for="checkedY">진행완료</label>
@@ -39,7 +143,7 @@
 	<div id="grid" class="col-11"></div>
 	<div id="movingGrid" class="col-4"></div>
 	<div id="movingPrcGrid" class="col-7"></div>
-</div>
+</div> -->
 
 	<script>
 	$( function() {
@@ -52,6 +156,8 @@
         ,changeYear: true //option값 년 선택 가능
         ,changeMonth: true //option값  월 선택 가능                
         ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+       	,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
         //,buttonText: "선택" //버튼 호버 텍스트              
         ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
         ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
@@ -68,9 +174,9 @@
   } );
 	
 ///////////////////////////그리드생성/////////////////////////////
-  	let Grid = tui.Grid;
+  	/* let Grid = tui.Grid; */
 	//그리드 테마적용
-	Grid.applyTheme('striped',{
+	/* Grid.applyTheme('striped',{
 		cell:{
 			header:{
 				background:'#eef'
@@ -79,7 +185,7 @@
 				background:'#fee'
 			}
 		}
-	})
+	}) */
 	//그리드 컬럼 설정	
 	const columns = [{
 		header : '라인번호',
@@ -106,7 +212,9 @@
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
-	 	 }  
+	 	 },
+	 	bodyHeight: 159,
+		minBodyHeight: 159  
 	});
 ///////////////////////////그리드생성/////////////////////////////
 	//그리드 컬럼 설정	
@@ -131,7 +239,9 @@
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
-	 	 }  
+	 	 },
+	 	bodyHeight: 159,
+		minBodyHeight: 159
 	});
 	//prc moving 그리드
 		//그리드 컬럼 설정	
@@ -172,7 +282,9 @@
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
-	 	 }  
+	 	 },
+	 	bodyHeight: 159,
+		minBodyHeight: 159
 	});
 
 /////////////////////////////이벤트리스너//////////////////////////////
