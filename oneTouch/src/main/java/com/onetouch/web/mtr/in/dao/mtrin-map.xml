@@ -106,8 +106,8 @@
 			IN_AMT = (NVL(IN_AMT,0)+NVL(#{inAmt},0)),
 			FLT_AMT = (NVL(FLT_AMT,0)+NVL(#{fltAmt},0)),
 			NOTIN_AMT = (#{notinAmt}
-						-(NVL(IN_AMT,0)+#{inAmt})
-						-(NVL(FLT_AMT,0)+#{fltAmt}))
+						-NVL(#{inAmt},0)
+						-NVL(#{fltAmt},0))
 		WHERE
 			ORD_NO = #{ordNo} 
 		AND

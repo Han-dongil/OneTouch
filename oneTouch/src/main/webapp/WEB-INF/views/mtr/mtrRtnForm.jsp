@@ -181,7 +181,6 @@ var mainGrid = new Grid({
      scrollY : true,
      bodyHeight: 447,
      minBodyHeight: 447,
-     rowHeaders : [ 'checkbox'],
      columns : [
 				{
 				header: '발주번호',

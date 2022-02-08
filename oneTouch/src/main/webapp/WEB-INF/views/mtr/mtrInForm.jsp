@@ -39,6 +39,12 @@ width: 100px !important;
 .bascard1{
 	height:165px;
 }
+.modal .ui-dialog{
+  position:fixed;
+  top:50%; 
+  left:50%;
+  transform: translate(-50%,-50%);
+ }
 </style>
 <body>
 <div class="content-wrapper">
@@ -103,9 +109,9 @@ width: 100px !important;
 	<br><br>
 	<hr>
 	<div id="grid"></div>
-	<div id="dialog-form"></div>
-	<div id="dialog-ord"></div>
-	<div id="dialog-lot"></div>
+	<div id="dialog-form" class="modal"></div>
+	<div id="dialog-ord" class="modal"></div>
+	<div id="dialog-lot" class="modal"></div>
 </div>
 			
 <!-- 
