@@ -5,105 +5,185 @@
 	<!-- 자재입고량 mtrIn =====================================-->
 	<!-- 일별 -->
 	<select id="mtrInDate" resultType="com.onetouch.web.sts.dao.StsVO">
-		SELECT 	 DECODE(GROUPING_ID(IN_DATE,MTR_CD),3,'자재입고량 합계',IN_DATE) AS IN_DATE,
-		         DECODE(GROUPING_ID(IN_DATE,MTR_CD),1,IN_DATE||'소계',MTR_CD) AS MTR_CD, 
-		         COUNT(MTR_CD) AS CNT
+		SELECT 	 DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM-DD'),MTR_CD),3,'자재입고량 합계',TO_CHAR(IN_DATE, 'YYYY-MM-DD')) AS IN_DATE,
+		         DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM-DD'),MTR_CD),1,TO_CHAR(IN_DATE, 'YYYY-MM-DD')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		         SUM(IN_AMT) AS CNT,
+		         GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM-DD'),MTR_CD) as gpId
 		FROM 	 MTR_IN 
-		WHERE	 IN_DATE BETWEEN #{startDate} AND #{endDate}
-		GROUP BY ROLLUP(IN_DATE , MTR_CD)
-		ORDER BY IN_DATE,DECODE(SUBSTR(MTR_CD,0,1),'M',0)
+		WHERE	 TO_CHAR(IN_DATE, 'YYYY-MM-DD') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(IN_DATE, 'YYYY-MM-DD') , MTR_CD)
+		ORDER BY IN_DATE, gpId, MTR_CD
 	</select>
 	
 	<!-- 월별 -->
 	<select id="mtrInMonth" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM'),MTR_CD),3,'자재입고량 합계',TO_CHAR(IN_DATE, 'YYYY-MM')) AS IN_DATE,
-		         DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM'),MTR_CD),1,TO_CHAR(IN_DATE, 'YYYY-MM')||'소계',MTR_CD) AS MTR_CD, 
-		         COUNT(MTR_CD) AS CNT
+		         DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM'),MTR_CD),1,TO_CHAR(IN_DATE, 'YYYY-MM')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		         SUM(IN_AMT) AS CNT,
+		         GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY-MM'),MTR_CD) as gpId
 		FROM 	 MTR_IN 
 		WHERE 	 TO_CHAR(IN_DATE, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(TO_CHAR(IN_DATE, 'YYYY-MM'),MTR_CD)
-		ORDER BY IN_DATE,DECODE(SUBSTR(MTR_CD,0,1),'M',0)
+		ORDER BY IN_DATE, gpId, MTR_CD
 	</select>
 	
 	<!-- 연도별 -->
 	<select id="mtrInYear" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY'),MTR_CD),3,'자재입고량 합계',TO_CHAR(IN_DATE, 'YYYY')) AS IN_DATE,
-		         DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY'),MTR_CD),1,TO_CHAR(IN_DATE, 'YYYY')||'소계',MTR_CD) AS MTR_CD, 
-		         COUNT(MTR_CD) AS CNT
+		         DECODE(GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY'),MTR_CD),1,TO_CHAR(IN_DATE, 'YYYY')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		         SUM(IN_AMT) AS CNT,
+		         GROUPING_ID(TO_CHAR(IN_DATE, 'YYYY'),MTR_CD) as gpId
 		FROM 	 MTR_IN 
 		WHERE 	 TO_CHAR(IN_DATE, 'YYYY') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(TO_CHAR(IN_DATE, 'YYYY') , MTR_CD)
-		ORDER BY IN_DATE,DECODE(SUBSTR(MTR_CD,0,1),'M',0)
+		ORDER BY IN_DATE, gpId, MTR_CD
 	</select>
 	
 	<!-- 자재별, 일별 -->
 	<select id="mtrInMtrD" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(MTR_CD, IN_DATE),3,'자재입고량 합계', MTR_CD) AS MTR_CD,
-		         DECODE(GROUPING_ID(MTR_CD, IN_DATE),1,MTR_CD||'소계', IN_DATE) AS IN_DATE,
-		         COUNT(*) AS CNT
+		         DECODE(GROUPING_ID(MTR_CD, IN_DATE),1,MTR_CD||' 소계',3,'-', IN_DATE) AS IN_DATE,
+		         SUM(IN_AMT) AS CNT
 		FROM 	 MTR_IN 
 		WHERE 	 IN_DATE BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,IN_DATE)
-		ORDER BY MTR_CD
+		ORDER BY MTR_CD,IN_DATE
 	</select>
 	
 	<!-- 자재별, 월별 -->
 	<select id="mtrInMtrM" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY-MM')),3,'자재입고량 합계', MTR_CD) AS MTR_CD,
-		         DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY-MM')),1,MTR_CD||'소계', TO_CHAR(IN_DATE, 'YYYY-MM')) AS IN_DATE,
-		         COUNT(*) AS CNT
+		         DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY-MM')),1,MTR_CD||' 소계',3,'-', TO_CHAR(IN_DATE, 'YYYY-MM')) AS IN_DATE,
+		         SUM(IN_AMT) AS CNT
 		FROM 	 MTR_IN 
 		WHERE 	 TO_CHAR(IN_DATE, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,TO_CHAR(IN_DATE, 'YYYY-MM'))
-		ORDER BY MTR_CD
+		ORDER BY MTR_CD,IN_DATE
 	</select>
 	
 	<!-- 자재별, 연도별 -->
 	<select id="mtrInMtrY" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY')),3,'자재입고량 합계', MTR_CD) AS MTR_CD,
-		         DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY')),1,MTR_CD||'소계', TO_CHAR(IN_DATE, 'YYYY')) AS IN_DATE,
-		         COUNT(*) AS CNT
+		         DECODE(GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY')),1,MTR_CD||' 소계',3,'-', TO_CHAR(IN_DATE, 'YYYY')) AS IN_DATE,
+		         SUM(IN_AMT) AS CNT
 		FROM 	 MTR_IN 
 		WHERE 	 TO_CHAR(IN_DATE, 'YYYY') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,TO_CHAR(IN_DATE, 'YYYY'))
-		ORDER BY MTR_CD
+		ORDER BY MTR_CD,IN_DATE
 	</select>
 	
 	<!-- 자재출고량 mtrOut =====================================-->
 	<!-- 일별 -->
-	<select id="mtrOutDate" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutDate" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT 	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM-DD'),MTR_CD),3,'자재출고량 합계',TO_CHAR(out_dt, 'YYYY-MM-DD')) AS out_dt,
+		       	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM-DD'),MTR_CD),1,TO_CHAR(out_dt, 'YYYY-MM-DD')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		       	 sum(out_amt) AS CNT,
+		       	 GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM-DD'),MTR_CD) as gpId
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 TO_CHAR(out_dt, 'YYYY-MM-DD') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(out_dt, 'YYYY-MM-DD') , MTR_CD)
+		ORDER BY out_dt, gpId, MTR_CD
+	</select>
 	<!-- 월별 -->
-	<select id="mtrOutMonth" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutMonth" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT 	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM'),MTR_CD),3,'자재출고량 합계',TO_CHAR(out_dt, 'YYYY-MM')) AS out_dt,
+		       	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM'),MTR_CD),1,TO_CHAR(out_dt, 'YYYY-MM')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		       	 sum(out_amt) AS CNT,
+		       	 GROUPING_ID(TO_CHAR(out_dt, 'YYYY-MM'),MTR_CD) as gpId
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 TO_CHAR(out_dt, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(out_dt, 'YYYY-MM') , MTR_CD)
+		ORDER BY out_dt ,gpId, MTR_CD
+	</select>
 	<!-- 연도별 -->
-	<select id="mtrOutYear" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutYear" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT 	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY'),MTR_CD),3,'자재출고량 합계',TO_CHAR(out_dt, 'YYYY')) AS out_dt,
+		       	 DECODE(GROUPING_ID(TO_CHAR(out_dt, 'YYYY'),MTR_CD),1,TO_CHAR(out_dt, 'YYYY')||' 소계',3,'-',MTR_CD) AS MTR_CD, 
+		       	 sum(out_amt) AS CNT,
+		       	 GROUPING_ID(TO_CHAR(out_dt, 'YYYY'),MTR_CD) as gpId
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 TO_CHAR(out_dt, 'YYYY') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(out_dt, 'YYYY') , MTR_CD)
+		ORDER BY out_dt , gpId, MTR_CD
+	</select>
 	<!-- 자재별, 일별 -->
-	<select id="mtrOutD" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutMtrD" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT 	 DECODE(GROUPING_ID(MTR_CD,out_dt),3,'자재출고량 합계',MTR_CD) AS MTR_CD,
+		      	 DECODE(GROUPING_ID(MTR_CD,out_dt),1,MTR_CD||' 소계',3,'-',out_dt) AS out_dt, 
+		       	 sum(out_amt) AS CNT
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 out_dt BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(MTR_CD , out_dt)
+		ORDER BY MTR_CD, out_dt
+	</select>
 	<!-- 자재별, 월별 -->
-	<select id="mtrOutM" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutMtrM" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT	 DECODE(GROUPING_ID(MTR_CD,TO_CHAR(out_dt, 'YYYY-MM')),3,'자재출고량 합계',MTR_CD) AS MTR_CD,
+		      	 DECODE(GROUPING_ID(MTR_CD,TO_CHAR(out_dt, 'YYYY-MM')),1,MTR_CD||' 소계',3,'-',TO_CHAR(out_dt, 'YYYY-MM')) AS out_dt, 
+		      	 sum(out_amt) AS CNT
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 TO_CHAR(out_dt, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(MTR_CD , TO_CHAR(out_dt, 'YYYY-MM'))
+		ORDER BY MTR_CD, out_dt
+	</select>
 	<!-- 자재별, 연도별 -->
-	<select id="mtrOutY" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="mtrOutMtrY" resultType="com.onetouch.web.sts.dao.StsVO">
+		SELECT	 DECODE(GROUPING_ID(MTR_CD,TO_CHAR(out_dt, 'YYYY')),3,'자재출고량 합계',MTR_CD) AS MTR_CD,
+		      	 DECODE(GROUPING_ID(MTR_CD,TO_CHAR(out_dt, 'YYYY')),1,MTR_CD||' 소계',3,'-',TO_CHAR(out_dt, 'YYYY')) AS out_dt, 
+		      	 sum(out_amt) AS CNT
+		FROM     (select a.out_dt, b.mtr_cd, sum(a.out_amt) as out_amt
+		         from mtr_out a , mtr_lot_stck b
+		         where a.mtr_lot = b.mtr_lot
+		         group by a.out_dt, b.mtr_cd
+		         order by a.out_dt)
+		WHERE 	 TO_CHAR(out_dt, 'YYYY') BETWEEN #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(MTR_CD , TO_CHAR(out_dt, 'YYYY'))
+		ORDER BY MTR_CD, out_dt
+	</select>
 	
 	<!-- 제품생산량 pdtCnt =====================================-->
 	<!-- 일별 -->
 	<select id="pdtDate" resultType="com.onetouch.web.sts.dao.StsVO">
-		SELECT   DECODE(GROUPING_ID(work_fin_dt,prd_cd),3,'제품생산량 합계',work_fin_dt) as work_fin_dt,  
-		         DECODE(GROUPING_ID(work_fin_dt,prd_cd),1,work_fin_dt||'소계',prd_cd) as prd_cd, 
-		         sum(pdt_cnt) as cnt
+		SELECT   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd),3,'제품생산량 합계',TO_CHAR(work_fin_dt, 'YYYY-MM-DD')) as work_fin_dt,  
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY-MM-DD')||' 소계',3,'-',prd_cd) as prd_cd, 
+		         sum(pdt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd) as gpId
 		FROM     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		         from prd_prc_mng a, pdt_work_instr_dtl b
 		         where a.instr_no = b.instr_no
 		         and a.line_no = b.line_no
 		         and a.prc_cd = b.prc_cd
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
-		WHERE 	 work_fin_dt between #{startDate} AND #{endDate}
-		GROUP BY ROLLUP(work_fin_dt, prd_cd)
-		ORDER BY work_fin_dt ,DECODE(SUBSTR(prd_cd,0,1),'P',0)
+		WHERE 	 TO_CHAR(work_fin_dt, 'YYYY-MM-DD') between #{startDate} AND #{endDate}
+		GROUP BY ROLLUP(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'), prd_cd)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 월별 -->
 	<select id="pdtMonth" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd),3,'제품생산량 합계',TO_CHAR(work_fin_dt, 'YYYY-MM')) AS work_fin_dt,
-		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY-MM')||'소계',prd_cd) AS prd_cd, 
-		         sum(pdt_cnt) as cnt
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY-MM')||' 소계',3,'-',prd_cd) AS prd_cd, 
+		         sum(pdt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd) as gpId
 		FROM     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		         from prd_prc_mng a, pdt_work_instr_dtl b
 		         where a.instr_no = b.instr_no
@@ -112,13 +192,14 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE 	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(TO_CHAR(work_fin_dt, 'YYYY-MM'), prd_cd)
-		ORDER BY work_fin_dt ,DECODE(SUBSTR(prd_cd,0,1),'P',0)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 연도별 -->
 	<select id="pdtYear" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd),3,'제품생산량 합계',TO_CHAR(work_fin_dt, 'YYYY')) AS work_fin_dt,
-		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY')||'소계',prd_cd) AS prd_cd, 
-		         sum(pdt_cnt) as cnt
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY')||' 소계',3,'-',prd_cd) AS prd_cd, 
+		         sum(pdt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd) as gpId
 		FROM     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		         from prd_prc_mng a, pdt_work_instr_dtl b
 		         where a.instr_no = b.instr_no
@@ -127,12 +208,12 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE 	 TO_CHAR(work_fin_dt, 'YYYY') between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(TO_CHAR(work_fin_dt, 'YYYY'), prd_cd)
-		ORDER BY work_fin_dt ,DECODE(SUBSTR(prd_cd,0,1),'P',0)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 제품별, 일별 -->
 	<select id="pdtPrdD" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(prd_cd, work_fin_dt),3,'제품생산량 합계', prd_cd) AS prd_cd,
-		         DECODE(GROUPING_ID(prd_cd, work_fin_dt),1,prd_cd||'소계', work_fin_dt) AS work_fin_dt,
+		         DECODE(GROUPING_ID(prd_cd, work_fin_dt),1,prd_cd||' 소계',3,'-', work_fin_dt) AS work_fin_dt,
 		         sum(pdt_cnt) as cnt
 		FROM     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		         from prd_prc_mng a, pdt_work_instr_dtl b
@@ -142,12 +223,12 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE 	 work_fin_dt between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(prd_cd, work_fin_dt)
-		ORDER BY prd_cd
+		ORDER BY prd_cd, work_fin_dt
 	</select>
 	<!-- 제품별, 월별 -->
 	<select id="pdtPrdM" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT   DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM')),3,'제품생산량 합계', prd_cd) AS prd_cd,
-		         DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM')),1,prd_cd||'소계', TO_CHAR(work_fin_dt, 'YYYY-MM')) AS work_fin_dt,
+		         DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM')),1,prd_cd||' 소계',3,'-', TO_CHAR(work_fin_dt, 'YYYY-MM')) AS work_fin_dt,
 		         sum(pdt_cnt) as cnt
 		FROM     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		         from prd_prc_mng a, pdt_work_instr_dtl b
@@ -157,12 +238,12 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE 	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))
-		ORDER BY prd_cd
+		ORDER BY prd_cd, work_fin_dt
 	</select>
 	<!-- 제품별, 연도별 -->
 	<select id="pdtPrdY" resultType="com.onetouch.web.sts.dao.StsVO">
 		SELECT  DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY')),3,'제품생산량 합계', prd_cd) AS prd_cd,
-		        DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY')),1,prd_cd||'소계', TO_CHAR(work_fin_dt, 'YYYY')) AS work_fin_dt,
+		        DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY')),1,prd_cd||' 소계',3,'-', TO_CHAR(work_fin_dt, 'YYYY')) AS work_fin_dt,
 		        sum(pdt_cnt) as cnt
 		FROM    (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
 		        from prd_prc_mng a, pdt_work_instr_dtl b
@@ -172,23 +253,102 @@
 		        group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE TO_CHAR(work_fin_dt, 'YYYY') between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(prd_cd, TO_CHAR(work_fin_dt, 'YYYY'))
-		ORDER BY prd_cd
+		ORDER BY prd_cd, work_fin_dt
 	</select>
 	
 	<!-- 제품불량량 fltCnt =====================================-->
+	<!-- 일별 -->
 	<select id="fltDate" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd),3,'제품불량량 합계',TO_CHAR(work_fin_dt, 'YYYY-MM-DD')) as work_fin_dt,  
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY-MM-DD')||' 소계',3,'-',prd_cd) as prd_cd, 
+		         sum(flt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'),prd_cd) as gpId
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where	 TO_CHAR(work_fin_dt, 'YYYY-MM-DD') between #{startDate} AND #{endDate}
+		group by rollup(TO_CHAR(work_fin_dt, 'YYYY-MM-DD'), prd_cd)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 월별 -->
 	<select id="fltMonth" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd),3,'제품불량량 합계',TO_CHAR(work_fin_dt, 'YYYY-MM')) AS work_fin_dt,
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY-MM')||' 소계',3,'-',prd_cd) AS prd_cd, 
+		         sum(flt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY-MM'),prd_cd) as gpId
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where 	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
+		group by rollup(TO_CHAR(work_fin_dt, 'YYYY-MM'), prd_cd)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 연도별 -->
 	<select id="fltYear" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd),3,'제품불량량 합계',TO_CHAR(work_fin_dt, 'YYYY')) AS work_fin_dt,
+		         DECODE(GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd),1,TO_CHAR(work_fin_dt, 'YYYY')||' 소계',3,'-',prd_cd) AS prd_cd, 
+		         sum(flt_cnt) as cnt,
+		         GROUPING_ID(TO_CHAR(work_fin_dt, 'YYYY'),prd_cd) as gpId
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where	 TO_CHAR(work_fin_dt, 'YYYY') between #{startDate} AND #{endDate}
+		group by rollup(TO_CHAR(work_fin_dt, 'YYYY'), prd_cd)
+		ORDER BY work_fin_dt , gpId, prd_cd
 	</select>
 	<!-- 제품별, 일별 -->
-	<select id="fltPrdD" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="fltPrdD" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(prd_cd, work_fin_dt),3,'제품불량량 합계', prd_cd) AS prd_cd,
+		         DECODE(GROUPING_ID(prd_cd, work_fin_dt),1,prd_cd||' 소계',3,'-', work_fin_dt) AS work_fin_dt,
+		         sum(flt_cnt) as cnt
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where	 work_fin_dt between #{startDate} AND #{endDate}
+		group by rollup(prd_cd, work_fin_dt)
+		order by prd_cd, work_fin_dt
+	</select>
 	<!-- 제품별, 월별 -->
-	<select id="fltPrdM" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="fltPrdM" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM')),3,'제품불량량 합계', prd_cd) AS prd_cd,
+		         DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM')),1,prd_cd||' 소계',3,'-', TO_CHAR(work_fin_dt, 'YYYY-MM')) AS work_fin_dt,
+		         sum(flt_cnt) as cnt
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
+		group by rollup(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))
+		order by prd_cd, work_fin_dt
+	</select>
 	<!-- 제품별, 연도별 -->
-	<select id="fltPrdY" resultType="com.onetouch.web.sts.dao.StsVO"></select>
+	<select id="fltPrdY" resultType="com.onetouch.web.sts.dao.StsVO">
+		select   DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY')),3,'제품불량량 합계', prd_cd) AS prd_cd,
+		         DECODE(GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY')),1,prd_cd||' 소계',3,'-', TO_CHAR(work_fin_dt, 'YYYY')) AS work_fin_dt,
+		         sum(flt_cnt) as cnt
+		from     (select a.instr_no, a.work_fin_dt, min(a.pdt_cnt) as pdt_cnt, sum(a.flt_cnt) as flt_cnt, b.prd_cd
+		         from prd_prc_mng a, pdt_work_instr_dtl b
+		         where a.instr_no = b.instr_no
+		         and a.line_no = b.line_no
+		         and a.prc_cd = b.prc_cd
+		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
+		where	 TO_CHAR(work_fin_dt, 'YYYY') between '2020' AND '2022'
+		group by rollup(prd_cd, TO_CHAR(work_fin_dt, 'YYYY'))
+		order by prd_cd, work_fin_dt
+	</select>
 	
 </mapper>

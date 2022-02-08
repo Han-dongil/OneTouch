@@ -24,8 +24,8 @@
 
 </head>
 <style>
-	.cntDtl {background-color : peachpuff;}
-	.cntAll {background-color : lightsalmon;}
+ 	.cntDtl {color: blue; font-weight : bold;}
+	.cntAll {color: red; font-weight : bold;} 
 </style>
 <body>
 <br>
@@ -163,29 +163,25 @@ $( function() {
     			document.getElementById('optionM').innerText = "자재별,월별";
     			document.getElementById('optionY').innerText = "자재별,연도별";
     			mtrInGrid.refreshLayout();
-    			
-    		} /*else if(ui.newTab[1].innerText == '자재출고량'){
+    		} else if(ui.newTab[0].innerText == '자재출고량'){
     			flag = 2;
 	    		document.getElementById('optionD').innerText = "자재별,일별";
 	    		document.getElementById('optionM').innerText = "자재별,월별";
 	    		document.getElementById('optionY').innerText = "자재별,연도별";
     			mtrOutGrid.refreshLayout();
-	    		
-    		} */else if(ui.newTab[0].innerText == '제품생산량'){
+    		} else if(ui.newTab[0].innerText == '제품생산량'){
     			flag = 3;
     			document.getElementById('optionD').innerText = "제품별,일별";
     			document.getElementById('optionM').innerText = "제품별,월별";
     			document.getElementById('optionY').innerText = "제품별,연도별";
     			pdtCntGrid.refreshLayout();
-    			
-    		} /*else {
+    		} else {
     			flag = 4;
-	    		document.getElementById('optionD').innerText = "자재별,일별";
-	    		document.getElementById('optionM').innerText = "자재별,월별";
-	    		document.getElementById('optionY').innerText = "자재별,연도별";
+	    		document.getElementById('optionD').innerText = "제품별,일별";
+	    		document.getElementById('optionM').innerText = "제품별,월별";
+	    		document.getElementById('optionY').innerText = "제품별,연도별";
     			fltCntGrid.refreshLayout();
-	    		
-    		} */
+    		} 
     	}
     });
 });
@@ -238,6 +234,53 @@ function mtrInGridDraw(mtrInColumns) {
 mtrInGridDraw(mtrInColumns);
 //---------mtrInGrid 끝---------
 
+//---------mtrOutGrid---------
+//컬럼
+let mtrOutColumns = [{
+		header:'출고일',
+		name:'outDt',
+		align: 'center'
+	},
+	{
+		header:'자재코드',
+		name:'mtrCd',
+		align: 'center'
+	},
+	{
+		header:'출고량',
+		name:'cnt',
+		align: 'center'
+	}];
+	
+//데이터소스	
+const mtrOutDataSource = {
+		api: {
+			readData: { 
+				url: './mtrOutDate', 
+				method: 'GET',
+				initParams: $("#stsDateFrm").serializeObject()
+			}
+		},
+		contentType: 'application/json'	
+	};
+
+//그리드
+let mtrOutGrid;
+function mtrOutGridDraw(mtrOutColumns) {
+	if(mtrOutGrid != undefined) {
+		mtrOutGrid.destroy();		
+	}
+	mtrOutGrid = new Grid({
+		el: document.getElementById('mtrOutTab'),
+		columns: mtrOutColumns,
+		data: mtrOutDataSource,
+		bodyHeight: 400,
+		scrollY : true
+	})
+}
+mtrOutGridDraw(mtrOutColumns);
+//---------mtrOutGrid 끝---------
+
 //---------pdtCntGrid---------
 //컬럼
 let pdtCntColumns = [{
@@ -251,7 +294,7 @@ let pdtCntColumns = [{
 		align: 'center'
 	},
 	{
-		header:'입고량',
+		header:'생산량',
 		name:'cnt',
 		align: 'center'
 	}];
@@ -285,6 +328,53 @@ function pdtCntGridDraw(pdtCntColumns) {
 pdtCntGridDraw(pdtCntColumns);
 //---------pdtCntGrid 끝---------
 
+//---------fltCntGrid---------
+//컬럼
+let fltCntColumns = [{
+		header:'제품생산일',
+		name:'workFinDt',
+		align: 'center'
+	},
+	{
+		header:'제품코드',
+		name:'prdCd',
+		align: 'center'
+	},
+	{
+		header:'불량량',
+		name:'cnt',
+		align: 'center'
+	}];
+	
+//데이터소스	
+const fltCntDataSource = {
+		api: {
+			readData: { 
+				url: './fltDate', 
+				method: 'GET',
+				initParams: $("#stsDateFrm").serializeObject()
+			}
+		},
+		contentType: 'application/json'	
+	};
+
+//그리드
+let fltCntGrid;
+function fltCntGridDraw(fltCntColumns) {
+	if(fltCntGrid != undefined) {
+		fltCntGrid.destroy();		
+	}
+	fltCntGrid = new Grid({
+		el: document.getElementById('fltCntTab'),
+		columns: fltCntColumns,
+		data: fltCntDataSource,
+		bodyHeight: 400,
+		scrollY : true
+	})
+}
+fltCntGridDraw(fltCntColumns);
+//---------fltCntGrid 끝---------
+
 //---------조회 버튼---------
 let selectSts = document.getElementById('selectSts');
 let btnFind1 = document.getElementsByClassName('btnFind')[0];
@@ -293,7 +383,6 @@ let btnFind3 = document.getElementsByClassName('btnFind')[2];
 function btnFindFunc() {
 	if(flag == 1) { //자재입고량
 		if(selectSts.value == "일별") {
-			console.log($("#stsDateFrm").serializeObject())
 			mtrInGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
 		} else if(selectSts.value == "월별") {
 			mtrInGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
@@ -309,19 +398,48 @@ function btnFindFunc() {
 		window.setTimeout(
 			function() {
 				for(mtrInData of mtrInGrid.getData()) {
-					if(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').indexOf("합계") == 6 ||
-					   mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').indexOf("합계") == 6) {
-						console.log("1")
-						mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntAll');
-					} else if(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').indexOf("소계") == 8 ||
-							  mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').indexOf("소계") == 8) {
-								console.log("2")
-								mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntDtl');
+					//console.log("indate"+mtrInGrid.getValue(mtrInData.rowKey, 'inDate').includes("합계"))
+					//console.log("mtrCd"+mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').includes("합계"))
+					if(	mtrInGrid.getValue(mtrInData.rowKey, 'inDate').includes("합계") == true ||
+						mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').includes("합계") == true		) {
+							console.log("1")
+							mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntAll');
+					} else if(  mtrInGrid.getValue(mtrInData.rowKey, 'inDate').includes("소계") == true ||
+								mtrInGrid.getValue(mtrInData.rowKey, 'mtrCd').includes("소계") == true) {
+									console.log("2")
+									mtrInGrid.addRowClassName(mtrInData.rowKey, 'cntDtl');
 					}
 				}				
 			}
-		,200)
-	} else if(flag == 3) {
+		,40)
+	} else if(flag == 2) { //자재출고량
+		if(selectSts.value == "일별") {
+			mtrOutGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
+		} else if(selectSts.value == "월별") {
+			mtrOutGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
+		} else if(selectSts.value == "연도별") {
+			mtrOutGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
+		} else if(selectSts.value == "자재별,일별") {
+			mtrOutGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
+		} else if(selectSts.value == "자재별,월별") {
+			mtrOutGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
+		} else if(selectSts.value == "자재별,연도별") {
+			mtrOutGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
+		}
+		window.setTimeout(
+			function() {
+				for(mtrOutData of mtrOutGrid.getData()) {
+					if(mtrOutGrid.getValue(mtrOutData.rowKey, 'outDt').includes("합계") == true ||
+					   mtrOutGrid.getValue(mtrOutData.rowKey, 'mtrCd').includes("합계") == true) {
+							mtrOutGrid.addRowClassName(mtrOutData.rowKey, 'cntAll');
+					} else if(mtrOutGrid.getValue(mtrOutData.rowKey, 'outDt').includes("소계") == true ||
+							  mtrOutGrid.getValue(mtrOutData.rowKey, 'mtrCd').includes("소계") == true) {
+									mtrOutGrid.addRowClassName(mtrOutData.rowKey, 'cntDtl');
+					}
+				}				
+			}
+		,40)
+	} else if(flag == 3) {//제품생산량
 		if(selectSts.value == "일별") {
 			pdtCntGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
 		} else if(selectSts.value == "월별") {
@@ -335,6 +453,46 @@ function btnFindFunc() {
 		} else if(selectSts.value == "제품별,연도별") {
 			pdtCntGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
 		}
+		window.setTimeout(
+			function() {
+				for(pdtCntData of pdtCntGrid.getData()) {
+					if(pdtCntGrid.getValue(pdtCntData.rowKey, 'workFinDt').indexOf("합계") == 6 ||
+					   pdtCntGrid.getValue(pdtCntData.rowKey, 'prdCd').indexOf("합계") == 6) {
+							pdtCntGrid.addRowClassName(pdtCntData.rowKey, 'cntAll');
+					} else if(pdtCntGrid.getValue(pdtCntData.rowKey, 'workFinDt').indexOf("소계") == 9 ||
+							  pdtCntGrid.getValue(pdtCntData.rowKey, 'prdCd').indexOf("소계") == 9) {
+									pdtCntGrid.addRowClassName(pdtCntData.rowKey, 'cntDtl');
+					}
+				}				
+			}
+		,40)
+	} else if(flag == 4) {//제품불량량
+		if(selectSts.value == "일별") {
+			fltCntGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
+		} else if(selectSts.value == "월별") {
+			fltCntGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
+		} else if(selectSts.value == "연도별") {
+			fltCntGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
+		} else if(selectSts.value == "제품별,일별") {
+			fltCntGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
+		} else if(selectSts.value == "제품별,월별") {
+			fltCntGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
+		} else if(selectSts.value == "제품별,연도별") {
+			fltCntGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
+		}
+		window.setTimeout(
+			function() {
+				for(fltCntData of fltCntGrid.getData()) {
+					if(fltCntGrid.getValue(fltCntData.rowKey, 'workFinDt').indexOf("합계") == 6 ||
+					   fltCntGrid.getValue(fltCntData.rowKey, 'prdCd').indexOf("합계") == 6) {
+							fltCntGrid.addRowClassName(fltCntData.rowKey, 'cntAll');
+					} else if(fltCntGrid.getValue(fltCntData.rowKey, 'workFinDt').indexOf("소계") == 9 ||
+							  fltCntGrid.getValue(fltCntData.rowKey, 'prdCd').indexOf("소계") == 9) {
+									fltCntGrid.addRowClassName(fltCntData.rowKey, 'cntDtl');
+					}
+				}				
+			}
+		,40)
 	}
 	  
 }
@@ -377,8 +535,9 @@ selectSts.addEventListener("change", function(){
 			align: 'center'
 		};
 	
-	//자재입고
+	//자재입고량
 	if(flag == 1) {
+		cntClm.header = '입고량'
 		if(selectSts.value == "일별") {
 			dtClm.header = '입고일';
 			mtrInColumns = [dtClm,cdClm,cntClm];
@@ -388,7 +547,6 @@ selectSts.addEventListener("change", function(){
 			$("#yearOnly").hide();
 			mtrInGridDraw(mtrInColumns);
 			console.log($("#stsDateFrm").serializeObject());
-			//mtrInGrid.readData(1,$("#stsDateFrm").serializeObject(),true);
 		} else if(selectSts.value == "월별") {
 			dtClm.header = '입고월';
 			mtrInColumns = [dtClm,cdClm,cntClm];
@@ -397,7 +555,6 @@ selectSts.addEventListener("change", function(){
 			$("#monthOnly").show();
 			$("#yearOnly").hide();
 			mtrInGridDraw(mtrInColumns);
-			//mtrInGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
 		} else if(selectSts.value == "연도별") {
 			dtClm.header = '입고연도';
 			mtrInColumns = [dtClm,cdClm,cntClm];
@@ -406,7 +563,6 @@ selectSts.addEventListener("change", function(){
 			$("#monthOnly").hide();
 			$("#yearOnly").show();
 			mtrInGridDraw(mtrInColumns);
-			//mtrInGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
 		} else if(selectSts.value == "자재별,일별") {
 			dtClm.header = '입고일';
 			mtrInColumns = [cdClm,dtClm,cntClm];
@@ -415,7 +571,6 @@ selectSts.addEventListener("change", function(){
 			$("#monthOnly").hide();
 			$("#yearOnly").hide();
 			mtrInGridDraw(mtrInColumns);
-			//mtrInGrid.readData(1,$("#stsDateFrm").serializeObject(),true);;
 		} else if(selectSts.value == "자재별,월별") {
 			dtClm.header = '입고월';
 			mtrInColumns = [cdClm,dtClm,cntClm];
@@ -424,7 +579,6 @@ selectSts.addEventListener("change", function(){
 			$("#monthOnly").show();
 			$("#yearOnly").hide();
 			mtrInGridDraw(mtrInColumns);
-			//mtrInGrid.readData(1,$("#stsMonthFrm").serializeObject(),true);
 		} else if(selectSts.value == "자재별,연도별") {
 			dtClm.header = '입고연도';
 			mtrInColumns = [cdClm,dtClm,cntClm];
@@ -433,11 +587,64 @@ selectSts.addEventListener("change", function(){
 			$("#monthOnly").hide();
 			$("#yearOnly").show();
 			mtrInGridDraw(mtrInColumns);
-			//mtrInGrid.readData(1,$("#stsYearFrm").serializeObject(),true);
 		} 
-		
-	//제품생산	
-	} else if(flag == 3) {
+	} //자재출고량 
+	else if(flag == 2) {
+		cntClm.header = '출고량'
+		if(selectSts.value == "일별") {
+			dtClm.header = '출고일';
+			mtrOutColumns = [dtClm,cdClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutDate';
+			$("#dateOnly").show();
+			$("#monthOnly").hide();
+			$("#yearOnly").hide();
+			mtrOutGridDraw(mtrOutColumns);
+			console.log($("#stsDateFrm").serializeObject());
+		} else if(selectSts.value == "월별") {
+			dtClm.header = '출고월';
+			mtrOutColumns = [dtClm,cdClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutMonth';
+			$("#dateOnly").hide();
+			$("#monthOnly").show();
+			$("#yearOnly").hide();
+			mtrOutGridDraw(mtrOutColumns);
+		} else if(selectSts.value == "연도별") {
+			dtClm.header = '출고연도';
+			mtrOutColumns = [dtClm,cdClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutYear';
+			$("#dateOnly").hide();
+			$("#monthOnly").hide();
+			$("#yearOnly").show();
+			mtrOutGridDraw(mtrOutColumns);
+		} else if(selectSts.value == "자재별,일별") {
+			dtClm.header = '출고일';
+			mtrOutColumns = [cdClm,dtClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutMtrD';	
+			$("#dateOnly").show();
+			$("#monthOnly").hide();
+			$("#yearOnly").hide();
+			mtrOutGridDraw(mtrOutColumns);
+		} else if(selectSts.value == "자재별,월별") {
+			dtClm.header = '출고월';
+			mtrOutColumns = [cdClm,dtClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutMtrM';
+			$("#dateOnly").hide();
+			$("#monthOnly").show();
+			$("#yearOnly").hide();
+			mtrOutGridDraw(mtrOutColumns);
+		} else if(selectSts.value == "자재별,연도별") {
+			dtClm.header = '출고연도';
+			mtrOutColumns = [cdClm,dtClm,cntClm];
+			mtrOutDataSource.api.readData.url = './mtrOutMtrY';	
+			$("#dateOnly").hide();
+			$("#monthOnly").hide();
+			$("#yearOnly").show();
+			mtrOutGridDraw(mtrOutColumns);
+		} 
+	} 
+	//제품생산량
+	else if(flag == 3) {
+		cntClm.header = '생산량'
 		if(selectSts.value == "일별") {
 			dtClm2.header = '제품생산일';
 			pdtCntColumns = [dtClm2,cdClm2,cntClm];
@@ -488,29 +695,69 @@ selectSts.addEventListener("change", function(){
 			pdtCntGridDraw(pdtCntColumns);
 		} 
 	}
+	//제품불량량	
+	else if(flag == 4) {
+		cntClm.header = '불량량'
+		if(selectSts.value == "일별") {
+			dtClm2.header = '제품생산일';
+			fltCntColumns = [dtClm2,cdClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltDate';
+			$("#dateOnly").show();
+			$("#monthOnly").hide();
+			$("#yearOnly").hide();
+			fltCntGridDraw(fltCntColumns);
+		} else if(selectSts.value == "월별") {
+			dtClm2.header = '제품생산월';
+			fltCntColumns = [dtClm2,cdClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltMonth';
+			$("#dateOnly").hide();
+			$("#monthOnly").show();
+			$("#yearOnly").hide();
+			fltCntGridDraw(fltCntColumns);
+		} else if(selectSts.value == "연도별") {
+			dtClm2.header = '제품생산연도';
+			fltCntColumns = [dtClm2,cdClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltYear';
+			$("#dateOnly").hide();
+			$("#monthOnly").hide();
+			$("#yearOnly").show();
+			fltCntGridDraw(fltCntColumns);
+		} else if(selectSts.value == "자재별,일별") {
+			dtClm2.header = '제품생산일';
+			fltCntColumns = [cdClm2,dtClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltPrdD';	
+			$("#dateOnly").show();
+			$("#monthOnly").hide();
+			$("#yearOnly").hide();
+			fltCntGridDraw(fltCntColumns);
+		} else if(selectSts.value == "자재별,월별") {
+			dtClm2.header = '제품생산월';
+			fltCntColumns = [cdClm2,dtClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltPrdM';
+			$("#dateOnly").hide();
+			$("#monthOnly").show();
+			$("#yearOnly").hide();
+			fltCntGridDraw(fltCntColumns);
+		} else if(selectSts.value == "자재별,연도별") {
+			dtClm2.header = '제품생산연도';
+			fltCntColumns = [cdClm2,dtClm2,cntClm];
+			fltCntDataSource.api.readData.url = './fltPrdY';	
+			$("#dateOnly").hide();
+			$("#monthOnly").hide();
+			$("#yearOnly").show();
+			fltCntGridDraw(fltCntColumns);
+		} 
+	}
 	
 })
 //---------셀렉트 바뀔때 이벤트 끝--------
 
 
-//---------mtrInGrid 끝---------
-//---------mtrOutGrid---------
-//---------mtrOutGrid 끝---------
-//---------pdtCntGrid---------
-//---------pdtCntGrid 끝---------
-//---------fltCntGrid---------
-//---------fltCntGrid 끝---------
-
-for(mtrInData of mtrInGrid.getData()) {
-	console.log(mtrInGrid.getValue(mtrInData.rowKey, 'inDate').contain("합계"))
-}
-
-
 //---------Grid 깨지는거 refresh---------
 window.setTimeout(function(){mtrInGrid.refreshLayout()}, 100);
-//window.setTimeout(function(){mtrOutGrid.refreshLayout()}, 300);
-window.setTimeout(function(){pdtCntGrid.refreshLayout()}, 300);
-//window.setTimeout(function(){fltCntGrid.refreshLayout()}, 300);
+window.setTimeout(function(){mtrOutGrid.refreshLayout()}, 100);
+window.setTimeout(function(){pdtCntGrid.refreshLayout()}, 100);
+window.setTimeout(function(){fltCntGrid.refreshLayout()}, 100);
 //---------Grid 깨지는거 refresh끝---------
 
 </script>
