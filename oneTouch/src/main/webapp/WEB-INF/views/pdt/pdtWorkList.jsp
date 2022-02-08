@@ -64,8 +64,10 @@
 		   //  ,beforeShowDay: disableAllTheseDays
 		    /*  ,buttonImage: "/oneTouch/resources/template/images/cal_lb_sm.png"
     	,buttonImageOnly: true */
-
+		    	       
 		    });
+       	   $('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+	        $('#startDate').datepicker('setDate', 'today-7D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
 	  } );
 	let Grid = tui.Grid;
 	//그리드 테마적용

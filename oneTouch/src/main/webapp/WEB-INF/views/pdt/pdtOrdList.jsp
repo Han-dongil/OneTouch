@@ -58,7 +58,9 @@ hr{
 					<form name="frm" id="frm">
 						<div class="rowdiv">
 							<label class="labeltext">주문일자</label>
-							<input type="text" id="inputDate" name="ordDate" class="datepicker jquerydtpicker"/>
+							<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker"> ~
+							<input type="text" id="endDate" name="endDate" class="datepicker jquerydtpicker"> 
+							<!-- <input type="text" id="inputDate" name="ordDate" class="datepicker jquerydtpicker"/> -->
 						</div>
 						
 						<label class="labeltext">진행상태</label>
@@ -143,6 +145,7 @@ hr{
 	    
 	    //초기값을 오늘 날짜로 설정해줘야 합니다.
 	    $('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+	    $('#startDate').datepicker('setDate', 'today-7D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
 	    	       
 	});
 	
@@ -150,8 +153,11 @@ hr{
 	let checked=[];
     let dataSource; //그리드에 들어갈 데이터변수
     //전체리스트 ajax
-    listAll();
-    function listAll(){
+    setTimeout(()=>{
+	    dateSelectFnc();
+    	
+    },500)
+     function listAll(){
 		$.ajax({
 		  url:"pdtOrdlist",
 		  dataType:'json',
@@ -163,7 +169,7 @@ hr{
 			  console.log(reject)
 		  }
 	  	})
-    }
+    } 
   	/* let Grid = tui.Grid; */
 	//그리드 테마적용
 	/* Grid.applyTheme('striped',{
@@ -217,7 +223,7 @@ hr{
 	//그리드 생성
 	grid = new Grid({
 		  el: document.getElementById('grid'),
-		  data:dataSource,
+		  data:null,
 		  columns,
 		  scrollY : true,
 		  bodyHeight: 527,
@@ -231,9 +237,8 @@ hr{
 	})
 	//날짜별 조회 ajax
 	function dateSelectFnc(){
-		let inputDate=document.getElementById('inputDate').value;
 		let FormData=$("#frm").serialize()
-		event.preventDefault();
+	//	event.preventDefault();
 		$.ajax({
 			url:'./ord',
 			method:'POST',
@@ -272,9 +277,6 @@ hr{
 			}
 		})
 	}
-	addBtn.addEventListener('click',ev=>{
-		grid.appendRow([{}]);
-	})
 	
 	grid.on('click',ev=>{
 		fetch('orderSeq')

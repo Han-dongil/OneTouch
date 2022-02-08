@@ -10,4 +10,6 @@ public class OrdVO {
 	private String ordDate;
 	private String nowPhs;
 	private String cmt;
+	private String startDate;
+	private String endDate;
 }

@@ -35,7 +35,7 @@
 	</div>
 	<div id="plan-dialog-form" title="생산계획조회">
 		<div>생산계획 조회</div>
-		<select id="planCheck">
+ 		<select id="planCheck" style="display:none">
 			<option value="N">미지시</option>
 			<option value="Y">지시완료</option>
 		</select>
@@ -453,28 +453,7 @@ class abc{
 			modal:true,
 			height: 500,
 			width: 1000,
-			buttons:{"save":function(){
-				console.log(modalGrid.getCheckedRows()[0])
-				fetch('planDtlList/'+modalGrid.getCheckedRows()[0].planNo)
-				.then(response=>response.json())
-				.then(result=>{
-					console.log(result);
-				})
-				//modalGrid.getModifiedRows().updatedRows // 모달 지시 마스터 데이터
-				
-				
-				
-				/* fetch('workInsert',{
-					method:'POST',
-					headers:{
-						"Content-Type": "application/json",
-					},
-					body:JSON.stringify(modalGrid.getRow(modalGrid.getCheckedRows()[0]))
-				})
-				alert("save"); */
-				modalDialog.dialog('close');
-				//modalGrid.readData();	
-			}}
+			buttons:{}
 		
 		});
 		
@@ -799,10 +778,38 @@ class abc{
 			for(obj of hiddenGrid.getData()){
 				if(obj.mtrLot==prcGrid.getRow(ev.rowKey).mtrLot){
 					i=1;
+					console.log("111111")
 				}
 			}
 			if(i==0){
 				hiddenGrid.appendRows([prcGrid.getRow(ev.rowKey)])
+			}
+			let lotData = prcGrid.getRow(ev.rowKey);
+			let hiddenGetData=hiddenGrid.getData();
+			let m=0;
+			let hiddenInsertData = hiddenGetData.map(x=>{
+				if(lotData.mtrLot == x.mtrLot){
+					console.log("2222222")
+					lotData.rowKey=m;
+					m++;
+					return lotData;
+				}
+				else{
+					console.log("3333333")
+					x.rowKey=m;
+					m++;
+					return x;
+				}
+			})
+			hiddenGrid.clear();
+			
+			console.log(hiddenGrid.getData())
+			console.log(hiddenInsertData)
+			let k=0;
+			for(obj of hiddenInsertData){
+				hiddenGrid.appendRow(obj)
+				console.log(k);
+				k++;
 			}
 
 		})

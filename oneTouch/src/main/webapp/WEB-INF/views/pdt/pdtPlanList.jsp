@@ -526,7 +526,6 @@ class lineEditor{
 	dialog = $( "#dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
-		buttons:{"save":function(){alert("save")}}
 	});
 	$("#btnFindCo").on("click",function(){
 		dialog.dialog( "open" );
@@ -1417,11 +1416,16 @@ function needOrdCd(){
 		
 		
 		let hiddenGetData=hiddenGrid.getData();
+		let m=0;
 		let hiddenInsertData =hiddenGetData.map(x=>{
 			if(lotData1.mtrLot == x.mtrLot && lotData1.prdCd == x.prdCd){
+				lotData1.rowKey=m;
+				m++;
 				return lotData1;
 			}
 			else{
+				x.rowKey=m;
+				m++;
 				return x;
 			}
 		})
