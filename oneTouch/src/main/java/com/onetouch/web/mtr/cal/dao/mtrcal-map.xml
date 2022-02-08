@@ -53,6 +53,10 @@
 			A.MTR_CD = B.MTR_CD
 		AND
 			B.MTR_CD = #{mtrCd}
+		<if test='calSect == "MTR_CAL002"'>
+		AND
+			A.STCK_CNT > 0
+		</if>
 	</select>
 	
 	<insert id="insertCal">

@@ -471,7 +471,7 @@ var mtrGrid = new Grid({
 //---------mtrGrid 깨지는거 refresh---------
 window.setTimeout(function(){mtrGrid.refreshLayout()}, 300);
 //---------mtrGrid 깨지는거 refresh끝---------
-   
+
    
 //---------lotGrid---------
 const lotDataSource = {
