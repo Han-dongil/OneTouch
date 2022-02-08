@@ -64,7 +64,6 @@
 							</span>
 							
 							<span class="floatright">
-								<button type="button" id="resetBtn" class="btn btn-main newalign">초기화</button>
 								<button type="button" id="searcnBtn" class="btn btn-primary newalign" onclick="checkSeach(event)">조회</button>
 								<!-- <button type="button" id="excelBtn" class="btn btn-main newalign">Excel</button>
 								<button type="button" id="printBtn" class="btn btn-main newalign">인쇄</button> -->
@@ -348,12 +347,12 @@
    
        
 		
-       	resetBtn.addEventListener("click", function(){
+       	/* resetBtn.addEventListener("click", function(){
        		if(!confirm("초기화하시겠습니까?")){
        			return;
        		}
        		grid.clear()
-       	})
+       	}) */
       checkSeach()
       
 </script>

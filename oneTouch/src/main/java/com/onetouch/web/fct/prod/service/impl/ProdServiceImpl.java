@@ -35,12 +35,15 @@ public class ProdServiceImpl implements ProdService {
 			for(ProdVO prodVO: mvo.getUpdatedRows()) {
 				if(mvo.getUpdatedRows() != null) {
 					System.out.println(mvo.getUpdatedRows().get(0).getProdChkNo());
-					if(mvo.getUpdatedRows().get(0).getProdChkNo() != null) {
+					if(mapper.selectFctProdChkNo(prodVO) != null) {
+						System.out.println("점기점검 코드가 있으면 업데이트 활용 ");
 						mapper.updateProd(prodVO);
-					}
-					else {
+					}else {
+						System.out.println("정기점검 코드가 있으면 등록 활용");
 						mapper.insertProd(prodVO);
+						
 					}
+					
 			};
 		}
 		if(mvo.getDeletedRows() != null) {
@@ -53,5 +56,9 @@ public class ProdServiceImpl implements ProdService {
 	@Override
 	public ProdVO selectchkExpectDt(ProdVO prodVO) {
 		return mapper.selectchkExpectDt(prodVO);
+	}
+	@Override
+	public ProdVO selectFctProd( ) {
+		return mapper.selectFctProd();
 	}
 }
