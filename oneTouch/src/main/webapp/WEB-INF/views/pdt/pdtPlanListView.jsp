@@ -119,8 +119,8 @@
 		  data: null,
 		  columns:modalColumns,
 	      scrollY:true,
-		  minBodyHeight : 150,
-		  bodyHeight : 150,
+		  minBodyHeight : 200,
+		  bodyHeight : 200,
 		  columnOptions: {
 			  frozenCount :6,
 			  frozenBorderWidth:2
@@ -181,8 +181,8 @@
 	planDialog = $( "#plan-dialog-form" ).dialog({
 		autoOpen: false,
 		modal:true,
-		height: 280,
-		width: 400,
+		height: 350,
+		width: 600,
 		//buttons:{"save":function(){alert("save")}}
 	});
 	

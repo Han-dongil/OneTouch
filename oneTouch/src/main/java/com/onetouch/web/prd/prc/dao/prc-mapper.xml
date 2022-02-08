@@ -151,7 +151,7 @@
 		  
 	</select>
 	<select id="prcMovingView" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select instr_No , line_No , prc_Cd , work_Str_Dt , work_Fin_Dt , goal_Cnt ,pdt_cnt , flt_cnt ,now_phs , prd_lot
+		select instr_No , line_No , prc_Cd , to_char(work_Str_Dt,'yyyy-MM-dd') work_str_dt ,to_char(work_Fin_Dt,'yyyy-MM-dd') work_fin_dt , goal_Cnt ,pdt_cnt , flt_cnt ,now_phs , prd_lot
 		from prd_prc_mng where instr_no=#{instrNo} AND line_no = #{lineNo}	
 	</select>
 	<select id="updateCheck" resultType="_int">
@@ -165,7 +165,11 @@
 		from used_mtr_lot a join prd_prc_mng b
 		on a.instr_no = b.instr_no
 		where 1=1
-		and a.instr_no like '%PWO%') a join pdt_work_instr b
+		and a.instr_no like '%PWO%' 
+	 	<if test='mtrLot!="" and mtrLot!=null'>
+			and mtr_lot=#{mtrLot}
+		</if> 
+		) a join pdt_work_instr b
 		on a.instr_no = b.instr_no
 		where b.now_phs='Y'
 	 	<if test='startDate!="" and startDate!="null"'>
@@ -174,19 +178,28 @@
 	 	<if test='endDate!="" and endDate!="null"'>
 			and #{endDate}>work_str_dt
 		</if>  
+
 	</select>
 	<select id="movingSearchList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select distinct b.line_no , a.instr_no , to_char(a.instr_date,'yyyy-MM-dd') work_str_dt , b.instr_cnt goal_cnt, a.now_phs
-		from pdt_work_instr a join pdt_work_instr_dtl b
+		select distinct b.line_no , b.instr_no ,b.work_str_dt , b.goal_cnt , b.now_phs
+		from used_mtr_lot a join 
+								(select line_no , instr_no ,work_str_dt , goal_cnt , now_phs
+								from( select distinct b.line_no , a.instr_no , to_char(a.instr_date,'yyyy-MM-dd') work_str_dt , b.instr_cnt goal_cnt, a.now_phs
+										from pdt_work_instr a join pdt_work_instr_dtl b
+										on a.instr_no = b.instr_no
+								        where a.now_phs='N')) b
 		on a.instr_no = b.instr_no
-        where a.now_phs='N'
+		where 1=1
 	 	<if test='startDate!="" and startDate!="null"'>
 			and a.instr_date>#{startDate}
 		</if>
 	 	<if test='endDate!="" and endDate!="null"'>
 			and #{endDate}>a.instr_date
-		</if>  
-		order by a.instr_no
+		</if>
+	 	<if test='mtrLot!="" and mtrLot!=null'>
+			and a.mtr_lot=#{mtrLot}
+		</if>   
+		order by b.work_str_dt
 	</select>
 	
 	<select id="prcFlowCount" resultType="integer">
