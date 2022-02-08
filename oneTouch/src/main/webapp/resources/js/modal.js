@@ -247,7 +247,10 @@ function mPrc(){
 		let prcGrid = new Grid({
 			el : document.getElementById('prc_grid'),
 			data : prcData,
-			columns : prcColumns
+			columns : prcColumns,
+			scrollX : false,
+			scrollY : true,
+			bodyHeight: 400
 		});
 	
 		prcGrid.on('dblclick', ev => {
