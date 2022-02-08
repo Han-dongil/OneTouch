@@ -346,6 +346,11 @@ var mainGrid = new Grid({
 				   hidden: true
 				 },
 				 {
+				   header: '관리수량',
+				   name: 'mngAmt',
+				   hidden: true
+				 },
+				 {
 				   header: '등록자',
 				   name: 'empNo',
 				   hidden: true
@@ -381,6 +386,8 @@ var mainGrid = new Grid({
 //---------mainGrid row갯수 파악---------
 mainGrid.on('onGridUpdated', function(ev) {
 	rown = mainGrid.getRowCount();
+	console.log("rown");
+	console.log(rown);
 });
 //---------mainGrid row갯수 파악 끝---------
 
@@ -404,6 +411,7 @@ mainGrid.on('editingStart', function(ev) {
 				 document.getElementById('mUnitNm').value = row.unitNm
 				 lotGrid.readData(1,row,true);
 				 lotGrid.refreshLayout();
+				 ev.stop();
 			}
 		} else if(ev.columnName == 'calAmt' && mainGrid.getValue(ev.rowKey,'mtrLot') == ""){
 			alert("Lot 번호를 입력해 주세요.")
@@ -431,6 +439,13 @@ mainGrid.on('editingFinish', function(ev) {
 				toastr["warning"]("출고정산량이 현재고보다 많습니다.")
 				ev.stop();
 			}
+		}else if(mainGrid.getValue(ev.rowKey,'calSectNm') == '입고정산'){
+			console.log(mainGrid.getValue(ev.rowKey,'mngAmt'))
+			if(mainGrid.getValue(ev.rowKey,'calAmt') > mainGrid.getValue(ev.rowKey,'mngAmt')){
+				toastr["warning"]("입고정산량이 관리수량보다 많습니다.")
+				ev.stop();
+			}
+			
 		}
 	};
 	mainGrid.refreshLayout();
