@@ -87,7 +87,7 @@ hr{
 						</div>
 						
 						<span class="floatright">
-							<button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()" class="btn btn-main newalign">삭제</button>
+							<!-- <button type="button" id='delBtn' name="delBtn" onClick="checkDelFnc()" class="btn btn-main newalign">삭제</button> -->
 							<button type="button" action='' id='selBtn' name='selBtn' onClick="dateSelectFnc()" class="btn btn-primary newalign">조회</button>
 							<!-- <button type="button" id="addBtn" name="addBtn" class="btn btn-primary mr-2 floatrightbtn">주문서추가</button> -->
 						</span>
@@ -188,23 +188,28 @@ hr{
 	//그리드 컬럼 설정	
 	const columns = [{
 		header : '주문번호',
-		name : 'ordShtNo'
+		name : 'ordShtNo',
+		align: 'center',
 	},{
 		header : '납기일자',
 		name : 'dueDate',
- 		editor : 'text'		
+ 		editor : 'text'	,
+		align: 'center',	
 	},{
-		header : '주문날짜',
+		header : '주문일자',
 		name : 'ordDate',
- 		editor : 'text'
+ 		editor : 'text',
+		align: 'center',
 	},{
 		header : '업체번호',
 		name : 'compCd',
- 		editor : 'text'
+ 		editor : 'text',
+		align: 'center',
 	},{
 		header : '현재상태',
 		name : 'nowPhs',
- 		editor : 'text'
+ 		editor : 'text',
+		align: 'center',
 	},{
 		header : '비고',
 		name : 'cmt',
@@ -213,12 +218,7 @@ hr{
 	grid = new Grid({
 		  el: document.getElementById('grid'),
 		  data:dataSource,
-		  rowHeaders:['checkbox'],
 		  columns,
-		  columnOptions: {
-			  frozenCount :6,
-			  frozenBorderWidth:2
-		  },
 		  scrollY : true,
 		  bodyHeight: 527,
 		  minBodyHeight: 527

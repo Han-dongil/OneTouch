@@ -48,6 +48,8 @@
 	<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
 	
 	<script>
+		let useAmt = 0;
+		let needCnt =0;
 		let main2Grid;
 		let Grid = tui.Grid;
 		let planAll ;
@@ -339,6 +341,11 @@ class abc{
 		},{
 			header : '사용가능수량',
 			name : 'realCnt',
+			hidden : true,
+	        align:'right',
+		},{
+			header : '사용량',
+			name : 'useAmt',
 			hidden : false,
 	        align:'right',
 		},{
@@ -352,7 +359,6 @@ class abc{
 	        align:'center',
 			hidden : true
 		}];
- 		
 		//그리드 생성
 		let prcGrid = new Grid({
 			  el: document.getElementById('prcDtlGrid'),
@@ -364,7 +370,21 @@ class abc{
 			  columnOptions: {
 				  frozenCount :11,
 				  frozenBorderWidth:1
-			  }
+			  },
+			  summary : {
+			        height: 40,
+			        position: 'bottom',
+			        columnContent: {
+			        	hldCnt: {
+			               template(summary) {
+			            	   let n=useAmt*1*needCnt;
+			            	   p=summary.sum
+			            	   let g=n-summary.sum*1;
+			            	   //let needLotCnt=planGridNeedCnt*lotGridUseAmt-summary.sum*1
+			            	   return "필요수량 : "+n+'<br/>부족수량 : '+g;
+			               }
+			           }}
+			}
 		});
 		
 		
@@ -574,7 +594,7 @@ class abc{
 					modalGrid.setValue(ev.rowKey,'instrNo',x[0].instrNo)
 					for(let obj of x){
 						obj.instrDate=selectInstrDate;
-						obj.instrNo=abc+lpad(def,4,"0");
+						//obj.instrNo=abc+lpad(def,4,"0");
 						console.log(obj.instrNo)
 					}
 					if(modalGrid.getCheckedRows().length==1){
@@ -715,7 +735,10 @@ class abc{
 				else{
 					prcGrid.appendRows(datas);
 				} */
-				
+				needCnt=mainGrid.getValue(0,'needCnt')
+				if(mainGrid.getData().length!=0){
+					useAmt=prcGrid.getValue(0,'useAmt')
+				}
 			})
 		})
 		

@@ -48,11 +48,13 @@
 	from fct_info a join (select prc_cd from adm_prc_flow where prd_cd=#{prdCd}) b
 	on(a.prc_cd = b.prc_cd)
 	order by 1,3 -->
-select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc_cd as prcCd 
-                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , 0 as hldCnt ,b.stck_cnt as stckCnt , b.stck_cnt - b.hld_cnt as realCnt
+select distinct a.mtrLot , a.instrNo , a.lineNo , a.prcCd , a.dtlSelect , a.mtrCd , a.hldCnt , a.stckCnt , a.realCnt , b.use_amt 
+from (select a.mtr_lot as mtrLot , a.instr_no as instrNo , a.line_no as lineNo , a.prc_cd as prcCd 
+                            , a.dtl_select as dtlSelect ,b.mtr_cd as mtrCd , b.hld_cnt as realCnt , 0 as hldCnt ,b.stck_cnt as stckCnt 
                             from used_mtr_lot a join mtr_lot_stck b
-                            on (a.mtr_lot = b.mtr_lot)
-                            where a.instr_no = #{planNo} and a.prc_cd=#{prcCd}
+                            on (a.mtr_lot = b.mtr_lot)) a join adm_bom b
+on a.mtrCd=b.mtr_cd and a.prcCd = b.prc_cd
+                            where a.instrNo = #{planNo} and a.prcCd=#{prcCd}
 </select>
 <insert id="insertPlan">
 	<!-- <foreach collection="list" item="alist">

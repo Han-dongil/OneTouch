@@ -32,6 +32,7 @@
 	<input type="radio" id="checkedY" name="prcCheck" value="Y">
 	<label for="checkedN">진행중</label>
 	<input type="radio" id="checkedN" name="prcCheck" value="N" checked>
+	<br/>LOT검색<input type="text" id="mtrLot" name="mtrLot">
 	<button type="button" id="searchBtn" name="searchBtn">검색</button>
 </form> 
 <div class="row">
@@ -109,15 +110,17 @@
 	});
 ///////////////////////////그리드생성/////////////////////////////
 	//그리드 컬럼 설정	
-	const movingColumns = [{
-		header : 'LOT번호',
-		name : 'mtrLot'
-	},{
+	const movingColumns = [
+	{
+		header : '라인번호',
+		name : 'lineNo',
+	}
+	,{
 		header : '지시번호',
 		name : 'instrNo',
 	},{
-		header : '라인번호',
-		name : 'lineNo',
+		header : 'LOT번호',
+		name : 'mtrLot'
 	}];
 	//그리드 생성
 	movingGrid = new Grid({

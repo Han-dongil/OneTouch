@@ -319,17 +319,21 @@
 		  data:null,
 		  columns:[{
 				header : '지시번호',
-				name : 'instrNo'
+				name : 'instrNo',
+		        align:'center',
 			},{
 				header : '작업타임',
 				name : 'workStrTime',
+		        align:'center',
 				hidden:true
 			},{
 				header : '목표수량',
-				name : 'goalCnt'
+				name : 'goalCnt',
+		        align:'right',
 			},{
 				header : '흐름순서',
-				name : 'prcSeq'
+				name : 'prcSeq',
+		        align:'right',
 			}],
 		  columnOptions: {
 			  frozenCount :10,
@@ -359,37 +363,48 @@
 		  data:null,
 		  columns:[{
 				header : '지시번호',
-				name : 'instrNo'
+				name : 'instrNo',
+		        align:'center',
 			},{
 				header : '라인번호',
-				name : 'lineNo'
+				name : 'lineNo',
+		        align:'center',
 			},{
 				header : '공정코드',
-				name : 'prcCd'
+				name : 'prcCd',
+		        align:'center',
 			},{
 				header : '시작시간',
-				name : 'workStrDt'
+				name : 'workStrDt',
+		        align:'center',
 			},{
 				header : '종료시간',
-				name : 'workFinDt'
+				name : 'workFinDt',
+		        align:'center',
 			},{
 				header : '목표수량',
-				name : 'goalCnt'
+				name : 'goalCnt',
+		        align:'right',
 			},{
 				header : '생산량',
-				name : 'pdtCnt'
+				name : 'pdtCnt',
+		        align:'right',
 			},{
 				header : '불량량',
-				name : 'fltCnt'
+				name : 'fltCnt',
+		        align:'right',
 			},{
 				header : '라인불량량',
-				name : 'sumFlt'
+				name : 'sumFlt',
+		        align:'right',
 			},{
 				header : '현재상태',
-				name : 'nowPhs'
+				name : 'nowPhs',
+		        align:'center',
 			},{
 				header : '제품LOT',
-				name : 'prdLot'
+				name : 'prdLot',
+		        align:'center',
 			}],
 		  columnOptions: {
 			  frozenCount :10,

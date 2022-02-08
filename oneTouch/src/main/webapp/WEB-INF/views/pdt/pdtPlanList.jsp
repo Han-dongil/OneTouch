@@ -965,7 +965,7 @@ class lineEditor{
 	
 	//모달에서 주문서 선택하면 어펜드로우시켜줌
 	function ordFnc(ev){
-		grid.appendRow(porObj[ev.target.getAttribute("data-ord-id")]);
+		grid.resetData([porObj[ev.target.getAttribute("data-ord-id")]]);
 		fetch('planNoFind')
  		.then(response=>response.json())
  		.then(result=>{
@@ -1001,6 +1001,12 @@ class lineEditor{
 	}
 	
 	addBtn.addEventListener("click",function(){
+		grid.clear();
+		planGrid.clear();
+		insertDtlGrid.clear();
+		lotGrid.clear();
+		insertDtlGrid.clear();
+		hiddenGrid.clear();
 		grid.appendRow({})
 		fetch('planNoFind')
  		.then(response=>response.json())
@@ -1272,6 +1278,14 @@ function needOrdCd(){
 	})
 	
 	planGrid.on('click',ev=>{
+		if(ev.columnName=="lineNo"){
+			let adg=document.getElementsByTagName('select')[0]
+			adg.addEventListener('change',()=>{
+				console.log("ddd")
+				planGrid.blur();
+			})
+			
+		}
 		if(ev.columnName=='prdCd'){
 			 fetch('prdCdFind')
 			.then(response=>response.json())
@@ -1345,6 +1359,7 @@ function needOrdCd(){
 	
 	//상품코드 공정코드로 자재목록 불러오기
 	prcSelect.addEventListener('change',ev=>{
+		
 		lotDiv.style="display:block";
 		lotGrid.refreshLayout();
 		if(ev.target.value!='라인선택'){
@@ -1382,7 +1397,8 @@ function needOrdCd(){
 						}
 						
 					}
-					if(i==0){
+					let prcSelect=document.getElementById('prcSelect').value;
+					if(i==0&&prcSelect!='--공정선택--'){
 						insertDtlGrid.appendRow(planData);
 						lotGridUseAmt=lotGrid.getData()[0].useAmt;
 					}
@@ -1391,6 +1407,7 @@ function needOrdCd(){
 			
 		}
 	})
+	
 	
 	
 	////////lPad ////////
@@ -1459,6 +1476,7 @@ function needOrdCd(){
 		}
 	})
 	
+
 	</script>
 
 </body>
