@@ -135,7 +135,7 @@ class abcEditor{
     let{grid,rowKet,columnInfo,value}=props;
     let el=document.createElement('div');
     let select = document.createElement('select');
-
+    select.setAttribute('onChange','planGridBlur()')
     let data = props.columnInfo.editor.options.listItems;
 
     for(let i=0 ; i<data.length ; i++){
@@ -174,7 +174,8 @@ class lineEditor{
 	    let{grid,rowKet,columnInfo,value}=props;
 	    let el=document.createElement('div');
 	    let select = document.createElement('select');
-
+		select.setAttribute('onChange','planGridBlur()')
+		select.id='planSelectTag'
 	    let data = props.columnInfo.editor.options.listItems;
 
 	    for(let i=0 ; i<data.length ; i++){
@@ -725,78 +726,14 @@ class lineEditor{
 	 		//plan 그리드 
 	 		//라인번호 선택하면 공정코드가져옴
 	 		if(ev.columnName=='lineNo'){
-	 			planGridRowKey=ev.rowKey;
-				disabledDays.length=0;
- 				insertLineNo=planGrid.getValue(ev.rowKey,'lineNo');
-	 			fetch('lotLineFind/'+planGrid.getValue(ev.rowKey,'lineNo'))
-	 			.then(response=>response.json())
-	 			.then(result=>{
-	 				planGridNeedCnt=planGrid.getRow(ev.rowKey).needCnt;
-	 				let i=0;
- 					planColumns[2].editor.options.listItems.length=0;
- 					$('#prcSelect').empty();
- 					let prcSelect=document.getElementById('prcSelect');
- 					prcSelect.setAttribute('data-id',planGrid.getValue(ev.rowKey,'prdCd'));
-					let optionTag=document.createElement('option');
-					optionTag.value='--공정선택--';
-					optionTag.innerHTML='--공정선택--';
-					prcSelect.appendChild(optionTag);
-	 				for(obj of result){
-	 					let prcSelect=document.getElementById('prcSelect');
-	 					prcSelect.setAttribute('data-id',planGrid.getValue(ev.rowKey,'prdCd'));
-						let optionTag=document.createElement('option');
-						optionTag.value=obj.prcCd;
-						optionTag.innerHTML=obj.prcNm;
-						prcSelect.appendChild(optionTag);
-		 				//planColumns[2].editor.options.listItems.push({text:obj.prcCd,value:obj.prcCd})
-
-		 				i++;
-	 				}
-	 				
-	 				
-	 				///////////////////지시불가능날짜 불러오기
-	 	    		let lineData={}
-	 	 			lineData.lineNo=planGrid.getValue(ev.rowKey,'lineNo');
-	 	 			fetch('slectDate',{
-	 	 				method:'POST',
-	 	 				headers:{
-	 	 					"Content-Type": "application/json",
-	 	 				},
-	 	 				body:JSON.stringify(lineData)
-	 	 			})
-	 	 			.then(response=>response.json())
-	 	 			.then(result=>{
-	 	 					console.log(result)
-	 	 				for(obj of result){
-	 	 					if(obj.uphPdtAmt<=0){
-		 	 					disabledDays.push((obj.workStrDate).substring(0,10).replaceAll("-0","-"))
-	 	 					}
-	 	 					
-	 	 				}
-	 	 				console.log(disabledDays);
-	 	 			})
-	 				
-	 			})
+				prcFindFnc(ev.rowKey);
 	 		}
 	 		
 	 		
 	 		//제품코드로 라인번호 가져오기
-	 		/* else if(ev.columnName=='prdCd'){
-		 		fetch("lineNoFind/"+planGrid.getValue(ev.rowKey,'prdCd'))
-		 		.then(response=>response.json())
-		 		.then(result=>{
-		 			let i=0;
-		 			console.log(result)
-		 			planGrid.setValue(planGrid.getData()[0].rowKey,'uphPdtAmt',result[0].uphPdtAmt)
-		 			planColumns[1].editor.options.listItems.length=0;
-					for(obj of result){
-						console.log(obj)
-						planColumns[0].editor.options.listItems.push({text:obj.lineNo,value:obj.lineNo})
-		 				//planColumns[3].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
-						i++;
-					}
-		 		})
-	 		} */
+	 		 else if(ev.columnName=='prdCd'){
+	 			lineFindFnc(ev.rowKey);
+	 		} 
 	 		
  		})
 
@@ -993,6 +930,8 @@ class lineEditor{
 						 }
   							 
 					})
+					lineFindFnc(0);
+					prcFindFnc(0)
 					
   			 })
  			
@@ -1272,20 +1211,15 @@ function needOrdCd(){
  			planGrid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey  ,'planNo',result.planNo);
  			planGrid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey,'prdCd',safeGrid.getValue(ev.rowKey,'prdCd'));
  			planGrid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey,'needCnt',safeGrid.getValue(ev.rowKey,'needCnt'));
+
+ 		}).then(()=>{
  		})
  		safeDialog.dialog('close');
+		
 		
 	})
 	
 	planGrid.on('click',ev=>{
-		if(ev.columnName=="lineNo"){
-			let adg=document.getElementsByTagName('select')[0]
-			adg.addEventListener('change',()=>{
-				console.log("ddd")
-				planGrid.blur();
-			})
-			
-		}
 		if(ev.columnName=='prdCd'){
 			 fetch('prdCdFind')
 			.then(response=>response.json())
@@ -1294,7 +1228,7 @@ function needOrdCd(){
 				 for(let obj of result){
 					planColumns[0].editor.options.listItems.push({text:obj.prdNm,value:obj.prdCd})
 				 }
-					 
+				 
 			})
 		}
  		if(ev.columnName=='workStrDate' || ev.columnName=='workEndDate'){
@@ -1325,7 +1259,7 @@ function needOrdCd(){
  			    });
  			  } );
  		}
-		if(ev.columnName=='lineNo'){
+/* 		if(ev.columnName=='lineNo'){
 			//planGrid.resetData([{}]);
 	 		fetch("lineNoFind/"+planGrid.getValue(ev.rowKey,'prdCd'))
 	 		.then(response=>response.json())
@@ -1336,12 +1270,12 @@ function needOrdCd(){
 		 			planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
 					i++;	 				
 	 			}
-	 			
+
 	 		})
 	 				
 	 				
 	 		
-		}
+		} */
 	})
 	
 		// 특정날짜들 배열
@@ -1445,6 +1379,9 @@ function needOrdCd(){
 				 planColumns[0].editor.options.listItems[i]={text:obj.prdNm,value:obj.prdCd}
 				 i++;
 			 }
+			 planGrid.setValue(planGrid.getRowCount()-1,'prdCd',result[0].prdCd)
+			 lineFindFnc(planGrid.getRowCount()-1);
+			 prcFindFnc(planGrid.getRowCount()-1)
 		})
 	})
 
@@ -1464,19 +1401,114 @@ function needOrdCd(){
 		lotData1.planNo=grid.getData()[0].planNo;
 		lotData1.lineNo=planGrid.getData()[0].lineNo;
 		let i = 0;
-		for(obj of hiddenGrid.getData()){
-			if(lotData1.mtrLot == obj.mtrLot && lotData1.prdCd == obj.prdCd){
+		for(z=0 ; z<hiddenGrid.getData().length ; z++){
+			if(lotData1.mtrLot == hiddenGrid.getData()[z].mtrLot && lotData1.prdCd == hiddenGrid.getData()[z	].prdCd){
 				i=1
 			}
 		}
+		
+			
+		
 		console.log("여기")
 		console.log(lotData1)
 		if(i==0){
 			hiddenGrid.appendRows([lotData1]);
 		}
+		
+		
+		let hiddenGetData=hiddenGrid.getData();
+		let hiddenInsertData =hiddenGetData.map(x=>{
+			if(lotData1.mtrLot == x.mtrLot && lotData1.prdCd == x.prdCd){
+				return lotData1;
+			}
+			else{
+				return x;
+			}
+		})
+		
+		hiddenGrid.resetData(hiddenInsertData)
 	})
 	
+	
+	function planGridBlur(){
+		
+		planGrid.blur();
+		
+	}
+	function lineFindFnc(ev){
+		fetch("lineNoFind/"+planGrid.getValue(ev,'prdCd'))
+ 		.then(response=>response.json())
+ 		.then(result=>{
+ 			let i=0;
+ 			console.log(result)
+ 			planGrid.setValue(planGrid.getData()[0].rowKey,'uphPdtAmt',result[0].uphPdtAmt)
+ 			planColumns[1].editor.options.listItems.length=0;
+			for(obj of result){
+				console.log(obj)
+				planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
+				//planColumns[0].editor.options.listItems.push({text:obj.lineNo,value:obj.lineNo})
+ 				//planColumns[3].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
+				i++;
+			}
+ 			planGrid.setValue(ev,'lineNo',result[0].lineNo)
+ 			prcFindFnc(ev)
+			
+ 		})
+	}
+	function prcFindFnc(ev){
+			planGridRowKey=ev;
+			disabledDays.length=0;
+				insertLineNo=planGrid.getValue(ev,'lineNo');
+ 			fetch('lotLineFind/'+planGrid.getValue(ev,'lineNo'))
+ 			.then(response=>response.json())
+ 			.then(result=>{
+ 				planGridNeedCnt=planGrid.getRow(ev).needCnt;
+ 				let i=0;
+					planColumns[2].editor.options.listItems.length=0;
+					$('#prcSelect').empty();
+					let prcSelect=document.getElementById('prcSelect');
+					prcSelect.setAttribute('data-id',planGrid.getValue(ev,'prdCd'));
+				let optionTag=document.createElement('option');
+				optionTag.value='--공정선택--';
+				optionTag.innerHTML='--공정선택--';
+				prcSelect.appendChild(optionTag);
+ 				for(obj of result){
+ 					let prcSelect=document.getElementById('prcSelect');
+ 					prcSelect.setAttribute('data-id',planGrid.getValue(ev,'prdCd'));
+					let optionTag=document.createElement('option');
+					optionTag.value=obj.prcCd;
+					optionTag.innerHTML=obj.prcNm;
+					prcSelect.appendChild(optionTag);
+	 				//planColumns[2].editor.options.listItems.push({text:obj.prcCd,value:obj.prcCd})
 
+	 				i++;
+ 				}
+ 				
+ 				
+ 				///////////////////지시불가능날짜 불러오기
+ 	    		let lineData={}
+ 	 			lineData.lineNo=planGrid.getValue(ev,'lineNo');
+ 	 			fetch('slectDate',{
+ 	 				method:'POST',
+ 	 				headers:{
+ 	 					"Content-Type": "application/json",
+ 	 				},
+ 	 				body:JSON.stringify(lineData)
+ 	 			})
+ 	 			.then(response=>response.json())
+ 	 			.then(result=>{
+ 	 					console.log(result)
+ 	 				for(obj of result){
+ 	 					if(obj.uphPdtAmt<=0){
+	 	 					disabledDays.push((obj.workStrDate).substring(0,10).replaceAll("-0","-"))
+ 	 					}
+ 	 					
+ 	 				}
+ 	 				console.log(disabledDays);
+ 	 			})
+ 				
+ 			})
+	}
 	</script>
 
 </body>
