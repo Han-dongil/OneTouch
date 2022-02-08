@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class ProdVO {
 
+	
 	String prodChkNo;
 	String fctCd;
 	String fctNm;
@@ -30,5 +31,6 @@ public class ProdVO {
 	int chkProd;		//점검주기
 	String chkProdUnit;	//점검주기단위
 	int dayDiff;
+	String predictProdChkNo; //점기점검코드 미리받아오기
 	
 }

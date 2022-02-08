@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,13 @@ public class PropController {
 
 	@Autowired ProdService prodservice;
 	
-	
+	//이력번호 조회 해서 가져오기 
+	@ResponseBody
+	@GetMapping("/selectExpectFctProd")
+	public ProdVO selecteExpectFctProd() {
+		System.out.println("차기점검일 컨트롤러 실행완료");
+		return prodservice.selectFctProd();
+	}
 	//차기점검일 조회
 	@ResponseBody
 	@PostMapping("/selectchkExpectDt")

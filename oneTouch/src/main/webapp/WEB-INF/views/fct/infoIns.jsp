@@ -488,28 +488,23 @@ $(function() {
     let fctColumns = [
     {
     header: '설비코드',
-    name: 'fctCd',
-    editor: 'text'
+    name: 'fctCd'
   },
   {
     header: '설비명',
-    name: 'fctNm',
-    editor: 'text'
+    name: 'fctNm'
   },
   {
     header: '공정',
-    name: 'prcCd',
-    editor: 'text'
+    name: 'prcCd'
   },
   {
     header: '라인',
-    name: 'lineNO',
-    editor: 'text'
+    name: 'lineNO'
   },
   {
     header: '모델명',
-    name: 'fctModel',
-    editor: 'text'
+    name: 'fctModel'
   }/* ,
   {
     header: '회사코드',
@@ -522,8 +517,7 @@ $(function() {
   {     
      //날짜(데이터피커) cdn 받아서 넣었다
      headet: '입고일',
-     name: 'inDate',
-     editor: 'datePicker'
+     name: 'inDate'
   }/* ,
   {
     header: '구매금액',
@@ -576,31 +570,18 @@ $(function() {
     let lineColumns = [
     {
     header: '라인',
-    name: 'lineNO',
-    editor: 'text'
+    name: 'lineNO'
   },
   {
 	    header: '사용여부',
-	    name: 'useYn',
-	    editor: 'text'
+	    name: 'useYn'
   },
   
 	{
 		header: '사원',
-	    name: 'empNo',
-	    editor: 'text'
+	    name: 'empNo'
  	}    	
-	  /* ,
-  {
-    header: '총생산량',
-    name: 'totPdtAmt',
-    editor: 'text'
-  },
-  {
-    header: 'UPH생산량',
-    name: 'uphPdtAmt',
-    editor: 'text'
-  }*/
+	  
     ]
  
   //그리드를 id 값안에다가 붙여넣어준다.

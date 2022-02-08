@@ -108,6 +108,9 @@
 	let prodCheckObj;	//점검대상인 데이터를 담는 변수
 	let dialog;
 	let checkedRowdata;	//체크 행의 데이터를 저장하는 변수
+	let now;
+	let prodNo;	//만들어질 정기점검이력번호
+	let predictprodChkNo;
 	
 	/* Grid.applyTheme('clean',{	
         cell: {
@@ -127,40 +130,64 @@
 		height: "auto",
 		width: 1300, //530,  제품모달은 사이즈 530정도로~~
 		modal: true,
-		buttons:{"불러오기":function(){ 
-			var temp = [];
-			for(i=0; i<checkedRowdata.length; i++){
-				console.log(checkedRowdata)
-				temp.push({
-							chkProd:checkedRowdata[i].chkProd
-						   ,chkProdUnit:checkedRowdata[i].chkProdUnit
-						   ,chkDt:checkedRowdata[i].chkDt
-						   ,prodChkNo:checkedRowdata[i].prodChkNo
-					       ,chkExpectDt:checkedRowdata[i].chkExpectDt
-					       ,fctCd:checkedRowdata[i].fctCd
-					       ,chkRslt:checkedRowdata[i].chkRslt
-					       ,fctNm:checkedRowdata[i].fctNm
-						   ,msrMtt:''		   
-						   ,msrCmt:''})
-			}
-			console.table(temp)
-			//mainGrid.appendRows(temp);
-			mainGrid.resetData(temp);
-			
-			
-			let rowK = mainGrid.getRowCount();
-			
-	    	console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-	    	console.log(rowK)
-			for(i =0; i< rowK; i++){
-				mainGrid.setValue(i, 'chkRslt','');
-				mainGrid.setValue(i, 'msrMtt','');
-				mainGrid.setValue(i, 'msrCmt','');
-				mainGrid.uncheck(i);
+		buttons:{"불러오기":function(){
+			fetch('./selectTodayDate')
+			.then(response=> response.json())
+			.then(result=>{
+				console.log('결과값 가져오기')
+				console.log(result)
+				now = result.fixTo.substr(0,10)
+				console.log(now)
+			})
+			.then(x=>{
+				fetch('./selectExpectFctProd')
+				.then(response=> response.json())
+				.then(result=>{
+					console.log('테스트입니다요요요용오오오옹호호호로로로오오오우우유유유류루루루유룰')
+					console.log(result.predictProdChkNo)
+					predictprodChkNo = result.predictProdChkNo; 
+				})
+				.then(x=>{
+					var temp = [];
+					for(i=0; i<checkedRowdata.length; i++){
+						console.log(checkedRowdata)
+						temp.push({
+									chkExpectDt:''
+								   ,chkProd:checkedRowdata[i].chkProd
+								   ,chkProdUnit:checkedRowdata[i].chkProdUnit
+								   ,chkDt:now
+								   ,prodChkNo:predictprodChkNo
+							       ,fctCd:checkedRowdata[i].fctCd
+							       ,chkRslt:checkedRowdata[i].chkRslt
+							       ,fctNm:checkedRowdata[i].fctNm
+								   ,msrMtt:''		   
+								   ,msrCmt:''})
+					}
+					console.table(temp)
+					//mainGrid.appendRows(temp);
+					mainGrid.resetData(temp);
+					
+					
+					let rowK = mainGrid.getRowCount();
+					
+			    	console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+			    	console.log(rowK)
+					for(i =0; i< rowK; i++){
+						mainGrid.setValue(i, 'chkRslt','');
+						mainGrid.setValue(i, 'msrMtt','');
+						mainGrid.setValue(i, 'msrCmt','');
+						mainGrid.uncheck(i);
+						
+					}
+			    	prodCheckGrid.refreshLayout();
+					dialog.dialog( "close" );
+					
+					
+				})
+			})
 				
-			}
-	    	
-			dialog.dialog( "close" );
+		
+			
 			
 			
 		}}
@@ -265,7 +292,15 @@
   {
 	    header: '판정',
 	    name: 'chkRslt',
-	    editor: 'text',
+	    editor:{
+	    	type:'radio',
+	    	options: {
+	    		listItems:[
+	    		{text: '적합', value: '적합'},
+	    		{text: '부적합', value: '부적합'}
+	    		]
+	    	}
+	    },
 	    validation : {
 	    	required : false
 	    },
@@ -274,7 +309,16 @@
   {
 	    header: '조치사항',
 	    name: 'msrMtt',
-	    editor: 'text',
+	    editor:{
+	    	type:'radio',
+	    	options: {
+	    		listItems:[
+	    		{text: '수리', value: '수리'},
+	    		{text: '점검', value: '점검'},
+	    		{text: '교체', value: '교체'}
+	    		]
+	    	}
+	    },
 	    validation : {
 	    	required : false
 	    },

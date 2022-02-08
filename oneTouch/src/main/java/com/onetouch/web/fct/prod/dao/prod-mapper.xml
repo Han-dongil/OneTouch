@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.fct.prod.dao.ProdMapper">
 
+<select id="selectFctProdChkNo" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
+	select * from fct_prod_chk where prod_chk_no = #{prodChkNo}
+</select>
+<select id="selectFctProd" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
+	select prod_chk_no, fct_cd, chk_dt, chk_rslt, msr_mtt, msr_cmt, PKG_MAKE_CODE.CODE('FRC', 'FCT_PROD_CHK', 'PROD_CHK_NO') as predictProdChkNo from fct_prod_chk where ROWNUM =1
+</select>
 <!-- 정기점검 등록 설비 현재 점검완료일을 기준으로 차기 점검일을 조회 -->
 <select id="selectchkExpectDt" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
 	select DISTINCT f.chk_prod, f.chk_prod_unit,
@@ -46,7 +52,8 @@ where p.fct_cd = #{fctCd}
 	</select>
 	
 	<select id="prodCheckSelectList" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
-		<![CDATA[   select a.*,  (to_date(chkExpectDt, 'yyyy-MM-dd') - trunc(sysdate)) as day_diff
+		<![CDATA[   select a.* ,b.*              
+from  (select a.*,  (to_date(chkExpectDt, 'yyyy-MM-dd') - trunc(sysdate)) as day_diff
 			from 
 			(SELECT distinct p.fct_cd as fctCd, 
 			       p.prod_chk_no as prodChkNo,
@@ -65,7 +72,20 @@ where p.fct_cd = #{fctCd}
 			        From fct_prod_chk p, fct_info f
 			      WHERE p.fct_cd= f.fct_cd) a
 			   where chkExpectDt >= to_char(sysdate, 'yyyy-MM-dd')
-			   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd')
+			   and chkExpectDt < = to_char(sysdate + 7, 'yyyy-MM-dd'))
+            a join 
+               (SELECT p.fct_cd as fctCd, 
+			       f.fct_nm as fctNm, 
+			       p.chk_rslt as chkRslt, 
+			       max(case when f.chk_prod_unit = 'Y' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), (f.chk_prod * 12)), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'M' then to_char(add_months((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt), f.chk_prod), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'W' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + (f.chk_prod * 7), 'yyyy-MM-dd')
+			            when f.chk_prod_unit = 'D' then to_char((select max(chk_dt) from fct_prod_chk where chk_dt = p.chk_dt) + f.chk_prod, 'yyyy-MM-dd')
+			           end) as chkExpectDt
+			        From fct_prod_chk p, fct_info f
+			      WHERE p.fct_cd= f.fct_cd
+                  group by p.fct_cd , f.fct_nm , p.chk_rslt) b
+on a.fctCd = b.fctCd and a.chkexpectdt=b.chkexpectdt
    ]]>
 	</select>
 	
@@ -77,9 +97,9 @@ where p.fct_cd = #{fctCd}
 									 ,MSR_MTT
 									 ,MSR_CMT
 									 ) 
-		values ( PKG_MAKE_CODE.CODE('FRC', 'FCT_PROD_CHK', 'PROD_CHK_NO')
+		values ( #{prodChkNo}
 		       ,#{fctCd}
-		       ,sysdate
+		       ,#{chkDt}
 		       ,#{chkRslt}
 		       ,#{msrMtt}
 		       ,#{msrCmt}
