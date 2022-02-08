@@ -1175,7 +1175,9 @@ function needOrdCd(){
 			safeDialog.dialog( "open" );
 		  	safeGrid.refreshLayout();
 	    	safeGrid.resetData(result);
-
+		
+	    	
+	    	
 	    	return result;
 			
 		})
@@ -1212,6 +1214,7 @@ function needOrdCd(){
  			planGrid.setValue((grid.getData()[grid.getRowCount()-1]).rowKey,'needCnt',safeGrid.getValue(ev.rowKey,'needCnt'));
 
  		}).then(()=>{
+ 			lineFindFnc(ev.rowKey)
  		})
  		safeDialog.dialog('close');
 		
