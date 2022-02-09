@@ -77,6 +77,7 @@
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctFix">🛠수리관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctProd">👀점검관리</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctDwtmIns">⚙비동기관리</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/fct/fctDwtmSel">비동기조회</a></li>
               </ul>
             </div>
           </li>

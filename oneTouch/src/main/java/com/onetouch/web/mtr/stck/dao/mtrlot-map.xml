@@ -2,7 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.mtr.stck.dao.MtrLotMapper">
 
-
+<select id="listExcelCheckMtr" resultType="map">
+		SELECT
+			a.MTR_CD,
+			SUM(a.HLD_CNT) AS HLD_CNT,
+			SUM(a.STCK_CNT) AS MTR_STCK_CNT,
+			b.SAFE_STCK,
+			(SUM(a.STCK_CNT)-SUM(a.HLD_CNT)) AS STCK_USE,
+			b.USE_YN,
+			FN_GET_MTR_CD_TO_NM(a.MTR_CD) AS MTR_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(b.UNIT) AS UNIT_NM,
+			FN_GET_BAS_DTL_CD_TO_NM(b.MTR_SECT) AS MTR_SECT_NM
+		FROM
+			MTR_LOT_STCK a, ADM_MTR b, MTR_IN c
+		WHERE
+			a.MTR_CD = b.MTR_CD
+		AND
+			a.IN_NO = c.IN_NO
+		<if test="startDate != null and startDate != ''"> 
+			<![CDATA[AND TO_CHAR(c.IN_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
+		</if>
+		<if test="endDate != null and endDate != ''"> 
+			<![CDATA[AND TO_CHAR(c.IN_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
+		</if>
+		<if test="ditemCode != null and ditemCode != ''">
+			AND a.MTR_CD = #{ditemCode}
+		</if>
+		<if test="mtrSect != null and mtrSect != ''">
+			AND b.MTR_SECT = #{mtrSect}
+		</if>
+        GROUP BY
+            a.MTR_CD, b.SAFE_STCK, b.USE_YN, FN_GET_BAS_DTL_CD_TO_NM(a.MTR_CD),FN_GET_BAS_DTL_CD_TO_NM(b.UNIT), FN_GET_BAS_DTL_CD_TO_NM(b.MTR_SECT)
+		ORDER BY
+			MTR_CD
+	</select>
 <select id="listExcelMtr" resultType="map">
 		SELECT
 			a.MTR_CD,
