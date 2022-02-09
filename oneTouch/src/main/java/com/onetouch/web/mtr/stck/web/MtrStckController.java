@@ -28,9 +28,10 @@ public class MtrStckController {
 	@Autowired MtrLotMapper LotMapper;
 	
 	//엑셀출력
-		@RequestMapping("/mtrExcelTwoView.do")
-		public ModelAndView excelTwoView() throws IOException{
-			List<Map<String, Object>> list = LotMapper.listExcelMtr();
+		@ResponseBody
+		@PostMapping("/mtrExcelTwoView.do")
+		public ModelAndView excelTwoView(@RequestBody MtrSearchVO searchVO ) throws IOException{
+			List<Map<String, Object>> list = LotMapper.listExcelCheckMtr();
 			HashMap<String, Object> map = new HashMap<String, Object>(); 
 			
 			map.put("filename", "excel_dept");

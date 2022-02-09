@@ -20,6 +20,12 @@ public class DwtmController {
 
 	@Autowired DwtmService dservice;
 	
+	//비동기 조회 이동
+	@RequestMapping("/fctDwtmSel")
+	public String moveDwtmSelPage() {
+		return "tiles/fct/dwtmSel";
+	}
+	
 	//비동기 삭제
 	@ResponseBody
 	@PostMapping("/dwtmDelete")
