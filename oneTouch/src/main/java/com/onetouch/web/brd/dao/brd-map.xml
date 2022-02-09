@@ -45,15 +45,17 @@
    	]]>
 	</select>
 	<select id="pdtList" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select 
+	select instr_no , line_no , prd_cd , prd_nm , goal_cnt , pdt_cnt , nvl(flt_cnt,0) flt_cnt , now_phs
+		from (select 
 			b.instr_no, 
 			b.line_no, 
 			b.prd_cd, 
 			c.prd_nm, 
-			a.goal_cnt, 
-			a.pdt_cnt, 
+			nvl(a.goal_cnt,0) goal_cnt, 
+			nvl(a.pdt_cnt,0) pdt_cnt, 
 			(select sum(x.flt_cnt) from prd_prc_mng x where x.instr_no=a.instr_no group by x.instr_no) as flt_cnt, 
-			a.now_phs
+            (case when a.now_phs is null and nvl(a.goal_cnt,0) =0  then '생산대기' 
+                    when a.now_phs is null and a.goal_cnt != 0  then '가동중'  else a.now_phs end) now_phs
 		from 
 			prd_prc_mng a, pdt_work_instr_dtl b, adm_prd c
 		where 
@@ -64,11 +66,11 @@
 			a.prc_cd(+) = b.prc_cd
 		and 
 			b.prd_cd = c.prd_cd
-		--and to_char(a.work_str_dt, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') 
+		and to_char(a.work_str_dt, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') 
 		--오늘날짜 가져올 때 사용 지금은 없어서 주석처리 해둠
 		and 
 			(b.prc_cd, b.prd_cd) in (select prc_cd, prd_cd from adm_prc_flow where (prd_cd, prc_seq) in (select prd_cd, max(prc_seq) as prc_cd from adm_prc_flow  group by prd_cd))
 		order by 
-			instr_no
+			instr_no)
 	</select>
 </mapper>

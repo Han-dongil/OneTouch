@@ -457,22 +457,38 @@
 
 	//시작버튼
 	prcStart.addEventListener('click',ev=>{
-		fetch('prcStart',{
+		
+		fetch('playingPrcFind',{
 			method:'POST',
 			headers:{
 				"Content-Type": "application/json",
 			},
-			body:JSON.stringify(hiddenGrid.getData())
+			body:JSON.stringify(hiddenGrid.getRow(0))
 		})
 		.then(response=>response.json())
 		.then(result=>{
-			hiddenGrid.setValue(0,'fltCnt',0);
-			alert(result.msg);
-			
-			console.log(result);  // result.workStrDt  << 시작시간 화면에띄워줘야댐
-			hiddenGrid.setValue(0,'workStrDt',result.workStrDt);
-			hiddenGrid.setValue(0,'nowPhs',result.nowPhs);
-			fltCheck();
+			if(result.length==0){
+				fetch('prcStart',{
+					method:'POST',
+					headers:{
+						"Content-Type": "application/json",
+					},
+					body:JSON.stringify(hiddenGrid.getData())
+				})
+				.then(response=>response.json())
+				.then(result=>{
+					hiddenGrid.setValue(0,'fltCnt',0);
+					alert(result.msg);
+					
+					console.log(result);  // result.workStrDt  << 시작시간 화면에띄워줘야댐
+					hiddenGrid.setValue(0,'workStrDt',result.workStrDt);
+					hiddenGrid.setValue(0,'nowPhs',result.nowPhs);
+					fltCheck();
+				})
+			}
+			else{
+				alert('이전 작업지시가 종료되지 않았습니다.')
+			}
 		})
 	})
 	//종료버튼

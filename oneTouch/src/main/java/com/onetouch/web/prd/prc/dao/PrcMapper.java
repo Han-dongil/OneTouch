@@ -41,4 +41,5 @@ public interface PrcMapper {
 	void autoUpdate(PrcVO vo);
 	List<PrcVO> playStartInstr();
 	List<PrcVO> liveInstr(PrcVO vo);
+	List<PrcVO> playingPrcFind(PrcVO vo);
 }

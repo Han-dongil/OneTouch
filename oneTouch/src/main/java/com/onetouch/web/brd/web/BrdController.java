@@ -48,13 +48,18 @@ public class BrdController {
 		for(int i = 0; i < pdtList.size(); i++) {
 			if(pdtList.get(i).getGoalCnt() == null ) {
 				before.add(pdtList.get(i));
+				System.out.println("44"+progress);
 			} else if(pdtList.get(i).getNowPhs().equals("라인가동종료")) {
 				done.add(pdtList.get(i));
-			} else if(pdtList.get(i).getNowPhs() == "가동중"){
+				System.out.println("55"+done);
+			} else if(pdtList.get(i).getNowPhs().equals("가동중")||pdtList.get(i).getNowPhs()==null){
 				progress.add(pdtList.get(i));
+				System.out.println("66"+progress);
 			}
 		};
-		
+		System.out.println("11"+listWarning);
+		System.out.println("22"+listCaution);
+		System.out.println("33"+before);
 		model.addAttribute("listWarning", listWarning);
 		model.addAttribute("listCaution", listCaution);
 		model.addAttribute("before", before);

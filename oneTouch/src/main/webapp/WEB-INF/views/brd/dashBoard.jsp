@@ -51,8 +51,8 @@
 										<tr>
 											<td>${bef.lineNo }</td>
 											<td>${bef.prdNm }</td>
-											<td>0</td>
-											<td>0</td>
+											<td>${bef.pdtCnt }</td>
+											<td>${bef.fltCnt }</td>
 											<td><label class="badge badge-danger">생산대기</label></td>
 										</tr>
 								</c:forEach>
@@ -61,10 +61,8 @@
 											<td>${pro.lineNo }</td>
 											<td>${pro.prdNm }</td>
 											<td>${pro.pdtCnt }</td>
+											<td class="text-danger">${pro.fltCnt }</td>
 											<c:choose>
-												<c:when test="${pro.fltCnt > 0 }">
-													<td class="text-danger">${pro.fltCnt }</td>
-												</c:when>
 												<c:when test="${pro.fltCnt eq null }">
 													<td>-</td>
 												</c:when>
@@ -77,10 +75,8 @@
 											<td>${don.lineNo }</td>
 											<td>${don.prdNm }</td>
 											<td>${don.pdtCnt }</td>
+											<td class="text-danger">${don.fltCnt }</td>
 											<c:choose>
-												<c:when test="${don.fltCnt > 0 }">
-													<td class="text-danger">${don.fltCnt }</td>
-												</c:when>
 												<c:when test="${don.fltCnt eq null }">
 													<td class="text-success">0</td>
 												</c:when>
@@ -189,7 +185,6 @@
 	</div>
 	<div class="col-6">
 		 <div id="piechart" style="width: 900px; height: 500px;"></div>
-    	<div id="piechart2" style="width: 900px; height: 500px;"></div>
     	<div id="realPiechart" style="width: 900px; height: 500px;"></div>
 	</div>
 </div>
@@ -209,7 +204,7 @@
        setTimeout(function(){
           google.charts.setOnLoadCallback(drawChart);
           
-       },1000)
+       },3000)
     }
    abc();
       function drawChart() {
@@ -217,10 +212,6 @@
           let data ; 
           let arr=[];
         var aa =[
-             ['Task', 'Hours per Day'],
-
-              ]; 
-        var bb =[
              ['Task', 'Hours per Day'],
 
               ]; 
@@ -241,6 +232,7 @@
                pdtSum+=obj.goalCnt-(obj.pdtCnt*1+obj.fltCnt*1)
                //console.log(pdtSum)
             }
+
             console.log(cc)
             cc.push(['잔여진행률',pdtSum])
             //console.log(fltSum)
@@ -248,9 +240,14 @@
             let fltCnt=result[i][result[i].length-1].fltCnt
             let goalCnt=result[i][result[i].length-1].goalCnt
             aa.push(['생산량',pdtCnt*1])
+            aa.push(['불량량',fltSum*1])
             aa.push(['남은수량',goalCnt*1-(pdtCnt*1+fltSum)])
-            bb.push(['불량률',fltSum])
-            bb.push(['생산량',pdtCnt*1])
+         	console.log(aa)
+         	console.log(goalCnt)
+         	console.log(pdtCnt)
+         	console.log(fltSum)
+			console.log("aa")
+            console.log("불량률"+fltSum)
             /* for(obj of result[i]){
                let a=[obj.prcCd, obj.pdtCnt*1];
                aa.push(a)   
@@ -262,17 +259,6 @@
             pdtData = google.visualization.arrayToDataTable(aa);
               var pdtOptions = {
                 title:x[i][x[i].length-1].lineNo +' 라인 생산현황',
-                pieHole:0.5,
-               // pieSliceText : 'label',
-                pieSliceTextStyle: {
-                    color: 'black',
-                  },
-                 legend: 'none',
-                 pieStartAngle: 100,
-              };
-            fltData = google.visualization.arrayToDataTable(bb);
-              var fltOptions = {
-                title:x[i][x[i].length-1].lineNo + ' 라인 불량현황',
                 pieHole:0.5,
                // pieSliceText : 'label',
                 pieSliceTextStyle: {
@@ -297,16 +283,12 @@
 
               pdtChart.draw(pdtData, pdtOptions);
 
-              var fltChart = new google.visualization.PieChart(document.getElementById('piechart2'));
-
-              fltChart.draw(fltData, fltOptions);
               
               var realPdtChart = new google.visualization.PieChart(document.getElementById('realPiechart'));
 
               realPdtChart.draw(realPdtData, realPdtOptions);
               i++;
               aa.length=0;
-              bb.length=0;
               if (i==x.length){
                  i=0;
               }

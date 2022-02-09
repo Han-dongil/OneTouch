@@ -622,13 +622,13 @@ class abc{
 			if(ev.columnName=='instrNo'){
 				let planNo=modalGrid.getValue(ev.rowKey,'planNo')
 				
-				/* console.log(planNo)
+				 console.log(planNo)
 				fetch('planDtlList/'+planNo)
 				.then(response=>response.json())
 				.then(x=>{
 					console.log(x)
 					modalGrid.setValue(ev.rowKey,'instrNo',x[0].instrNo)
-					for(let obj of x){
+				/* 	for(let obj of x){
 						obj.instrDate=selectInstrDate;
 						//obj.instrNo=abc+lpad(def,4,"0");
 						console.log(obj.instrNo)
@@ -638,8 +638,8 @@ class abc{
 					}
 					else{
 						mainGrid.appendRows(x);
-					}
-				}) */
+					} */
+				}) 
 			}
 			if(ev.columnName=='instrDate'){
 				$( function() {
@@ -772,6 +772,7 @@ class abc{
 					prcGrid.appendRows(datas);
 				} */
 				needCnt=mainGrid.getValue(0,'instrCnt')
+				prcGrid.setValue(0,'hldCnt',0)
 				if(mainGrid.getData().length!=0){
 					useAmt=prcGrid.getValue(0,'useAmt')
 				}
@@ -893,16 +894,18 @@ class abc{
 				body:JSON.stringify(a)
 			})
 			.then(()=>{
+				needCnt=0;
+				prcGrid.setValue(0,'hldCnt',0)
 				alert("지시완료")
+				mainGrid.clear();
+				modalGrid.clear();
+				prcGrid.clear();
+				hiddenModalGrid.clear();
+				hiddenMainGrid.clear();
+				hiddenGrid.clear();
 			})
-			mainGrid.clear();
-			modalGrid.clear();
-			prcGrid.clear();
-			hiddenModalGrid.clear();
-			hiddenMainGrid.clear();
-			hiddenGrid.clear();
+			
 		})
-		
 		//////////////////////////////////////이벤트/////////////////////////////////////////
 		/* mainGrid.on("click",ev=>{
 			if(ev.columnName=='prdCd'){

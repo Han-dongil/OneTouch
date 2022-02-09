@@ -32,6 +32,7 @@
 				order by p.work_str_time) p
 		on a.instr_no = p.instr_no
 		where a.now_phs='N'
+		order by 1
 	</select>
 	<select id="prcFlowMinMax" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
 		select *
@@ -191,10 +192,10 @@
 		on a.instr_no = b.instr_no
 		where 1=1
 	 	<if test='startDate!="" and startDate!="null"'>
-			and a.instr_date>#{startDate}
+			and b.work_str_dt>#{startDate}
 		</if>
 	 	<if test='endDate!="" and endDate!="null"'>
-			and #{endDate}>a.instr_date
+			and #{endDate}>b.work_str_dt
 		</if>
 	 	<if test='mtrLot!="" and mtrLot!=null'>
 			and a.mtr_lot=#{mtrLot}
@@ -248,5 +249,13 @@
 		on a.prc_cd=b.prc_cd
 		order by 1
 		
+	</select>
+	<select id="playingPrcFind" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
+		select * from prd_prc_mng
+		where to_char(work_str_dt,'yyyy-MM-dd') = to_char(sysdate , 'yyyy-MM-dd')
+		and line_no =#{lineNo}
+		and instr_no !=#{instrNo}
+		and prc_cd = #{prcCd}
+		and now_phs = '가동중'
 	</select>
 </mapper>
