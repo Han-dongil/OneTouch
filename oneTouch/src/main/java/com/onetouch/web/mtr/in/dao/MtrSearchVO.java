@@ -14,5 +14,6 @@ public class MtrSearchVO{
 	String mtrSect;
 	String prcCd;
 	String calSect;
+	String spent;
 }
 

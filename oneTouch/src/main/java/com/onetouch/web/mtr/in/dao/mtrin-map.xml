@@ -137,7 +137,7 @@
 		SET
 			IN_AMT = (NVL(IN_AMT,0)-NVL(#{inAmt},0)),
 			<if test='fltAmt =! null and fltAmt =! ""'>
-				FLT_AMT = (NVL(FLT_AMT,0)-NVL(#{fltAmt},0),
+				FLT_AMT = (NVL(FLT_AMT,0)-NVL(#{fltAmt},0)),
 			</if>
 			NOTIN_AMT = NOTIN_AMT
 						+NVL(#{inAmt},0)

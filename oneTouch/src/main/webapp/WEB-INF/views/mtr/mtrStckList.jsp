@@ -69,7 +69,6 @@ hr{
 			</div>
 		</div>
 	</div>
-	
 	<div class="row">
 		<div class="col-md-12 grid-margin stretch-card"><!-- <div style="margin-top: 50px; border-top: 2px solid black; border-bottom : 2px solid black; padding: 5px;">  -->
 			<div class="card bascard1">
@@ -119,6 +118,7 @@ hr{
 						</div>
 						<div>
 							<span>
+								<button type="reset" id="btnLotReset" class="btn btn-primary mr-2 floatrightbtn">초기화</button>
 								<button type="button" id="btnMtrFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
 							</span>
 						</div>
@@ -145,13 +145,12 @@ hr{
 						<div id="lotRadio" style="display:inline-block">
 							<label class="labeltext">자재구분</label>
 							<div class="form-check checkwidth" style="display:inline-block">
-								<label class="form-check-label schCondLabel" for="allRadio">
-							  		<input type="radio" class="form-check-input" id="allRadio" name="mtrSect" value="" checked>
+								<label class="form-check-label schCondLabel" for="allRadio2">
+							  		<input type="radio" class="form-check-input" id="allRadio2" name="mtrSect" value="" checked>
 							  		전체
 									<i class="input-helper"></i>
 								</label>
 							</div>
-							                
 							<!-- <div class="form-check checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="lotRadio">
 							  		<input type="radio" class="form-check-input" id="lotRadio" name="mtrSect" value="MTR_SECT001">
@@ -168,8 +167,13 @@ hr{
 								</label>
 							</div> -->
 						</div>
-						
+						<div>
+							<label class="labeltext">소진Lot</label>          
+							<input type="checkbox" id="spent" name="spent" class="form-check-input" value="spent">
+							<i class="input-helper"></i>
+						</div>
 						<span>
+							<button type="reset" id="btnLotReset" class="btn btn-primary mr-2 floatrightbtn">초기화</button>
 							<button type="button" id="btnLotFind" class="btn btn-primary mr-2 floatrightbtn">조회</button>
 						</span>
 					</form>
@@ -321,8 +325,8 @@ document.getElementById('endDate').value = today();
 	mtrDiv.innerHTML = mtrIndiv;
 	lotDiv.innerHTML = lotIndiv;
 }); 
-
 //---------DB의 데이터로 자재구분 radio만드는 기능 끝---------
+
 
 
 //---------Jquery tabs---------
@@ -330,9 +334,14 @@ $( function() {
     $( "#tabs" ).tabs({
     	activate: function( event, ui ) {
     		if(ui.newTab[0].innerText == 'Lot별'){
-    			console.log("Lot별")
+    			document.getElementById('startDate').value = lastWeek();
+    			document.getElementById('endDate').value = today();
+    			document.getElementById('ditemCode2').value = '';
+    			document.getElementById('ditemCodeNm2').value = '';
+    			document.getElementById('allRadio2').checked = true;
+    			
     			lotGrid.readData(1,$("#frmLot").serializeObject(),true);
-    			//document.getElementById('frmLot').submit();
+    			
     			document.getElementById('mtrBtn').setAttribute("style", "display:none");//종현
     			document.getElementById('lotBtn').setAttribute("style", "display:block");//종현
     			
@@ -340,13 +349,16 @@ $( function() {
     			document.getElementById('mtrCard').setAttribute("style","display:none");
     			lotGrid.refreshLayout();
     		} else if(ui.newTab[0].innerText == '자재별'){
+    			document.getElementById('ditemCode').value = '';
+    			document.getElementById('ditemCodeNm').value = '';
+    			document.getElementById('allRadio').checked = true;
+    			
+    			lotGrid.readData(1,$("#frmMtr").serializeObject(),true);
     			document.getElementById('mtrBtn').setAttribute("style", "display:block");//종현
     			document.getElementById('lotBtn').setAttribute("style", "display:none");//종현
     			
-    			console.log("자재별")
     			document.getElementById('lotCard').setAttribute("style","display:none");
     			document.getElementById('mtrCard').setAttribute("style","display:block");
-    			//document.getElementById('frmMtr').submit();
     			mtrGrid.refreshLayout();
     		}
     	}
@@ -646,17 +658,23 @@ btnLotFind.addEventListener("click", function(){
 
 
 //---------자재검색모달 row더블클릭 이벤트---------
-function getModalMtr(param){
+function getModalMtr(param,btn){
 	dialog.dialog("close");
-	$('.ditemCode').val(param.mtrCd);
-	$('.ditemCodeNm').val(param.mtrNm);
+	console.log(btn)
+	if( btn == "mtrBtn"){
+		$('#ditemCode').val(param.mtrCd);
+		$('#ditemCodeNm').val(param.mtrNm);
+	} else if( btn == "lotBtn"){
+		$('#ditemCode2').val(param.mtrCd);
+		$('#ditemCodeNm2').val(param.mtrNm);
+	}
 };
 //---------자재검색모달 row더블클릭 이벤트 끝---------
 
 
 //---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
-	mMtr();
+	mMtr("mtrBtn");
 	$('#ui-id-1').html('자재 검색');
 });
 //---------자재검색버튼 끝---------
@@ -664,7 +682,7 @@ btnMtrCd.addEventListener("click", function(){
 
 //---------자재검색버튼---------
 btnMtrCd2.addEventListener("click", function(){
-	mMtr();
+	mMtr("lotBtn");
 	$('#ui-id-1').html('자재 검색');
 });
 //---------자재검색버튼 끝---------
