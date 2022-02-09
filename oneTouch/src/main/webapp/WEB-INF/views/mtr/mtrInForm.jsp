@@ -693,11 +693,13 @@ btnSave.addEventListener("click", function(){
         if(mainGrid.getRow(i).mtrNm == '') {
            alert("자재명은 필수입력칸입니다!!");
            return;
-        } else if(mainGrid.getRow(i).inAmt == 0) {
+        }
+       /*  else if(mainGrid.getRow(i).inAmt == 0) {
            alert("입고량은 필수입력칸입니다!!");
            return;
-        } else if(mainGrid.getRow(i).unitCost == 0) {
-           alert("입고량은 필수입력칸입니다!!");
+        } */
+        else if(mainGrid.getRow(i).unitCost == 0) {
+           alert("단가는 필수입력칸입니다!!");
            return;
         }
      }  
@@ -710,9 +712,8 @@ btnSave.addEventListener("click", function(){
 	for(let i=0; i<update.length; i++) {
 		modifyList.push(update[i].inNo);
 	 }
-	console.log("modifyList")
-	console.log(modifyList)
 	mainGrid.request('modifyData');
+	mainGrid.focus(mainGrid.getRowCount()-1,'inNo')
 });
 //---------저장버튼 끝---------
 

@@ -331,6 +331,7 @@ $( function() {
     	activate: function( event, ui ) {
     		if(ui.newTab[0].innerText == 'Lot별'){
     			console.log("Lot별")
+    			lotGrid.readData(1,$("#frmLot").serializeObject(),true);
     			//document.getElementById('frmLot').submit();
     			document.getElementById('mtrBtn').setAttribute("style", "display:none");//종현
     			document.getElementById('lotBtn').setAttribute("style", "display:block");//종현

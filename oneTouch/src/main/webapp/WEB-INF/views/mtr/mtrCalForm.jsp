@@ -386,8 +386,6 @@ var mainGrid = new Grid({
 //---------mainGrid row갯수 파악---------
 mainGrid.on('onGridUpdated', function(ev) {
 	rown = mainGrid.getRowCount();
-	console.log("rown");
-	console.log(rown);
 });
 //---------mainGrid row갯수 파악 끝---------
 
@@ -651,14 +649,31 @@ btnFind.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
+	
+ 	rowk = mainGrid.getRowCount();
+     
+     for(i=0; i<rowk; i++) {
+        if(mainGrid.getRow(i).calSectNm == '') {
+           alert("정산구분은 필수입력칸입니다!!");
+           return;
+        } else if(mainGrid.getRow(i).mtrNm == '') {
+           alert("자재명은 필수입력칸입니다!!");
+           return;
+        } else if(mainGrid.getRow(i).mtrLot == '') {
+           alert("LotNo는 필수입력칸입니다!!");
+           return;
+        } else if(mainGrid.getRow(i).calAmt == 0) {
+           alert("정산량은 필수입력칸입니다!!");
+           return;
+        }
+     }  
+	
 	let param= $("#frm").serializeObject();
 	mainGrid.request('createData');
 	setTimeout(function(){
 		mainGrid.readData(1,param,true);
 	},100);
 	setTimeout(function(){
-		console.log("getRowCount")
-		console.log(mainGrid.getRowCount())
 		mainGrid.focus(mainGrid.getRowCount()-1,'calSectNm')
 	},500);
 });
@@ -687,7 +702,6 @@ btnDel.addEventListener("click", function(){
 
 //---------자재검색버튼---------
 btnMtrCd.addEventListener("click", function(){
-	console.log("AAAAAAAAAAAAAAAA")
 	mMtr();
 	$('#ui-id-1').html('자재 검색');
 });

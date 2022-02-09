@@ -167,8 +167,8 @@ document.getElementById('endDate').value = today();
 //---------mainGrid---------
 const dataSource = {
 	api: {
-		readData: { url: './mtrRtnForm', method: 'POST' },
-		modifyData: { url: './mtrRtnModify', method: 'POST'}
+		readData: { url: './mtrRtnForm', method: 'POST' }
+		//modifyData: { url: './mtrRtnModify', method: 'POST'}
 	},
 	contentType: 'application/json',
 	initialRequest: false
@@ -312,7 +312,8 @@ mainGrid.on('dblclick',function(ev){
 		ev.columnName == "unit" ||
 		ev.columnName == "mtrCd" ||
 		ev.columnName == "ordAmt" ||
-		ev.columnName == "inAmt"
+		ev.columnName == "inAmt" ||
+		ev.columnName == "fltAmt"
 		){
 		 toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
 	}
@@ -406,11 +407,30 @@ btnFind.addEventListener("click", function(){
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
 	mainGrid.blur();
-	let param= $("#frm").serializeObject();
-	mainGrid.request('modifyData');
-	setTimeout(function(){
+	datas=[];
+	for(data of mainGrid.getModifiedRows().updatedRows){
+		if(data.rtnAmt != ""){
+			datas.push(data)
+		}
+	}
+	if(datas.length != 0){
+		alert(datas.length + "건의 데이터를 처리하겠습니까?")
+	}else if(datas.length == 0){
+		alert("저장할 데이터가 없습니다.")
+		return;
+	}
+	let modify={};
+	modify.updatedRows = datas
+	fetch('mtrRtnModify',{
+		method:'POST',
+		headers:{
+			"Content-Type": "application/json"
+		},
+		body:JSON.stringify(modify)
+	}).then(()=>{
+		let param= $("#frm").serializeObject();
 		mainGrid.readData(1,param,true);
-	},100);
+	})
 });
 //---------저장버튼 끝---------
 </script>
