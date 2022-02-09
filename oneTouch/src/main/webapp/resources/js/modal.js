@@ -1,5 +1,5 @@
 //자재
-function mMtr(){
+function mMtr(btn){
 	let mtrData;
 		
 	$.ajax({
@@ -82,7 +82,7 @@ function mMtr(){
 		});
 		
 		mtrGrid.on('dblclick', ev => {
-			getModalMtr(mtrGrid.getRow(ev.rowKey));
+			getModalMtr(mtrGrid.getRow(ev.rowKey),btn);
 		})
 		
 		mtrGrid.on('successResponse',function(ev){

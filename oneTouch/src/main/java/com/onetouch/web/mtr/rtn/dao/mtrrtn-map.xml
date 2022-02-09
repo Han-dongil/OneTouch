@@ -6,6 +6,7 @@
 			A.ORD_NO,
 			A.MTR_CD,
 			A.FLT_AMT,
+			A.FLT_AMT AS RTN_AMT,
 			A.ORD_AMT,
 			A.UNIT_COST,
 			(A.FLT_AMT*A.UNIT_COST) AS TOT_COST,

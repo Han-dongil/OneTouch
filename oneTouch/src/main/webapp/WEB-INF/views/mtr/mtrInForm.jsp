@@ -563,15 +563,18 @@ columns : [
 ordGrid.on('onGridUpdated', ev => {
 	let datas = mainGrid.getData();
 	let rows = ordGrid.getData();
-		for(i=rowk; i<mainGrid.getRowCount(); i++){
-			for(row of rows){
-				if(datas[i].ordNo == row.ordNo 
-						&& datas[i].notinAmt == row.notinAmt
-						&& datas[i].mtrNm == row.mtrNm){
-					ordGrid.removeRow(row.rowKey)
-				}
+	if(rowk == -1){
+		rowk = 0;	
+	}
+	for(i=rowk; i<mainGrid.getRowCount(); i++){
+		for(row of rows){
+			if(datas[i].ordNo == row.ordNo 
+					&& datas[i].notinAmt == row.notinAmt
+					&& datas[i].mtrNm == row.mtrNm){
+				ordGrid.removeRow(row.rowKey)
 			}
 		}
+	}
 });
 //---------ordGrid (mainGrid에 있는 데이터 제거) 끝---------
 
