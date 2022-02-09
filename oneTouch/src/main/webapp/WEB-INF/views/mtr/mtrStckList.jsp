@@ -189,7 +189,7 @@ hr{
 		  
 		  <li style="top:5px; float:right;">
 		  	<button id = "mtrBtn" onclick=mtr() class="btn btn-main mr-2 floatrightbtn">excel</button>
-		  	<button id="lotBtn" onclick=lot() class="btn btn-main mr-2 floatrightbtn">excel</button>
+		  	<button id="lotBtn" onclick=lot() class="btn btn-main mr-2 floatrightbtn">Lotexcel</button>
 		  </li>
 		</ul>
 		<div id="mtrTab"></div>
@@ -244,13 +244,16 @@ hr{
 
 <script type="text/javascript">
 //mtr 엑셀
-function mtr(){
-	console.log('mtr출력')
-	window.location.href='./mtrExcelTwoView.do';
-}
+ function mtr(){
+	frmMtr.action='./mtrExcelTwoView.do';
+	frmMtr.submit();
+	
+} 
 //lot 엑셀
 function lot(){
-	window.location.href='./MtrExcelView.do';
+	
+	frmLot.action='./LotExcelView.do';
+	frmLot.submit();
 }
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
