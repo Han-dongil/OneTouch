@@ -398,6 +398,73 @@
 		<div id="fctGubundialog-form" title="설비구분"></div> -->
 <script>
 
+//설비 input 이벤트 
+let fctData;
+document.getElementById('fctCd').addEventListener('keyup',function(ev){
+	console.log('설비 이벤트 추가')
+	let fctInputData = document.getElementById('fctCd').value;
+	console.log(fctInputData .toUpperCase() )
+	
+	let flag;
+	for( let datas of fctData){
+		console.log(datas.fctCd +':'+ fctInputData .toUpperCase())
+		if(datas.fctCd == fctInputData .toUpperCase()){
+			flag = 1;	
+			break;
+		}else{
+			flag = 0;
+		}
+	}
+	console.log('플래그 출력하기')
+	console.log(flag)
+	if(flag == 1 ){
+		document.getElementById('btnSave').disabled = true;
+		console.log('조건 완료')
+		
+		document.getElementById('btnDel').disabled = false;
+		document.getElementById('btnEdit').disabled = false;
+	}
+	else if( flag ==0){
+		console.log('삭제 수정 버튼 비 활성화 해야함')
+		document.getElementById('btnSave').disabled = false;
+		document.getElementById('btnDel').disabled = true;
+		document.getElementById('btnEdit').disabled = true;
+	}
+})
+
+//라인 input 이벤트
+document.getElementById('lineinput').addEventListener('keyup',function(ev){
+	console.log('이벤트 추가')
+	let lineInputData = document.getElementById('lineinput').value;
+	console.log(lineInputData.toUpperCase() )
+	
+	let flag;
+	for( let data of lineData){
+		console.log(data.lineNO +':'+ lineInputData.toUpperCase())
+		if(data.lineNO == lineInputData.toUpperCase()){
+			flag = 1;	
+			break;
+		}else{
+			flag = 0;
+		}
+	}
+	console.log('플래그 출력하기')
+	console.log(flag)
+	if(flag == 1 ){
+		document.getElementById('LinebtnAdd').disabled = true;
+		console.log('조건 완료')
+		
+		document.getElementById('LinebtnDel').disabled = false;
+		document.getElementById('LinebtnEdit').disabled = false;
+	}
+	else if( flag ==0){
+		console.log('삭제 수정 버튼 비 활성화 해야함')
+		document.getElementById('LinebtnAdd').disabled = false;
+		document.getElementById('LinebtnDel').disabled = true;
+		document.getElementById('LinebtnEdit').disabled = true;
+	}
+})
+
 $(function() {
     //input을 datepicker로 선언
     $(".jquerydtpicker").datepicker({
@@ -603,6 +670,7 @@ $(function() {
            async : false               //동기 = 절차적 
         }).done(function(datas){
              data = datas;
+             fctData = datas;
              fctGrid.resetData(data);
              fctGrid.refreshLayout();
         })
@@ -715,7 +783,6 @@ $(function() {
        
        function onfctCd(ev){	
     	let vo = {};
-    	console.log("체인지 성공")
     	vo.fctCd =ev.target.value
     	console.log()
     	
@@ -942,8 +1009,6 @@ $(function() {
    //라인 등록
    function LineAdd(){
 	   let lineInput = $("#lineForm").serializeObject();
-	   console.log('추가 버튼 클릭');
-	   console.log(lineInput)
 	   
 	   //등록아작스 
           fetch('./LineInsert',{
@@ -1137,7 +1202,6 @@ $(function() {
 	
 	//설비코드 대문자로 입력받기 
 	  $("#fctCd").bind("keyup", function() {
-		console.log("대문자로 입력받기")
         $(this).val($(this).val().toUpperCase());
 
     });

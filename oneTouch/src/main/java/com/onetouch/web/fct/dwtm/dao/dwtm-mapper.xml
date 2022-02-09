@@ -29,7 +29,7 @@
 		<if test='proceedCheck == "done"'>
 			AND d.fin_dt is not null
 		</if>
-		
+		order by str_dt desc
 	</select>
 	<insert id="dwtmInsert">
 		INSERT  INTO fct_dwtm VALUES(PKG_MAKE_CODE.CODE('DWT','FCT_DWTM','DWTM_CD') , #{fctCd}, to_date(#{strDt},'yy-MM-dd HH24:MI:SS'), '', #{empNo}, #{msrMtt}, '')

@@ -112,7 +112,7 @@
 							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="fctSelectRdo">
 							  		<input type="radio" class="form-check-input" id="fctSelectRdo" name="dwtmRao" value="" checked>
-							  		동기
+							  		가동
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -120,7 +120,7 @@
 							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="proceedingDwtm">
 							  		<input type="radio" class="form-check-input" id="proceedingDwtm" name="dwtmRao">
-							  		비동기
+							  		비가동
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -128,7 +128,7 @@
 							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 							    <label class="form-check-label schCondLabel" for="dwtmFctSelectRdo">
 							  		<input type="radio" class="form-check-input" id="dwtmFctSelectRdo" name="dwtmRao">
-							  		비동기이력
+							  		비가동이력
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -152,8 +152,8 @@
 			<h4 class="gridtitle">✔비가동등록</h4>
 			<span class="floatright">
 				<button type="button" id='btnCle' onclick=cleardetail()  class="btn btn-main btn1 newalign2">초기화</button>
-				<button type="button" id='btnDel' onclick=dwtmSave() class="btn btn-main btn1 newalign2">삭제</button>
-				<button type="button" id='btnSave' onclick=dwtmDelete() class="btn btn-primary btn1 newalign2">저장</button>
+				<button type="button" id='btnDel' onclick=dwtmDelete()  class="btn btn-main btn1 newalign2">삭제</button>
+				<button type="button" id='btnSave' onclick=dwtmSave() class="btn btn-primary btn1 newalign2">저장</button>
 			</span>
 			<br>
 			<hr>
@@ -182,7 +182,10 @@
 								
 								<div class="rowdiv">
 									<label class="labeltext colline1">작업자</label>
-									<input type="text" id="empNo" name="empNo" class="inputtext">
+									<input type="text" list="dwtmEmpList" id="empNo" name="empNo" class="inputtext" autocomplete="off" >
+									<datalist id="dwtmEmpList">
+										<option value="설비사원">설비사원</option>
+									</datalist>
 									<button type="button" id="btndwtmEmp" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
 								</div>
 								
@@ -262,7 +265,7 @@ $(function() {
 	let fctCheckData;
 	let dwtmCheckData;
 	let DwtmVO; 
-	let rdostatus =1; //비동기 등록, 비동기 중인 설비 라이도 버튼 값 
+	let rdostatus =1; //비가동 등록, 비가동 중인 설비 라이도 버튼 값 
 	let dwtmList = [];
 
 	Grid.applyTheme('clean', {	
@@ -329,7 +332,7 @@ $(function() {
 		//th 영역
 		const dwtmColumns = [
 			{
-				header: '비동기이력',
+				header: '비가동이력',
 				name: 'dwtmCd',
 				editor: 'text',
 			},
@@ -508,17 +511,21 @@ $(function() {
 	}
 	 //저장 클릭이벤트에 사용할 함수
   	function dwtmSave(){
+  		
 		//input name으로 라디오 버튼 객체 가져오기
 		let raoBtnLength = document.getElementsByName("dwtmRao").length;
 		let raoBtnValue; 
 		for(let i =0; i <raoBtnLength;i++){
 			if(document.getElementsByName("dwtmRao")[i].checked == true){
 				raoBtnValue = document.getElementsByName("dwtmRao")[i].parentNode.innerText
+				console.log(raoBtnValue)
 				
 			}
 		}
-			if(raoBtnValue.trim() == '비동기 등록'){
+			if(raoBtnValue.trim() == '가동'){
+				
 		  		let dwtmInsertData = $("#flwFrm").serializeObject();
+		  		console.log(dwtmInsertData)
 		  		$.ajax({
 					url:"./dwtmInsret",
 					method:"post",
@@ -529,7 +536,7 @@ $(function() {
 					alert('등록완료');
 				})		
 			}
-			else if(raoBtnValue.trim() == '비동기 중인 설비'){
+			else if(raoBtnValue.trim() == '비가동'){
 				//업데이트 ajax
 				let dwtmInsertData = $("#flwFrm").serializeObject();
 				$.ajax({
@@ -539,7 +546,7 @@ $(function() {
 					contentType:"application/json"
 				}).done(function(datas){
 					console.log(datas)
-					alert('비동기 등록완료 했습니다');
+					alert('비가동 등록완료 했습니다');
 				})	
 			}
 	 	};	
@@ -550,9 +557,9 @@ $(function() {
 		let langSelect = document.getElementById("prcCd")
 	}
   
-  	//비동기 테이블 조회 
+  	//비가동 테이블 조회 
   	function dwtmselect(){
-  		console.log('비동기 테이블 조회 아작스 ')
+  		console.log('비가동 테이블 조회 아작스 ')
   		console.log(dwtmCheckData)
 			$.ajax({
 				url:'./dwtmSelectAll',
@@ -585,7 +592,7 @@ $(function() {
 				  method: 'POST',
 				  data: JSON.stringify(fctCheckData),
 				  contentType: "application/json",
-				  async : false					//동기 = 절차적 
+				  async : false					//가동 = 절차적 
 			  }).done(function(datas){
 				  fctGrid.resetData(datas);		//fct그리드에 데이터를 넣어준다.
 				  data = datas;
