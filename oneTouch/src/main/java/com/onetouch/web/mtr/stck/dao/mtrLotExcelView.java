@@ -55,17 +55,16 @@ public class mtrLotExcelView  extends  AbstractXlsxView {
 		cs.setFont(f2);
         
 		//헤더명 영어로 배열에 담기(수정필요)
-				String[] headers  = {"mtrCd","mtrNm","unitNm","mtrSectNm","hldCnt","mtrStckCnt","stckUse","safeStck","useYn"};
+				String[] headers  = {"MTR_CD","MTR_LOT","MTR_NM","UNIT_NM","MTR_SECT_NM","HLD_CNT","STCK_CNT","STCK_USE"};
 				Map<String, String> headerMap = new HashMap<>();
-				headerMap.put("mtrCd", "자재코드");
-				headerMap.put("mtrNm", "자재명");
-				headerMap.put("unitNm", "단위명");
-				headerMap.put("mtrSectNm", "자재구분");
-				headerMap.put("hldCnt", "홀딩수량");
-				headerMap.put("mtrStckCnt", "현재고");
-				headerMap.put("stckUse", "사용가능수량");
-				headerMap.put("safeStck", "안전재고");
-				headerMap.put("useYn", "사용구분");
+				headerMap.put("MTR_CD", "자재코드");
+				headerMap.put("MTR_LOT", "LotNo");
+				headerMap.put("MTR_NM", "자재명");
+				headerMap.put("UNIT_NM", "단위명");
+				headerMap.put("MTR_SECT_NM", "자재구분");
+				headerMap.put("HLD_CNT", "홀딩수량");
+				headerMap.put("STCK_CNT", "현재고");
+				headerMap.put("STCK_USE", "사용가능수량");
 
         String file_name =(String) model.get("filename") + System.currentTimeMillis() + ".xlsx";
 		response.setHeader("Content-Disposition", "attachment; filename=\""+ file_name+"\"");
@@ -97,7 +96,6 @@ public class mtrLotExcelView  extends  AbstractXlsxView {
  					sheet.autoSizeColumn(colCnt++);
  					if(field == null) {
  						field = "";
- 						System.out.println(header);
  					}
  					
  					if (field instanceof String) {
