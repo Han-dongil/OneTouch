@@ -72,7 +72,6 @@ public class PlanServiceImpl implements PlanService {
 	public void insertPlanDtl(Map<String,List<PlanVO>> map) {
 		List<PlanVO> list=map.get("detail");
 
-		System.out.println("aaaaaaaaaaaaaaaaaaaaa");
 		PlanVO inVo=map.get("plan").get(0);
 		if(map.get("plan")!=null) {
 			for(PlanVO vo:map.get("plan")) {
@@ -85,10 +84,9 @@ public class PlanServiceImpl implements PlanService {
 				int date=mapper.dateCal(vo);
 				for(int i=0 ;i<=date;i++) {
 					vo.setDate(i);
-					System.out.println(vo.getDate());
+					System.out.println(vo);
 					System.out.println(mapper.test(vo));
 					mapper.planDtlInsert(vo);
-					System.out.println("222222");
 				}
 				if(inVo.getOrdShtNo()!=null)
 				ordMapper.ordCheck(inVo.getOrdShtNo());
@@ -97,9 +95,7 @@ public class PlanServiceImpl implements PlanService {
 		if(map.get("lot")!=null) {
 			List<PlanVO> lotList=map.get("lot");
 			for(PlanVO vo : lotList) {
-				System.out.println("333333");
 				mapper.LotFindInsert(vo);
-				System.out.println("444444");
 				mtrMapper.prdNeed(vo);
 			}
 		}
@@ -122,24 +118,19 @@ public class PlanServiceImpl implements PlanService {
 		PlanVO inVo=map.get("plan").get(0);
 		ordMapper.ordCheck(inVo.getOrdShtNo());
 		PlanVO nextSeq=mapper.findPlanSeq();
-		System.out.println("111111");
 		mapper.insertPlan(inVo);
 		int i=0;
 		if(list!=null) {
 			for(PlanVO vo : list) {
 				vo.setPlanNo(nextSeq.getPlanNo());
 				mapper.planDtlInsert(vo);
-				System.out.println("3333");
-				System.out.println(vo);
 				i++;
 			}
 		}
 		int k=0;//이거 나중에 수정해야댐.. 
 		if(lotList!=null) {
 			for(PlanVO vo : lotList) {
-				System.out.println("4444");
 				mapper.LotFindInsert(vo);
-				System.out.println("5555");
 				mtrMapper.prdNeed(vo);
 				k++;
 			}
@@ -176,23 +167,19 @@ public class PlanServiceImpl implements PlanService {
 				
 			}
 		}
-		System.out.println("111");
 		System.out.println(list);
-		System.out.println("222");
 		System.out.println(list2);
 		for(int i=0 ; i< list.size();i++) {
 			for(int k=0 ; k<list2.size(); k++) {
 				list.remove(list2.get(k));
 			}
 		}
-		System.out.println("aaaaaa");
 		list=mapper.lineUphFind(list);
 		System.out.println(list);
 		return list;
 	}
 	@Override
 	public List<PlanVO> prcLineFine(PlanVO vo) {
-		System.out.println("여기"+mapper.lineNoAndSeqFind(vo));
 		return mapper.lineNoAndSeqFind(vo);
 	}
 	@Override

@@ -76,6 +76,12 @@ public class PrcController {
 		
 		service.fastStop(list.get(0));
 	}
+	
+	@ResponseBody
+	@PostMapping("playingPrcFind")
+	public List<PrcVO> playingPrcFind(@RequestBody PrcVO vo){
+		return mapper.playingPrcFind(vo);
+	}
 
 	
 }

@@ -16,6 +16,7 @@
  	<if test='endDate!="" and endDate!=null'>
 		and #{endDate}>=due_date
 	</if>  
+	order by plan_no
 	
 </select>
 <select id="pdtPlanDtllist" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
@@ -92,6 +93,7 @@ on a.mtrCd=b.mtr_cd and a.prcCd = b.prc_cd
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd}) a join (select prd_cd, cnt as need_cnt from pdt_ord_view where ORD_SHT_NO=#{ordShtNo}) b
             on(a.prd_cd= b.prd_cd) 
+    order by useAmt     
 </select>	
  <select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
 select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,(b.stck_cnt-b.hld_cnt) as realCnt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
@@ -133,10 +135,11 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 
 <!-- 안전 재고 생산 -->
 <select id="safeStckView" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-	select a.mtr_cd as prdCd , a.safe_stck ,nvl(a.safe_stck,0) - nvl(b.stck_cnt,0) need_cnt
+	select a.mtr_cd as prdCd , a.safe_stck ,(nvl(a.safe_stck,0) -sum(nvl( b.stck_cnt,0))) needCnt
 	from adm_mtr a left join mtr_lot_stck b
 	on a.mtr_cd = b.mtr_cd
-	where a.mtr_cd like 'PRD%' and a.safe_stck > (nvl(b.stck_cnt,0)-nvl(b.hld_cnt,0))
+    where a.mtr_cd like 'PRD%' and a.safe_stck > (nvl(b.stck_cnt,0)-nvl(b.hld_cnt,0))
+	group by a.mtr_Cd , a.safe_Stck,a.safe_stck
 	order by 1
 </select>
 <select id="selectPrd" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">

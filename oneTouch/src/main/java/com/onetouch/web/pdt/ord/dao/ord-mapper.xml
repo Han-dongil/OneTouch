@@ -8,6 +8,7 @@
 	<if test="nowPhs =='' or nowPhs==null" >
 		And now_phs = 'N'
 	</if>
+	order by ord_sht_no
 </select>
 <select id="select" resultType="com.onetouch.web.pdt.ord.dao.OrdVO">
 	select ord_sht_no , to_char(due_date,'yyyy-MM-dd') due_date , comp_cd , to_char(ord_date,'yyyy-MM-dd') ord_date , (case when now_phs='Y' then '진행완료' else '진행중' end) now_phs , cmt from pdt_ord_sht where 1=1
@@ -20,7 +21,7 @@
  	<if test='endDate!="" and endDate!=null'>
 		and #{endDate}>=to_char(ord_date,'yyyy-MM-dd')
 	</if>
-	
+	order by ord_sht_no
 </select>
 <update id="ordCheck">
 	update pdt_ord_sht set now_phs = 'Y' where ord_sht_no=#{ordShtNo}
