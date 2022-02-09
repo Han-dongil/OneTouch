@@ -43,6 +43,8 @@ public class MtrCalController {
 	@ResponseBody
 	@PostMapping("/mtrLotModal")
 	public Map<String,Object> mtrLotModal(@RequestBody MtrCalVO mtrCalVO){
+		System.out.println("컨트롤러");
+		System.out.println(mtrCalVO);
 		Map<String,Object> datas = new HashMap<>();
 		Map<String,Object> data = new HashMap<>();
 		data.put("result", true);

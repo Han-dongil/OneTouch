@@ -18,6 +18,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="${path}/resources/jquery-ui/images">
+
 <script src="${path}/resources/js/grid-common.js"></script>
 <script src="${path}/resources/js/modal.js"></script>
 <script src="${path}/resources/js/toastr-options.js"></script>
@@ -45,6 +49,14 @@ hr{
 .checkwidth{
 	width:110px;
 }
+.ui-widget{
+	z-index: 1000001 !important;
+	position: relative;
+}
+.inModal{
+	z-index: 1000002 !important;
+	position: relative;
+}
 </style>
 <body>
 
@@ -67,9 +79,9 @@ hr{
 					<form id="frm" method="post">
 						<div class="rowdiv">
 							<label class="labeltext">정산일자</label>
-							<input type="Date" id="startDate" name="startDate" class="datepicker"> 
+							<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker">
 							<label> ~ </label> 
-							<input type="Date" id="endDate" name="endDate" class="datepicker">
+							<input type="text" id="endDate" name="endDate" class="datepicker jquerydtpicker">
 						</div>
 						
 						<div class="rowdiv">
@@ -121,13 +133,25 @@ hr{
 	<div id="grid"></div>
 	<div id="dialog-form"></div>
 	<div id="dialog-lot">
-		<label>자재코드</label>
-		<input type="text" id="mDitemCode" name="ditemCode" disabled="disabled">
-		<br>
-		<label>자재명</label>&nbsp;&nbsp;&nbsp;
-		<input type="text" id="mDitemCodeNm" name="ditemCodeNm" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<label>단위</label>
-		<input type="text" id="mUnitNm" name="unitNm" disabled="disabled">
+		<form id="mFrm" method="post">
+			<div class="rowdiv">
+				<label class="labeltext">입고일자</label>
+				<input type="text" id="mStartDate" name="startDate" class="datepicker jquerydtpicker inModal">
+				<label> ~ </label> 
+				<input type="text" id="mEndDate" name="endDate" class="datepicker jquerydtpicker inModal">
+				<button type="button" id="btnFindLot" class="btn btn-main mr-2 newalign">검색</button>
+			</div>
+			<div class="rowdiv">
+				<label class="labeltext">자재코드</label>
+				<input type="text" id="mDitemCode" name="mtrCd" disabled="disabled">
+				<br>
+				<label class="labeltext">자재명</label>
+				<input type="text" id="mDitemCodeNm" name="mtrNm" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label class="labeltext">단위</label>
+				<input type="text" id="mUnitNm" name="unitNm" disabled="disabled">
+				<input type="hidden" id="mCalSect" name="calSect">
+			</div>
+		</form>
 	</div>
 </div>
 
@@ -215,7 +239,38 @@ function lastWeek() {
 }
 document.getElementById('startDate').value = lastWeek();
 document.getElementById('endDate').value = today();
+document.getElementById('mStartDate').value = lastWeek();
+document.getElementById('mEndDate').value = today();
 //---------포맷에 맞게 날짜 구하는 function 끝---------
+
+
+//---------Jquery datepicker---------
+	$(function() {
+    //input을 datepicker로 선언
+    $(".jquerydtpicker").datepicker({
+        dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "button" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "${path}/resources/template/images/cal_lb_sm.png" //"http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        //,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+    });                    
+    
+    //초기값을 오늘 날짜로 설정해줘야 합니다.
+  /*   $('#startDate').datepicker('setDate', '-1W'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    $('#endDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)    */  
+});
+//---------Jquery datepicker 끝---------
 
 
 //---------mainGrid---------
@@ -403,10 +458,13 @@ mainGrid.on('editingStart', function(ev) {
 				ev.stop();
 			}else{
 				 let row = mainGrid.getRow(ev.rowKey);
+				 document.getElementById('mStartDate').value = lastWeek();
+				 document.getElementById('mEndDate').value = today();
 				 lotDialog.dialog("open");
 				 document.getElementById('mDitemCode').value = row.mtrCd
 				 document.getElementById('mDitemCodeNm').value = row.mtrNm
 				 document.getElementById('mUnitNm').value = row.unitNm
+				 document.getElementById('mCalSect').value = row.calSect
 				 lotGrid.readData(1,row,true);
 				 lotGrid.refreshLayout();
 				 ev.stop();
@@ -706,6 +764,16 @@ btnMtrCd.addEventListener("click", function(){
 	$('#ui-id-1').html('자재 검색');
 });
 //---------자재검색버튼 끝---------
+
+
+//---------lot 검색버튼---------
+btnFindLot.addEventListener("click", function(){
+	document.getElementById('mDitemCode').disabled = false;
+   let param= $("#mFrm").serializeObject();
+   lotGrid.readData(1,param,true);
+	document.getElementById('mDitemCode').disabled = true;
+});
+//---------lot 검색버튼 끝---------
 </script>
 </body>
 </html>

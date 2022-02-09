@@ -17,4 +17,6 @@ public class MtrCalVO{
 	private String stckCnt;
 	private String cmt;
 	private String empNo;
+	private String startDate;
+	private String endDate;
 }

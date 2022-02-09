@@ -23,6 +23,12 @@
 		ORDER BY
 			MTR_CD
 	</select>
+	<select id="sysdate" resultType="String">
+		SELECT 
+			TO_CHAR(sysdate,'yyyy-MM-dd')
+		FROM
+			dual
+	</select>
 	<select id="fctList" resultType="com.onetouch.web.fct.prod.dao.ProdVO">
 	<![CDATA[ select a.*,  (to_date(chkExpectDt, 'yyyy-MM-dd') - trunc(sysdate)) as day_diff
 			from 

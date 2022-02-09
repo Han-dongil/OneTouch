@@ -53,6 +53,12 @@
 			A.MTR_CD = B.MTR_CD
 		AND
 			B.MTR_CD = #{mtrCd}
+		<if test="startDate != null and startDate != ''"> 
+			<![CDATA[AND SUBSTR(A.IN_NO,4,8) >= REPLACE(#{startDate},'-','')]]>
+		</if>
+		<if test="endDate != null and endDate != ''"> 
+			<![CDATA[AND SUBSTR(A.IN_NO,4,8) <= REPLACE(#{endDate},'-','')]]>
+		</if>
 		<if test='calSect == "MTR_CAL002"'>
 		AND
 			A.STCK_CNT > 0

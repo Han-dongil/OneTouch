@@ -60,6 +60,8 @@ public class BrdController {
 		System.out.println("11"+listWarning);
 		System.out.println("22"+listCaution);
 		System.out.println("33"+before);
+		
+		model.addAttribute("sysdate", brdService.sysdate());
 		model.addAttribute("listWarning", listWarning);
 		model.addAttribute("listCaution", listCaution);
 		model.addAttribute("before", before);
