@@ -10,4 +10,5 @@ public interface BrdService {
 	List<LotVO> mtrList();
 	List<ProdVO> fctList();
 	List<PrcVO> pdtList();
+	String sysdate();
 }

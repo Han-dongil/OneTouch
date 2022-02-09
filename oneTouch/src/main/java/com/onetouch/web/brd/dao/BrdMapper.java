@@ -10,4 +10,5 @@ public interface BrdMapper {
 	List<LotVO> mtrList();
 	List<ProdVO> fctList();
 	List<PrcVO> pdtList();
+	String sysdate();
 }

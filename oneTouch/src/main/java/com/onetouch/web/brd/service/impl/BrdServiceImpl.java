@@ -29,6 +29,11 @@ public class BrdServiceImpl implements BrdService {
 	public List<PrcVO> pdtList() {
 		return mapper.pdtList();
 	}
+
+	@Override
+	public String sysdate() {
+		return mapper.sysdate();
+	}
 	
 
 }

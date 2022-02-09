@@ -34,14 +34,14 @@
 		<div class="col-lg-12 stretch-card"  style="display:inline-block">
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">일일 생산현황</h4>
+					<h4 class="card-title">${sysdate } 지시현황</h4>
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
 								<tr>
 									<th>라인</th>
 									<th>제품명</th>
-									<th>생산수량</th> 
+									<th>생산수량/지시수량</th> 
 									<th>불량량</th>
 									<th>상태</th>
 								</tr>
@@ -51,7 +51,7 @@
 										<tr>
 											<td>${bef.lineNo }</td>
 											<td>${bef.prdNm }</td>
-											<td>${bef.pdtCnt }</td>
+											<td>${bef.pdtCnt }/${bef.goalCnt }</td>
 											<td>${bef.fltCnt }</td>
 											<td><label class="badge badge-danger">생산대기</label></td>
 										</tr>
