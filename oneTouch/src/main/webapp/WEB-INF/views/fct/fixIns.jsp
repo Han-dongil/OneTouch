@@ -18,7 +18,7 @@
 
 <!-- 제어쿼리ui -->
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-
+<script src="${path}/resources/js/grid-common.js"></script>
 
 <link rel="stylesheet" href="${path}/resources/jquery-ui/jquery-ui.css">
 <link rel="stylesheet" href="${path}/resources/jquery-ui/images">
@@ -143,7 +143,7 @@ $(function() {
     });                    
     
     //초기값을 오늘 날짜로 설정해줘야 합니다.
-    $('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    //$('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
     	       
 });
 
@@ -195,12 +195,12 @@ function poll(){
 	}) 
 
 
-	let Grid = tui.Grid;
+	//let Grid = tui.Grid;
 	let data;
 	let checkForm;  //폼에 있는 조건을 담는 input을 가지고 옴 
 	let el; //button을 커스텀 랜덩링 클래스에서 만들어줌 
 	
-	Grid.applyTheme('striped', {	
+	/* Grid.applyTheme('striped', {	
         cell: {
           header: {
             background: '#4B49AC',
@@ -215,7 +215,7 @@ function poll(){
         frozenBorder: {
              border: '#7978E9'
         }
-      });
+      }); */
 	
 	 
 	
@@ -239,33 +239,22 @@ function poll(){
 	    {
 	    header: '설비코드',
 	    name: 'fctCd',
-	    editor: 'text',
     	sortable: true
 	  },
 	  {
 	    header: '수리요청일',
 	    name: 'reqDt',
-	    editor: 'text',
     	sortable: true
 	  },
 	  {
 	    header: '수리시작일',
 	    name: 'strDt',
-	    editor: 'datePicker',
     	sortable: true
 	  },
 	  {
 		    header: '수리완료일',
 		    name: 'finDt',
-		    editor: 'datePicker',
 	    	sortable: true
-	  },
-	  {
-		    header: '수리사항',
-		    name: 'fixCmt',
-		    editor: 'text',
-		    sortable: true,
-		     align:'center'
 	  },
 	  {
 			header : '설비수리상태',
@@ -280,6 +269,13 @@ function poll(){
 			        ]
 			     }
 			},
+		     align:'center'
+	  },
+	  {
+		    header: '수리사항',
+		    name: 'fixCmt',
+		    editor: 'text',
+		    sortable: true,
 		     align:'center'
 	  },
 	  {

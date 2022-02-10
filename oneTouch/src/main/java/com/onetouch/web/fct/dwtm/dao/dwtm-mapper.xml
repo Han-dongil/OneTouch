@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onetouch.web.fct.dwtm.dao.DwtmMapper">
 
+
+	<!-- 비가동 시작시 설비 상태 대기으로 변경 -->
+	<update id="updateChangeFctDwtmWait">
+		UPDATE fct_info SET fct_phs = '대기' WHERE fct_cd = #{fctCd} 
+	</update>
+	<!-- 비가동 시작시 설비 상태 비가동으로 변경 -->
+	<update id="updateChangeFctDwtm">
+		UPDATE fct_info SET fct_phs = '비가동' WHERE fct_cd = #{fctCd} 
+	</update>
 	<select id="dwtmSelect" resultType="com.onetouch.web.fct.dwtm.dao.DwtmVO">
 		SELECT 
 			d.dwtm_cd,
@@ -36,8 +45,7 @@
 	</insert>
 	
 	<update id="dwtmUpdate">
-		UPDATE fct_dwtm SET emp_no = #{empNo}
-						, fin_dt = to_date(#{finDt},'yy-MM-dd HH24:MI:SS')
+		UPDATE fct_dwtm SET  fin_dt = to_date(#{finDt},'yy-MM-dd HH24:MI:SS')
 						, msr_mtt = #{msrMtt}
 						, msr_cmt = #{msrCmt}
 		WHERE dwtm_cd = #{dwtmCd}

@@ -108,11 +108,11 @@
 					<div class="card bascard1">
 						<div class="card-body">
 						
-							<label class="labeltext labeltext1">자재구분</label>
+							<label class="labeltext labeltext1">가동현황</label>
 							<div class="form-check checkwidth checkwidth" style="display:inline-block">
 								<label class="form-check-label schCondLabel" for="fctSelectRdo">
 							  		<input type="radio" class="form-check-input" id="fctSelectRdo" name="dwtmRao" value="" checked>
-							  		가동
+							  		설비
 									<i class="input-helper"></i>
 								</label>
 							</div>
@@ -337,6 +337,11 @@ $(function() {
 				editor: 'text',
 			},
 			{
+				header: '설비',
+				name: 'fctCd',
+				editor: 'text',
+			},
+			{
 				header: '설비명',
 				name: 'fctNm',
 				editor: 'text',
@@ -389,6 +394,8 @@ $(function() {
 			console.log('N인 비가동 클ㄹ릭')			
 			document.getElementById('fctCd').value = fctCheckData.fctCd;
 			document.getElementById('fctNm').value =fctCheckData.fctNm;
+			document.getElementById('fctNm').value =fctCheckData.fctNm;
+			
 			document.getElementById('msrCmt').disabled = true;
 			document.getElementById('clickEndBtn').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
 			document.getElementById('dwtmEndTime').disabled = true;	//그리드 클릭했을 때 버튼 비활성화
@@ -434,7 +441,7 @@ $(function() {
   			document.getElementById('clickEndBtn').disabled = true;
 	  		fctChekPrcCd();	//페이지 접속후 기본으로 설비를 보여주는 그리드 출력하는 함수
 	  		fctGrid.refreshLayout();
-	  		
+	  		changePhs()	//컬럼 색상
 	  		document.getElementById('fctCd').disabled = false;
   			document.getElementById('fctNm').disabled = false;
   			document.getElementById('dwtmDate').disabled = false;
@@ -455,7 +462,7 @@ $(function() {
   			document.getElementById('dwtmEndTime').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('dwtmEndMinute').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
   			document.getElementById('msrCmt').disabled = false;	//그리드 클릭했을 때 버튼 비활성화
-  			
+  			changePhs()	//컬럼 색상
   			rdostatus = 2;
   			document.getElementById("dwtmFctGridDiv").style.display = 'block';
   			document.getElementById("fctGridDiv").style.display = 'none';
@@ -478,7 +485,7 @@ $(function() {
   			dwtmCheckData.proceedCheck = 'done'
   			dwtmselect();	//비가동 조회
   			dwtmGrid.refreshLayout();
-  			
+  			changePhs()	//컬럼 색상
   			document.getElementById('fctCd').readOnly = true;
   			document.getElementById('fctNm').readOnly= true;
   			document.getElementById('dwtmDate').disabled = true;
@@ -511,7 +518,7 @@ $(function() {
 	}
 	 //저장 클릭이벤트에 사용할 함수
   	function dwtmSave(){
-  		
+  		console.log('저장버튼 이벤트')
 		//input name으로 라디오 버튼 객체 가져오기
 		let raoBtnLength = document.getElementsByName("dwtmRao").length;
 		let raoBtnValue; 
@@ -522,7 +529,7 @@ $(function() {
 				
 			}
 		}
-			if(raoBtnValue.trim() == '가동'){
+			if(raoBtnValue.trim() == '설비'){
 				
 		  		let dwtmInsertData = $("#flwFrm").serializeObject();
 		  		console.log(dwtmInsertData)
@@ -532,6 +539,7 @@ $(function() {
 					data:JSON.stringify(dwtmInsertData),
 					contentType:"application/json"
 				}).done(function(datas){
+					console.log('11111111111111111111111111')
 					console.log(datas)
 					alert('등록완료');
 				})		
@@ -545,7 +553,9 @@ $(function() {
 					data:JSON.stringify(dwtmInsertData),
 					contentType:"application/json"
 				}).done(function(datas){
+					console.log('업데이트 후 list뿌리기')
 					console.log(datas)
+					dwtmGrid.resetData(datas)
 					alert('비가동 등록완료 했습니다');
 				})	
 			}

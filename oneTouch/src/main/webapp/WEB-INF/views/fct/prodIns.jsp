@@ -91,7 +91,7 @@
 		</div>
 	</div>
 	<span class="floatright">
-		<button type="button" id="prodChekCompleteBtn" class="btn btn-primary newalign2">점검완료등록</button>
+		<button type="button" id="prodChekCompleteBtn" class="btn btn-primary newalign2">점검대상조회</button>
 		<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
 		<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
 	</span>
@@ -136,7 +136,7 @@
 	    });                    
 	    
 	    //초기값을 오늘 날짜로 설정해줘야 합니다.
-	    $('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+	    //$('.jquerydtpicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
 	    	       
 	});   
 	
@@ -258,63 +258,36 @@
 	    header: '정기점검이력번호',
 	    name: 'prodChkNo',
 	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'left'
   },
   {
 	   header: '설비코드',
 	   name: 'fctCd',
 	   editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'center'
   },
   {
 	    header: '설비이름',
 	    name: 'fctNm',
 	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'left'
   },
   {
 	    header: '점검일자',
 	    name: 'chkDt',
 	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
-	    align:'center'
-  },
-  {
-	    header: '차기점검일',
-	    name: 'chkExpectDt',
-	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'center'
   },
   {
 	    header: '점검주기',
 	    name: 'chkProd',
 	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'right'
   },
   {
 	    header: '점검주기단위',
 	    name: 'chkProdUnit',
 	    editor: 'text',
-	    validation : {
-	    	required : true
-	    },
 	    align:'center'
   },
   {
@@ -330,7 +303,7 @@
 	    	}
 	    },
 	    validation : {
-	    	required : false
+	    	required : true
 	    },
 	    align:'center'
   },
@@ -348,7 +321,7 @@
 	    	}
 	    },
 	    validation : {
-	    	required : false
+	    	required : true
 	    },
 	    align:'center'
   },
@@ -357,7 +330,7 @@
 	    name: 'msrCmt',
 	    editor: 'text',
 	    validation : {
-	    	required : false
+	    	required : true
 	    },
 	    align:'left'
   }

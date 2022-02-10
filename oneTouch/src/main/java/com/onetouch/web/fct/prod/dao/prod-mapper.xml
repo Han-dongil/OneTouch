@@ -86,6 +86,7 @@ from  (select a.*,  (to_date(chkExpectDt, 'yyyy-MM-dd') - trunc(sysdate)) as day
 			      WHERE p.fct_cd= f.fct_cd
                   group by p.fct_cd , f.fct_nm , p.chk_rslt) b
 on a.fctCd = b.fctCd and a.chkexpectdt=b.chkexpectdt
+ORDER BY day_diff
    ]]>
 	</select>
 	

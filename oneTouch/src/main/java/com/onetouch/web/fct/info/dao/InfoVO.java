@@ -21,9 +21,12 @@ public class InfoVO extends MngVO  {
 	String fctModel;	//모델명
 	String compCd;		//회사코드
 	String usePurp;		//공정분류 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	Date inDate;		//입고일	
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 * 
+	 * @JsonFormat(pattern = "yyyy-MM-dd")
+	 */
+	String inDate;		//입고일	
 	String purchCost;		//구매금액
 	String chkProd;		//점검주기
 	String fctImg;		//파일이미지
