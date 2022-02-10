@@ -95,15 +95,24 @@ on a.mtrCd=b.mtr_cd and a.prcCd = b.prc_cd
             on(a.prd_cd= b.prd_cd) 
     order by useAmt     
 </select>	
- <select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
-select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,(b.stck_cnt-b.hld_cnt) as realCnt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
+ <select id="findBomList" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+<!-- select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as stckCnt,(b.stck_cnt-b.hld_cnt) as realCnt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
             from adm_bom a join mtr_lot_stck b
             on (a.mtr_cd = b.mtr_cd)
             where a.prd_cd=#{prdCd} AND a.prc_cd = #{prcCd} 
             and b.stck_cnt-b.hld_cnt>0
+            order by b.mtr_cd -->
+			select distinct a.prc_cd as prcCd,a.use_amt as useAmt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
+	            from adm_bom a join mtr_lot_stck b
+	            on (a.mtr_cd = b.mtr_cd)
+	            where a.prd_cd=#{prdCd}  
+	                AND a.prc_cd =#{prcCd}
             order by b.mtr_cd
 
+
 </select> 
+
+
 <insert id="planDtlInsert">
 	insert into pdt_plan_dtl (line_no, plan_no,prd_cd, prc_cd, need_cnt, instr_cnt,work_str_date) 
 	values(
@@ -199,5 +208,20 @@ select a.prc_cd as prcCd,a.use_amt as useAmt,b.mtr_lot as mtrLot ,b.stck_cnt as 
 	from (select prd_cd from adm_prd where able_line_no like '%'||#{lineNo}||'%') a join adm_prc_flow b
 	on a.prd_cd = b.prd_cd
 	order by b.prc_seq
+</select>
+<select id="addPlanLotSelect" resultType="com.onetouch.web.pdt.plan.dao.PlanVO">
+			select 
+	                b.stck_cnt as stckCnt,
+	                (b.stck_cnt-b.hld_cnt) as realCnt,
+	                b.mtr_lot as mtrLot ,
+
+	            a.prc_cd as prcCd,a.use_amt as useAmt,0 as hldCnt ,b.mtr_cd as mtrCd ,a.prd_cd as prdCd
+	            from adm_bom a join mtr_lot_stck b
+	            on (a.mtr_cd = b.mtr_cd)
+	            where a.prd_cd=#{prdCd}  
+	                AND a.prc_cd =#{prcCd}
+	                and b.mtr_cd=#{mtrCd}
+		            and b.stck_cnt-b.hld_cnt>0
+            order by b.mtr_cd
 </select>
 </mapper>

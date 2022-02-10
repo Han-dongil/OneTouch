@@ -31,5 +31,6 @@ public interface PlanMapper {
 	PlanVO dateArr(PlanVO vo);
 	PlanVO updFind(String lineNo);
 	List<PlanVO> lineNoAndSeqFind(PlanVO vo);
+	List<PlanVO> findBomList(PlanVO vo);
 	
 }
