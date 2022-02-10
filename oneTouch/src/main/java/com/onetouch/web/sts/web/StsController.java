@@ -1,14 +1,18 @@
 package com.onetouch.web.sts.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onetouch.web.sts.dao.StsMapper;
 import com.onetouch.web.sts.dao.StsVO;
 import com.onetouch.web.sts.service.StsService;
 
@@ -17,6 +21,7 @@ import com.onetouch.web.sts.service.StsService;
 public class StsController {
 
 	@Autowired StsService stsservice;
+	@Autowired StsMapper mapper;
 	
 	//통계 보여주는 페이지로 이동
 	@RequestMapping("/stsList")
@@ -43,6 +48,7 @@ public class StsController {
 		@ResponseBody
 		@GetMapping("/mtrInMonth")
 		public Map<String, Object> mtrInMonth(StsVO stsvo) {
+			System.out.println(stsvo);
 			Map<String, Object> map = new HashMap<>();
 			map.put("contents", stsservice.mtrInMonth(stsvo));
 	
@@ -85,6 +91,8 @@ public class StsController {
 		@ResponseBody
 		@GetMapping("/mtrInMtrM")
 		public Map<String, Object> mtrInMtrM(StsVO stsvo) {
+			stsvo.setChart("");
+			System.out.println("통계"+ stsvo);
 			Map<String, Object> map = new HashMap<>();
 			map.put("contents", stsservice.mtrInMtrM(stsvo));
 	
@@ -93,6 +101,14 @@ public class StsController {
 			maps.put("data", map);
 	
 			return maps;
+		}
+		
+		//차트 자재별 , 월별 조회
+		@ResponseBody
+		@PostMapping("/mtrInMtrMC")
+		public List<StsVO> ChartMtrInMtrM(@RequestBody StsVO stsvo2) {
+			System.out.println("차트" + stsvo2);
+			return mapper.mtrInMtrM(stsvo2);
 		}
 		
 		//자재별 , 연도별 조회
@@ -171,6 +187,8 @@ public class StsController {
 		@ResponseBody
 		@GetMapping("/mtrOutMtrM")
 		public Map<String, Object> mtrOutMtrM(StsVO stsvo) {
+			stsvo.setChart("");
+			System.out.println("통계"+stsvo);
 			Map<String, Object> map = new HashMap<>();
 			map.put("contents", stsservice.mtrOutMtrM(stsvo));
 	
@@ -179,6 +197,13 @@ public class StsController {
 			maps.put("data", map);
 	
 			return maps;
+		}
+		
+		//차트 자재별 , 월별 조회
+		@ResponseBody
+		@PostMapping("/mtrOutMtrMC")
+		public List<StsVO> ChartmtrOutMtrM(@RequestBody StsVO stsvo) {
+			return mapper.mtrOutMtrM(stsvo);
 		}
 		
 		//자재별 , 연도별 조회
@@ -256,6 +281,7 @@ public class StsController {
 		@ResponseBody
 		@GetMapping("/pdtPrdM")
 		public Map<String, Object> pdtPrdM(StsVO stsvo) {
+			stsvo.setChart("");
 			Map<String, Object> map = new HashMap<>();
 			map.put("contents", stsservice.pdtPrdM(stsvo));
 	
@@ -264,6 +290,13 @@ public class StsController {
 			maps.put("data", map);
 	
 			return maps;
+		}
+		
+		//차트 제품별 , 월별 조회
+		@ResponseBody
+		@PostMapping("/pdtPrdMC")
+		public List<StsVO> ChartpdtPrdM(@RequestBody StsVO stsvo) {
+			return mapper.pdtPrdM(stsvo);
 		}
 		
 		//제품별,연도별 조회
@@ -341,6 +374,8 @@ public class StsController {
 		@ResponseBody
 		@GetMapping("/fltPrdM")
 		public Map<String, Object> fltPrdM(StsVO stsvo) {
+			stsvo.setChart("");
+			System.out.println(stsvo);
 			Map<String, Object> map = new HashMap<>();
 			map.put("contents", stsservice.fltPrdM(stsvo));
 	
@@ -349,6 +384,13 @@ public class StsController {
 			maps.put("data", map);
 	
 			return maps;
+		}
+		
+		//차트 제품별 , 월별 조회
+		@ResponseBody
+		@PostMapping("/fltPrdMC")
+		public List<StsVO> ChartfltPrdM(@RequestBody StsVO stsvo) {
+			return mapper.fltPrdM(stsvo);
 		}
 		
 		//제품별,연도별 조회

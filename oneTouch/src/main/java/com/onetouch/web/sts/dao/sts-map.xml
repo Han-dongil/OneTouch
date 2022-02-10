@@ -58,6 +58,9 @@
 		FROM 	 MTR_IN 
 		WHERE 	 TO_CHAR(IN_DATE, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD,TO_CHAR(IN_DATE, 'YYYY-MM'))
+		<if test="chart == 'chart'">
+			HAVING GROUPING_ID(MTR_CD, TO_CHAR(IN_DATE, 'YYYY-MM')) = 1
+		</if>
 		ORDER BY MTR_CD,IN_DATE
 	</select>
 	
@@ -144,6 +147,9 @@
 		         order by a.out_dt)
 		WHERE 	 TO_CHAR(out_dt, 'YYYY-MM') BETWEEN #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(MTR_CD , TO_CHAR(out_dt, 'YYYY-MM'))
+		<if test='chart == "chart"'>
+			HAVING GROUPING_ID(MTR_CD,TO_CHAR(out_dt, 'YYYY-MM'))=1
+		</if>
 		ORDER BY MTR_CD, out_dt
 	</select>
 	<!-- 자재별, 연도별 -->
@@ -238,6 +244,9 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		WHERE 	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
 		GROUP BY ROLLUP(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))
+		<if test="chart == 'chart'">
+			HAVING GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))=1
+		</if>
 		ORDER BY prd_cd, work_fin_dt
 	</select>
 	<!-- 제품별, 연도별 -->
@@ -333,6 +342,9 @@
 		         group by a.instr_no, a.work_fin_dt, b.prd_cd)
 		where	 TO_CHAR(work_fin_dt, 'YYYY-MM') between #{startDate} AND #{endDate}
 		group by rollup(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))
+		<if test="chart == 'chart'">
+			HAVING GROUPING_ID(prd_cd, TO_CHAR(work_fin_dt, 'YYYY-MM'))=1
+		</if>
 		order by prd_cd, work_fin_dt
 	</select>
 	<!-- 제품별, 연도별 -->

@@ -13,4 +13,5 @@ public class StsVO {
 	private String mtrCd;		//자재코드
 	private String workFinDt; 	//제품생산일
 	private String prdCd;		//제품코드
+	private String chart;		//차트체크
 }
