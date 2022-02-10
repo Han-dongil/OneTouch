@@ -169,6 +169,7 @@ width: 100px !important;
 <script type="text/javascript">
 let rowk = -1;
 let modifyList = [];
+let inAmt = 0;
 
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
@@ -391,53 +392,7 @@ let mainGrid = new Grid({
 				   name: 'empNo',
 				   hidden: true
 				 }
-				],
-				summary : {
-					height: 40,
-				   	position: 'bottom',
-				   	columnContent: {
-				   		ordNo: {
-			                template(summary) {
-			        			return '합 계';
-			                }
-			            },	
-			            ordAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            notinAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            fltAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            inAmt: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            },
-			            unitCost: {
-			                template(summary){
-			        			return "MIN: "+format(summary.min)+"<br>"+"MAX: "+format(summary.max);
-			                } 
-			            },
-			            totCost: {
-			                template(summary) {
-			        			var sumResult = (summary.sum);
-			        			return format(sumResult);
-			                } 
-			            }
-					}
-				}
+				]
    		});
 //---------mainGrid 끝---------
 
@@ -468,7 +423,7 @@ mainGrid.on('editingFinish', (ev) => {
 		if(mainGrid.getValue(ev.rowKey, 'notinAmt') != ''){
 			if(mainGrid.getValue(ev.rowKey, 'inAmt')*1 > mainGrid.getValue(ev.rowKey, 'notinAmt')*1){
 				toastr["info"]("입고량이 해당자재의 미입고량보다 많습니다.")
-				mainGrid.setValue(ev.rowKey, 'inAmt', mainGrid.getValue(ev.rowKey, 'inAmt'))
+				mainGrid.setValue(ev.rowKey, 'inAmt', inAmt)
 			} else {
 				let inAmt = mainGrid.getValue(ev.rowKey,"inAmt")
 				let unitCost = mainGrid.getValue(ev.rowKey,"unitCost")
@@ -497,6 +452,8 @@ mainGrid.on('editingStart', (ev) => {
     	  toastr["error"]("변경할 수 없는 코드 입니다.", "경고입니다.")
           ev.stop();
        }
+    }else if(ev.columnName == 'inAmt') {
+    	inAmt = mainGrid.getValue(ev.rowKey, 'inAmt')
     }
 });
 //---------mainGrid 기존의 발주번호는 수정불가 & 자재모달 open 끝---------

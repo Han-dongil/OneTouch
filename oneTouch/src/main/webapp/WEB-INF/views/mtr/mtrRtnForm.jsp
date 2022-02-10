@@ -214,6 +214,7 @@ var mainGrid = new Grid({
      scrollY : true,
      bodyHeight: 447,
      minBodyHeight: 447,
+     rowHeaders : [ 'checkbox'],
      columns : [
 				{
 				header: '발주번호',
@@ -437,21 +438,8 @@ btnFind.addEventListener("click", function(){
 //---------조회버튼 끝---------
 
 
-//---------저장버튼---------
-btnSave.addEventListener("click", function(){
-	mainGrid.blur();
-	datas=[];
-	for(data of mainGrid.getModifiedRows().updatedRows){
-		if(data.rtnAmt != ""){
-			datas.push(data)
-		}
-	}
-	if(datas.length != 0){
-		alert(datas.length + "건의 데이터를 처리하겠습니까?")
-	}else if(datas.length == 0){
-		alert("저장할 데이터가 없습니다.")
-		return;
-	}
+//---------조회버튼 끝---------
+function mod(){
 	let modify={};
 	modify.updatedRows = datas
 	fetch('mtrRtnModify',{
@@ -460,10 +448,33 @@ btnSave.addEventListener("click", function(){
 			"Content-Type": "application/json"
 		},
 		body:JSON.stringify(modify)
-	}).then(()=>{
-		let param= $("#frm").serializeObject();
-		mainGrid.readData(1,param,true);
 	})
+}
+//---------조회버튼 끝---------
+
+//---------저장버튼---------
+btnSave.addEventListener("click", function(){
+	datas=[];
+	for(data of mainGrid.getCheckedRows()){
+		if(data.rtnAmt != ""){
+			datas.push(data);
+		}
+	}
+	if(datas.length != 0){
+		if(confirm(datas.length + "건의 데이터를 처리하겠습니까?") == true){
+			mod();
+			mainGrid.blur();
+			mainGrid.clear();
+			console.log(datas)
+			mainGrid.appendRows(datas);
+		} else {
+			mainGrid.uncheckAll();
+			return;
+		}
+	}else if(datas.length == 0){
+		alert("저장할 데이터가 없습니다.")
+		return;
+	}
 });
 //---------저장버튼 끝---------
 </script>
