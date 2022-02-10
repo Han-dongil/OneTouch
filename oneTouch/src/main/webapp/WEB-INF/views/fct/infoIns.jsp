@@ -679,7 +679,8 @@ $(function() {
       
       dataVO =fctGrid.getData()[ev.rowKey]; 
       //data[ev.rowKey];
-      
+      console.log('dataVO 확인하기 !!!!!!!!!!!!!!!!!!!!')
+      console.log(dataVO)
       document.getElementById('fctCd').value = dataVO.fctCd;
       document.getElementById('fctNm').value = dataVO.fctNm;
       document.getElementById('prcCd').value = dataVO.prcCd;
@@ -1058,6 +1059,7 @@ $(function() {
 			   console.log(result)
 			   alert(lineInput.lineNO+"라인이 삭제되었습니다");
 			   LineGrid.resetData(result);
+			   LineClear()  
 		   })
 		}
 		else if(lineInput.useYn == 'Y'){
@@ -1225,7 +1227,9 @@ $(function() {
 	
 	//라인input 엔터키 이벤트 
 	function lineenterkey(){
-		let linecode = document.getElementById('lineinput').value
+		let lc = document.getElementById('lineinput').value;
+		let linecode =  lc.toUpperCase();
+		document.getElementById('lineinput').value = linecode;
 		if(window.event.keyCode == 13){
 			console.log('엔터키 이벤트 성공')
 			for( d of LineGrid.getData()){
@@ -1239,7 +1243,7 @@ $(function() {
 			      document.getElementById('empNo').value = d.empNo;
 			      
 			      document.getElementById('useYn').addEventListener('click', function(event){
-			    	  if(d.useYn == 'Y'){
+			    	  if(d.useYn == 'N'){
 				    	  alert("해당 라인에 포함되어 있는 설비를 먼저 등록해제 해주세요 ")
 				    	  document.getElementById('useYn').checked = true;
 				    	  
@@ -1265,6 +1269,7 @@ $(function() {
 				      document.getElementById('purchCost').value = d.purchCost;
 				      document.getElementById('chkProd').value = d.chkProd;
 				      document.getElementById('fctImg').value = d.fctImg;
+				      document.getElementById('lineNO').value = d.lineNO;
 				      var fileCallPath = encodeURIComponent(d.uploadPath+"/s_"+d.fctImg);
 				      console.log('이미지 테스트')
 				      console.log(fileCallPath);

@@ -69,7 +69,7 @@ select fct_cd , fct_nm , line_no ,prc_cd,(select FN_GET_PRC_CD_TO_NM(prc_cd) fro
 
 <!-- 등록 목록조회 -->
 <select id="selectFctInfoAll" resultType="com.onetouch.web.fct.info.dao.InfoVO">
-	select f.fct_cd, f.fct_nm, f.line_no, f.prc_cd, f.fct_std, f.comp_cd,f.fct_model, f.use_purp, f.in_date, f.purch_cost, f.chk_prod, f.chk_prod_unit, f.fct_phs, f.fct_img, f.upload_path, a.prc_nm as  prcNm
+	select f.fct_cd, f.fct_nm, f.line_no, f.prc_cd, f.fct_std, f.comp_cd,f.fct_model, f.use_purp, to_char(f.in_date, 'yyyy-MM-dd') in_date, f.purch_cost, f.chk_prod, f.chk_prod_unit, f.fct_phs, f.fct_img, f.upload_path, a.prc_nm as  prcNm
 	from fct_info f join adm_prc_mng a 
 	    on f.prc_cd = a.prc_cd
 	where 1=1
@@ -78,7 +78,7 @@ select fct_cd , fct_nm , line_no ,prc_cd,(select FN_GET_PRC_CD_TO_NM(prc_cd) fro
 		</if>
 		<if test="fixTo != null and fixTo != ''">
 			<![CDATA[
-				AND f.in_date <= #{fixTo}
+				AND f.in_date <= to_char(#{fixTo}, 'yyyy-MM-dd')
 			]]>
 		</if>
 		<if test="fixFrom != null and fixFrom != ''">
