@@ -317,8 +317,8 @@ let mainGrid = new Grid({
 				    sortable: true
 				 },
 				 {
-					header: '미입고량',
-					name: 'notinAmt',
+					header: '기입고량',
+					name: 'inputAmt',
 					align: 'right',
 				    formatter({value}){
 					   return format(value);
@@ -348,6 +348,15 @@ let mainGrid = new Grid({
 		            	required: true
 		          	},
 				   sortable: true
+				 },
+				 {
+					header: '미입고량',
+					name: 'notinAmt',
+					align: 'right',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
 				 },
 				 {
 				   header: '단가',
@@ -578,6 +587,11 @@ columns : [
 				align: 'right'
 			},
 			{
+				header: '기입고량',
+				name: 'inputAmt',
+			    hidden: true
+			 },
+			{
 				header: '발주번호',
 				name: 'ordNo',
 				hidden: true
@@ -638,6 +652,7 @@ let ordDialog = $( "#dialog-ord" ).dialog({
 	buttons:{
 		"확인":()=>{
 		let rows = ordGrid.getCheckedRows();
+		mainGrid.clear();
 		for(row of rows){
 			row.inDate = today();
 			row.rowKey = mainGrid.getRowCount();
