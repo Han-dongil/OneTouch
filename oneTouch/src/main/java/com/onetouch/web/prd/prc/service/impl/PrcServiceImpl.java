@@ -237,13 +237,22 @@ public class PrcServiceImpl implements PrcService{
 	public void selectTask1() {
 		List<PrcVO> list= new ArrayList<>();
 		list=mapper.autoSelect();
-		System.out.println(list);
+		int rand=(int) (Math.random()*100);
 		for(PrcVO vo : list) {
-			if(Integer.parseInt(vo.getGoalCnt())>Integer.parseInt(vo.getPdtCnt())) {
-				
-				int uph=mapper.uphFind(vo);
-				vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getPdtCnt())));
-				mapper.autoUpdate(vo);
+			PrcVO vo2 =mapper.autoFltSum(vo);
+			if(Integer.parseInt(vo.getGoalCnt())>Integer.parseInt(vo2.getFltCnt())+Integer.parseInt(vo.getPdtCnt())) {
+				int uph;
+				uph=mapper.uphFind(vo);
+				if(rand<70) {
+					vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getPdtCnt())));
+					mapper.autoUpdate(vo);
+	
+				}else {
+					
+					vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getFltCnt())));
+					mapper.autoFltUpdate(vo);
+					
+				}
 			}
 		}
 	}

@@ -214,7 +214,7 @@
 	where now_phs like '%가동종료%'
 	</select>
 	<select id="autoSelect" resultType="com.onetouch.web.prd.prc.dao.PrcVO">
-		select line_no , prc_cd ,instr_no ,nvl(pdt_cnt,0) pdt_cnt,(nvl(goal_cnt,0)-nvl(flt_cnt,0)) goalCnt from prd_prc_mng
+		select line_no , prc_cd ,instr_no ,nvl(pdt_cnt,0) pdt_cnt,(nvl(goal_cnt,0)) goalCnt from prd_prc_mng
 		where now_phs='가동중'
 	</select>
 	<select id="uphFind" resultType="integer">
@@ -227,6 +227,9 @@
 	</select>
 	<update id="autoUpdate">
 		update prd_prc_mng set pdt_cnt=#{pdtCnt} where instr_no = #{instrNo} and prc_cd=#{prcCd}
+	</update>	
+	<update id="autoFltUpdate">
+		update prd_prc_mng set flt_cnt=#{fltCnt} where instr_no = #{instrNo} and prc_cd=#{prcCd}
 	</update>	
 	
 	
@@ -257,5 +260,32 @@
 		and instr_no !=#{instrNo}
 		and prc_cd = #{prcCd}
 		and now_phs = '가동중'
+	</select>
+	<select id="autoFltSum" resultType="PrcVO">
+				select instr_no , line_no , sum(nvl(flt_cnt,0)) flt_cnt                                                                                             
+		from(select distinct b.instr_no,b.line_no , b.prc_cd ,b.work_str_dt , b.work_fin_dt , b.flt_cnt , a.prc_seq
+		                from ((select  able_line_no,b.prc_cd,b.prc_seq  
+		                        from ( select prd_cd , able_line_no
+		                                from adm_prd) a join adm_prc_flow b
+		                                on a.prd_cd = b.prd_cd)
+		                                a join prd_prc_mng b
+		                on a.able_line_no like '%'||b.line_no||'%' and a.prc_cd =b.prc_cd)
+		
+		                where work_str_dt is not null
+		                and work_fin_dt is null
+		                and instr_no=#{instrNo}
+		                and  (select distinct a.prc_seq
+		                                    from ((select  able_line_no,b.prc_cd,b.prc_seq  
+		                                            from ( select prd_cd , able_line_no
+		                                                    from adm_prd) a join adm_prc_flow b
+		                                                    on a.prd_cd = b.prd_cd)
+		                                                    a join prd_prc_mng b
+		                                    on a.able_line_no like '%'||b.line_no||'%' and a.prc_cd =b.prc_cd)
+		                    
+		                                    where work_str_dt is not null
+		                                    and work_fin_dt is null
+		                                    and instr_no=#{instrNo}
+		                                    and a.prc_cd=#{prcCd}) >= a.prc_seq)
+		group by instr_no , line_no
 	</select>
 </mapper>
