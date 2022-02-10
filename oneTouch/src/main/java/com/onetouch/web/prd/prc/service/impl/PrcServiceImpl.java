@@ -99,13 +99,9 @@ public class PrcServiceImpl implements PrcService{
 		}
 		String a=(mapper.myPrcFlow(vo)).getPrcSeq().substring(0,1);//내공정흐름번호
 		if(flowMin==Integer.parseInt(a)) { //공정흐름 1번이 들어온경우
-			System.out.println("qqqqqqqqqqqq");
-			System.out.println(vo);
 			vo.setMsg("공정종료");
 			mapper.endUpdate(vo); //시간업데이트
-			System.out.println("11111111111111111");
 			vo=mapper.endTimeSelect(vo);  //입력된시간불러와서 리턴
-			System.out.println("2222222222222222");
 			vo.setMsg("공정종료.");
 			return vo;
 		}
@@ -114,8 +110,6 @@ public class PrcServiceImpl implements PrcService{
 			return vo; 
 		}
 		else if(Integer.parseInt(a)!=flowMax &&  Integer.parseInt(a)-1==mapper.endFlowCheck(vo)) { //1번흐름이 아니고 엔드시간찍힌애들의 합이 내플로우 -1과같을떄(앞공정종료o)
-			System.out.println("qqqqqqqqqqqq");
-			System.out.println(vo);
 			vo.setMsg("공정종료");
 			mapper.endUpdate(vo); //시간업데이트
 			vo=mapper.endTimeSelect(vo);
@@ -128,27 +122,20 @@ public class PrcServiceImpl implements PrcService{
 			vo=mapper.endTimeSelect(vo100);
 			//lot 번호 부여
 			
-			System.out.println(vo100);
 			String sect=mapper.sectSelect(vo100);
-			System.out.println(sect);
 			if(sect.equals("PDT_SECT002")) {
 				String lot=(mapper.insertHrdLotSelect(vo100)).getPrdLot();
 				vo100.setPrdLot(lot);
 				vo.setPrdLot(lot);
-				System.out.println(vo100);
 				mapper.hrdInsert(vo100);
 			}
 			else if(sect.equals("PDT_SECT001")) {
 				String lot=(mapper.insertLotSelect(vo100)).getPrdLot();
 				vo100.setPrdLot(lot);
 				vo.setPrdLot(lot);
-				System.out.println(vo100);
 				mapper.prdInsert(vo100);
 			}
-			System.out.println(vo100);
 			mapper.planPhsUpdate(vo100);
-			System.out.println("ㄴㄴ.");
-			System.out.println(vo100.getLineNo().substring(0,7));
 			vo.setMsg("라인가동 종료!!.");
 			return vo;
 		}
@@ -255,10 +242,7 @@ public class PrcServiceImpl implements PrcService{
 			if(Integer.parseInt(vo.getGoalCnt())>Integer.parseInt(vo.getPdtCnt())) {
 				
 				int uph=mapper.uphFind(vo);
-				System.out.println(uph);
-				System.out.println(vo.getPdtCnt());
 				vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getPdtCnt())));
-				System.out.println(vo);
 				mapper.autoUpdate(vo);
 			}
 		}

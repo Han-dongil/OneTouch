@@ -65,7 +65,7 @@ hr{
 			<div class="card bascard1">
 				<div class="card-body">
 					<!-- <h4 class="card-title">조회조건</h4> -->
-					<form id="planSearchFrm" name="planSearchFrm">
+					<form id="workSearchFrm" name="workSearchFrm">
 						<div class="rowdiv">
 							<label class="labeltext">지시일자</label>
 							<input type="text" id="startDate" name="startDate" class="datepicker">
@@ -102,7 +102,7 @@ hr{
 						
 						<div class="rowdiv" style="display:inline-block">
 							<label class="labeltext">제품코드</label>
-							<input id="prdCd" name="prdCd" class="inputtext" readonly>
+							<input id="prdCd" name="prdCd" class="inputtext">
 							<!-- <button type="button" id="btnPrcCd" class="btn btn-primary mr-2 minibtn" onclick="inComList()"><i class="icon-search"></i></button>
 							<label class="labeltext colline2">제품명</label>
 							<input id="prdNm" name="prdNm" class="inputtext" readonly> -->

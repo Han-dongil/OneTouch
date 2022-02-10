@@ -38,6 +38,7 @@ public class PlanVO extends LotVO {
 	private String pecSeq;
 	private String startDate;
 	private String endDate;
+	private String check;
 	
 	
 }

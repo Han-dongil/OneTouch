@@ -103,7 +103,7 @@ hr{
 						
 						<div class="rowdiv" style="display:inline-block">
 							<label class="labeltext">제품코드</label>
-							<input id="prdCd" name="prdCd" class="inputtext" readonly>
+							<input id="prdCd" name="prdCd" class="inputtext">
 							<!-- <button type="button" id="btnPrcCd" class="btn btn-primary mr-2 minibtn" onclick="inComList()"><i class="icon-search"></i></button>
 							<label class="labeltext colline2">제품명</label>
 							<input id="prdNm" name="prdNm" class="inputtext" readonly> -->
@@ -172,6 +172,8 @@ hr{
 	,buttonImageOnly: true */
 
 	    });
+	    $('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+        $('#startDate').datepicker('setDate', 'today-7D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)  
   } );
 	/* let Grid = tui.Grid; */
 	//그리드 테마적용

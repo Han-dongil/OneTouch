@@ -19,11 +19,12 @@ public interface PlanService {
 	List<PlanVO> prdCdFind();
 	List<BomVO> prcCdFind(PlanVO vo);
 	void addInsertPlan (Map<String,List<PlanVO>> map);
-	List<PlanVO> addPlanLotSelect(PlanVO vo);
+	List<PlanVO> findBomList(PlanVO vo);
 	List<PlanVO> findLineNo(String prdCd);
 	List<PlanVO> prcLineFine(PlanVO vo);
 	List<PlanVO> safeStckView();
 	List<PlanVO> slectDate(PlanVO vo);
 	List<PlanVO> planDateCal(PlanVO vo);
 	PlanVO updFind(String lineNo);
+	List<PlanVO> addPlanLotSelect(PlanVO vo);
 }

@@ -99,14 +99,15 @@ public class PlanController {
 	}
 	
 	@ResponseBody
-	@GetMapping("lotCdFind/{prdCd}/{prcCd}")
-	public List<PlanVO> lotCdFind(@PathVariable String prdCd ,@PathVariable String prcCd){
-		System.out.println(prcCd +","+ prdCd);
+	@GetMapping("findBomList/{prdCd}/{prcCd}/{check}")
+	public List<PlanVO> lotCdFind(@PathVariable String prdCd ,@PathVariable String prcCd , @PathVariable String check){
+		System.out.println(prcCd +","+ prdCd+","+ check+",");
 		PlanVO vo=new PlanVO();
 		vo.setPrcCd(prcCd);
 		vo.setPrdCd(prdCd);
+		vo.setCheck(check);
 		//System.out.println(service.addPlanLotSelect(vo));
-		return service.addPlanLotSelect(vo);
+		return service.findBomList(vo);
 	}
 	
 	//prd코드로 라인번호 가져와서 / 기준으로 split함
@@ -159,6 +160,14 @@ public class PlanController {
 	@GetMapping("updFind/{lineNo}")
 	public PlanVO updFind(@PathVariable String lineNo){
 		return service.updFind(lineNo);
+	}
+	@ResponseBody
+	@GetMapping("addPlanLotSelect/{prdCd}/{prcCd}/{mtrCd}")
+	public List<PlanVO> findBomList(@PathVariable String prdCd ,@PathVariable String prcCd ,@PathVariable String mtrCd ,PlanVO vo) {
+		vo.setPrcCd(prcCd);
+		vo.setPrdCd(prdCd);
+		vo.setMtrCd(mtrCd);
+		return service.addPlanLotSelect(vo);
 	}
 	
 }

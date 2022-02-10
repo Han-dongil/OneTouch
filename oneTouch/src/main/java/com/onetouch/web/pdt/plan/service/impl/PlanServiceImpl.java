@@ -138,8 +138,8 @@ public class PlanServiceImpl implements PlanService {
 		
 	}
 	@Override
-	public List<PlanVO> addPlanLotSelect(PlanVO vo) {
-		return mapper.addPlanLotSelect(vo);
+	public List<PlanVO> findBomList(PlanVO vo) {
+		return mapper.findBomList(vo);
 	}
 	@Override
 	public List<PlanVO> findLineNo(String prdCd) {
@@ -207,6 +207,11 @@ public class PlanServiceImpl implements PlanService {
 	public PlanVO updFind(String lineNo) {
 		
 		return mapper.updFind(lineNo);
+	}
+	@Override
+	public List<PlanVO> addPlanLotSelect(PlanVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.addPlanLotSelect(vo);
 	}
 	
 	//return flwMapper.selectFlwPrcBom();//prd코드로 공정흐름// 공정관리 // bom join 불러오기

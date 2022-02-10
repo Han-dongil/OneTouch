@@ -171,6 +171,8 @@ width: 100px !important;
 	,buttonImageOnly: true */
 
 	    });
+	    $('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+        $('#startDate').datepicker('setDate', 'today-7D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)  
   } );
 	
 ///////////////////////////그리드생성/////////////////////////////
@@ -207,7 +209,6 @@ width: 100px !important;
 	grid = new Grid({
 		  el: document.getElementById('grid'),
 		  data:null,
-		  rowHeaders:['checkbox'],
 		  columns,
 		  columnOptions: {
 			  frozenCount :6,
@@ -234,7 +235,6 @@ width: 100px !important;
 	movingGrid = new Grid({
 		  el: document.getElementById('movingGrid'),
 		  data:null,
-		  rowHeaders:['checkbox'],
 		  columns:movingColumns,
 		  columnOptions: {
 			  frozenCount :6,
@@ -277,7 +277,6 @@ width: 100px !important;
 	movingPrcGrid = new Grid({
 		  el: document.getElementById('movingPrcGrid'),
 		  data:null,
-		  rowHeaders:['checkbox'],
 		  columns:movingPrcColumns,
 		  columnOptions: {
 			  frozenCount :6,
