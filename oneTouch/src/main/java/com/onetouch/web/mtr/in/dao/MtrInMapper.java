@@ -11,6 +11,7 @@ public interface MtrInMapper {
 	List<Map<String, Object>> selectExcelIn();
 	List<MtrInVO> selectIn(MtrSearchVO inSearchVO);
 	int selectInNo();
+	List<MtrInVO> selectOrdNo(MtrSearchVO searchVO);
 	void insertIn(MtrInVO vo);
 	void deleteIn(MtrInVO vo);
 	void updateIn(MtrInVO vo);

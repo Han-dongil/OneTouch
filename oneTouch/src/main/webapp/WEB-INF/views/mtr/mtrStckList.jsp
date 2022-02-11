@@ -437,14 +437,14 @@ const mtrColumns = [{
 					   sortable: true
 					 },
 					 {
-					   header: '홀딩수량',
-					   name: 'hldCnt',
+					   header: '현재고',
+					   name: 'mtrStckCnt',
 					   align: 'right',
 					   sortable: true
 					 },
 					 {
-					   header: '현재고',
-					   name: 'mtrStckCnt',
+					   header: '홀딩수량',
+					   name: 'hldCnt',
 					   align: 'right',
 					   sortable: true
 					 },
@@ -563,14 +563,14 @@ const lotColumns = [{
 	   sortable: true
 	 },
 	 {
-	   header: '홀딩수량',
-	   name: 'hldCnt',
+	   header: '현재고',
+	   name: 'stckCnt',
 	   align: 'right',
 	   sortable: true
 	 },
 	 {
-	   header: '현재고',
-	   name: 'stckCnt',
+	   header: '홀딩수량',
+	   name: 'hldCnt',
 	   align: 'right',
 	   sortable: true
 	 },
