@@ -246,12 +246,9 @@ public class PrcServiceImpl implements PrcService{
 				if(rand<70) {
 					vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getPdtCnt())));
 					mapper.autoUpdate(vo);
-	
 				}else {
-					
 					vo.setPdtCnt(String.valueOf(uph+Integer.parseInt(vo.getFltCnt())));
 					mapper.autoFltUpdate(vo);
-					
 				}
 			}
 		}
