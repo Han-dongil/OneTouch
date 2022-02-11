@@ -467,6 +467,10 @@
           type:abc
         }
       },{
+			header : '제품명',
+			name : 'prdNm',
+			align: 'center',
+		},{
     	header: '라인번호',
         name: 'lineNo',
         align:'center',
@@ -705,6 +709,10 @@
 		columns:[{
 			header : '자재코드',
 			name : 'mtrCd',
+			align: 'center',
+		},{
+			header : '공정코드',
+			name : 'prcCd',
 			align: 'center',
 		},{
 			header : '자재로트',
@@ -1016,6 +1024,7 @@
 						 planColumns[0].editor.options.listItems.length=0;
 						 for(let obj of result){
 							planColumns[0].editor.options.listItems.push({text:obj.prdNm,value:obj.prdCd})
+							
 						 }
   							 
 					})
@@ -1072,10 +1081,10 @@
 		else if(flag==1){
 			alert('시작일자 또는 종료일자를 입력해주세요')
 		} 
-		else if(document.querySelectorAll('#mtrSelect>option').length-1>insertDtlGrid.getData().length){
+		else if(document.querySelectorAll('#mtrSelect>option').length-1>hiddenGrid.getData().length){
 			alert('자재계획을 입력해주세요')
 		} 
-		else if(document.querySelectorAll('#prcSelect>option').length-1>hiddenGrid.getData().length){
+		else if(document.querySelectorAll('#prcSelect>option').length-1>insertDtlGrid.getData().length){
 			alert('제품계획을 입력해주세요')
 		} 
 		else{
@@ -1477,9 +1486,16 @@ function needOrdCd(){
 					}
 					let prcSelect=document.getElementById('prcSelect').value;
 					if(i==0&&prcSelect!='--공정선택--'){
+						planData.rowKey=insertDtlGrid.getRowCount()-1;
 						insertDtlGrid.appendRow(planData);
 						//lotGridUseAmt=lotGrid.getData()[0].useAmt;
 					}
+					for(obj of hiddenGrid.getData()){
+						if(obj.hldCnt=='0'){
+							hiddenGrid.removeRow(obj.rowKey);
+						}
+					}
+					
 					console.log(ev)
 					planGridNeedCnt=planGrid.getValue(ev,'instrCnt')
 					lotGrid.setValue(0,'hldCnt',0)
@@ -1506,11 +1522,6 @@ function needOrdCd(){
 		if(grid.getValue(0,'ordShtNo')!='null'){
   			
   		 }
-		
-		
-		
-		
-		
 		//document.getElementById('lotDiv').style='display:none';
 		planGrid.appendRow([{}]);
 		planGrid.setValue(planGrid.getData()[planGrid.getRowCount()-1].rowKey,'planNo',grid.getData()[0].planNo);
@@ -1526,6 +1537,7 @@ function needOrdCd(){
 				 i++;
 			 }
 			 planGrid.setValue(planGrid.getRowCount()-1,'prdCd',result[0].prdCd)
+			 planGrid.setValue(planGrid.getRowCount()-1,'prdNm',result[0].prdNm)
 			 lineFindFnc(planGrid.getRowCount()-1);
 			 prcFindFnc(planGrid.getRowCount()-1)
 		})
@@ -1593,15 +1605,21 @@ function needOrdCd(){
  			let i=0;
  			console.log(result)
  			planGrid.setValue(planGrid.getData()[0].rowKey,'uphPdtAmt',result[0].uphPdtAmt)
- 			planColumns[1].editor.options.listItems.length=0;
+ 			planColumns[2].editor.options.listItems.length=0;
 			for(obj of result){
 				console.log(obj)
-				planColumns[1].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
+				planColumns[2].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
 				//planColumns[0].editor.options.listItems.push({text:obj.lineNo,value:obj.lineNo})
  				//planColumns[3].editor.options.listItems[i]={text:obj.lineNo,value:obj.lineNo}
 				i++;
 			}
  			planGrid.setValue(ev,'lineNo',result[0].lineNo)
+ 			for(let i=0; i<planColumns[0].editor.options.listItems.length ;i++){
+ 				if(planColumns[0].editor.options.listItems[i].value==planGrid.getValue(ev,'prdCd')){
+ 					planGrid.setValue(ev,'prdNm',planColumns[0].editor.options.listItems[i].text);
+ 					
+ 				}
+ 			}
  			prcFindFnc(ev)
 			
  		})
@@ -1615,7 +1633,7 @@ function needOrdCd(){
  			.then(result=>{
  				planGridNeedCnt=planGrid.getRow(ev).needCnt;
  				let i=0;
-					planColumns[2].editor.options.listItems.length=0;
+					planColumns[3].editor.options.listItems.length=0;
 					$('#prcSelect').empty();
 					let prcSelect=document.getElementById('prcSelect');
 					prcSelect.setAttribute('data-id',planGrid.getValue(ev,'prdCd'));
@@ -1680,6 +1698,19 @@ function needOrdCd(){
 			
 		}
 	})
+	insertDtlGrid.on('click',ev=>{
+		lotGrid.clear()
+		for(obj of hiddenGrid.getData()){
+			if(insertDtlGrid.getValue(ev.rowKey,'prcCd')==obj.prcCd){
+				obj.rowKey=lotGrid.getRowCount()-1;
+				lotGrid.appendRow(obj);
+			}
+			
+		}
+		
+		
+	})
+	
 	
 	
 	</script>
