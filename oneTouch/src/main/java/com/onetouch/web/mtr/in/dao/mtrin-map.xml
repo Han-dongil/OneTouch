@@ -34,11 +34,11 @@
 			A.IN_AMT,
 			A.TOT_COST,
 			A.UNIT_COST, 
+			A.BEF_IN_AMT,
 			B.MTR_NM,
 			B.UNIT,
 			C.ORD_AMT,
-			C.NOTIN_AMT,
-			(C.ORD_AMT - C.NOTIN_AMT) AS INPUT_AMT,
+			(C.ORD_AMT - A.BEF_IN_AMT - A.FLT_AMT - A.IN_AMT) AS NOTIN_AMT,
 			TO_CHAR(A.IN_DATE, 'yyyy-MM-dd') AS IN_DATE,
 			FN_GET_BAS_DTL_CD_TO_NM(B.UNIT) AS UNIT_NM,
 			FN_GET_BAS_DTL_CD_TO_NM(B.COMP_CD) AS COMP_NM
@@ -106,9 +106,15 @@
 		SET
 			IN_AMT = (NVL(IN_AMT,0)+NVL(#{inAmt},0)),
 			FLT_AMT = (NVL(FLT_AMT,0)+NVL(#{fltAmt},0)),
-			NOTIN_AMT = (#{notinAmt}
+			NOTIN_AMT = 
+			<if test='notinAmt == null'>
+			0
+			</if>
+			<if test='notinAmt != null'>
+			(#{notinAmt}
 						-NVL(#{inAmt},0)
 						-NVL(#{fltAmt},0))
+			</if>
 		WHERE
 			ORD_NO = #{ordNo} 
 		AND

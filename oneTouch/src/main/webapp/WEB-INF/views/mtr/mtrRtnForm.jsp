@@ -140,7 +140,7 @@ hr{
 
 <script type="text/javascript">
 let rowk = -1;
-
+let datas = [];
 
 //---------포맷에 맞게 날짜 구하는 function---------
 function getDateStr(dt){
@@ -465,8 +465,8 @@ btnSave.addEventListener("click", function(){
 			mod();
 			mainGrid.blur();
 			mainGrid.clear();
-			console.log(datas)
-			mainGrid.appendRows(datas);
+			mainGrid.resetData(datas);
+			mainGrid.uncheckAll();
 		} else {
 			mainGrid.uncheckAll();
 			return;

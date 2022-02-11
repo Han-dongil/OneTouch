@@ -495,13 +495,6 @@ mainGrid.on('editingFinish', function(ev) {
 				toastr["warning"]("출고정산량이 현재고보다 많습니다.")
 				ev.stop();
 			}
-		}else if(mainGrid.getValue(ev.rowKey,'calSectNm') == '입고정산'){
-			console.log(mainGrid.getValue(ev.rowKey,'mngAmt'))
-			if(mainGrid.getValue(ev.rowKey,'calAmt') > mainGrid.getValue(ev.rowKey,'mngAmt')){
-				toastr["warning"]("입고정산량이 관리수량보다 많습니다.")
-				ev.stop();
-			}
-			
 		}
 	};
 	mainGrid.refreshLayout();
@@ -706,10 +699,8 @@ btnFind.addEventListener("click", function(){
 
 //---------저장버튼---------
 btnSave.addEventListener("click", function(){
-	mainGrid.blur();
-	
  	rowk = mainGrid.getRowCount();
-     
+    let checked = mainGrid.getCheckedRows();
      for(i=0; i<rowk; i++) {
         if(mainGrid.getRow(i).calSectNm == '') {
            alert("정산구분은 필수입력칸입니다!!");
@@ -724,16 +715,15 @@ btnSave.addEventListener("click", function(){
            alert("정산량은 필수입력칸입니다!!");
            return;
         }
-     }  
-	
-	let param= $("#frm").serializeObject();
+     }
+	mainGrid.blur();
 	mainGrid.request('createData');
-	setTimeout(function(){
-		mainGrid.readData(1,param,true);
-	},100);
-	setTimeout(function(){
-		mainGrid.focus(mainGrid.getRowCount()-1,'calSectNm')
-	},500);
+
+	mainGrid.clear();
+    mainGrid.resetData(checked);
+    
+	
+	mainGrid.focus(mainGrid.getRowCount()-1,'calSectNm')
 });
 //---------저장버튼 끝---------
 
