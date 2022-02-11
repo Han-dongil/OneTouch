@@ -72,9 +72,9 @@ hr{
 					<form id="frm" method="post">
 						<div class="rowdiv">
 							<label class="labeltext">해당일자</label>
-							<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker"> 
+							<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker" onchange="checkOrdList()"> 
 							<label> ~ </label> 
-							<input type="text" id="endDate" name="endDate" class="datepicker jquerydtpicker">
+							<input type="text" id="endDate" name="endDate" class="datepicker jquerydtpicker" onchange="checkOrdList()">
 						</div>
 						
 						<div class="rowdiv">
@@ -85,12 +85,19 @@ hr{
 							<input id="compNm" name="compNm" class="inputtext" readonly>
 						</div>
 						
-						<span class="rowdiv">
+						<div class="rowdiv">
 							<label class="labeltext">자재코드</label>
 							<input type="text" id="ditemCode" name="ditemCode" class="inputtext" readonly>
 							<button type="button" id="btnMtrCd" class="btn btn-primary mr-2 minibtn" ><i class="icon-search"></i></button>
 							<label class="labeltext colline2">자재명</label>
 							<input type="text" id="ditemCodeNm" name="ditemCodeNm" class="inputtext" readonly>
+						</div>
+						
+						<span class="rowdiv">
+							<label class="labeltext">발주번호</label>
+							<input type="text" id="ordNo" name="ordNo" list="ordNo-options"
+									class="inputtext" autocomplete="off" style="text-transform: uppercase;" />
+							<datalist id="ordNo-options"></datalist>
 						</span>
 						
 						<span>
@@ -103,7 +110,7 @@ hr{
 	</div>
 		<span class="floatright">
 		<form action="./MtrExcelView.do">
-			<button type="sumit" id="excelBtn" class="btn btn-main newalign">Excel</button>
+			<button type="submit" id="excelBtn" class="btn btn-main newalign">Excel</button>
 		</form>
 	</span>
 	<hr>
@@ -352,6 +359,28 @@ function format(value){
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 //---------숫자데이터 구분자주는 기능 끝---------
+
+
+//---------발주번호 input에 option-list append---------
+function checkOrdList(){
+	fetch('./inputOrdList',{
+		method:'POST',
+		headers:{
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		body:$("#frm").serialize()
+	})
+	.then(response=>response.json())
+	.then(result=>{
+		$('#ordNo').val("");
+		$('#ordNo-options').empty();
+		for(let data of result){
+			$('#ordNo-options').append("<option value="+data.ordNo+">"+data.compNm+"</option>")
+		}
+	})
+}
+checkOrdList();
+//---------발주번호 input에 option-list append 끝---------
 
 
 //---------모달 설정---------

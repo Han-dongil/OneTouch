@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class MtrSearchVO{
-
 	String startDate;
 	String endDate;
 	String compCd;
@@ -15,5 +14,5 @@ public class MtrSearchVO{
 	String prcCd;
 	String calSect;
 	String spent;
+	String ordNo;
 }
-

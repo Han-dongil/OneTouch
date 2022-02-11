@@ -24,6 +24,7 @@
 		WHERE 
 			A.MTR_CD = B.MTR_CD
 	</select>
+	
 	<!-- 자재입고 조건 조회 -->
 	<select id="selectIn" resultType="com.onetouch.web.mtr.in.dao.MtrInVO">
 		SELECT 
@@ -63,6 +64,9 @@
 		<if test="ditemCode != null and ditemCode != ''">
 			AND B.MTR_CD = #{ditemCode}
 		</if>
+		<if test="ordNo != null and ordNo != ''">
+			AND C.ORD_NO = #{ordNo}
+		</if>
 	</select>
 		<!-- SELECT * 
 		FROM MTR_IN A LEFT JOIN ADM_MTR B 
@@ -73,6 +77,23 @@
 		FROM
 			DUAL
 	</select>
+	
+	<select id="selectOrdNo" resultType="com.onetouch.web.mtr.in.dao.MtrInVO">
+		SELECT DISTINCT
+			ORD_NO,
+			FN_GET_BAS_DTL_CD_TO_NM(COMP_CD) AS COMP_NM
+		FROM
+			MTR_ORD
+		WHERE
+			1=1
+		<if test="startDate != null and startDate != ''"> 
+			<![CDATA[AND TO_CHAR(ORD_DATE, 'yyyy-MM-dd') >= #{startDate}]]>
+		</if>
+		<if test="endDate != null and endDate != ''">
+			<![CDATA[AND TO_CHAR(DLV_REQ_DATE, 'yyyy-MM-dd') <= #{endDate}]]>
+		</if>
+	</select>
+	
 	<!-- 입고 테이블에 등록 -->
 	<insert id="insertIn">
 		INSERT INTO MTR_IN (
@@ -100,6 +121,7 @@
 			#{empNo}
 			)
 	</insert>
+	
 	<!-- 입고등록후 발주디테일에 수량업데이트 -->
 	<update id="plusOrd">
 		UPDATE MTR_ORD_DTL
@@ -120,6 +142,7 @@
 		AND
 			MTR_CD = #{mtrCd}
 	</update>
+	
 	<update id="updateIn">
 		UPDATE MTR_IN
 		SET
@@ -132,12 +155,14 @@
 		WHERE
 			IN_NO = #{inNo}
 	</update>
+	
 	<!-- 하나씩 삭제 -->
 	<delete id="deleteIn">
 		DELETE 
 		FROM MTR_IN
 		WHERE IN_NO = #{inNo}
 	</delete>
+	
 	<!-- 삭제 후 발주디테일에 수량업데이트 -->
 	<update id="minusOrd">
 		UPDATE MTR_ORD_DTL
