@@ -34,17 +34,15 @@ public class FlwServiceImpl implements FlwService{
 				mapper.deleteFlw(flwvo);
 			};
 		}
-		if(mvo.getCreatedRows() != null) {
-			for(FlwVO flwvo : mvo.getCreatedRows()) {
-				System.out.println(flwvo);
-				mapper.insertFlw(flwvo);
-			};
-		}
+
 	}
 
 
-	
-	
-
+	@Override
+	public void insertFlwList(List<FlwVO> maps) {
+		for(FlwVO flwvo : maps) {
+			mapper.insertFlw(flwvo);
+		}
+	}
 
 }
