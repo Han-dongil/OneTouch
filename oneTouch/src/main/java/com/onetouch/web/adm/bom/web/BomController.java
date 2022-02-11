@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.service.BomService;
+import com.onetouch.web.adm.flw.dao.FlwVO;
+import com.onetouch.web.adm.flw.service.FlwService;
 import com.onetouch.web.zzz.dao.ModifyVO;
 
 @RequestMapping("/adm")
@@ -21,6 +23,7 @@ import com.onetouch.web.zzz.dao.ModifyVO;
 public class BomController { 
 
 	@Autowired BomService bomservice;
+	@Autowired FlwService flwservice;
 	
 	//제품Bom관리 보여주는 페이지로 이동
 	@RequestMapping("/BomList")
@@ -62,4 +65,12 @@ public class BomController {
 		}
 		return bomservice.selectBomDtl(bomvo);
 	}
+	
+	@ResponseBody
+	@PostMapping("/bomFlwInsert")
+	public void insertPrd(@RequestBody List<FlwVO> maps) {
+		System.out.println("mmmmmm"+maps);
+		flwservice.insertFlwList(maps);
+	}
+	
 }

@@ -364,6 +364,12 @@ hr{
 				modifyList.push(update[i].mtrCd);
 			}
 			mainGrid.request('modifyData');
+			$.ajax({
+				url: "./bomFlwInsert",
+				method: "POST",
+				data: JSON.stringify(create),
+				contentType: 'application/json'
+			})
 		})
 			
 		//초기화버튼

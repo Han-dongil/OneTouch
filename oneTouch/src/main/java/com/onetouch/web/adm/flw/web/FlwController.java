@@ -142,6 +142,7 @@ public class FlwController {
 	@ResponseBody
 	@PostMapping("/insertPrd")
 	public List<PrdVO> insertPrd(PrdVO prdvo) {
+		System.out.println("등록"+prdvo);
 		bomservice.insertPrd(prdvo);
 		return bomservice.selectPrdAll();
 	}

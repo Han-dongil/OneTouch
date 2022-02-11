@@ -9,4 +9,6 @@ public interface FlwService {
 
 	List<FlwVO> selectFlw(FlwVO flwvo);
 	void modify(ModifyVO<FlwVO> mvo);
+	void insertFlwList(List<FlwVO> maps);
+
 }

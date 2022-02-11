@@ -35,22 +35,16 @@
 	</update>
 	
 	<insert id="insertFlw">
-		INSERT INTO adm_prc_flow
-		(prc_seq,
-		 <!-- <if test="workCmt != null and workCmt != ''">work_cmt,</if> -->
-		 std_load,
-		 unit_cost,
-		 lead_time,
-		 prc_cd,
-		 prd_cd)
-		VALUES(
-		 #{prcSeq},
-		<!--  <if test="workCmt != null and workCmt != ''">#{workCmt},</if> -->
-		 #{stdLoad},
-		 #{unitCost},
-		 #{leadTime},
+		 INSERT INTO adm_prc_flow
+		(prc_cd,
+		 prd_cd,
+		 prc_seq
+		 )
+		 VALUES(
 		 #{prcCd},
-		 #{prdCd})
+		 #{prdCd},
+		 (select nvl(max(prc_seq),1) from adm_prc_flow where prd_cd=#{prdCd})
+		 )
 	</insert>
 	
 	<!-- 공정흐름 // 공정관리 // 공통bom join -->

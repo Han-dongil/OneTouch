@@ -130,9 +130,9 @@
 									<label class="labeltext">공정라인&nbsp;</label>
 									<input id="ableLineNo" name="ableLineNo" style="width: 610px;" class="inputtext">
 									
-									<input type="hidden" id="prdSect" name="prdSect">
+									<!-- <input type="hidden" id="prdSect" name="prdSect">
 									<input type="hidden" id="mngUnit" name="mngUnit">
-									<input type="hidden" id="prdStd" name="prdStd">
+									<input type="hidden" id="prdStd" name="prdStd"> -->
 								</div>
 								
 							</form>
@@ -144,8 +144,8 @@
 			<h4 class="gridtitle">✔공정흐름</h4>
 			<span class="floatright">
 				<!-- <button type="button" id="btnFlw" class="btn btn-main newalign2">조회</button> -->
-				<button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
-				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button>
+				<!-- <button type="button" id="btnAdd" class="btn btn-main newalign2">추가</button>
+				<button type="button" id="btnDel" class="btn btn-main newalign2">삭제</button> -->
 				<button type="button" id="btnSave" class="btn btn-primary newalign2">저장</button>
 			</span>
 			
