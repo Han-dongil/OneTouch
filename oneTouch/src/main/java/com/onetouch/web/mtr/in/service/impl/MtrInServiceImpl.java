@@ -54,6 +54,9 @@ public class MtrInServiceImpl implements MtrInService {
 				if( vo.getInAmt() == "0") {
 					System.out.println("발주업데이트만");
 					inMapper.plusOrd(vo);
+				} else if( vo.getOrdAmt() == "") {
+					System.out.println("직접발주(입고테이블에만 insert)");
+					inMapper.insertIn(vo);
 				} else {
 					System.out.println("입고insert+발주update");
 					inMapper.insertIn(vo);
