@@ -61,9 +61,9 @@
 				<input type="text" id="startDate" name="startDate" class="datepicker jquerydtpicker">&nbsp;
 				<label> ~ </label>&nbsp;
 				<input type="text" id="endDate" name="endDate" class="datepicker jquerydtpicker">&nbsp;
-				<span class="floatright">
+
 					<button type="button" id="btnFind" class="btnFind">통계조회</button>			
-				</span>
+
 			</div>
 		</form>
 		<form id="stsMonthFrm">
@@ -72,9 +72,9 @@
 				<input type="text" id="startDate2" name="startDate" class="monthpicker" class="datepicker jquerymonpicker"/>&nbsp;
 				<label> ~ </label>&nbsp;
 				<input type="text" id="endDate2" name="endDate" class="monthpicker" class="datepicker jquerymonpicker"/>&nbsp;
-				<span class="floatright">
+
 					<button type="button" id="btnFind" class="btnFind">통계조회</button>			
-				</span>
+
 			</div>
 		</form>
 		<form id="stsYearFrm">
@@ -94,10 +94,8 @@
 					<option>2020</option>
 					<option>2021</option>
 					<option>2022</option>
-				</select>
-				<span class="floatright">
+				</select>&nbsp;
 					<button type="button" id="btnFind" class="btnFind">통계조회</button>			
-				</span>
 			</div>
 		<br>
 		</form>
@@ -106,16 +104,14 @@
 		<div id="pdtCntTab"></div>
 		<div id="fltCntTab"></div>
 	</div>
-	<div class= "col-6" align="center">
+	<div class= "col-6" align="center" style="border-left: 0.1px solid lightgray;">
 		<form id="stsMonthFrm2">
 		<br><br><br>
 			<label>해당일자</label>&nbsp;
 			<input type="text" id="startDate4" name="startDate" class="monthpicker" class="datepicker jquerymonpicker"/>&nbsp;
 			<label> ~ </label>&nbsp;
 			<input type="text" id="endDate4" name="endDate" class="monthpicker" class="datepicker jquerymonpicker"/>&nbsp;
-			<span class="floatright">
 				<button type="button" id="btnChart">차트조회</button>			
-			</span>
 			<input style="display: none;" value='chart' name="chart">
 		</form><br><br>
 		<div id="barChartMtrIn"></div>

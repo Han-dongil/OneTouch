@@ -55,7 +55,7 @@ hr{
 <div id="grid"></div> -->
 
 <script type="text/javascript">
-	//--------변수선언--------
+	//변수선언----------------------------------------
 	let checked=[];
 	let prcLists=[];
 	let unitLists=[];
@@ -64,49 +64,18 @@ hr{
 	let mngCnt;
 	let rowk;
 	let modifyList = [];
-	/* let Grid = tui.Grid; */
-	//--------변수선언 끝--------
+	//변수선언 끝-------------------------------------
 	
-	//--------그리드 css--------
-	/* Grid.applyTheme('default',{
-		cell:{
-			header: {
-	            background: '#4B49AC',
-	            text: '#fff'
-	        },
-	        evenRow: {
-	        	background:'#F5F7FF'
-	        }
-		}
-	}) */
-	//--------그리드 css 끝--------
-
-	//--------그리드컬럼 선언--------
+	//그리드컬럼 선언----------------------------------
 	const columns = [{
 			header : '공정코드',
 			name : 'prcCd',
-			editor: 'text'
+			editor: 'text',
+			align: 'center'
 		},
 		{
 			header : '공정명',
 			name : 'prcNm',
-			editor: 'text'
-		},
-		{
-			header : '단위',
-			name : 'mngUnitNm',
- 			editor: {
-				type: 'radio',
-				options: {
-					listItems: [
-						
-					]
-				}
-			} 
-		},
-		{
-			header : '생산일수',
-			name : 'pdtDay',
 			editor: 'text'
 		},
 		{
@@ -122,6 +91,25 @@ hr{
 			} 
 		},
 		{
+			header : '단위',
+			name : 'mngUnitNm',
+			align: 'center',
+ 			editor: {
+				type: 'radio',
+				options: {
+					listItems: [
+						
+					]
+				}
+			} 
+		},
+		{
+			header : '생산일수',
+			name : 'pdtDay',
+			editor: 'text',
+			align: 'right'
+		},
+		{
 			header : '비고',
 			name : 'cmt',
 			editor: 'text'
@@ -129,11 +117,13 @@ hr{
 		{
 			header : '표시순서',
 			name : 'seq',
-			editor: 'text'
+			editor: 'text',
+			align: 'center'
 		},
 		{
 			header : '사용여부',
 			name : 'useYn',
+			align: 'center',
 			editor: {
 				type: 'radio',
 				options: {
@@ -154,9 +144,9 @@ hr{
 			name : 'mngUnit',
 			hidden: true			
 		}];
-	//--------그리드컬럼 선언 끝--------
+	//그리드컬럼 선언 끝--------------------------------
 	
-	//--------아작스로 단위랑 공정구분 리스트담기--------
+	//아작스로 단위랑 공정구분 리스트담기--------------------
 		//공정구분 상세코드에서 받아오기
 		$.ajax({
 			url: './prcList',
@@ -182,7 +172,7 @@ hr{
 
 			a.text = prcLists[i].prcSectNm;
 			a.value = prcLists[i].prcSectNm;
-			columns[4].editor.options.listItems.push(a);
+			columns[2].editor.options.listItems.push(a);
 		}
 		
 		//단위
@@ -191,11 +181,11 @@ hr{
 
 			b.text = unitLists[i].mngUnitNm;
 			b.value = unitLists[i].mngUnitNm;
-			columns[2].editor.options.listItems.push(b);
+			columns[3].editor.options.listItems.push(b);
 		}
-	//--------아작스로 단위랑 공정구분 리스트담기 끝--------
+	//아작스로 단위랑 공정구분 리스트담기 끝------------------
 	
-	//--------dataSource 선언--------
+	//dataSource 선언-------------------------------
 	var dataSource = {
 			api: {
 				readData: {
@@ -207,9 +197,9 @@ hr{
 			},
 			contentType: 'application/json'
 	 };
-	 //--------dataSource 선언 끝--------
+	 //dataSource 선언 끝----------------------------
 
-	//--------그리드 그리기--------		
+	//그리드 그리기------------------------------------	
 	let grid = new Grid({
 		el: document.getElementById('grid'),
 		data: dataSource, //변수명과 필드명이 같으면 생략가능 원래: data : data,
@@ -218,9 +208,9 @@ hr{
 		bodyHeight: 612,
 		minBodyHeight: 612
 	}); 
-	//--------그리드 그리기 끝--------	
+	//그리드 그리기 끝----------------------------------	
 	
-	//--------공정관리 그리드 기능 (grid)--------
+	//공정관리 그리드 기능 (grid)------------------------
 	
 		//그리드 업뎃후에 공정코드갯수세기
 	 	grid.on('onGridUpdated',function() {
@@ -255,6 +245,7 @@ hr{
 		//저장버튼
 		btnSave.addEventListener("click", function() {
 			grid.blur();
+			//공정코드 중복체크
 			rowk = grid.getRowCount();
 			if(mngCnt <= rowk) {
 				for(let i=mngCnt; i<rowk; i++) {		
@@ -266,6 +257,7 @@ hr{
 					}
 				}
 			}
+			//필수입력칸
 			for(let i=0; i<rowk; i++) {			
 				if(grid.getRow(i).prcCd == '') {
 					alert("공정코드는 필수입력칸입니다!!");
@@ -291,6 +283,8 @@ hr{
 				}
 				
 			}
+			
+			//포커스 주기 위해 리스트에 담기
 			let create = grid.getModifiedRows().createdRows;
 			let update = grid.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -343,6 +337,7 @@ hr{
 		grid.on("response", function(ev) {
 			if(JSON.parse(ev.xhr.response).result != true) {
 				grid.resetData(JSON.parse(ev.xhr.response));
+				//포커스주기
 				for(prcCdData of grid.getData()) {
 					if(modifyList[modifyList.length-1] == prcCdData.prcCd) {
 						grid.focus(prcCdData.rowKey, 'prcCd', true);
@@ -355,7 +350,7 @@ hr{
 			}
 		})
 	
-	//--------공정관리 그리드 기능 끝(grid)--------
+	//공정관리 그리드 기능 끝(grid)-----------------------
 </script>
 </body>
 </html>

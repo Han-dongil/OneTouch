@@ -43,6 +43,9 @@ hr{
 	margin-top: 40px;
 	margin-left: 30px;
 }
+.basCdColor{
+	background-color: pink;
+}
 </style>
 
 </head>
@@ -279,6 +282,9 @@ hr{
 	});
 	
 	grid.on("click", (ev) => {
+		for(let i=0; i<grid.getRowCount(); i++) {
+			grid.removeRowClassName(grid.getRow(i).rowKey,'basCdColor')				
+		}
 		if(ev.columnName === 'mtrCd' || ev.columnName === 'mtrNm') {
 			
 			mtrCode = {'mtrCd': grid.getValue(ev.rowKey,'mtrCd')};
@@ -302,7 +308,6 @@ hr{
 				document.getElementById('safeStck').value = MtrDtl.safeStck;
 				document.getElementById('compCd').value = MtrDtl.compCd;
 				
-				
 				if(MtrDtl.useYn == 'Y') {
 					document.getElementById('useYn').checked = true
 				} else {
@@ -314,6 +319,7 @@ hr{
 				document.getElementById('btnAdd').setAttribute('disabled', true);
 				document.getElementById('btnEdit').disabled = undefined;
 				document.getElementById('btnDel').disabled = undefined;
+				grid.addRowClassName(ev.rowKey,'basCdColor');
 			})
 		}
 	})

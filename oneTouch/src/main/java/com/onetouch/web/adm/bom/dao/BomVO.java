@@ -19,4 +19,5 @@ public class BomVO extends MngVO{
 	private String cmt;		//비고
 	private String prdCd;	//제품코드
 	private String bomCd;	//bom코드
+	private String prcSeq;	//prcSeq
 }

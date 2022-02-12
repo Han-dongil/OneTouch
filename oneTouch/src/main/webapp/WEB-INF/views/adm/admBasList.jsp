@@ -31,6 +31,9 @@
 .floatright1{
 	margin-top: 5px;
 }
+.basCdColor{
+	background-color: pink;
+}
 </style>
 
 </head>
@@ -91,7 +94,7 @@
 	</div>	
 </div>
 <script type="text/javascript">
-	//--------변수선언--------
+	//변수선언----------------------------------------
 	let basCodeVal;
 	let basCode;
 	let basName;
@@ -105,21 +108,9 @@
 	let modifyList1 = [];
 	let modifyList2 = [];
 	let flag = false;
-	/* let Grid = tui.Grid; */
-	//--------변수선언 끝--------
+	//변수선언 끝-------------------------------------	
 	
-	//--------그리드 css--------
- 	/* Grid.applyTheme('default',{
-		cell:{
-			header:{
-				background: '#4B49AC',
-	            text: '#fff'
-			}
-		}
-	}) */
-	//--------그리드 css 끝--------
-	
-	//--------그리드컬럼 선언--------
+	//그리드컬럼 선언----------------------------------
 	const columns1 = [{
 		
 			header : '기초코드',
@@ -149,22 +140,24 @@
 			header : '상세코드명',
 			name : 'dtlNm',
 			editor : 'text',
-			width : 180
+			width : 200
 		},
 		{
 			header : '코드설명란',
 			name : 'dtlCmt',
 			editor: 'text',
-			width : 150
+			width : 200
 		},
 		{
 			header : '표시순서',
 			name : 'seq',
-			editor: 'text'
+			editor: 'text',
+			align: 'center',
 		},
 		{
 			header : '사용여부',
 			name : 'useYn',
+			align: 'center',
 			editor: {
 				type: 'radio',
 				options: {
@@ -180,9 +173,9 @@
 			name : 'basCd',
 			hidden : true
 		}]
- 	//--------그리드컬럼 선언 끝--------
+ 	//그리드컬럼 선언 끝--------------------------------
 	
- 	//--------dataSource 선언--------
+ 	//dataSource 선언-------------------------------
 	const dataSource1 = {
 		api: {
 			readData: {
@@ -210,9 +203,9 @@
 			contentType: 'application/json',
 			initialRequest: false
 	}
- 	//--------dataSource 선언 끝--------
+ 	//dataSource 선언 끝-----------------------------
  	
-	//--------그리드 그리기--------
+	//그리드 그리기------------------------------------
 	const grid1 = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource1,
@@ -230,9 +223,9 @@
 		bodyHeight: 616,
 		minBodyHeight: 616
 	})
-	//--------그리드 그리기 끝--------
+	//그리드 그리기 끝----------------------------------
 	
-	//--------기초코드 기능 (그리드1)--------
+	//기초코드 기능 (그리드1)----------------------------
 	
 		//그리드 업데이트 이벤트
 	 	grid1.on('onGridUpdated',function() {
@@ -246,7 +239,6 @@
 	 			grid2.readData(1,basCode,true);
 		 		flag = true;
 	 		}
-	 		
 	 	})
 	 	
 	 	//검색버튼
@@ -259,10 +251,14 @@
 		
 		//기초코드명 클릭하면 상세코드 받아옴
 		grid1.on("click", (ev) => {
+			for(let i=0; i<grid1.getRowCount(); i++) {
+				grid1.removeRowClassName(grid1.getRow(i).rowKey,'basCdColor')				
+			}
 			if(ev.columnName === 'basCd' || ev.columnName === 'basNm' || ev.columnName === 'basCmt') {
 				basCodeVal = grid1.getValue(ev.rowKey,'basCd');
 				basCode = {'basCd' : basCodeVal};
 				grid2.readData(1,basCode,true);
+				grid1.addRowClassName(ev.rowKey,'basCdColor');
 			}
 		})
 		
@@ -301,6 +297,7 @@
 		//저장버튼
 		btnSaveBas.addEventListener("click", function() {
 			grid1.blur();
+			//필수입력칸
 			rowk = grid1.getRowCount();
 			for(i=0; i<rowk; i++) {
 				if(grid1.getRow(i).basCd == '') {
@@ -311,6 +308,7 @@
 					return;
 				}
 			}
+			//포커스 주기위해 리스트에 담기
 			let create = grid1.getModifiedRows().createdRows;
 			let update = grid1.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -338,6 +336,7 @@
 		grid1.on("response", function(ev) {
 			if(JSON.parse(ev.xhr.response).result != true) {
 				grid1.resetData(JSON.parse(ev.xhr.response));
+				//포커스주기
 				for(basCdData of grid1.getData()) {
 					if(modifyList1[modifyList1.length-1] == basCdData.basCd) {
 						grid1.focus(basCdData.rowKey, 'basNm', true);
@@ -350,9 +349,9 @@
 			}
 		})
 		
-	//--------기초코드 기능 끝(그리드1)--------	
+	//기초코드 기능 끝(그리드1)--------------------------
 	
-	//--------상세코드 기능 (그리드2)--------	
+	//상세코드 기능 (그리드2)----------------------------
 	
 		//그리드2 다 업뎃후에 기초코드갯수세기
 	 	grid2.on('onGridUpdated',function() {
@@ -384,6 +383,7 @@
 		//저장버튼
 		btnSaveDtl.addEventListener("click", function() {
 			grid2.blur();
+			//필수입력칸
 			rowk = grid2.getRowCount();
 			for(i=0; i<rowk; i++) {
 				if(grid2.getRow(i).dtlCd == '') {
@@ -399,7 +399,8 @@
 					alert("사용여부는 필수입력칸입니다!!");
 					return;
 				}
-			}			
+			}		
+			//포커스 주기위해 리스트에 담기
 			let create = grid2.getModifiedRows().createdRows;
 			let update = grid2.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -426,6 +427,7 @@
 			if(JSON.parse(ev.xhr.response).result != true) {
 				console.log(JSON.parse(ev.xhr.response));
 				grid2.resetData(JSON.parse(ev.xhr.response));
+				//포커스주기
 				for(dtlCdData of grid2.getData()) {
 					if(modifyList2[modifyList2.length-1] == dtlCdData.dtlCd) {
 						grid2.focus(dtlCdData.rowKey, 'dtlCd', true);
@@ -438,8 +440,9 @@
 			} 
 		})
 	
-	//--------상세코드 기능 끝(그리드2)--------	
+	//상세코드 기능 끝(그리드2)---------------------------
 	
 </script>
 </body>
 </html>
+

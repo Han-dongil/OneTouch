@@ -104,14 +104,15 @@ hr{
 	<div id="dialog-form" title="title"></div>
 </div>
 <script>
-	//--------변수선언--------
+	//변수선언----------------------------------------
 	let rowk;
 	let BomCnt = 0;
+	let BomGrid;
 	let prdCdVal;
 	let modifyList = [];
-	//--------변수선언 끝--------
+	//변수선언 끝--------------------------------------
 		
-	//--------제품정보 보여주는 form 기능--------
+	//제품정보 보여주는 form 기능-------------------------
 		//제품코드옆의 돋보기 누르면
 		btnPrdCd.addEventListener("click", function() {
 			mPrd();
@@ -142,23 +143,15 @@ hr{
 				document.getElementById('useYn').checked = false
 			}
 			
-			/* lineSplit = param.ableLineNo.split("/")
-			for(i=0;i<lineSplit.length;i++) {
-				let option = document.createElement('option');
-				option.value = lineSplit[i];
-				option.innerHTML = lineSplit[i];
-				document.getElementById('ableLineNo').appendChild(option);
-			} */
-			
 			dialog.dialog("close");
 			
 			//bom보여주기
 			prdCode = {'prdCd':$('#prdCd').val()};
 			mainGrid.readData(1,prdCode,true);
 		}		
-	//--------제품정보 보여주는 form 기능 끝--------
+	//제품정보 보여주는 form 기능 끝-----------------------
 	
-	//--------그리드컬럼 선언--------
+	//그리드컬럼 선언-----------------------------------
 	const columns = [{
 		header: '자재코드',
 		name: 'mtrCd'
@@ -170,11 +163,13 @@ hr{
 	{
 		header: '사용량',
 		name: 'useAmt',
-		editor: 'text'
+		editor: 'text',
+		align: 'right',
 	},
 	{
 		header: '발주',
 		name: 'ordChk',
+		align: 'center',
 		editor: {
 			type: 'radio',
 			options: {
@@ -188,6 +183,7 @@ hr{
 	{
 		header: '생산',
 		name: 'pdtChk',
+		align: 'center',
 		editor: {
 			type: 'radio',
 			options: {
@@ -221,10 +217,15 @@ hr{
 		header: 'bom코드',
 		name: 'bomCd',
 		hidden : true
+	},
+	{
+		header: 'prcSeq',
+		name: 'prcSeq',
+		hidden : true
 	}]
-	//--------그리드컬럼 선언 끝--------
+	//그리드컬럼 선언 끝---------------------------------
 	
-	//--------dataSource 선언--------
+	//dataSource 선언--------------------------------
 	var dataSource = {
 			api: {
 				readData: {
@@ -239,9 +240,9 @@ hr{
 			contentType: 'application/json',
 			initialRequest: false
 	}
-	//--------dataSource 선언 끝--------
+	//dataSource 선언 끝-----------------------------
 	
-	//--------그리드 그리기--------
+	//그리드 그리기------------------------------------
 	let mainGrid = new Grid({
 		el: document.getElementById('grid1'),
 		data: dataSource,
@@ -250,10 +251,9 @@ hr{
 		bodyHeight: 330,
 		minBodyHeight: 330
 	})
-	//--------그리드 그리기 끝--------
-	
+	//그리드 그리기 끝----------------------------------
 
-	//--------제품 bom 그리드 기능 (mainGrid)--------
+	//제품 bom 그리드 기능 (mainGrid)-------------------
 	
 		//메인그리드 업뎃후에 bom코드갯수세기
 	 	mainGrid.on('onGridUpdated',function() {
@@ -298,9 +298,19 @@ hr{
 		
 		//사용공정명 더블클릭한 모달창 안에서 더블클릭
 		function getModalPrc(param) {
-			mainGrid.setValue(rowk, "prcCd", param.prcCd, false);
-			mainGrid.setValue(rowk, "prcNm", param.prcNm, false);
-			dialog.dialog("close");	
+			//같은 공정 못들어가게 체크
+			let flag = 0;
+			for(data of mainGrid.getData()) {
+				if(data.prcCd == param.prcCd) {
+					alert("이미 등록된 공정입니다.")
+					flag = 1;
+				}
+			}
+			if(flag != 1) {
+				mainGrid.setValue(rowk, "prcCd", param.prcCd, false);
+				mainGrid.setValue(rowk, "prcNm", param.prcNm, false);
+				dialog.dialog("close");		
+			}
 		}
 		
 		//등록버튼
@@ -323,8 +333,23 @@ hr{
 			}
 		})
 		
+		
 		//삭제버튼
 		btnDel.addEventListener("click", function() {
+			console.log(mainGrid.getCheckedRows());
+			let CheckRows = mainGrid.getCheckedRows();	
+			//bom에서 지우면 공정흐름에도 삭제되기
+			$.ajax({
+				url: "./bomFlwDelete",
+				method: "POST",
+				data: JSON.stringify(CheckRows),
+				async : false,
+				dataType: 'json',
+				contentType: 'application/json',
+				success: function() {
+					console.log("삭제완료!!!!!!!!!!!")
+				}
+			}) 
 			mainGrid.removeCheckedRows(true);
 			mainGrid.request("modifyData");
 		})
@@ -332,7 +357,7 @@ hr{
 		//저장버튼
 		btnSave.addEventListener("click", function() {
 			mainGrid.blur();
-			//필수입력
+			//필수입력칸
 			rowk = mainGrid.getRowCount();
 			for(i=0; i<rowk; i++) {
 				if(mainGrid.getRow(i).mtrCd == '') {
@@ -355,6 +380,7 @@ hr{
 					return;
 				}
 			}
+			//포커스 주기 위해 리스트에 담기
 			let create = mainGrid.getModifiedRows().createdRows;
 			let update = mainGrid.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -363,13 +389,27 @@ hr{
 			for(let i=0; i<update.length; i++) {
 				modifyList.push(update[i].mtrCd);
 			}
-			mainGrid.request('modifyData');
+			console.log(create);
+			console.log(update);
+			
+			
+			//bom 추가하면 공정흐름관리에도 추가 되도록 insert해주기
 			$.ajax({
 				url: "./bomFlwInsert",
 				method: "POST",
 				data: JSON.stringify(create),
 				contentType: 'application/json'
 			})
+			
+			//bom 수정되면 공정흐름관리에도 수정 되도록 update해주기
+			$.ajax({
+				url:'./bomFlwUpdate',
+				method:'POST',
+				data: JSON.stringify(update),
+				contentType: 'application/json'
+			})
+			
+			mainGrid.request('modifyData');
 		})
 			
 		//초기화버튼
@@ -397,6 +437,7 @@ hr{
 			if(JSON.parse(ev.xhr.response).result != true) {
 				console.log(JSON.parse(ev.xhr.response));
 				mainGrid.resetData(JSON.parse(ev.xhr.response));
+				//포커스주기
 				for(mtrCdData of mainGrid.getData()) {
 					if(modifyList[modifyList.length-1] == mtrCdData.mtrCd) {
 						mainGrid.focus(mtrCdData.rowKey, 'mtrCd', true);
@@ -409,7 +450,7 @@ hr{
 			}
 		})
 
-	//--------제품 bom 그리드 기능 끝(mainGrid)--------
+	//제품 bom 그리드 기능 끝(mainGrid)--------------------
 </script>
 </body>
 </html>

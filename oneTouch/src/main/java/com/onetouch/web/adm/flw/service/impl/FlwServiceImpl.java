@@ -38,11 +38,15 @@ public class FlwServiceImpl implements FlwService{
 	}
 
 
-	@Override
-	public void insertFlwList(List<FlwVO> maps) {
-		for(FlwVO flwvo : maps) {
-			mapper.insertFlw(flwvo);
-		}
-	}
+//	@Override
+//	public void insertFlwList(List<FlwVO> maps) {
+//		System.out.println("서비스임플"+maps);
+//		for(FlwVO flwvo : maps) {
+//			System.out.println("서비스임플"+flwvo);
+//
+//			mapper.insertFlw(flwvo);
+//			
+//		}
+//	}
 
 }

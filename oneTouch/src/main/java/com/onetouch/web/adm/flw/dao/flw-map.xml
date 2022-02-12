@@ -21,7 +21,7 @@
 	<delete id="deleteFlw">
 		delete 
 		from 	adm_prc_flow
-		where 	prd_cd = #{prdCd} and prc_seq = #{prcSeq}
+		where 	prd_cd = #{prdCd}
 	</delete>
 	
 	<update id="updateFlw">
@@ -33,8 +33,35 @@
 				prc_cd = #{prcCd}
 		WHERE	prd_cd = #{prdCd} and prc_seq = #{prcSeq}
 	</update>
-	
+
 	<insert id="insertFlw">
+		 INSERT INTO adm_prc_flow
+		 (prc_cd,
+		 prd_cd,
+		 prc_seq,
+		 <if test="workCmt != null and workCmt != ''">work_cmt,</if>
+		 std_load,
+		 unit_cost,
+		 lead_time
+		 )
+		 VALUES(
+		 #{prcCd},
+		 #{prdCd},
+		 #{prcSeq},
+		 <if test="workCmt != null and workCmt != ''">#{workCmt},</if>
+		 #{stdLoad},
+		 #{unitCost},
+		 #{leadTime}
+		 )
+	</insert>	
+	
+	<delete id="bomFlwDelete">
+		delete 
+		from 	adm_prc_flow
+		where 	prd_cd = #{prdCd} and prc_cd = #{prcCd}
+	</delete>
+		
+	<insert id="bomFlwInsert">
 		 INSERT INTO adm_prc_flow
 		(prc_cd,
 		 prd_cd,
@@ -43,9 +70,16 @@
 		 VALUES(
 		 #{prcCd},
 		 #{prdCd},
-		 (select nvl(max(prc_seq),1) from adm_prc_flow where prd_cd=#{prdCd})
+		 (select nvl(max(prc_seq),0)+1 from adm_prc_flow where prd_cd=#{prdCd})
 		 )
 	</insert>
+	
+	<update id="bomFlwUpdate">
+		update  adm_prc_flow
+		set		prc_cd = #{prcCd}
+		where	prd_cd = #{prdCd} and prc_seq = #{prcSeq}
+	</update>
+	
 	
 	<!-- 공정흐름 // 공정관리 // 공통bom join -->
 	<select id="selectFlwPrcBom" resultType="com.onetouch.web.adm.bom.dao.BomVO">
