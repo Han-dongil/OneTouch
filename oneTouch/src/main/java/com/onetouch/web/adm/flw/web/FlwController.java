@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.bom.dao.PrdVO;
 import com.onetouch.web.adm.bom.service.BomService;
+import com.onetouch.web.adm.flw.dao.FlwMapper;
 import com.onetouch.web.adm.flw.dao.FlwVO;
 import com.onetouch.web.adm.flw.service.FlwService;
 import com.onetouch.web.adm.mng.dao.MngVO;
 import com.onetouch.web.adm.mng.service.MngService;
-import com.onetouch.web.zzz.dao.ModifyVO;
 
 @RequestMapping("/adm")
 @Controller
@@ -29,6 +29,7 @@ public class FlwController {
 	@Autowired FlwService flwservice;
 	@Autowired BomService bomservice;
 	@Autowired MngService mngservice;
+	@Autowired FlwMapper flwmapper;
 	
 	//공정흐름관리 보여주는 페이지로이동
 	@RequestMapping("/FlwList")
@@ -111,25 +112,6 @@ public class FlwController {
 		return maps;
 	}
 	
-	//공정흐름관리 등록수정삭제
-	@ResponseBody
-	@PostMapping("/flwModifyData")
-	public List<FlwVO> modify(@RequestBody ModifyVO<FlwVO> mvo) {
-		FlwVO flwvo = new FlwVO();
-		System.out.println("modify" + mvo);
-		flwservice.modify(mvo);
-		if(mvo.getCreatedRows().size() > 0) {
-			flwvo.setPrdCd(mvo.getCreatedRows().get(0).getPrdCd());
-		}
-		if(mvo.getUpdatedRows().size() > 0) {
-			flwvo.setPrdCd(mvo.getUpdatedRows().get(0).getPrdCd());
-		}
-		if(mvo.getDeletedRows().size() > 0) {
-			flwvo.setPrdCd(mvo.getDeletedRows().get(0).getPrdCd());
-		}
-		return flwservice.selectFlw(flwvo);
-	}
-	
 	//form 수정
 	@ResponseBody
 	@PostMapping("/updatePrd")
@@ -155,5 +137,28 @@ public class FlwController {
 		bomservice.deletePrd(prdvo);
 		return bomservice.selectPrdAll();
 	}
-
+	
+	//공정흐름관리 삭제(수정 하기 위해)
+	@ResponseBody
+	@PostMapping("/deleteFlw")
+	public int deleteFlw(@RequestBody List<FlwVO> list) {
+		System.out.println("삭제확인(공정흐름)"+list);
+		int sum = 0;
+		for(FlwVO flwvo : list) {
+			sum = sum + flwmapper.deleteFlw(flwvo);			
+		}
+		return sum;
+	}
+	
+	//공정흐름관리 등록(수정 하기 위해)
+	@ResponseBody
+	@PostMapping("/insertFlw")
+	public int insertFlw(@RequestBody List<FlwVO> list) {
+		System.out.println("등록확인(공정흐름)"+list);
+		int sum = 0;
+		for(FlwVO flwvo : list) {
+			sum = sum + flwmapper.insertFlw(flwvo);		
+		}
+		return sum;
+	}
 }

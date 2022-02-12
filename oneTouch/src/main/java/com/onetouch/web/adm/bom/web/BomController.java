@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onetouch.web.adm.bom.dao.BomVO;
 import com.onetouch.web.adm.bom.service.BomService;
+import com.onetouch.web.adm.flw.dao.FlwMapper;
 import com.onetouch.web.adm.flw.dao.FlwVO;
 import com.onetouch.web.adm.flw.service.FlwService;
 import com.onetouch.web.zzz.dao.ModifyVO;
@@ -24,6 +25,7 @@ public class BomController {
 
 	@Autowired BomService bomservice;
 	@Autowired FlwService flwservice;
+	@Autowired FlwMapper flwmapper;
 	
 	//제품Bom관리 보여주는 페이지로 이동
 	@RequestMapping("/BomList")
@@ -66,11 +68,37 @@ public class BomController {
 		return bomservice.selectBomDtl(bomvo);
 	}
 	
+	//bom 넣으면 공정흐름에도 추가되기(prdCd,prcCd,prcSeq만)
 	@ResponseBody
 	@PostMapping("/bomFlwInsert")
-	public void insertPrd(@RequestBody List<FlwVO> maps) {
+	public void bomFlwInsert(@RequestBody List<FlwVO> maps) {
 		System.out.println("mmmmmm"+maps);
-		flwservice.insertFlwList(maps);
+		for(FlwVO flwvo : maps) {
+			System.out.println("controller"+flwvo);
+			flwmapper.bomFlwInsert(flwvo);			
+		}
 	}
+	
+	//bom에서 지우면 공정흐름에도 삭제되기
+	@ResponseBody
+	@PostMapping("/bomFlwDelete")
+	public void bomFlwDelete(@RequestBody List<BomVO> maps) {
+		System.out.println("삭제ㅔㅔㅔ"+maps);
+		for(BomVO bomvo : maps) {
+			System.out.println("controller"+bomvo);
+			flwmapper.bomFlwDelete(bomvo);			
+		}
+	}
+	
+	//bom에서 수정하면 공정흐름에도 수정되기
+		@ResponseBody
+		@PostMapping("/bomFlwUpdate")
+		public void bomFlwUpdate(@RequestBody List<BomVO> maps) {
+			System.out.println("수정ㅇㅇㅇ"+maps);
+			for(BomVO bomvo : maps) {
+				System.out.println("controller"+bomvo);
+				flwmapper.bomFlwUpdate(bomvo);			
+			}
+		}
 	
 }

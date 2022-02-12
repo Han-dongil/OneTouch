@@ -62,28 +62,13 @@ hr{
 
 
 <script type="text/javascript">
-	//--------변수선언--------
+	//변수선언---------------------------------------
 	let rowk;
 	let fltCnt;
 	let modifyList=[];
-	/* let Grid = tui.Grid; */
-	//--------변수선언 끝--------
+	//변수선언 끝-------------------------------------
 	
-	//--------그리드 css--------
-	/* Grid.applyTheme('default',{
-		cell:{
-			header: {
-	            background: '#4B49AC',
-	            text: '#fff'
-	        },
-	        evenRow: {
-	        	background:'#F5F7FF'
-	        }
-		}
-	})  */
-	//--------그리드 css 끝--------
-	
-	//--------그리드컬럼 선언--------
+	//그리드컬럼 선언----------------------------------
 	const columns = [{
 		header : '불량코드',
 		name : 'fltCd',
@@ -99,7 +84,7 @@ hr{
 		header : '불량내역',
 		name : 'fltMtt',
 		editor: 'text',
-		width : 300
+		width : 400
 	},
 	{
 		header : '불량구분',
@@ -127,16 +112,17 @@ hr{
 		header : '표시순서',
 		name : 'seq',
 		editor: 'text',
-		sortable : true
+		sortable : true,
+		align : 'center'
 	},
 	{
 		header : '발생공정코드',
 		name : 'prcCd',
 		hidden : true
 	}]
-	//--------그리드컬럼 선언 끝--------
+	//그리드컬럼 선언 끝---------------------------------
 	
-	//--------dataSource 선언--------
+	//dataSource 선언--------------------------------
 	var dataSource = {
 			api: {
 				readData: {
@@ -148,9 +134,9 @@ hr{
 			},
 			contentType: 'application/json'
 	 };
-	 //--------dataSource 선언 끝--------
+	 //dataSource 선언 끝-----------------------------
 
-	//--------그리드 그리기--------		
+	//그리드 그리기-------------------------------------
 	let grid = new Grid({
 		el: document.getElementById('grid'),
 		data: dataSource, 
@@ -159,9 +145,9 @@ hr{
 		bodyHeight: 612,
 		minBodyHeight: 612
 	}); 
-	//--------그리드 그리기 끝--------	
+	//그리드 그리기 끝-----------------------------------	
 	
-	//--------불량코드관리 그리드 기능 (grid)--------
+	//불량코드관리 그리드 기능 (grid)----------------------
 	
 		//그리드 업뎃후에 불량코드갯수세기
 	 	grid.on('onGridUpdated',function() {
@@ -192,7 +178,7 @@ hr{
 			grid.request('modifyData');	
 		})
 		
-		//저장버튼----덜됨
+		//저장버튼
 		btnSave.addEventListener("click", function() {
 			grid.blur();
 			rowk = grid.getRowCount();
@@ -214,6 +200,8 @@ hr{
 					return;
 				} 
 			}
+			
+			//포커스 주기 위해 리스트에 담기
 			let create = grid.getModifiedRows().createdRows;
 			let update = grid.getModifiedRows().updatedRows;
 			for(let i=0; i<create.length; i++) {
@@ -284,12 +272,6 @@ hr{
 			}
 		}) 
 		
-		/* grid.on("onAfterChange", (ev) => {
-			if(ev.columnName === 'fltSect' && fltSectVal == '자재불량') {
-				grid.setValue(ev.rowKey, 'prcNm', '해당사항없음', false);
-			}
-		}) */
-		
 		//사용공정명 더블클릭한 모달창 안에서 더블클릭
 		function getModalPrc(param) {
 			console.log("더블클릭공정");
@@ -302,9 +284,8 @@ hr{
 		grid.on("response", function(ev) {
 			if(JSON.parse(ev.xhr.response).result != true) {
 				grid.resetData(JSON.parse(ev.xhr.response));
+				//포커스주기
 				for(fltCdData of grid.getData()) {
-					//console.log(fltCdData.fltCd);
-					//console.log(modifyList[modifyList.length-1]);
 					if(modifyList[modifyList.length-1] == fltCdData.fltCd) {
 						grid.focus(fltCdData.rowKey, 'fltCd', true);
 						break;
@@ -316,7 +297,7 @@ hr{
 			}
 		})
 
-	//--------불량코드관리 그리드 기능 끝(grid)--------
+	//불량코드관리 그리드 기능 끝(grid)----------------------
 </script>
 </body>
 </html>

@@ -69,18 +69,21 @@
 	
 	<!-- 제품 선택했을때 bom조회 -->
 	<select id="selectBomDtl" resultType="com.onetouch.web.adm.bom.dao.BomVO">
-		select   mtr_cd, 
-		         FN_GET_MTR_CD_TO_NM(mtr_cd) as mtrNm,
-		         use_amt,
-		         ord_chk,
-		         pdt_chk,
-		         FN_GET_PRC_CD_TO_NM(prc_cd) as prcNm,
-		         cmt,
-		         bom_cd,
-		         prc_cd,
-		         prd_cd
-		from 	 adm_bom
-		where 	 prd_cd = #{prdCd}
+		select   a.mtr_cd, 
+		         FN_GET_MTR_CD_TO_NM(a.mtr_cd) as mtrNm,
+		         a.use_amt,
+		         a.ord_chk,
+		         a.pdt_chk,
+		         FN_GET_PRC_CD_TO_NM(a.prc_cd) as prcNm,
+		         a.cmt,
+		         a.bom_cd,
+		         a.prc_cd,
+		         a.prd_cd,
+                 b.prc_seq
+		from 	 adm_bom a, adm_prc_flow b 
+		where 	 a.prd_cd = #{prdCd}
+        and      a.prd_cd = b.prd_cd
+        and      a.prc_cd = b.prc_cd
 		order by mtr_cd
 	</select>
 	
