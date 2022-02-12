@@ -271,6 +271,24 @@ var mainGrid = new Grid({
 				   sortable: true
 				 },
 				 {
+					header: '발주량',
+					name: 'ordAmt',
+					align: 'right',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
+				 },
+				 {
+					header: '기입고량',
+					name: 'befInAmt',
+					align: 'right',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
+				 },
+				 {
 				   header: '불량량',
 				   name: 'fltAmt',
 				   align: 'right',
@@ -287,6 +305,15 @@ var mainGrid = new Grid({
 					   return format(value);
 				   },
 				   sortable: true
+				 },
+				 {
+					header: '미입고량',
+					name: 'notinAmt',
+					align: 'right',
+				    formatter({value}){
+					   return format(value);
+				    },
+				    sortable: true
 				 },
 				 {
 				   header: '단가',
@@ -324,6 +351,12 @@ var mainGrid = new Grid({
 			                } 
 			            },
 			            inAmt: {
+			                template(summary) {
+			        			var sumResult = (summary.sum);
+			        			return format(sumResult);
+			                } 
+			            },
+			            notinAmt: {
 			                template(summary) {
 			        			var sumResult = (summary.sum);
 			        			return format(sumResult);
